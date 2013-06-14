@@ -44,7 +44,7 @@ public class GetUiXmlTest
 
 		environment = new AgentIntegrationEnvironmentCreator(RMI_PORT);
 
-		if (environment.isDevicePresent() == false)
+		if (environment.isAnyDevicePresent() == false)
 		{
 			DeviceParameters emulatorCreationParameters = new DeviceParameters();
 			emulatorCreationParameters.setDpi(EMULATOR_CREATION_DPI);
