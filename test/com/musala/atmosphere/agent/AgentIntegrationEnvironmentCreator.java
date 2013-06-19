@@ -57,7 +57,8 @@ public class AgentIntegrationEnvironmentCreator
 			NotBoundException
 	{
 		// TODO Extract to config file
-		agentManager = new AgentManager("C:\\Android Development Tools\\sdk\\platform-tools\\adb", rmiPort);
+		agentManager = new AgentManager("C:\\Dev\\Android SDK\\adt-bundle-windows-x86_64-20130219\\sdk\\platform-tools\\adb",
+										rmiPort);
 
 		remoteAgentRegistry = LocateRegistry.getRegistry("localhost", rmiPort);
 		remoteAgentManager = (IAgentManager) remoteAgentRegistry.lookup(RmiStringConstants.AGENT_MANAGER.toString());
@@ -95,6 +96,30 @@ public class AgentIntegrationEnvironmentCreator
 	}
 
 	/**
+	 * Checks if any emulator is present on the agent (current machine).
+	 * 
+	 * @return true if emulator is present, false otherwise.
+	 * @throws RemoteException
+	 * @throws NotBoundException
+	 */
+	public boolean isAnyEmulatorPresent() throws RemoteException, NotBoundException
+	{
+		List<String> wrapperIdentifiers = remoteAgentManager.getAllDeviceWrappers();
+
+		for (String wrapperId : wrapperIdentifiers)
+		{
+			IWrapDevice deviceWrapper = (IWrapDevice) remoteAgentRegistry.lookup(wrapperId);
+			DeviceInformation deviceInformation = deviceWrapper.getDeviceInformation();
+
+			if (deviceInformation.isEmulator())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Gets the first available device that is present on the agent (current machine).
 	 * 
 	 * @return the first available device wrapper ({@link IWrapDevice} interface).
@@ -113,6 +138,34 @@ public class AgentIntegrationEnvironmentCreator
 		}
 		IWrapDevice deviceWrapper = (IWrapDevice) remoteAgentRegistry.lookup(wrapperIdentifiers.get(0));
 		return deviceWrapper;
+	}
+
+	/**
+	 * Gets the first available emulator device that is present on the agent (current machine).
+	 * 
+	 * @return the first available emulator wrapper ({@link IWrapDevice} interface).
+	 * @throws RemoteException
+	 * @throws NotBoundException
+	 * @throws IllegalStateException
+	 */
+	public IWrapDevice getFirstAvailableEmulatorDeviceWrapper()
+		throws RemoteException,
+			NotBoundException,
+			IllegalStateException
+	{
+		List<String> wrapperIdentifiers = remoteAgentManager.getAllDeviceWrappers();
+
+		for (String wrapperId : wrapperIdentifiers)
+		{
+			IWrapDevice deviceWrapper = (IWrapDevice) remoteAgentRegistry.lookup(wrapperId);
+			DeviceInformation deviceInformation = deviceWrapper.getDeviceInformation();
+
+			if (deviceInformation.isEmulator())
+			{
+				return deviceWrapper;
+			}
+		}
+		throw new IllegalStateException("No emulator devices are present on the agent (current machine).");
 	}
 
 	/**
