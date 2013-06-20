@@ -14,10 +14,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
+import com.musala.atmosphere.commons.Pair;
 import com.musala.atmosphere.commons.sa.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
 import com.musala.atmosphere.commons.sa.exceptions.CommandFailedException;
-import com.musala.atmosphere.commons.sa.util.Pair;
 
 public class GetUiXmlTest
 {
