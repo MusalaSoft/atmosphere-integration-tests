@@ -9,13 +9,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
+import com.musala.atmosphere.commons.CommandFailedException;
 import com.musala.atmosphere.commons.sa.DeviceInformation;
 import com.musala.atmosphere.commons.sa.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IAgentManager;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
 import com.musala.atmosphere.commons.sa.RmiStringConstants;
 import com.musala.atmosphere.commons.sa.exceptions.ADBridgeFailException;
-import com.musala.atmosphere.commons.sa.exceptions.CommandFailedException;
 import com.musala.atmosphere.commons.sa.exceptions.DeviceNotFoundException;
 import com.musala.atmosphere.commons.sa.exceptions.NotPossibleForDeviceException;
 
