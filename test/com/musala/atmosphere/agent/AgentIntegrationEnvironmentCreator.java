@@ -244,10 +244,10 @@ public class AgentIntegrationEnvironmentCreator
 				Thread.sleep(100);
 				// TODO add a method in the IWrapDevice interface to do this a better way
 				// This will throw a CommandFailedException if the device is not ready
-				String response = deviceWrapper.executeShellCommand("ps ndroid.calendar");
+				String response = deviceWrapper.executeShellCommand("ps .location.fused");
 				// The calendar will not be loaded until the graphical environment is loaded
 				// If the graphical environment is not loaded, naturally, we can not fetch ui xml
-				if (response.contains("com.android.calendar") == false)
+				if (response.contains("com.android.location.fused") == false)
 				{
 					continue;
 				}
