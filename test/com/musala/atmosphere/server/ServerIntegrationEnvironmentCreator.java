@@ -1,6 +1,7 @@
 package com.musala.atmosphere.server;
 
 import java.io.IOException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import com.musala.atmosphere.commons.sa.exceptions.DeviceNotFoundException;
@@ -18,6 +19,11 @@ public class ServerIntegrationEnvironmentCreator
 	public PoolManager getPoolManager()
 	{
 		return poolManager;
+	}
+
+	public void connectToLocalhost(int port) throws RemoteException, NotBoundException
+	{
+		poolManager.connectToAgent("localhost", port);
 	}
 
 	public void close() throws IOException, DeviceNotFoundException, NotPossibleForDeviceException

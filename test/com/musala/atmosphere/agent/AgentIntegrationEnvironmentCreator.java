@@ -57,8 +57,7 @@ public class AgentIntegrationEnvironmentCreator
 			NotBoundException
 	{
 		// TODO Extract to config file
-		agentManager = new AgentManager("C:\\Dev\\Android SDK\\adt-bundle-windows-x86_64-20130219\\sdk\\platform-tools\\adb",
-										rmiPort);
+		agentManager = new AgentManager("C:\\Android Development Tools\\sdk\\platform-tools\\adb", rmiPort);
 
 		remoteAgentRegistry = LocateRegistry.getRegistry("localhost", rmiPort);
 		remoteAgentManager = (IAgentManager) remoteAgentRegistry.lookup(RmiStringConstants.AGENT_MANAGER.toString());
@@ -66,11 +65,19 @@ public class AgentIntegrationEnvironmentCreator
 
 	/**
 	 * 
-	 * @return the underlying IAgentManager stub.
+	 * @return the underlying {@link IAgentManager IAgentManager} stub.
 	 */
 	public IAgentManager getAgentManagerRmiStub()
 	{
 		return remoteAgentManager;
+	}
+
+	/**
+	 * @return the underlying {@link AgentManager AgentManager} instance.
+	 */
+	public AgentManager getAgentManagerInstance()
+	{
+		return agentManager;
 	}
 
 	/**
