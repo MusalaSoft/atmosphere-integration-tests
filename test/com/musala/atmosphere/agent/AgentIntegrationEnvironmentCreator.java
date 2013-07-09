@@ -9,6 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
+import com.musala.atmosphere.agent.util.AgentProperties;
+import com.musala.atmosphere.agent.util.AgentPropertiesLoader;
 import com.musala.atmosphere.commons.CommandFailedException;
 import com.musala.atmosphere.commons.sa.DeviceInformation;
 import com.musala.atmosphere.commons.sa.DeviceParameters;
@@ -30,9 +32,18 @@ import com.musala.atmosphere.commons.sa.exceptions.NotPossibleForDeviceException
  */
 public class AgentIntegrationEnvironmentCreator
 {
-	private static final int EMULATOR_CREATION_WAIT_TIMEOUT = 60000; // 1 minute
+	private static final int EMULATOR_CREATION_WAIT_TIMEOUT = AgentPropertiesLoader.getPropertyInt(AgentProperties.EMULATOR_CREATION_WAIT_TIMEOUT); // 1
+																																					// minute
 
-	private static final int EMULATOR_CREATION_WAIT = 100; // 100 ms between new wrapper publication checks
+	private static final int EMULATOR_CREATION_WAIT = AgentPropertiesLoader.getPropertyInt(AgentProperties.EMULATOR_CREATION_WAIT); // 100
+																																	// ms
+																																	// between
+																																	// new
+																																	// wrapper
+																																	// publication
+																																	// checks
+
+	private static final String PATH_TO_ADB = AgentPropertiesLoader.getPropertyString(AgentProperties.PATH_TO_ADB);
 
 	private AgentManager agentManager;
 
@@ -56,8 +67,7 @@ public class AgentIntegrationEnvironmentCreator
 			ADBridgeFailException,
 			NotBoundException
 	{
-		// TODO Extract to config file
-		agentManager = new AgentManager("C:\\Android Development Tools\\sdk\\platform-tools\\adb", rmiPort);
+		agentManager = new AgentManager(PATH_TO_ADB, rmiPort);
 
 		remoteAgentRegistry = LocateRegistry.getRegistry("localhost", rmiPort);
 		remoteAgentManager = (IAgentManager) remoteAgentRegistry.lookup(RmiStringConstants.AGENT_MANAGER.toString());
