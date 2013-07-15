@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
-import com.musala.atmosphere.agent.util.AgentProperties;
 import com.musala.atmosphere.agent.util.AgentPropertiesLoader;
 import com.musala.atmosphere.commons.CommandFailedException;
 import com.musala.atmosphere.commons.sa.DeviceInformation;
@@ -32,18 +31,18 @@ import com.musala.atmosphere.commons.sa.exceptions.NotPossibleForDeviceException
  */
 public class AgentIntegrationEnvironmentCreator
 {
-	private static final int EMULATOR_CREATION_WAIT_TIMEOUT = AgentPropertiesLoader.getPropertyInt(AgentProperties.EMULATOR_CREATION_WAIT_TIMEOUT); // 1
-																																					// minute
+	private static final int EMULATOR_CREATION_WAIT_TIMEOUT = AgentPropertiesLoader.getEmulatorCreationWaitTiomeout(); // 1
+																														// minute
 
-	private static final int EMULATOR_CREATION_WAIT = AgentPropertiesLoader.getPropertyInt(AgentProperties.EMULATOR_CREATION_WAIT); // 100
-																																	// ms
-																																	// between
-																																	// new
-																																	// wrapper
-																																	// publication
-																																	// checks
+	private static final int EMULATOR_CREATION_WAIT = AgentPropertiesLoader.getEmulatorCreationWait(); // 100
+																										// ms
+																										// between
+																										// new
+																										// wrapper
+																										// publication
+																										// checks
 
-	private static final String PATH_TO_ADB = AgentPropertiesLoader.getPropertyString(AgentProperties.PATH_TO_ADB);
+	private static final String PATH_TO_ADB = AgentPropertiesLoader.getPathToADB();
 
 	private AgentManager agentManager;
 
