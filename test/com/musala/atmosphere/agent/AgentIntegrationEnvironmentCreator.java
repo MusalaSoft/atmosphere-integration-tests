@@ -31,7 +31,7 @@ import com.musala.atmosphere.commons.sa.exceptions.NotPossibleForDeviceException
  */
 public class AgentIntegrationEnvironmentCreator
 {
-	private static final int EMULATOR_CREATION_WAIT_TIMEOUT = AgentPropertiesLoader.getEmulatorCreationWaitTiomeout(); // 1
+	private static final int EMULATOR_CREATION_WAIT_TIMEOUT = AgentPropertiesLoader.getEmulatorCreationWaitTimeout(); // 1
 																														// minute
 
 	private static final int EMULATOR_CREATION_WAIT = AgentPropertiesLoader.getEmulatorCreationWait(); // 100
