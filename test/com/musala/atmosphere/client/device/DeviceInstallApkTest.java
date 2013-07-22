@@ -68,7 +68,7 @@ public class DeviceInstallApkTest
 				IOException
 		{
 			device = builder.getDevice(parameters);
-			device.installAPK(PATH_TO_APK_DIR + NAME_OF_APK_FILE);
+			device.installAPK(PATH_TO_APK);
 		}
 	}
 
