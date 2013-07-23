@@ -46,7 +46,9 @@ public class ServerAgentConnectionTest
 			IllegalAccessException
 	{
 		serverEnvironment = new ServerIntegrationEnvironmentCreator(POOLMANAGER_RMI_PORT);
-		serverEnvironment.connectToLocalhost(AGENTMANAGER_RMI_PORT);
+		agentEnvironment.connectToLocalhostServer(POOLMANAGER_RMI_PORT);
+		String agentId = agentEnvironment.getUnderlyingAgentId();
+		serverEnvironment.waitForAgentConnection(agentId);
 
 		AgentManager underlyingAgentManager = agentEnvironment.getAgentManagerInstance();
 		Field deviceChangeListenerField = underlyingAgentManager.getClass()
@@ -61,19 +63,4 @@ public class ServerAgentConnectionTest
 						POOLMANAGER_RMI_PORT,
 						setPort);
 	}
-
-	@Test(expected = RemoteException.class)
-	public void testBadConnectionPort() throws RemoteException, NotBoundException
-	{
-		serverEnvironment = new ServerIntegrationEnvironmentCreator(POOLMANAGER_RMI_PORT);
-		serverEnvironment.connectToLocalhost(AGENTMANAGER_RMI_PORT + 1);
-	}
-
-	@Test(expected = NotBoundException.class)
-	public void testConnectedToNotAnAgent() throws RemoteException, NotBoundException
-	{
-		serverEnvironment = new ServerIntegrationEnvironmentCreator(POOLMANAGER_RMI_PORT);
-		serverEnvironment.connectToLocalhost(POOLMANAGER_RMI_PORT);
-	}
-
 }

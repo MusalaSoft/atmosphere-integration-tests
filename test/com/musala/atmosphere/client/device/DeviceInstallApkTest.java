@@ -4,14 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.security.MessageDigest;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
@@ -25,10 +27,10 @@ import com.android.ddmlib.IDevice;
 import com.android.ddmlib.InstallException;
 import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
 import com.musala.atmosphere.agent.AgentManager;
+import com.musala.atmosphere.agent.DevicePropertyStringConstants;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.util.Server;
-import com.musala.atmosphere.commons.CommandFailedException;
 import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
 
 public class DeviceInstallApkTest
@@ -47,27 +49,23 @@ public class DeviceInstallApkTest
 
 	private ServerIntegrationEnvironmentCreator serverEnvironment;
 
-	private final String deviceSerialNumber = "mockedDevice";
+	private final static String MOCK_SERIAL_NUMBER = "mockedDevice";
+
+	private final static Integer MOCK_DEVICE_DENSITY = 666;
 
 	private IDevice mockDevice;
 
 	@Server(ip = "localhost", port = POOLMANAGER_RMI_PORT)
-	class GettingDeviceSampleClass
+	private class GettingDeviceSampleClass
 	{
-		private Builder builder = null;
-
-		private Device device = null;
-
 		public GettingDeviceSampleClass()
 		{
-			builder = Builder.getInstance();
 		}
 
 		public void getDeviceAndInstallApk(com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters parameters)
-			throws CommandFailedException,
-				IOException
 		{
-			device = builder.getDevice(parameters);
+			Builder builder = Builder.getInstance();
+			Device device = builder.getDevice(parameters);
 			device.installAPK(PATH_TO_APK);
 		}
 	}
@@ -79,7 +77,14 @@ public class DeviceInstallApkTest
 		serverEnvironment = new ServerIntegrationEnvironmentCreator(POOLMANAGER_RMI_PORT);
 
 		mockDevice = mock(IDevice.class);
-		when(mockDevice.getSerialNumber()).thenReturn(deviceSerialNumber);
+		when(mockDevice.getSerialNumber()).thenReturn(MOCK_SERIAL_NUMBER);
+		when(mockDevice.isEmulator()).thenReturn(true);
+		when(mockDevice.arePropertiesSet()).thenReturn(true);
+		when(mockDevice.isOffline()).thenReturn(false);
+		Map<String, String> mockDeviceProperties = new HashMap<String, String>();
+		mockDeviceProperties.put(	DevicePropertyStringConstants.PROPERTY_EMUDEVICE_LCD_DENSITY.toString(),
+									Integer.toString(MOCK_DEVICE_DENSITY));
+		when(mockDevice.getProperties()).thenReturn(mockDeviceProperties);
 
 		AgentManager am = agentEnvironment.getAgentManagerInstance();
 		Method agentManagerRegisterNewDeviceMethod = am.getClass().getDeclaredMethod(	"registerDeviceOnAgent",
@@ -87,7 +92,12 @@ public class DeviceInstallApkTest
 		agentManagerRegisterNewDeviceMethod.setAccessible(true);
 
 		String deviceRmiId = (String) agentManagerRegisterNewDeviceMethod.invoke(am, mockDevice);
-		serverEnvironment.connectToLocalhost(AGENTMANAGER_RMI_PORT);
+		agentEnvironment.connectToLocalhostServer(POOLMANAGER_RMI_PORT);
+
+		String agentId = agentEnvironment.getUnderlyingAgentId();
+		serverEnvironment.waitForAgentConnection(agentId);
+
+		serverEnvironment.waitForDeviceToBeAvailable(MOCK_SERIAL_NUMBER, agentId);
 	}
 
 	@After
@@ -98,17 +108,8 @@ public class DeviceInstallApkTest
 	}
 
 	@Test
-	public void transferringApkCorrectlyTest()
-		throws CommandFailedException,
-			IOException,
-			NoSuchFieldException,
-			SecurityException,
-			IllegalArgumentException,
-			IllegalAccessException,
-			InstallException
+	public void transferringApkCorrectlyTest() throws InstallException
 	{
-		com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters parameters = new com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters();
-
 		when(mockDevice.installPackage(anyString(), anyBoolean())).thenAnswer(new Answer<String>()
 		{
 			@Override
@@ -131,14 +132,15 @@ public class DeviceInstallApkTest
 
 				assertEquals("Transferred file is not as expected.", md51, md52);
 
-				return "OK";
+				return null;
 			}
 		});
 
+		com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters parameters = new com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters();
+		parameters.setDpi(MOCK_DEVICE_DENSITY);
 		GettingDeviceSampleClass userTest = new GettingDeviceSampleClass();
 		userTest.getDeviceAndInstallApk(parameters);
 
-		verify(mockDevice).installPackage(anyString(), anyBoolean());
-
+		verify(mockDevice, times(1)).installPackage(anyString(), anyBoolean());
 	}
 }

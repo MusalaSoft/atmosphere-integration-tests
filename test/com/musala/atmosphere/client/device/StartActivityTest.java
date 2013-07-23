@@ -61,7 +61,9 @@ public class StartActivityTest
 	{
 		agentEnvironment = new AgentIntegrationEnvironmentCreator(AGENTMANAGER_RMI_PORT);
 		serverEnvironment = new ServerIntegrationEnvironmentCreator(POOLMANAGER_RMI_PORT);
-		serverEnvironment.connectToLocalhost(AGENTMANAGER_RMI_PORT);
+		agentEnvironment.connectToLocalhostServer(POOLMANAGER_RMI_PORT);
+		String agentId = agentEnvironment.getUnderlyingAgentId();
+		serverEnvironment.waitForAgentConnection(agentId);
 
 		if (!agentEnvironment.isAnyDevicePresent())
 		{
@@ -98,6 +100,5 @@ public class StartActivityTest
 		validationViewSelector.setContentDescription(VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC);
 		// If the validator app activity is not started, this element fetching will fail.
 		UiElement validationView = deviceScreen.getElement(validationViewSelector);
-
 	}
 }

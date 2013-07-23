@@ -293,4 +293,21 @@ public class AgentIntegrationEnvironmentCreator
 			agentManager.close();
 		}
 	}
+
+	public void connectToLocalhostServer(int port) throws RemoteException, NotBoundException
+	{
+		agentManager.connectToServer("localhost", port);
+	}
+
+	/**
+	 * Gets the underlying {@link AgentManager AgentManager} instance ID.
+	 * 
+	 * @return Agent ID.
+	 * @throws RemoteException
+	 */
+	public String getUnderlyingAgentId() throws RemoteException
+	{
+		String agentId = agentManager.getAgentId();
+		return agentId;
+	}
 }

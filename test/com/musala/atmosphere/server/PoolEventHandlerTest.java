@@ -47,7 +47,9 @@ public class PoolEventHandlerTest
 		AgentManager underlyingAgentManager = agentEnvironment.getAgentManagerInstance();
 
 		serverEnvironment = new ServerIntegrationEnvironmentCreator(SERVER_RMI_PORT);
-		serverEnvironment.connectToLocalhost(AGENT_RMI_PORT);
+		agentEnvironment.connectToLocalhostServer(SERVER_RMI_PORT);
+		String agentId = agentEnvironment.getUnderlyingAgentId();
+		serverEnvironment.waitForAgentConnection(agentId);
 		PoolManager underlyingPoolManager = serverEnvironment.getPoolManager();
 
 		Field deviceChangeListenerField = underlyingAgentManager.getClass()
