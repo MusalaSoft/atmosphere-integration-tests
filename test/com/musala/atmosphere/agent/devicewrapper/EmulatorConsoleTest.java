@@ -102,4 +102,26 @@ public class EmulatorConsoleTest
 		fail("Not yet implemented");
 	}
 
+	@Test
+	public void testSetPowerState()
+		throws RemoteException,
+			CommandFailedException,
+			IllegalStateException,
+			NotBoundException
+	{
+		IWrapDevice deviceWrapper = environment.getFirstAvailableEmulatorDeviceWrapper();
+		environment.waitForDeviceOsToStart(deviceWrapper);
+
+		boolean state = true; // connected
+
+		DeviceInformation deviceInformation = deviceWrapper.getDeviceInformation();
+
+		deviceWrapper.setPowerState(state);
+		boolean newState = deviceWrapper.getPowerState();
+		assertEquals("Power state doesn't match.", state, newState);
+
+		deviceWrapper.setPowerState(state);
+		boolean newState2 = deviceWrapper.getPowerState();
+		assertEquals("PowerState doesn't match.", state, newState2);
+	}
 }
