@@ -17,6 +17,7 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceOs;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 
+// FIXME vlado should fix the connection sequence here.
 public class ServerMethodsTest
 {
 
@@ -83,10 +84,10 @@ public class ServerMethodsTest
 	public static void setUp() throws RemoteException, InterruptedException
 	{
 		localAgent = new Agent(AGENT_PORT);
-		localAgent.run();
+		localAgent.startAgentThread();
 		testedServer = new Server(SERVER_PORT);
-		testedServer.addAgentToServer("localhost", AGENT_PORT);
-		testedServer.run();
+		// testedServer.addAgentToServer("localhost", AGENT_PORT);
+		testedServer.startServerThread(false);
 	}
 
 	@AfterClass
@@ -183,11 +184,12 @@ public class ServerMethodsTest
 	public void getAgentAdressesListTest() throws InterruptedException
 	{
 		List<Pair<String, Integer>> initialAgentAdressesList = testedServer.getAgentAdressesList();
-		testedServer.addAgentToServer("localhost", AGENT_PORT);
+		// FIXME this is also invoked in @Before
+		// a.addAgentToServer("localhost", AGENT_PORT);
 		List<Pair<String, Integer>> expectedAgentAdressesList = initialAgentAdressesList;
 		expectedAgentAdressesList.add(new Pair<String, Integer>("localhost", AGENT_PORT));
 
-		assertEquals(	"Agent adress is not found on the Server",
+		assertEquals(	"Agent address is not found on the Server",
 						expectedAgentAdressesList,
 						testedServer.getAgentAdressesList());
 		localAgent.stop();

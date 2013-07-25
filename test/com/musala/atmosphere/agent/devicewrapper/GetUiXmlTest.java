@@ -25,6 +25,7 @@ public class GetUiXmlTest
 
 	private AgentIntegrationEnvironmentCreator environment;
 
+	// FIXME migrate to log4j Logger
 	private static final Logger LOGGER = Logger.getLogger(GetUiXmlTest.class.getName());
 
 	private static final int EMULATOR_CREATION_DPI = 120;
@@ -38,7 +39,6 @@ public class GetUiXmlTest
 	@Before
 	public void setUp() throws Exception
 	{
-		// TODO configure logger properly
 		LOGGER.setLevel(Level.ALL);
 		LOGGER.addHandler(new ConsoleHandler());
 
