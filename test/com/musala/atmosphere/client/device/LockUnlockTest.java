@@ -1,5 +1,9 @@
 package com.musala.atmosphere.client.device;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +21,12 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
 import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
 
-public class StartActivityTest
+/**
+ * 
+ * @author georgi.gaydarov
+ * 
+ */
+public class LockUnlockTest
 {
 	private final static int POOLMANAGER_RMI_PORT = 2099;
 
@@ -40,19 +49,15 @@ public class StartActivityTest
 	private ServerIntegrationEnvironmentCreator serverEnvironment;
 
 	@Server(ip = "localhost", port = POOLMANAGER_RMI_PORT)
-	class DeviceTestClass
+	private class BuilderHelperClass
 	{
-
-		private Device device = null;
-
-		public DeviceTestClass(DeviceParameters parameters)
+		public BuilderHelperClass()
 		{
-			device = Builder.getInstance().getDevice(parameters);
 		}
 
-		public Device getSelectedDevice()
+		public Builder getBuilder()
 		{
-			return device;
+			return Builder.getInstance();
 		}
 	}
 
@@ -84,16 +89,23 @@ public class StartActivityTest
 	}
 
 	@Test
-	public void testStartActivity() throws InterruptedException, ActivityStartingException, UiElementFetchingException
+	public void testUnlockLockDevice()
+		throws InterruptedException,
+			ActivityStartingException,
+			UiElementFetchingException
 	{
+		BuilderHelperClass helper = new BuilderHelperClass();
+		Builder builder = helper.getBuilder();
 		DeviceParameters selectionParameters = new DeviceParameters();
-		DeviceTestClass testClass = new DeviceTestClass(selectionParameters);
+		Device testDevice = builder.getDevice(selectionParameters);
 
-		Device testDevice = testClass.getSelectedDevice();
+		testDevice.installAPK(PATH_TO_APK);
+
 		testDevice.unlock();
 		testDevice.pressButton(HardwareButton.HOME);
 
-		testDevice.installAPK(PATH_TO_APK);
+		assertFalse("Device shouldn't be locked after .unlock().", testDevice.isLocked());
+		assertTrue("Device should be awake after .unlock().", testDevice.isAwake());
 
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
 		Thread.sleep(1000);
@@ -103,5 +115,21 @@ public class StartActivityTest
 		validationViewSelector.setContentDescription(VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC);
 		// If the validator app activity is not started, this element fetching will fail.
 		UiElement validationView = deviceScreen.getElement(validationViewSelector);
+
+		testDevice.lock();
+		try
+		{
+			deviceScreen = testDevice.getActiveScreen();
+			// when the device is locked, the lock screen will be fetched that does not contain our controll element.
+			validationView = deviceScreen.getElement(validationViewSelector);
+			fail("The validation element should not be available when the device is locked.");
+		}
+		catch (UiElementFetchingException e)
+		{
+			// this should be thrown.
+		}
+
+		assertTrue("Device should be locked after .lock().", testDevice.isLocked());
+		assertFalse("Device shouldn't be awake after .lock().", testDevice.isAwake());
 	}
 }
