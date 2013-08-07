@@ -65,8 +65,6 @@ public class BatteryRelatedMethodsTest
 
 	private static Device testDevice;
 
-	private static Screen activeScreen;
-
 	@BeforeClass
 	public static void setUp() throws Exception
 	{
@@ -105,8 +103,6 @@ public class BatteryRelatedMethodsTest
 
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
 		Thread.sleep(1000);
-
-		activeScreen = testDevice.getActiveScreen();
 	}
 
 	@AfterClass
@@ -142,7 +138,7 @@ public class BatteryRelatedMethodsTest
 		// set battery level to 75
 		int batteryLevel = 75;
 		testDevice.setBatteryLevel(batteryLevel);
-		activeScreen = testDevice.getActiveScreen();
+		Screen activeScreen = testDevice.getActiveScreen();
 		UiElement batteryLevelBox = activeScreen.getElementCSS("[content-desc=" + BATTERY_LEVEL_BOX + "]");
 		UiElementAttributes batteryLevelBoxAttributes = batteryLevelBox.getElementAttributes();
 		String batteryLevelBoxString = batteryLevelBoxAttributes.getText();
@@ -167,7 +163,7 @@ public class BatteryRelatedMethodsTest
 		// set battery state unknown
 		batteryState = BatteryState.UNKNOWN;
 		testDevice.setBatteryState(batteryState);
-		activeScreen = testDevice.getActiveScreen();
+		Screen activeScreen = testDevice.getActiveScreen();
 		UiElement batteryStatusBox = activeScreen.getElementCSS("[content-desc=" + BATTERY_STATUS_BOX + "]");
 		UiElementAttributes batteryStatusBoxAttributes = batteryStatusBox.getElementAttributes();
 		String batteryStatusBoxText = batteryStatusBoxAttributes.getText();
@@ -231,7 +227,7 @@ public class BatteryRelatedMethodsTest
 		// set device power connection off
 		boolean powerState = false;
 		testDevice.setPowerState(powerState);
-		activeScreen = testDevice.getActiveScreen();
+		Screen activeScreen = testDevice.getActiveScreen();
 		UiElement powerButton = activeScreen.getElementCSS("[content-desc=" + POWER_CONNECTED_FLAG + "]");
 		UiElementAttributes powerButtonAttributes = powerButton.getElementAttributes();
 		assertFalse("Power state not set to the expected value.", powerButtonAttributes.isEnabled());
