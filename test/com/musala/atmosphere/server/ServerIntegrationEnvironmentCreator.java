@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.musala.atmosphere.commons.sa.exceptions.DeviceNotFoundException;
 import com.musala.atmosphere.commons.sa.exceptions.NotPossibleForDeviceException;
+import com.musala.atmosphere.server.pool.PoolManager;
 
 public class ServerIntegrationEnvironmentCreator
 {
@@ -13,26 +14,24 @@ public class ServerIntegrationEnvironmentCreator
 
 	private static final int DEVICE_PRESENCE_CYCLE_WAIT = 300;
 
+	private ServerManager serverManager;
+
 	private PoolManager poolManager;
 
 	public ServerIntegrationEnvironmentCreator(int serverRmiPort) throws RemoteException
 	{
-		poolManager = new PoolManager(serverRmiPort);
-	}
-
-	public PoolManager getPoolManager()
-	{
-		return poolManager;
+		serverManager = new ServerManager(serverRmiPort);
+		poolManager = PoolManager.getInstance(serverManager);
 	}
 
 	public void close() throws IOException, DeviceNotFoundException, NotPossibleForDeviceException
 	{
-		poolManager.close();
+		serverManager.close();
 	}
 
 	public boolean isAgentWithIdConnected(String agentId)
 	{
-		List<String> connectedAgentIds = poolManager.getAllConnectedAgentIds();
+		List<String> connectedAgentIds = serverManager.getAllConnectedAgentIds();
 		boolean connected = connectedAgentIds.contains(agentId);
 		return connected;
 	}
@@ -55,7 +54,7 @@ public class ServerIntegrationEnvironmentCreator
 
 	public void waitForDeviceToBeAvailable(String deviceId, String agentId)
 	{
-		while (!poolManager.isSuchDeviceProxyPresent(agentId, deviceId))
+		while (!poolManager.isDevicePresent(deviceId, agentId))
 		{
 			try
 			{
@@ -67,5 +66,10 @@ public class ServerIntegrationEnvironmentCreator
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public ServerManager getServerManager()
+	{
+		return serverManager;
 	}
 }

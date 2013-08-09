@@ -11,7 +11,7 @@ import java.util.concurrent.TimeoutException;
 
 import com.musala.atmosphere.agent.util.AgentPropertiesLoader;
 import com.musala.atmosphere.commons.CommandFailedException;
-import com.musala.atmosphere.commons.sa.DeviceInformation;
+import com.musala.atmosphere.commons.DeviceInformation;
 import com.musala.atmosphere.commons.sa.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IAgentManager;
 import com.musala.atmosphere.commons.sa.IWrapDevice;

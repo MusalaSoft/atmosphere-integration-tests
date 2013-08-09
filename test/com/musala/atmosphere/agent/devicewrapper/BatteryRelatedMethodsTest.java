@@ -16,6 +16,7 @@ import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.UiElementAttributes;
+import com.musala.atmosphere.client.device.HardwareButton;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.util.Server;
@@ -134,6 +135,8 @@ public class BatteryRelatedMethodsTest
 			CommandFailedException,
 			RemoteException
 	{
+		testDevice.unlock();
+		testDevice.pressButton(HardwareButton.HOME);
 
 		// set battery level to 75
 		int batteryLevel = 75;
@@ -239,5 +242,6 @@ public class BatteryRelatedMethodsTest
 		powerButton = activeScreen.getElementCSS("[content-desc=" + POWER_CONNECTED_FLAG + "]");
 		powerButtonAttributes = powerButton.getElementAttributes();
 		assertTrue("Power state not set to the expected value.", powerButtonAttributes.isEnabled());
+
 	}
 }

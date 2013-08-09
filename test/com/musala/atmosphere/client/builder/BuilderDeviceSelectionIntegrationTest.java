@@ -5,30 +5,35 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
-import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.musala.atmosphere.client.Builder;
+import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.util.Server;
 import com.musala.atmosphere.commons.CommandFailedException;
+import com.musala.atmosphere.commons.DeviceInformation;
 import com.musala.atmosphere.commons.Pair;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceOs;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
-import com.musala.atmosphere.commons.sa.DeviceInformation;
 import com.musala.atmosphere.commons.sa.IAgentManager;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
 import com.musala.atmosphere.commons.sa.exceptions.DeviceNotFoundException;
 import com.musala.atmosphere.commons.sa.exceptions.NotPossibleForDeviceException;
-import com.musala.atmosphere.server.PoolItem;
 import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
+import com.musala.atmosphere.server.ServerManager;
+import com.musala.atmosphere.server.pool.PoolManager;
 
+/**
+ * 
+ * @author valyo.yolovski
+ * 
+ */
 public class BuilderDeviceSelectionIntegrationTest
 {
 	private final static int SERVER_RMI_PORT = 1980;
@@ -45,47 +50,19 @@ public class BuilderDeviceSelectionIntegrationTest
 
 	private final static String DEVICE5_SN = "mockdevice5";
 
-	private ServerIntegrationEnvironmentCreator serverEnvironment = null;
+	private static ServerIntegrationEnvironmentCreator serverEnvironment = null;
 
 	@Server(ip = "localhost", port = SERVER_RMI_PORT)
-	class GettingDeviceSampleClass
+	static class GettingDeviceSampleClass
 	{
-		private String[] possibleRmiIds;
-
-		public GettingDeviceSampleClass(String... rmiIds)
+		public static Builder getBuilderInstance()
 		{
-			possibleRmiIds = new String[rmiIds.length];
-			for (int indexOfRmiId = 0; indexOfRmiId < rmiIds.length; indexOfRmiId++)
-			{
-				possibleRmiIds[indexOfRmiId] = AGENT_ID + "_" + rmiIds[indexOfRmiId];
-			}
-		}
-
-		public void getDevice(DeviceParameters parameters) throws RemoteException, CommandFailedException
-		{
-			// Builder builder = Builder.getInstance();
-			String rmiId = serverEnvironment.getPoolManager().getDeviceProxyRmiId(parameters);
-
-			boolean isRmiIdOk = false;
-			for (String currentRmiId : possibleRmiIds)
-			{
-				isRmiIdOk = isRmiIdOk || rmiId.equals(currentRmiId);
-			}
-
-			assertTrue("Failed to receive RMI ID of the correct device.", isRmiIdOk);
-			// Device device = builder.getDevice(parameters);
+			return Builder.getInstance();
 		}
 	}
 
-	@Before
-	public void setUp()
-		throws RemoteException,
-			NoSuchMethodException,
-			SecurityException,
-			IllegalAccessException,
-			IllegalArgumentException,
-			InvocationTargetException,
-			NoSuchFieldException
+	@BeforeClass
+	public static void setUp() throws Exception
 	{
 		serverEnvironment = new ServerIntegrationEnvironmentCreator(SERVER_RMI_PORT);
 
@@ -93,11 +70,6 @@ public class BuilderDeviceSelectionIntegrationTest
 		when(mockedAgentManager.getAgentId()).thenReturn(AGENT_ID);
 
 		IWrapDevice mockedDeviceOne = mock(IWrapDevice.class);
-		IWrapDevice mockedDeviceTwo = mock(IWrapDevice.class);
-		IWrapDevice mockedDeviceThree = mock(IWrapDevice.class);
-		IWrapDevice mockedDeviceFour = mock(IWrapDevice.class);
-		IWrapDevice mockedDeviceFive = mock(IWrapDevice.class);
-
 		DeviceInformation mockedDeviceInfoOne = new DeviceInformation();
 		mockedDeviceInfoOne.setSerialNumber(DEVICE1_SN);
 		mockedDeviceInfoOne.setOs("4.2.1");
@@ -105,7 +77,9 @@ public class BuilderDeviceSelectionIntegrationTest
 		mockedDeviceInfoOne.setRam(128);
 		mockedDeviceInfoOne.setResolution(new Pair<>(600, 800));
 		mockedDeviceInfoOne.setDpi(120);
+		when(mockedDeviceOne.getDeviceInformation()).thenReturn(mockedDeviceInfoOne);
 
+		IWrapDevice mockedDeviceTwo = mock(IWrapDevice.class);
 		DeviceInformation mockedDeviceInfoTwo = new DeviceInformation();
 		mockedDeviceInfoTwo.setSerialNumber(DEVICE2_SN);
 		mockedDeviceInfoTwo.setOs("4.1");
@@ -113,7 +87,9 @@ public class BuilderDeviceSelectionIntegrationTest
 		mockedDeviceInfoTwo.setRam(256);
 		mockedDeviceInfoTwo.setResolution(new Pair<>(200, 200));
 		mockedDeviceInfoTwo.setDpi(240);
+		when(mockedDeviceTwo.getDeviceInformation()).thenReturn(mockedDeviceInfoTwo);
 
+		IWrapDevice mockedDeviceThree = mock(IWrapDevice.class);
 		DeviceInformation mockedDeviceInfoThree = new DeviceInformation();
 		mockedDeviceInfoThree.setSerialNumber(DEVICE3_SN);
 		mockedDeviceInfoThree.setOs("4.0.2");
@@ -121,7 +97,9 @@ public class BuilderDeviceSelectionIntegrationTest
 		mockedDeviceInfoThree.setRam(256);
 		mockedDeviceInfoThree.setResolution(new Pair<>(400, 500));
 		mockedDeviceInfoThree.setDpi(80);
+		when(mockedDeviceThree.getDeviceInformation()).thenReturn(mockedDeviceInfoThree);
 
+		IWrapDevice mockedDeviceFour = mock(IWrapDevice.class);
 		DeviceInformation mockedDeviceInfoFour = new DeviceInformation();
 		mockedDeviceInfoFour.setSerialNumber(DEVICE4_SN);
 		mockedDeviceInfoFour.setOs("4.0.1");
@@ -129,7 +107,9 @@ public class BuilderDeviceSelectionIntegrationTest
 		mockedDeviceInfoFour.setRam(512);
 		mockedDeviceInfoFour.setResolution(new Pair<>(200, 200));
 		mockedDeviceInfoFour.setDpi(180);
+		when(mockedDeviceFour.getDeviceInformation()).thenReturn(mockedDeviceInfoFour);
 
+		IWrapDevice mockedDeviceFive = mock(IWrapDevice.class);
 		DeviceInformation mockedDeviceInfoFive = new DeviceInformation();
 		mockedDeviceInfoFive.setSerialNumber(DEVICE5_SN);
 		mockedDeviceInfoFive.setOs("4.2.1");
@@ -137,80 +117,156 @@ public class BuilderDeviceSelectionIntegrationTest
 		mockedDeviceInfoFive.setRam(512);
 		mockedDeviceInfoFive.setResolution(new Pair<>(200, 200));
 		mockedDeviceInfoFive.setDpi(180);
-
-		when(mockedDeviceOne.getDeviceInformation()).thenReturn(mockedDeviceInfoOne);
-		when(mockedDeviceTwo.getDeviceInformation()).thenReturn(mockedDeviceInfoTwo);
-		when(mockedDeviceThree.getDeviceInformation()).thenReturn(mockedDeviceInfoThree);
-		when(mockedDeviceFour.getDeviceInformation()).thenReturn(mockedDeviceInfoFour);
 		when(mockedDeviceFive.getDeviceInformation()).thenReturn(mockedDeviceInfoFive);
 
-		Field serverRmiRegistryPortField = serverEnvironment.getPoolManager()
-															.getClass()
-															.getDeclaredField("rmiRegistryPort");
-		serverRmiRegistryPortField.setAccessible(true);
-		int serverRegistryPort = (int) serverRmiRegistryPortField.get(serverEnvironment.getPoolManager());
-		Field poolManagerPoolItemsList = serverEnvironment.getPoolManager().getClass().getDeclaredField("poolItems");
-		poolManagerPoolItemsList.setAccessible(true);
-		List<PoolItem> poolItemsList = (List<PoolItem>) poolManagerPoolItemsList.get(serverEnvironment.getPoolManager());
+		ServerManager serverManager = serverEnvironment.getServerManager();
 
-		poolItemsList.add(new PoolItem(DEVICE1_SN, mockedDeviceOne, mockedAgentManager, serverRegistryPort));
-		poolItemsList.add(new PoolItem(DEVICE2_SN, mockedDeviceTwo, mockedAgentManager, serverRegistryPort));
-		poolItemsList.add(new PoolItem(DEVICE3_SN, mockedDeviceThree, mockedAgentManager, serverRegistryPort));
-		poolItemsList.add(new PoolItem(DEVICE4_SN, mockedDeviceFour, mockedAgentManager, serverRegistryPort));
-		poolItemsList.add(new PoolItem(DEVICE5_SN, mockedDeviceFive, mockedAgentManager, serverRegistryPort));
+		PoolManager poolManager = PoolManager.getInstance(serverManager);
 
+		poolManager.addDevice(DEVICE1_SN, mockedDeviceOne, mockedAgentManager, SERVER_RMI_PORT);
+
+		poolManager.addDevice(DEVICE2_SN, mockedDeviceTwo, mockedAgentManager, SERVER_RMI_PORT);
+
+		poolManager.addDevice(DEVICE3_SN, mockedDeviceThree, mockedAgentManager, SERVER_RMI_PORT);
+
+		poolManager.addDevice(DEVICE4_SN, mockedDeviceFour, mockedAgentManager, SERVER_RMI_PORT);
+
+		poolManager.addDevice(DEVICE5_SN, mockedDeviceFive, mockedAgentManager, SERVER_RMI_PORT);
 	}
 
-	@After
-	public void tearDown() throws IOException, DeviceNotFoundException, NotPossibleForDeviceException
+	@AfterClass
+	public static void tearDown() throws IOException, DeviceNotFoundException, NotPossibleForDeviceException
 	{
 		serverEnvironment.close();
 	}
 
+	private boolean parametersMatchInformation(	DeviceParameters wantedDeviceParameters,
+												com.musala.atmosphere.client.DeviceInformation realDeviceInformation)
+	{
+		System.out.println("Started matching devices...");
+
+		DeviceType wantedDeviceType = wantedDeviceParameters.getDeviceType();
+		if (wantedDeviceType != DeviceParameters.DEVICE_TYPE_NO_PREFERENCE)
+		{
+			boolean isDeviceEmulator = realDeviceInformation.isEmulator();
+
+			if (wantedDeviceType == DeviceType.EMULATOR_ONLY && !isDeviceEmulator)
+			{
+				return false;
+			}
+
+			if (wantedDeviceType == DeviceType.DEVICE_ONLY && isDeviceEmulator)
+			{
+				return false;
+			}
+		}
+
+		if (wantedDeviceParameters.getDpi() != DeviceParameters.DPI_NO_PREFERENCE)
+		{
+			int realDeviceDpi = realDeviceInformation.getDpi();
+			int wantedDeviceDpi = wantedDeviceParameters.getDpi();
+			if (realDeviceDpi != wantedDeviceDpi)
+			{
+				System.out.println("DeviceDPI not matched. Fail.");
+				return false;
+			}
+		}
+		if (wantedDeviceParameters.getOs() != DeviceParameters.DEVICE_OS_NO_PREFERENCE)
+		{
+			if (!wantedDeviceParameters.getOs().toString().equals(realDeviceInformation.getOS()))
+			{
+				System.out.println("DeviceOS not matched. Fail.");
+				return false;
+			}
+		}
+
+		if (wantedDeviceParameters.getRam() != DeviceParameters.RAM_NO_PREFERENCE)
+		{
+			if (wantedDeviceParameters.getRam() != realDeviceInformation.getRam())
+			{
+				System.out.println("DeviceRAM not matched. Fail.");
+				return false;
+			}
+		}
+
+		boolean hasResolutionHeightPreference = (wantedDeviceParameters.getResolutionHeight() == DeviceParameters.RESOLUTION_HEIGHT_NO_PREFERENCE);
+		boolean hasResolutionWidthPreference = (wantedDeviceParameters.getResolutionWidth() != DeviceParameters.RESOLUTION_WIDTH_NO_PREFERENCE);
+
+		if (!hasResolutionHeightPreference && !hasResolutionWidthPreference)
+		{
+			Integer resolutionHeight = realDeviceInformation.getResolution().getKey();
+			Integer resolutionWidth = realDeviceInformation.getResolution().getValue();
+
+			boolean hasResolutionHeightsMatch = wantedDeviceParameters.getResolutionHeight() == resolutionHeight;
+			boolean hasResolutionWidthMatch = wantedDeviceParameters.getResolutionWidth() == resolutionWidth;
+
+			if (!hasResolutionHeightsMatch && !hasResolutionWidthMatch)
+			{
+				System.out.println("DeviceRES not matched. Fail.");
+				return false;
+			}
+		}
+		System.out.println("Match. :)");
+		return true;
+	}
+
 	@Test
 	public void getMockedDeviceOneTest()
-		throws RemoteException,
-			CommandFailedException,
-			NoSuchFieldException,
-			SecurityException
 	{
+		System.out.println("Test started.");
+
 		DeviceParameters parameters = new DeviceParameters();
+		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
+
 		parameters.setRam(128);
 		parameters.setDpi(120);
 
-		GettingDeviceSampleClass userTestClass = new GettingDeviceSampleClass(DEVICE1_SN);
-		userTestClass.getDevice(parameters);
+		Device receivedDevice = builder.getDevice(parameters);
+		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+
+		assertTrue(	"Wanted device and returned device parameters don't match.",
+					parametersMatchInformation(parameters, information));
+
+		builder.releaseDevice(receivedDevice);
+
 	}
 
 	@Test
 	public void getMockedDeviceTwoTest()
-		throws RemoteException,
-			CommandFailedException,
-			NoSuchFieldException,
-			SecurityException
 	{
+		System.out.println("Test started.");
+		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 		DeviceParameters parameters = new DeviceParameters();
 		parameters.setDeviceType(DeviceType.EMULATOR_PREFERRED);
 		parameters.setOs(DeviceOs.JELLY_BEAN_4_1);
 		parameters.setRam(256);
 
-		GettingDeviceSampleClass userTestClass = new GettingDeviceSampleClass(DEVICE2_SN);
-		userTestClass.getDevice(parameters);
+		Device receivedDevice = builder.getDevice(parameters);
+		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+
+		assertTrue(	"Wanted device and returned device parameters don't match.",
+					parametersMatchInformation(parameters, information));
+
+		builder.releaseDevice(receivedDevice);
 	}
 
 	@Test
 	public void getMockedDeviceThreeTest()
-		throws RemoteException,
-			CommandFailedException,
-			NoSuchFieldException,
-			SecurityException
 	{
+		System.out.println("Test started.");
+
+		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 		DeviceParameters parameters = new DeviceParameters();
 		parameters.setDpi(80);
 		parameters.setRam(256);
 
-		GettingDeviceSampleClass userTestClass = new GettingDeviceSampleClass(DEVICE3_SN);
-		userTestClass.getDevice(parameters);
+		Device receivedDevice = builder.getDevice(parameters);
+		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+
+		assertTrue(	"Wanted device and returned device parameters don't match.",
+					parametersMatchInformation(parameters, information));
+
+		builder.releaseDevice(receivedDevice);
 	}
 
 	@Test
@@ -220,21 +276,27 @@ public class BuilderDeviceSelectionIntegrationTest
 			NoSuchFieldException,
 			SecurityException
 	{
+		System.out.println("Test started.");
+		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 		DeviceParameters parameters = new DeviceParameters();
 		parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 		parameters.setRam(512);
 
-		GettingDeviceSampleClass userTestClass = new GettingDeviceSampleClass(DEVICE4_SN);
-		userTestClass.getDevice(parameters);
+		Device receivedDevice = builder.getDevice(parameters);
+		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+
+		System.out.println("Checking devices...");
+		assertTrue(	"Wanted device and returned device parameters don't match.",
+					parametersMatchInformation(parameters, information));
+		builder.releaseDevice(receivedDevice);
 	}
 
 	@Test
 	public void getMockedDeviceFiveTest()
-		throws RemoteException,
-			CommandFailedException,
-			NoSuchFieldException,
-			SecurityException
 	{
+		System.out.println("Test started.");
+		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
+
 		DeviceParameters parameters = new DeviceParameters();
 		parameters.setDeviceType(DeviceType.DEVICE_PREFERRED);
 		parameters.setRam(512);
@@ -243,8 +305,14 @@ public class BuilderDeviceSelectionIntegrationTest
 		parameters.setDpi(180);
 		parameters.setOs(DeviceOs.JELLY_BEAN_MR1_4_2_1);
 
-		GettingDeviceSampleClass userTestClass = new GettingDeviceSampleClass(DEVICE5_SN);
-		userTestClass.getDevice(parameters);
+		Device receivedDevice = builder.getDevice(parameters);
+		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+
+		System.out.println("Checking devices...");
+		assertTrue(	"Wanted device and returned device parameters don't match.",
+					parametersMatchInformation(parameters, information));
+
+		builder.releaseDevice(receivedDevice);
 	}
 
 	@Test
@@ -254,11 +322,19 @@ public class BuilderDeviceSelectionIntegrationTest
 			NoSuchFieldException,
 			SecurityException
 	{
+		System.out.println("Test started.");
+		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 		DeviceParameters parameters = new DeviceParameters();
 		parameters.setRam(512);
 
-		GettingDeviceSampleClass userTestClass = new GettingDeviceSampleClass(DEVICE4_SN, DEVICE5_SN);
-		userTestClass.getDevice(parameters);
+		Device receivedDevice = builder.getDevice(parameters);
+		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+
+		System.out.println("Checking devices...");
+		assertTrue(	"Wanted device and returned device parameters don't match.",
+					parametersMatchInformation(parameters, information));
+
+		builder.releaseDevice(receivedDevice);
 	}
 
 	@Test(expected = NoSuchElementException.class)
@@ -268,11 +344,18 @@ public class BuilderDeviceSelectionIntegrationTest
 			NoSuchFieldException,
 			SecurityException
 	{
-
+		System.out.println("Test started.");
+		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 		DeviceParameters parameters = new DeviceParameters();
 		parameters.setRam(9999);
 
-		GettingDeviceSampleClass userTestClass = new GettingDeviceSampleClass();
-		userTestClass.getDevice(parameters);
+		Device receivedDevice = builder.getDevice(parameters);
+		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+
+		System.out.println("Checking devices...");
+		assertTrue(	"Wanted device and returned device parameters don't match.",
+					parametersMatchInformation(parameters, information));
+
+		builder.releaseDevice(receivedDevice);
 	}
 }

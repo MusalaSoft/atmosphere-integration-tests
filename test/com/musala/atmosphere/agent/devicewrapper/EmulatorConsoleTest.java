@@ -13,8 +13,8 @@ import org.junit.Test;
 
 import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
 import com.musala.atmosphere.commons.CommandFailedException;
+import com.musala.atmosphere.commons.DeviceInformation;
 import com.musala.atmosphere.commons.Pair;
-import com.musala.atmosphere.commons.sa.DeviceInformation;
 import com.musala.atmosphere.commons.sa.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
 

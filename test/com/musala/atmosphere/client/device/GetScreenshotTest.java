@@ -3,8 +3,8 @@ package com.musala.atmosphere.client.device;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,16 +43,13 @@ public class GetScreenshotTest
 	@Server(ip = "localhost", port = POOLMANAGER_RMI_PORT)
 	class DeviceTestClass
 	{
-		private Device device = null;
-
-		public DeviceTestClass(DeviceParameters parameters)
+		public DeviceTestClass()
 		{
-			device = Builder.getInstance().getDevice(parameters);
 		}
 
-		public Device getSelectedDevice()
+		public Device getSelectedDevice(DeviceParameters parameters)
 		{
-			return device;
+			return Builder.getInstance().getDevice(parameters);
 		}
 	}
 
@@ -66,7 +63,7 @@ public class GetScreenshotTest
 		String agentId = agentEnvironment.getUnderlyingAgentId();
 		serverEnvironment.waitForAgentConnection(agentId);
 
-		if (!agentEnvironment.isAnyDevicePresent())
+		if (!agentEnvironment.isAnyEmulatorPresent())
 		{
 			com.musala.atmosphere.commons.sa.DeviceParameters emulatorCreationParameters = new com.musala.atmosphere.commons.sa.DeviceParameters();
 			emulatorCreationParameters.setResolution(new Pair<Integer, Integer>(120, 160));
@@ -74,6 +71,7 @@ public class GetScreenshotTest
 			emulatorCreationParameters.setDpi(96);
 
 			IWrapDevice createdEmulatorWrapper = agentEnvironment.startEmulator(emulatorCreationParameters);
+			// agentEnvironment.waitForDeviceOsToStart(createdEmulatorWrapper);
 		}
 	}
 
@@ -89,9 +87,9 @@ public class GetScreenshotTest
 	{
 		DeviceParameters selectionParameters = new DeviceParameters();
 		selectionParameters.setDeviceType(DeviceType.EMULATOR_ONLY);
-		DeviceTestClass testClass = new DeviceTestClass(selectionParameters);
+		DeviceTestClass testClass = new DeviceTestClass();
+		Device testDevice = testClass.getSelectedDevice(selectionParameters);
 
-		Device testDevice = testClass.getSelectedDevice();
 		waitForDeviceToBeLoaded(testDevice);
 
 		// getting screenshot without dumping it to file
@@ -102,13 +100,13 @@ public class GetScreenshotTest
 		testDevice.getScreenshot(PATH_TO_SCREENSHOT);
 		File dumpedScreenshot = new File(PATH_TO_SCREENSHOT);
 		assertTrue("Screenshot is not dumped as image!", dumpedScreenshot.exists());
-		dumpedScreenshot.delete();
 	}
 
 	// waits for the Android to be loaded by checking if there are any clickable elements
-	// TODO this should be extracted to a utility class
+	// FIXME this should be extracted to a utility class
 	private static void waitForDeviceToBeLoaded(Device testDevice)
 	{
+		// FIXME Extract to config file.
 		final int MAX_TRY_COUNT = 123456;
 
 		for (int numberOfTry = 1; numberOfTry <= MAX_TRY_COUNT; numberOfTry++)

@@ -35,7 +35,7 @@ import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
 
 public class DeviceInstallApkTest
 {
-	private final static int POOLMANAGER_RMI_PORT = 2099;
+	private final static int SERVERMANAGER_RMI_PORT = 2099;
 
 	private final static int AGENTMANAGER_RMI_PORT = 2000;
 
@@ -55,7 +55,7 @@ public class DeviceInstallApkTest
 
 	private IDevice mockDevice;
 
-	@Server(ip = "localhost", port = POOLMANAGER_RMI_PORT)
+	@Server(ip = "localhost", port = SERVERMANAGER_RMI_PORT)
 	private class GettingDeviceSampleClass
 	{
 		public GettingDeviceSampleClass()
@@ -74,7 +74,7 @@ public class DeviceInstallApkTest
 	public void setUp() throws Exception
 	{
 		agentEnvironment = new AgentIntegrationEnvironmentCreator(AGENTMANAGER_RMI_PORT);
-		serverEnvironment = new ServerIntegrationEnvironmentCreator(POOLMANAGER_RMI_PORT);
+		serverEnvironment = new ServerIntegrationEnvironmentCreator(SERVERMANAGER_RMI_PORT);
 
 		mockDevice = mock(IDevice.class);
 		when(mockDevice.getSerialNumber()).thenReturn(MOCK_SERIAL_NUMBER);
@@ -92,7 +92,7 @@ public class DeviceInstallApkTest
 		agentManagerRegisterNewDeviceMethod.setAccessible(true);
 
 		String deviceRmiId = (String) agentManagerRegisterNewDeviceMethod.invoke(am, mockDevice);
-		agentEnvironment.connectToLocalhostServer(POOLMANAGER_RMI_PORT);
+		agentEnvironment.connectToLocalhostServer(SERVERMANAGER_RMI_PORT);
 
 		String agentId = agentEnvironment.getUnderlyingAgentId();
 		serverEnvironment.waitForAgentConnection(agentId);
