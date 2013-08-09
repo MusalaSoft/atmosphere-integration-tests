@@ -2,8 +2,6 @@ package com.musala.atmosphere.client.device;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.rmi.RemoteException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,10 +12,7 @@ import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.UiElementAttributes;
-import com.musala.atmosphere.client.exceptions.ActivityStartingException;
-import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.util.Server;
-import com.musala.atmosphere.commons.CommandFailedException;
 import com.musala.atmosphere.commons.Pair;
 import com.musala.atmosphere.commons.sa.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
@@ -101,12 +96,7 @@ public class InputTextTest
 	}
 
 	@Test
-	public void inputTextTest()
-		throws UiElementFetchingException,
-			ActivityStartingException,
-			InterruptedException,
-			CommandFailedException,
-			RemoteException
+	public void inputTextTest() throws Exception
 	{
 		GettingBuilderClass builderGet = new GettingBuilderClass();
 		Builder deviceBuilder = builderGet.getBuilder();
@@ -138,12 +128,7 @@ public class InputTextTest
 		deviceBuilder.releaseDevice(testDevice);
 	}
 
-	public void inputTextTestTwo()
-		throws ActivityStartingException,
-			UiElementFetchingException,
-			RemoteException,
-			CommandFailedException,
-			InterruptedException
+	public void inputTextTestTwo() throws Exception
 	{
 		GettingBuilderClass builderGet = new GettingBuilderClass();
 		Builder deviceBuilder = builderGet.getBuilder();
