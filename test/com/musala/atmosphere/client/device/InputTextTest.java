@@ -18,6 +18,7 @@ import com.musala.atmosphere.commons.sa.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
 import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
 
+// FIXME valyo should fix this test to actually validate input.
 @Server(ip = "localhost", port = 1980)
 public class InputTextTest
 {
