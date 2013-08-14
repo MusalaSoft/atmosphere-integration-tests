@@ -3,7 +3,7 @@ package com.musala.atmosphere.server;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -14,6 +14,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.android.ddmlib.IDevice;
 import com.android.ddmlib.IShellOutputReceiver;
@@ -62,7 +64,6 @@ public class PoolEventHandlerTest
 
 		Field deviceChangeListenerField = underlyingAgentManager.getClass()
 																.getDeclaredField("currentDeviceChangeListener");
-
 		deviceChangeListenerField.setAccessible(true);
 		deviceChangeListener = deviceChangeListenerField.get(underlyingAgentManager);
 		deviceConnectedMethod = deviceChangeListener.getClass().getDeclaredMethod("deviceConnected", IDevice.class);
@@ -85,12 +86,29 @@ public class PoolEventHandlerTest
 		}
 	}
 
+	IDevice configureFakeDevice(String fakeDeviceSerialNumber) throws Exception
+	{
+		IDevice fakeDevice = mock(IDevice.class);
+		when(fakeDevice.getSerialNumber()).thenReturn(fakeDeviceSerialNumber);
+
+		DumpsysBatteryAnswer dumpsysBatteryAnswer = new DumpsysBatteryAnswer();
+		DumpsysPowerAnswer dumpsysPowerAnswer = new DumpsysPowerAnswer();
+
+		when(fakeDevice.getBatteryLevel()).thenReturn(50);
+		doAnswer(dumpsysPowerAnswer).when(fakeDevice).executeShellCommand(	Mockito.eq("dumpsys power"),
+																			any(IShellOutputReceiver.class),
+																			anyInt());
+		doAnswer(dumpsysBatteryAnswer).when(fakeDevice).executeShellCommand(Mockito.eq("dumpsys battery"),
+																			any(IShellOutputReceiver.class),
+																			anyInt());
+		return fakeDevice;
+	}
+
 	@Test
 	public void testConnectOfflineDevice() throws Exception
 	{
 		final String fakeDeviceSerialNumber = "mockDevice1";
-		IDevice fakeDevice = mock(IDevice.class);
-		when(fakeDevice.getSerialNumber()).thenReturn(fakeDeviceSerialNumber);
+		IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
 
 		when(fakeDevice.isOnline()).thenReturn(false);
 		when(fakeDevice.isOffline()).thenReturn(true);
@@ -98,19 +116,16 @@ public class PoolEventHandlerTest
 		int poolItemsBeforeAdd = poolManager.getAllDeviceProxyIds().size();
 		deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
 		int poolItemsAfterAdd = poolManager.getAllDeviceProxyIds().size();
-
 		assertEquals(	"Connecting an offline device resulted in device connect event.",
 						poolItemsBeforeAdd,
 						poolItemsAfterAdd);
-
 	}
 
 	@Test
 	public void testConnectOnlineDevice() throws Exception
 	{
 		final String fakeDeviceSerialNumber = "mockDevice2";
-		IDevice fakeDevice = mock(IDevice.class);
-		when(fakeDevice.getSerialNumber()).thenReturn(fakeDeviceSerialNumber);
+		IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
 
 		when(fakeDevice.isOnline()).thenReturn(true);
 		when(fakeDevice.isOffline()).thenReturn(false);
@@ -128,15 +143,7 @@ public class PoolEventHandlerTest
 	public void testConnectAndDisconnectOnlineDevice() throws Exception
 	{
 		final String fakeDeviceSerialNumber = "mockDevice3";
-		IDevice fakeDevice = mock(IDevice.class);
-		when(fakeDevice.getSerialNumber()).thenReturn(fakeDeviceSerialNumber);
-		doNothing().when(fakeDevice).executeShellCommand(	Mockito.eq("dumpsys battery"),
-															any(IShellOutputReceiver.class),
-															anyInt());
-
-		doNothing().when(fakeDevice).executeShellCommand(	Mockito.eq("dumpsys power"),
-															any(IShellOutputReceiver.class),
-															anyInt());
+		IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
 
 		when(fakeDevice.isOnline()).thenReturn(true);
 		when(fakeDevice.isOffline()).thenReturn(false);
@@ -144,7 +151,6 @@ public class PoolEventHandlerTest
 		int poolItemsBeforeAdd = poolManager.getAllDeviceProxyIds().size();
 		deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
 		int poolItemsAfterAdd = poolManager.getAllDeviceProxyIds().size();
-
 		assertEquals(	"Connecting an online device did not result in device connect event.",
 						poolItemsBeforeAdd + 1,
 						poolItemsAfterAdd);
@@ -152,7 +158,6 @@ public class PoolEventHandlerTest
 		int poolItemsBeforeRemove = poolManager.getAllDeviceProxyIds().size();
 		deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
 		int poolItemsAfterRemove = poolManager.getAllDeviceProxyIds().size();
-
 		assertEquals(	"Disconnecting an online device did not result in device disconnect event.",
 						poolItemsBeforeRemove - 1,
 						poolItemsAfterRemove);
@@ -162,8 +167,7 @@ public class PoolEventHandlerTest
 	public void testConnectAndDisconnectOfflineDevice() throws Exception
 	{
 		final String fakeDeviceSerialNumber = "mockDevice4";
-		IDevice fakeDevice = mock(IDevice.class);
-		when(fakeDevice.getSerialNumber()).thenReturn(fakeDeviceSerialNumber);
+		IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
 
 		when(fakeDevice.isOnline()).thenReturn(false);
 		when(fakeDevice.isOffline()).thenReturn(true);
@@ -171,7 +175,6 @@ public class PoolEventHandlerTest
 		int poolItemsBeforeAdd = poolManager.getAllDeviceProxyIds().size();
 		deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
 		int poolItemsAfterAdd = poolManager.getAllDeviceProxyIds().size();
-
 		assertEquals(	"Connecting an offline device resulted in device connect event.",
 						poolItemsBeforeAdd,
 						poolItemsAfterAdd);
@@ -179,9 +182,39 @@ public class PoolEventHandlerTest
 		int poolItemsBeforeRemove = poolManager.getAllDeviceProxyIds().size();
 		deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
 		int poolItemsAfterRemove = poolManager.getAllDeviceProxyIds().size();
-
 		assertEquals(	"Disconnecting an offline device resulted in device disconnect event.",
 						poolItemsBeforeRemove,
 						poolItemsAfterRemove);
+	}
+}
+
+class DumpsysPowerAnswer implements Answer<Void>
+{
+	@Override
+	public Void answer(InvocationOnMock invocation) throws Exception
+	{
+
+		Object[] arguments = invocation.getArguments();
+		IShellOutputReceiver shellOutputReceiver = (IShellOutputReceiver) arguments[1];
+		String stringResponse = "mPlugType=1";
+		byte[] response = stringResponse.getBytes("ISO-8859-1");
+		shellOutputReceiver.addOutput(response, 0, response.length);
+		shellOutputReceiver.flush();
+		return null;
+	}
+}
+
+class DumpsysBatteryAnswer implements Answer<Void>
+{
+	@Override
+	public Void answer(InvocationOnMock invocation) throws Exception
+	{
+		Object[] arguments = invocation.getArguments();
+		IShellOutputReceiver shellOutputReceiver = (IShellOutputReceiver) arguments[1];
+		String stringResponse = "status: 1";
+		byte[] response = stringResponse.getBytes("ISO-8859-1");
+		shellOutputReceiver.addOutput(response, 0, response.length);
+		shellOutputReceiver.flush();
+		return null;
 	}
 }
