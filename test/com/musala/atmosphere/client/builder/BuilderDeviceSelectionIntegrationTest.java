@@ -143,7 +143,6 @@ public class BuilderDeviceSelectionIntegrationTest
 	private boolean parametersMatchInformation(	DeviceParameters wantedDeviceParameters,
 												com.musala.atmosphere.client.DeviceInformation realDeviceInformation)
 	{
-		System.out.println("Started matching devices...");
 
 		DeviceType wantedDeviceType = wantedDeviceParameters.getDeviceType();
 		if (wantedDeviceType != DeviceParameters.DEVICE_TYPE_NO_PREFERENCE)
@@ -167,7 +166,6 @@ public class BuilderDeviceSelectionIntegrationTest
 			int wantedDeviceDpi = wantedDeviceParameters.getDpi();
 			if (realDeviceDpi != wantedDeviceDpi)
 			{
-				System.out.println("DeviceDPI not matched. Fail.");
 				return false;
 			}
 		}
@@ -175,7 +173,6 @@ public class BuilderDeviceSelectionIntegrationTest
 		{
 			if (!wantedDeviceParameters.getOs().toString().equals(realDeviceInformation.getOS()))
 			{
-				System.out.println("DeviceOS not matched. Fail.");
 				return false;
 			}
 		}
@@ -184,7 +181,6 @@ public class BuilderDeviceSelectionIntegrationTest
 		{
 			if (wantedDeviceParameters.getRam() != realDeviceInformation.getRam())
 			{
-				System.out.println("DeviceRAM not matched. Fail.");
 				return false;
 			}
 		}
@@ -202,18 +198,15 @@ public class BuilderDeviceSelectionIntegrationTest
 
 			if (!hasResolutionHeightsMatch && !hasResolutionWidthMatch)
 			{
-				System.out.println("DeviceRES not matched. Fail.");
 				return false;
 			}
 		}
-		System.out.println("Match. :)");
 		return true;
 	}
 
 	@Test
 	public void getMockedDeviceOneTest()
 	{
-		System.out.println("Test started.");
 
 		DeviceParameters parameters = new DeviceParameters();
 		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
@@ -234,7 +227,6 @@ public class BuilderDeviceSelectionIntegrationTest
 	@Test
 	public void getMockedDeviceTwoTest()
 	{
-		System.out.println("Test started.");
 		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 		DeviceParameters parameters = new DeviceParameters();
 		parameters.setDeviceType(DeviceType.EMULATOR_PREFERRED);
@@ -253,7 +245,6 @@ public class BuilderDeviceSelectionIntegrationTest
 	@Test
 	public void getMockedDeviceThreeTest()
 	{
-		System.out.println("Test started.");
 
 		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 		DeviceParameters parameters = new DeviceParameters();
@@ -276,7 +267,6 @@ public class BuilderDeviceSelectionIntegrationTest
 			NoSuchFieldException,
 			SecurityException
 	{
-		System.out.println("Test started.");
 		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 		DeviceParameters parameters = new DeviceParameters();
 		parameters.setDeviceType(DeviceType.DEVICE_ONLY);
@@ -285,7 +275,6 @@ public class BuilderDeviceSelectionIntegrationTest
 		Device receivedDevice = builder.getDevice(parameters);
 		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
 
-		System.out.println("Checking devices...");
 		assertTrue(	"Wanted device and returned device parameters don't match.",
 					parametersMatchInformation(parameters, information));
 		builder.releaseDevice(receivedDevice);
@@ -294,7 +283,6 @@ public class BuilderDeviceSelectionIntegrationTest
 	@Test
 	public void getMockedDeviceFiveTest()
 	{
-		System.out.println("Test started.");
 		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 
 		DeviceParameters parameters = new DeviceParameters();
@@ -308,7 +296,6 @@ public class BuilderDeviceSelectionIntegrationTest
 		Device receivedDevice = builder.getDevice(parameters);
 		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
 
-		System.out.println("Checking devices...");
 		assertTrue(	"Wanted device and returned device parameters don't match.",
 					parametersMatchInformation(parameters, information));
 
@@ -322,7 +309,6 @@ public class BuilderDeviceSelectionIntegrationTest
 			NoSuchFieldException,
 			SecurityException
 	{
-		System.out.println("Test started.");
 		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 		DeviceParameters parameters = new DeviceParameters();
 		parameters.setRam(512);
@@ -330,7 +316,6 @@ public class BuilderDeviceSelectionIntegrationTest
 		Device receivedDevice = builder.getDevice(parameters);
 		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
 
-		System.out.println("Checking devices...");
 		assertTrue(	"Wanted device and returned device parameters don't match.",
 					parametersMatchInformation(parameters, information));
 
@@ -344,7 +329,6 @@ public class BuilderDeviceSelectionIntegrationTest
 			NoSuchFieldException,
 			SecurityException
 	{
-		System.out.println("Test started.");
 		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 		DeviceParameters parameters = new DeviceParameters();
 		parameters.setRam(9999);
@@ -352,7 +336,6 @@ public class BuilderDeviceSelectionIntegrationTest
 		Device receivedDevice = builder.getDevice(parameters);
 		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
 
-		System.out.println("Checking devices...");
 		assertTrue(	"Wanted device and returned device parameters don't match.",
 					parametersMatchInformation(parameters, information));
 
