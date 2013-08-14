@@ -1,9 +1,9 @@
 package com.musala.atmosphere.client.device;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
@@ -18,7 +18,10 @@ import com.musala.atmosphere.commons.sa.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
 import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
 
-// FIXME valyo should fix this test to actually validate input.
+/**
+ * @author valyo.yolovski
+ */
+
 @Server(ip = "localhost", port = 1980)
 public class InputTextTest
 {
@@ -26,9 +29,9 @@ public class InputTextTest
 
 	private final static int AGENTMANAGER_RMI_PORT = 2000;
 
-	private AgentIntegrationEnvironmentCreator agentEnvironment;
+	private static AgentIntegrationEnvironmentCreator agentEnvironment;
 
-	private ServerIntegrationEnvironmentCreator serverEnvironment;
+	private static ServerIntegrationEnvironmentCreator serverEnvironment;
 
 	private static final int EMULATOR_CREATION_DPI = 120;
 
@@ -52,8 +55,8 @@ public class InputTextTest
 
 	private final static String INPUT_TEXT_BOX = "InputTextBox";
 
-	@Before
-	public void setUp() throws Exception
+	@BeforeClass
+	public static void setUp() throws Exception
 	{
 		agentEnvironment = new AgentIntegrationEnvironmentCreator(AGENTMANAGER_RMI_PORT);
 		serverEnvironment = new ServerIntegrationEnvironmentCreator(POOLMANAGER_RMI_PORT);
@@ -65,18 +68,16 @@ public class InputTextTest
 			emulatorCreationParameters.setRam(EMULATOR_CREATION_RAM);
 			emulatorCreationParameters.setResolution(new Pair<Integer, Integer>(EMULATOR_CREATION_RESOLUTION_H,
 																				EMULATOR_CREATION_RESOLUTION_W));
-
 			IWrapDevice createdEmulator = agentEnvironment.startEmulator(emulatorCreationParameters);
 			agentEnvironment.waitForDeviceOsToStart(createdEmulator);
 		}
-
 		agentEnvironment.connectToLocalhostServer(POOLMANAGER_RMI_PORT);
 		String agentId = agentEnvironment.getUnderlyingAgentId();
 		serverEnvironment.waitForAgentConnection(agentId);
 	}
 
-	@After
-	public void tearDown() throws Exception
+	@AfterClass
+	public static void tearDown() throws Exception
 	{
 		serverEnvironment.close();
 		agentEnvironment.close();
@@ -104,31 +105,28 @@ public class InputTextTest
 
 		com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters blankParameters = new com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters();
 		Device testDevice = deviceBuilder.getDevice(blankParameters);
-
 		testDevice.unlock(); // Unlock device if locked.
 		testDevice.pressButton(HardwareButton.HOME); // Press HOME button.
 
 		testDevice.installAPK(PATH_TO_APK);
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
 		Thread.sleep(1000);
+
 		Screen activeScreen = testDevice.getActiveScreen();
-		UiElement check = activeScreen.getElementCSS("[content-desc=" + VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC + "]");
-		assertNotNull("Validator app not loaded.", check);
-
-		// text input test
-		String textToInput = "Hi! Кирилица. €%@$§№%()456*/0,";
-		testDevice.inputText(textToInput);
-
-		// text input with time intervals
-		int inputInterval = 2500;// ms
-		String textToInput1 = "letters.";
-		testDevice.inputText(textToInput1, inputInterval);
-		activeScreen = testDevice.getActiveScreen();
 		UiElement inputTextBox = activeScreen.getElementCSS("[content-desc=" + INPUT_TEXT_BOX + "]");
+		String textToInput = "Hi! Кирилица. €%@$§№%()456*/0,.";
+		inputTextBox.inputText(textToInput); // Input text into field.
+
+		activeScreen = testDevice.getActiveScreen();
+		inputTextBox = activeScreen.getElementXPath("//*[@content-desc='" + INPUT_TEXT_BOX + "']");
 		UiElementAttributes inputTextBoxAttributes = inputTextBox.getElementAttributes();
-		deviceBuilder.releaseDevice(testDevice);
+		String textFromDevice = inputTextBoxAttributes.getText();
+		assertEquals("Inputting text failed.", textToInput, textFromDevice);
+
+		deviceBuilder.releaseDevice(testDevice);// Release device so it can be reused.
 	}
 
+	@Test
 	public void inputTextTestTwo() throws Exception
 	{
 		GettingBuilderClass builderGet = new GettingBuilderClass();
@@ -145,16 +143,18 @@ public class InputTextTest
 		Thread.sleep(1000);
 
 		Screen activeScreen = testDevice.getActiveScreen();
-		UiElement check = activeScreen.getElementCSS("[content-desc=" + VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC + "]");
-		assertNotNull("Validator app not loaded.", check);
-
-		// text input with time intervals
-		int inputInterval = 2500;// ms
-		String textToInput1 = "letters.";
-		testDevice.inputText(textToInput1, inputInterval);
-		activeScreen = testDevice.getActiveScreen();
 		UiElement inputTextBox = activeScreen.getElementCSS("[content-desc=" + INPUT_TEXT_BOX + "]");
+		String textToInput = "Letters."; // Text to input.
+		int inputInterval = 2500;// Time interval between the input of each letter in ms.
+		inputTextBox.inputText(textToInput, inputInterval); // Input text into field.
+
+		activeScreen = testDevice.getActiveScreen();
+		inputTextBox = activeScreen.getElementXPath("//*[@content-desc='" + INPUT_TEXT_BOX + "']");
 		UiElementAttributes inputTextBoxAttributes = inputTextBox.getElementAttributes();
-		deviceBuilder.releaseDevice(testDevice);
+		String textFromDevice = inputTextBoxAttributes.getText(); // Get inputted text.
+
+		assertEquals("Inputting text failed.", textToInput, textFromDevice);
+
+		deviceBuilder.releaseDevice(testDevice); // Release device so it can be reused.
 	}
 }
