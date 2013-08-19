@@ -3,6 +3,7 @@ package com.musala.atmosphere.client.device;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,11 +12,8 @@ import org.junit.Test;
 import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
-import com.musala.atmosphere.client.Screen;
-import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
-import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.client.util.Server;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
@@ -32,17 +30,9 @@ public class LockUnlockTest
 
 	private final static int AGENTMANAGER_RMI_PORT = 2000;
 
-	private final static String PATH_TO_APK_DIR = "./";
-
 	private final static String VALIDATOR_APP_PACKAGE = "com.musala.atmosphere.ondevice.validator";
 
 	private final static String VALIDATOR_APP_ACTIVITY = "MainActivity";
-
-	private final static String VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC = "ATMOSPHEREValidator";
-
-	private final static String NAME_OF_APK_FILE = "OnDeviceValidator.apk";
-
-	private final static String PATH_TO_APK = PATH_TO_APK_DIR + NAME_OF_APK_FILE;
 
 	private AgentIntegrationEnvironmentCreator agentEnvironment;
 
@@ -99,7 +89,8 @@ public class LockUnlockTest
 		DeviceParameters selectionParameters = new DeviceParameters();
 		Device testDevice = builder.getDevice(selectionParameters);
 
-		testDevice.installAPK(PATH_TO_APK);
+		setTestDevice(testDevice);
+		setupOndeviceValidator();
 
 		testDevice.unlock();
 		testDevice.pressButton(HardwareButton.HOME);
@@ -110,18 +101,12 @@ public class LockUnlockTest
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
 		Thread.sleep(1000);
 
-		Screen deviceScreen = testDevice.getActiveScreen();
-		UiElementSelector validationViewSelector = new UiElementSelector();
-		validationViewSelector.setContentDescription(VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC);
-		// If the validator app activity is not started, this element fetching will fail.
-		UiElement validationView = deviceScreen.getElement(validationViewSelector);
+		assertValidatorIsStarted();
 
 		testDevice.lock();
 		try
 		{
-			deviceScreen = testDevice.getActiveScreen();
-			// when the device is locked, the lock screen will be fetched that does not contain our controll element.
-			validationView = deviceScreen.getElement(validationViewSelector);
+			assertValidatorIsStarted();
 			fail("The validation element should not be available when the device is locked.");
 		}
 		catch (UiElementFetchingException e)

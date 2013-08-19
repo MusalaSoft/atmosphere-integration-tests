@@ -1,6 +1,10 @@
 package com.musala.atmosphere.client.device;
 
-import static org.junit.Assert.assertTrue;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertBatteryStatusBoxIsFocused;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByClass;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContenDescriptor;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartMainActivity;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -9,13 +13,11 @@ import org.junit.Test;
 import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
-import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.UiElementAttributes;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.geometry.Point;
-import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.client.util.Server;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
@@ -32,29 +34,13 @@ public class TapTest
 
 	private final static int AGENTMANAGER_RMI_PORT = 2000;
 
-	private final static String PATH_TO_APK_DIR = "./";
-
-	private final static String VALIDATOR_APP_PACKAGE = "com.musala.atmosphere.ondevice.validator";
-
-	private final static String VALIDATOR_APP_ACTIVITY = "MainActivity";
-
-	private final static String VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC = "ATMOSPHEREValidator";
-
-	private final static String NAME_OF_APK_FILE = "OnDeviceValidator.apk";
-
-	private final static String PATH_TO_APK = PATH_TO_APK_DIR + NAME_OF_APK_FILE;
-
 	private final static String WIDGET_RELATIVE_LAYOUT = "android.widget.RelativeLayout";
-
-	private final static String BATTERY_LEVEL_BOX = "BatteryLevelBox";
 
 	private final static String BATTERY_STATUS_BOX = "BatteryStatusBox";
 
 	private static AgentIntegrationEnvironmentCreator agentEnvironment;
 
 	private static ServerIntegrationEnvironmentCreator serverEnvironment;
-
-	private static Device testDevice;
 
 	@Server(ip = "localhost", port = POOLMANAGER_RMI_PORT)
 	private class BuilderHelperClass
@@ -104,28 +90,14 @@ public class TapTest
 		DeviceParameters selectionParameters = new DeviceParameters();
 		Device testDevice = builder.getDevice(selectionParameters);
 
-		testDevice.installAPK(PATH_TO_APK);
-
-		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
-		Thread.sleep(1000);
-
-		testDevice.unlock();
-
-		Screen deviceScreen = testDevice.getActiveScreen();
-		UiElementSelector validationViewSelector = new UiElementSelector();
-		validationViewSelector.setContentDescription(VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC);
-		// If the validator app activity is not started, this element fetching will fail.
-		UiElement validationView = deviceScreen.getElement(validationViewSelector);
+		setTestDevice(testDevice);
+		setupAndStartMainActivity();
 
 		// test tapping
-		UiElement batteryStatusBox = deviceScreen.getElementCSS("[content-desc=" + BATTERY_STATUS_BOX + "]");
+		UiElement batteryStatusBox = getElementByContenDescriptor(BATTERY_STATUS_BOX);
 		batteryStatusBox.tap();
 
-		deviceScreen = testDevice.getActiveScreen();
-		batteryStatusBox = deviceScreen.getElementCSS("[content-desc=" + BATTERY_STATUS_BOX + "]");
-		UiElementAttributes batteryStatusBoxAttributes = batteryStatusBox.getElementAttributes();
-		boolean isBatteryStatusBoxFocused = batteryStatusBoxAttributes.isFocused();
-		assertTrue("Battery status box not focused.", isBatteryStatusBoxFocused);
+		assertBatteryStatusBoxIsFocused("Battery status box not focused.");
 
 		// test completed. Releasing device for other tests to use it.
 		builder.releaseDevice(testDevice);
@@ -139,36 +111,22 @@ public class TapTest
 		DeviceParameters selectionParameters = new DeviceParameters();
 		Device testDevice = builder.getDevice(selectionParameters);
 
-		testDevice.installAPK(PATH_TO_APK);
-
-		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
-		Thread.sleep(1000);
-
-		testDevice.unlock();
-
-		Screen deviceScreen = testDevice.getActiveScreen();
-		UiElementSelector validationViewSelector = new UiElementSelector();
-		validationViewSelector.setContentDescription(VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC);
-		// If the validator app activity is not started, this element fetching will fail.
-		UiElement validationView = deviceScreen.getElement(validationViewSelector);
+		setTestDevice(testDevice);
+		setupAndStartMainActivity();
 
 		// test relative tapping
-		UiElement widgetRelativeLayout = deviceScreen.getElementCSS("[class=" + WIDGET_RELATIVE_LAYOUT + "]");
+		UiElement widgetRelativeLayout = getElementByClass(WIDGET_RELATIVE_LAYOUT);
 		UiElementAttributes widgetRelativeLayoutAttributes = widgetRelativeLayout.getElementAttributes();
-		UiElement batteryLevelBox = deviceScreen.getElementCSS("[content-desc=" + BATTERY_LEVEL_BOX + "]");
-		UiElementAttributes batteryLevelBoxAttributes = batteryLevelBox.getElementAttributes();
+		UiElement batteryStatusBox = getElementByContenDescriptor(BATTERY_STATUS_BOX);
+		UiElementAttributes batteryStatusBoxAttributes = batteryStatusBox.getElementAttributes();
 
-		Point batteryLevelBoxUpperLeftCorner = batteryLevelBoxAttributes.getBounds().getUpperLeftCorner();
-		Point BatteryLevelRelativeUpperLeftCorner = widgetRelativeLayoutAttributes.getBounds()
-																					.getRelativePoint(batteryLevelBoxUpperLeftCorner);
+		Point batteryStatusBoxUpperLeftCorner = batteryStatusBoxAttributes.getBounds().getUpperLeftCorner();
+		Point BatteryStatusRelativeUpperLeftCorner = widgetRelativeLayoutAttributes.getBounds()
+																					.getRelativePoint(batteryStatusBoxUpperLeftCorner);
 
-		widgetRelativeLayout.tap(BatteryLevelRelativeUpperLeftCorner);
+		widgetRelativeLayout.tap(BatteryStatusRelativeUpperLeftCorner);
 
-		deviceScreen = testDevice.getActiveScreen();
-		batteryLevelBox = deviceScreen.getElementCSS("[content-desc=" + BATTERY_LEVEL_BOX + "]");
-		batteryLevelBoxAttributes = batteryLevelBox.getElementAttributes();
-		boolean isBatteryLevelBoxFocused = batteryLevelBoxAttributes.isFocused();
-		assertTrue("Battry level box not focused.", isBatteryLevelBoxFocused);
+		assertBatteryStatusBoxIsFocused("Battery status box not focused.");
 
 		// test completed. Releasing device for other tests to use it.
 		builder.releaseDevice(testDevice);

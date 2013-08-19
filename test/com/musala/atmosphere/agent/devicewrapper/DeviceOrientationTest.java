@@ -1,6 +1,10 @@
 package com.musala.atmosphere.agent.devicewrapper;
 
-import static org.junit.Assert.assertEquals;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertOrientationAzimuth;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertOrientationPitch;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertOrientationRoll;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartOrientationActivity;
 
 import java.rmi.RemoteException;
 
@@ -11,9 +15,6 @@ import org.junit.Test;
 import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
-import com.musala.atmosphere.client.Screen;
-import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.UiElementAttributes;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.util.Server;
@@ -43,22 +44,6 @@ public class DeviceOrientationTest
 	private static final int EMULATOR_CREATION_RESOLUTION_H = 240;
 
 	private static final int EMULATOR_CREATION_RESOLUTION_W = 360;
-
-	private final static String PATH_TO_APK_DIR = "./";
-
-	private final static String NAME_OF_APK_FILE = "OnDeviceValidator.apk";
-
-	private final static String PATH_TO_APK = PATH_TO_APK_DIR + NAME_OF_APK_FILE;
-
-	private final static String VALIDATOR_APP_PACKAGE = "com.musala.atmosphere.ondevice.validator";
-
-	private final static String VALIDATOR_APP_ACTIVITY = "OrientationActivity";
-
-	private final static String ORIENTATION_AZIMUTH_BOX = "OrientationAzimuthBox";
-
-	private final static String ORIENTATION_PITCH_BOX = "OrientationPitchBox";
-
-	private final static String ORIENTATION_ROLL_BOX = "OrientationRollBox";
 
 	private static Device testDevice;
 
@@ -94,15 +79,8 @@ public class DeviceOrientationTest
 		blankParameters.setDeviceType(DeviceType.EMULATOR_ONLY);
 		testDevice = deviceBuilder.getDevice(blankParameters);
 
-		testDevice.installAPK(PATH_TO_APK);
-
-		// TODO add device unlock here when device.unlock() method is
-		// implemented;
-		// TODO add HOME BUTTON press here when device.pressButton(HOME) method
-		// is implemented;
-
-		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
-		Thread.sleep(5000);
+		setTestDevice(testDevice);
+		setupAndStartOrientationActivity();
 	}
 
 	@After
@@ -135,38 +113,16 @@ public class DeviceOrientationTest
 			RemoteException
 	{
 		// set orientation
-		float orientationAzimuth = 97.087f;
-		float orientationPitch = -13.130f;
-		float orientationRoll = 55.904f;
+		final float orientationAzimuth = 97.087f;
+		final float orientationPitch = -13.130f;
+		final float orientationRoll = 55.904f;
 		DeviceOrientation deviceOrientation = new DeviceOrientation(orientationAzimuth,
 																	orientationPitch,
 																	orientationRoll);
 		testDevice.setOrientation(deviceOrientation);
-		Screen activeScreen = testDevice.getActiveScreen();
 
-		// test orientation azimuth
-		UiElement orientationAzimuthEditBox = activeScreen.getElementCSS("[content-desc=" + ORIENTATION_AZIMUTH_BOX
-				+ "]");
-		UiElementAttributes orientationAzimuthEditBoxAttributes = orientationAzimuthEditBox.getElementAttributes();
-		String orientationAzimuthEditBoxString = orientationAzimuthEditBoxAttributes.getText();
-		assertEquals(	"Device Azimuth not set to the expected value.",
-						String.valueOf(orientationAzimuth),
-						orientationAzimuthEditBoxString);
-
-		// test orientation pitch
-		UiElement orientationPitchEditBox = activeScreen.getElementCSS("[content-desc=" + ORIENTATION_PITCH_BOX + "]");
-		UiElementAttributes orientationPitchEditBoxAttributes = orientationPitchEditBox.getElementAttributes();
-		String orientationPitchEditBoxString = orientationPitchEditBoxAttributes.getText();
-		assertEquals(	"Device pitch not set to the expected value.",
-						String.valueOf(orientationPitch),
-						orientationPitchEditBoxString);
-
-		// test orientation roll
-		UiElement orientationRollEditBox = activeScreen.getElementCSS("[content-desc=" + ORIENTATION_ROLL_BOX + "]");
-		UiElementAttributes orientationRollEditBoxAttributes = orientationRollEditBox.getElementAttributes();
-		String orientationRollEditBoxString = orientationRollEditBoxAttributes.getText();
-		assertEquals(	"Device roll not set to the expected value.",
-						String.valueOf(orientationRoll),
-						orientationRollEditBoxString);
+		assertOrientationAzimuth("Device Azimuth not set to the expected value.", orientationAzimuth);
+		assertOrientationPitch("Device pitch not set to the expected value.", orientationPitch);
+		assertOrientationRoll("Device roll not set to the expected value.", orientationRoll);
 	}
 }

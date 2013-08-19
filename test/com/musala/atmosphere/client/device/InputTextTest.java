@@ -1,6 +1,6 @@
 package com.musala.atmosphere.client.device;
 
-import static org.junit.Assert.assertEquals;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.*;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -9,9 +9,7 @@ import org.junit.Test;
 import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
-import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.UiElementAttributes;
 import com.musala.atmosphere.client.util.Server;
 import com.musala.atmosphere.commons.Pair;
 import com.musala.atmosphere.commons.sa.DeviceParameters;
@@ -40,18 +38,6 @@ public class InputTextTest
 	private static final int EMULATOR_CREATION_RESOLUTION_H = 240;
 
 	private static final int EMULATOR_CREATION_RESOLUTION_W = 360;
-
-	private final static String PATH_TO_APK_DIR = "./";
-
-	private final static String NAME_OF_APK_FILE = "OnDeviceValidator.apk";
-
-	private final static String PATH_TO_APK = PATH_TO_APK_DIR + NAME_OF_APK_FILE;
-
-	private final static String VALIDATOR_APP_PACKAGE = "com.musala.atmosphere.ondevice.validator";
-
-	private final static String VALIDATOR_APP_ACTIVITY = "MainActivity";
-
-	private final static String VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC = "ATMOSPHEREValidator";
 
 	private final static String INPUT_TEXT_BOX = "InputTextBox";
 
@@ -105,23 +91,15 @@ public class InputTextTest
 
 		com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters blankParameters = new com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters();
 		Device testDevice = deviceBuilder.getDevice(blankParameters);
-		testDevice.unlock(); // Unlock device if locked.
-		testDevice.pressButton(HardwareButton.HOME); // Press HOME button.
 
-		testDevice.installAPK(PATH_TO_APK);
-		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
-		Thread.sleep(1000);
+		setTestDevice(testDevice);
+		setupAndStartMainActivity();
 
-		Screen activeScreen = testDevice.getActiveScreen();
-		UiElement inputTextBox = activeScreen.getElementCSS("[content-desc=" + INPUT_TEXT_BOX + "]");
 		String textToInput = "Hi! Кирилица. €%@$§№%()456*/0,.";
+		UiElement inputTextBox = getElementByContenDescriptor(INPUT_TEXT_BOX);
 		inputTextBox.inputText(textToInput); // Input text into field.
 
-		activeScreen = testDevice.getActiveScreen();
-		inputTextBox = activeScreen.getElementXPath("//*[@content-desc='" + INPUT_TEXT_BOX + "']");
-		UiElementAttributes inputTextBoxAttributes = inputTextBox.getElementAttributes();
-		String textFromDevice = inputTextBoxAttributes.getText();
-		assertEquals("Inputting text failed.", textToInput, textFromDevice);
+		assertInputText("Inputting text failed.", textToInput);
 
 		deviceBuilder.releaseDevice(testDevice);// Release device so it can be reused.
 	}
@@ -134,26 +112,15 @@ public class InputTextTest
 
 		com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters blankParameters = new com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters();
 		Device testDevice = deviceBuilder.getDevice(blankParameters);
+		setTestDevice(testDevice);
+		setupAndStartMainActivity();
 
-		testDevice.unlock(); // Unlock device if locked.
-		testDevice.pressButton(HardwareButton.HOME); // Press HOME button.
-
-		testDevice.installAPK(PATH_TO_APK);
-		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
-		Thread.sleep(1000);
-
-		Screen activeScreen = testDevice.getActiveScreen();
-		UiElement inputTextBox = activeScreen.getElementCSS("[content-desc=" + INPUT_TEXT_BOX + "]");
+		UiElement inputTextBox = getElementByContenDescriptor(INPUT_TEXT_BOX);
 		String textToInput = "Letters."; // Text to input.
 		int inputInterval = 2500;// Time interval between the input of each letter in ms.
 		inputTextBox.inputText(textToInput, inputInterval); // Input text into field.
 
-		activeScreen = testDevice.getActiveScreen();
-		inputTextBox = activeScreen.getElementXPath("//*[@content-desc='" + INPUT_TEXT_BOX + "']");
-		UiElementAttributes inputTextBoxAttributes = inputTextBox.getElementAttributes();
-		String textFromDevice = inputTextBoxAttributes.getText(); // Get inputted text.
-
-		assertEquals("Inputting text failed.", textToInput, textFromDevice);
+		assertInputText("Inputting text failed.", textToInput);
 
 		deviceBuilder.releaseDevice(testDevice); // Release device so it can be reused.
 	}
