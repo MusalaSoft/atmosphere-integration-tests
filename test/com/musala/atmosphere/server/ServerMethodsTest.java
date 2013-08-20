@@ -84,7 +84,7 @@ public class ServerMethodsTest
 	public static void setUp() throws RemoteException, InterruptedException
 	{
 		localAgent = new Agent(AGENT_PORT);
-		localAgent.startAgentThread();
+		localAgent.run();
 		testedServer = new Server(SERVER_PORT);
 		// testedServer.addAgentToServer("localhost", AGENT_PORT);
 		testedServer.startServerThread(false);
