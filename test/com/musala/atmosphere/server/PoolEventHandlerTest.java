@@ -10,8 +10,7 @@ import static org.mockito.Mockito.when;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -22,6 +21,7 @@ import com.android.ddmlib.IShellOutputReceiver;
 import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
 import com.musala.atmosphere.agent.AgentManager;
 import com.musala.atmosphere.server.pool.PoolManager;
+import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
 /**
  * 
@@ -31,14 +31,6 @@ import com.musala.atmosphere.server.pool.PoolManager;
 
 public class PoolEventHandlerTest
 {
-	private final static int AGENT_RMI_PORT = 1999;
-
-	private final static int SERVER_RMI_PORT = 1998;
-
-	private static AgentIntegrationEnvironmentCreator agentEnvironment;
-
-	private static ServerIntegrationEnvironmentCreator serverEnvironment;
-
 	private static Object deviceChangeListener;
 
 	private static Method deviceConnectedMethod;
@@ -47,17 +39,13 @@ public class PoolEventHandlerTest
 
 	private static Method deviceDisconnectedMethod;
 
-	@BeforeClass
-	public static void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
-		serverEnvironment = new ServerIntegrationEnvironmentCreator(SERVER_RMI_PORT);
-
-		agentEnvironment = new AgentIntegrationEnvironmentCreator(AGENT_RMI_PORT);
-		agentEnvironment.connectToLocalhostServer(SERVER_RMI_PORT);
+		AgentIntegrationEnvironmentCreator agentEnvironment = AtmosphereIntegrationTestsSuite.getAgentIntegrationEnvironmentCreator();
+		ServerIntegrationEnvironmentCreator serverEnvironment = AtmosphereIntegrationTestsSuite.getServerIntegrationEnvironmentCreator();
 
 		AgentManager underlyingAgentManager = agentEnvironment.getAgentManagerInstance();
-		String agentId = agentEnvironment.getUnderlyingAgentId();
-		serverEnvironment.waitForAgentConnection(agentId);
 
 		ServerManager serverManager = serverEnvironment.getServerManager();
 		poolManager = PoolManager.getInstance(serverManager);
@@ -73,20 +61,7 @@ public class PoolEventHandlerTest
 		deviceDisconnectedMethod.setAccessible(true);
 	}
 
-	@AfterClass
-	public static void tearDown() throws Exception
-	{
-		if (agentEnvironment != null)
-		{
-			agentEnvironment.close();
-		}
-		if (serverEnvironment != null)
-		{
-			serverEnvironment.close();
-		}
-	}
-
-	IDevice configureFakeDevice(String fakeDeviceSerialNumber) throws Exception
+	private IDevice configureFakeDevice(String fakeDeviceSerialNumber) throws Exception
 	{
 		IDevice fakeDevice = mock(IDevice.class);
 		when(fakeDevice.getSerialNumber()).thenReturn(fakeDeviceSerialNumber);

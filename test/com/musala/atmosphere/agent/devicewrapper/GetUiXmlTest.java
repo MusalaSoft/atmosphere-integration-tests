@@ -3,80 +3,43 @@ package com.musala.atmosphere.agent.devicewrapper;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
-import com.musala.atmosphere.commons.CommandFailedException;
-import com.musala.atmosphere.commons.Pair;
-import com.musala.atmosphere.commons.sa.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
+import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
 public class GetUiXmlTest
 {
-	private static final int RMI_PORT = 1989;
+	private static AgentIntegrationEnvironmentCreator agentEnvironment = AtmosphereIntegrationTestsSuite.getAgentIntegrationEnvironmentCreator();
 
-	private AgentIntegrationEnvironmentCreator environment;
+	private static IWrapDevice deviceWrapper;
 
-	// FIXME migrate to log4j Logger
-	private static final Logger LOGGER = Logger.getLogger(GetUiXmlTest.class.getName());
-
-	private static final int EMULATOR_CREATION_DPI = 120;
-
-	private static final int EMULATOR_CREATION_RAM = 256;
-
-	private static final int EMULATOR_CREATION_RESOLUTION_H = 240;
-
-	private static final int EMULATOR_CREATION_RESOLUTION_W = 360;
-
-	@Before
-	public void setUp() throws Exception
+	@BeforeClass
+	public static void setUp() throws Exception
 	{
-		LOGGER.setLevel(Level.ALL);
-		LOGGER.addHandler(new ConsoleHandler());
-
-		environment = new AgentIntegrationEnvironmentCreator(RMI_PORT);
-
-		if (environment.isAnyDevicePresent() == false)
-		{
-			DeviceParameters emulatorCreationParameters = new DeviceParameters();
-			emulatorCreationParameters.setDpi(EMULATOR_CREATION_DPI);
-			emulatorCreationParameters.setRam(EMULATOR_CREATION_RAM);
-			emulatorCreationParameters.setResolution(new Pair<Integer, Integer>(EMULATOR_CREATION_RESOLUTION_H,
-																				EMULATOR_CREATION_RESOLUTION_W));
-
-			environment.startEmulator(emulatorCreationParameters);
-		}
-
+		deviceWrapper = agentEnvironment.getFirstAvailableDeviceWrapper();
 	}
 
-	@After
-	public void tearDown() throws Exception
+	@AfterClass
+	public static void tearDown()
 	{
-		environment.close();
+
 	}
 
 	@Test
-	public void getUiXmlTest() throws RemoteException, CommandFailedException, NotBoundException
+	public void getUiXmlTest() throws Exception
 	{
-		IWrapDevice deviceWrapper = environment.getFirstAvailableDeviceWrapper();
-		environment.waitForDeviceOsToStart(deviceWrapper);
-
 		String uiXmlDump = deviceWrapper.getUiXml();
 
-		LOGGER.log(Level.INFO, "UI xml dump returned :\n" + uiXmlDump);
-		assertNotNull("ui xml dump response can never be 'null'.", uiXmlDump);
-		assertTrue(	"ui xml dump must start with a <hierarchy ..> tag.",
+		assertNotNull("UI XML dump response can never be 'null'.", uiXmlDump);
+
+		assertTrue(	"UI XML dump must start with a <hierarchy ..> tag.",
 					uiXmlDump.startsWith("<?xml version='1.0' encoding='UTF-8' standalone='yes' ?><hierarchy"));
-		assertTrue(	"ui xml dump must end with a closing tag for the <hierarchy ..> tag.",
+
+		assertTrue(	"UI XML dump must end with a closing tag for the <hierarchy ..> tag.",
 					uiXmlDump.endsWith("</hierarchy>"));
 	}
-
 }

@@ -6,7 +6,7 @@ package com.musala.atmosphere.test.util.ondevicevalidator;
  * @author yordan.petrov
  * 
  */
-public enum ContentDescriptior
+public enum ContentDescriptor
 {
 	BATTERY_LEVEL_BOX("BatteryLevelBox"), BATTERY_STATUS_BOX("BatteryStatusBox"), POWER_CONNECTED_FLAG(
 			"PowerConnectedFlag"), BATTERY_LOW_FLAG("BatteryLowFlag"), AIRPLANE_MODE_FLAG("AirplaneModeFlag"), INPUT_TEXT_BOX(
@@ -15,7 +15,7 @@ public enum ContentDescriptior
 
 	private String value;
 
-	private ContentDescriptior(String value)
+	private ContentDescriptor(String value)
 	{
 		this.value = value;
 	}

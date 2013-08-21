@@ -4,8 +4,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.NoSuchElementException;
 
 import org.junit.AfterClass;
@@ -15,7 +13,6 @@ import org.junit.Test;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.util.Server;
-import com.musala.atmosphere.commons.CommandFailedException;
 import com.musala.atmosphere.commons.DeviceInformation;
 import com.musala.atmosphere.commons.Pair;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceOs;
@@ -23,11 +20,9 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.commons.sa.IAgentManager;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
-import com.musala.atmosphere.commons.sa.exceptions.DeviceNotFoundException;
-import com.musala.atmosphere.commons.sa.exceptions.NotPossibleForDeviceException;
-import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
 import com.musala.atmosphere.server.ServerManager;
 import com.musala.atmosphere.server.pool.PoolManager;
+import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
 /**
  * 
@@ -36,7 +31,7 @@ import com.musala.atmosphere.server.pool.PoolManager;
  */
 public class BuilderDeviceSelectionIntegrationTest
 {
-	private final static int SERVER_RMI_PORT = 1980;
+	private final static int SERVER_MANAGER_RMI_PORT = 2099;
 
 	private final static String AGENT_ID = "mockagent";
 
@@ -50,9 +45,7 @@ public class BuilderDeviceSelectionIntegrationTest
 
 	private final static String DEVICE5_SN = "mockdevice5";
 
-	private static ServerIntegrationEnvironmentCreator serverEnvironment = null;
-
-	@Server(ip = "localhost", port = SERVER_RMI_PORT)
+	@Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT)
 	static class GettingDeviceSampleClass
 	{
 		public static Builder getBuilderInstance()
@@ -64,8 +57,6 @@ public class BuilderDeviceSelectionIntegrationTest
 	@BeforeClass
 	public static void setUp() throws Exception
 	{
-		serverEnvironment = new ServerIntegrationEnvironmentCreator(SERVER_RMI_PORT);
-
 		IAgentManager mockedAgentManager = mock(IAgentManager.class);
 		when(mockedAgentManager.getAgentId()).thenReturn(AGENT_ID);
 
@@ -119,25 +110,33 @@ public class BuilderDeviceSelectionIntegrationTest
 		mockedDeviceInfoFive.setDpi(180);
 		when(mockedDeviceFive.getDeviceInformation()).thenReturn(mockedDeviceInfoFive);
 
-		ServerManager serverManager = serverEnvironment.getServerManager();
+		ServerManager serverManager = AtmosphereIntegrationTestsSuite.getServerIntegrationEnvironmentCreator()
+																		.getServerManager();
 
 		PoolManager poolManager = PoolManager.getInstance(serverManager);
 
-		poolManager.addDevice(DEVICE1_SN, mockedDeviceOne, mockedAgentManager, SERVER_RMI_PORT);
+		poolManager.addDevice(DEVICE1_SN, mockedDeviceOne, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
 
-		poolManager.addDevice(DEVICE2_SN, mockedDeviceTwo, mockedAgentManager, SERVER_RMI_PORT);
+		poolManager.addDevice(DEVICE2_SN, mockedDeviceTwo, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
 
-		poolManager.addDevice(DEVICE3_SN, mockedDeviceThree, mockedAgentManager, SERVER_RMI_PORT);
+		poolManager.addDevice(DEVICE3_SN, mockedDeviceThree, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
 
-		poolManager.addDevice(DEVICE4_SN, mockedDeviceFour, mockedAgentManager, SERVER_RMI_PORT);
+		poolManager.addDevice(DEVICE4_SN, mockedDeviceFour, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
 
-		poolManager.addDevice(DEVICE5_SN, mockedDeviceFive, mockedAgentManager, SERVER_RMI_PORT);
+		poolManager.addDevice(DEVICE5_SN, mockedDeviceFive, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
 	}
 
 	@AfterClass
-	public static void tearDown() throws IOException, DeviceNotFoundException, NotPossibleForDeviceException
+	public static void tearDown() throws Exception
 	{
-		serverEnvironment.close();
+		ServerManager serverManager = AtmosphereIntegrationTestsSuite.getServerIntegrationEnvironmentCreator()
+																		.getServerManager();
+		PoolManager poolManager = PoolManager.getInstance(serverManager);
+		poolManager.refreshDevice(DEVICE1_SN, AGENT_ID, false);
+		poolManager.refreshDevice(DEVICE2_SN, AGENT_ID, false);
+		poolManager.refreshDevice(DEVICE3_SN, AGENT_ID, false);
+		poolManager.refreshDevice(DEVICE4_SN, AGENT_ID, false);
+		poolManager.refreshDevice(DEVICE5_SN, AGENT_ID, false);
 	}
 
 	private boolean parametersMatchInformation(	DeviceParameters wantedDeviceParameters,
@@ -221,7 +220,6 @@ public class BuilderDeviceSelectionIntegrationTest
 					parametersMatchInformation(parameters, information));
 
 		builder.releaseDevice(receivedDevice);
-
 	}
 
 	@Test
@@ -262,10 +260,6 @@ public class BuilderDeviceSelectionIntegrationTest
 
 	@Test
 	public void getMockedDeviceFourTest()
-		throws RemoteException,
-			CommandFailedException,
-			NoSuchFieldException,
-			SecurityException
 	{
 		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 		DeviceParameters parameters = new DeviceParameters();
@@ -277,6 +271,7 @@ public class BuilderDeviceSelectionIntegrationTest
 
 		assertTrue(	"Wanted device and returned device parameters don't match.",
 					parametersMatchInformation(parameters, information));
+
 		builder.releaseDevice(receivedDevice);
 	}
 
@@ -304,10 +299,6 @@ public class BuilderDeviceSelectionIntegrationTest
 
 	@Test
 	public void getMockedDeviceFourOrFiveTest()
-		throws RemoteException,
-			CommandFailedException,
-			NoSuchFieldException,
-			SecurityException
 	{
 		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 		DeviceParameters parameters = new DeviceParameters();
@@ -324,10 +315,6 @@ public class BuilderDeviceSelectionIntegrationTest
 
 	@Test(expected = NoSuchElementException.class)
 	public void getNoneExistingDeviceTest()
-		throws RemoteException,
-			CommandFailedException,
-			NoSuchFieldException,
-			SecurityException
 	{
 		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 		DeviceParameters parameters = new DeviceParameters();

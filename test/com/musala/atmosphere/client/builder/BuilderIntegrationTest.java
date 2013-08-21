@@ -1,130 +1,76 @@
 package com.musala.atmosphere.client.builder;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
-
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.exceptions.MissingServerAnnotationException;
 import com.musala.atmosphere.client.exceptions.ServerConnectionFailedException;
 import com.musala.atmosphere.client.util.Server;
-import com.musala.atmosphere.commons.Pair;
-import com.musala.atmosphere.commons.sa.exceptions.ADBridgeFailException;
-import com.musala.atmosphere.commons.sa.exceptions.DeviceNotFoundException;
-import com.musala.atmosphere.commons.sa.exceptions.NotPossibleForDeviceException;
-import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
 
 public class BuilderIntegrationTest
 {
-	private static final int SERVER_RMI_PORT = 1980;
-
-	private ServerIntegrationEnvironmentCreator serverEnvironment;
-
-	@Before
-	public void setUp() throws Exception, ADBridgeFailException
-	{
-		serverEnvironment = new ServerIntegrationEnvironmentCreator(SERVER_RMI_PORT);
-	}
+	private static final int SERVER_MANAGER_RMI_PORT = 2099;
 
 	@Test(expected = MissingServerAnnotationException.class)
-	public void builderGetInstanceTest1()
+	public void missingSeverAnnotationTest()
 	{
 		class SampleTestNoAnnotation
 		{
-			public void getBuilderInstance()
-			{
-				Builder testerbuilder = Builder.getInstance();
-			}
-		}
-		SampleTestNoAnnotation myTest = new SampleTestNoAnnotation();
-		myTest.getBuilderInstance();
-	}
-
-	@Test(expected = ServerConnectionFailedException.class)
-	public void builderGetInstanceTest2()
-	{
-		@Server(ip = "10.1111.4000.15234", port = SERVER_RMI_PORT)
-		class SampleTestWrongIp
-		{
-			public void getBuilderInstance()
-			{
-				Builder testerbuilder = Builder.getInstance();
-			}
-		}
-		SampleTestWrongIp myTest = new SampleTestWrongIp();
-		myTest.getBuilderInstance();
-	}
-
-	@Test(expected = ServerConnectionFailedException.class)
-	public void builderGetInstanceTest3()
-	{
-		@Server(ip = "random_string", port = SERVER_RMI_PORT)
-		class SampleTestWrongIp
-		{
-			public void getBuilderInstance()
-			{
-				Builder testerbuilder = Builder.getInstance();
-			}
-		}
-		SampleTestWrongIp myTest = new SampleTestWrongIp();
-		myTest.getBuilderInstance();
-	}
-
-	@Test(expected = ServerConnectionFailedException.class)
-	public void builderGetInstanceTest4()
-	{
-		@Server(ip = "localhost", port = 65535)
-		class SampleTestWrongPort
-		{
-			public void getBuilderInstance()
-			{
-				Builder testerbuilder = Builder.getInstance();
-			}
-		}
-		SampleTestWrongPort myTest = new SampleTestWrongPort();
-		myTest.getBuilderInstance();
-	}
-
-	@Test
-	public void builderGetInstanceTest5()
-	{
-		final String serverIp = "localhost";
-		final int serverPort = SERVER_RMI_PORT;
-
-		@Server(ip = serverIp, port = serverPort)
-		class SampleTest
-		{
-			public Pair<String, Integer> getBuilderInstance()
+			public Builder getBuilderInstance()
 			{
 				Builder testerBuilder = Builder.getInstance();
-				return new Pair<String, Integer>(testerBuilder.getServerIp(), testerBuilder.getServerRmiPort());
+				return testerBuilder;
 			}
 		}
-
-		SampleTest myTest = new SampleTest();
-		Pair<String, Integer> reflectedAnnotation = myTest.getBuilderInstance();
-		assertEquals("IP's don't match!", serverIp, reflectedAnnotation.getKey());
-		assertEquals("Port's don't match!", serverPort, (int) reflectedAnnotation.getValue());
-
-		// Testing for data consistency
-		SampleTest myTest2 = new SampleTest();
-		reflectedAnnotation = myTest.getBuilderInstance();
-		assertEquals("IP's don't match!", serverIp, reflectedAnnotation.getKey());
-		assertEquals("Port's don't match!", serverPort, (int) reflectedAnnotation.getValue());
-
-		SampleTest myTest3 = new SampleTest();
-		reflectedAnnotation = myTest.getBuilderInstance();
-		assertEquals("IP's don't match!", serverIp, reflectedAnnotation.getKey());
-		assertEquals("Port's don't match!", serverPort, (int) reflectedAnnotation.getValue());
+		SampleTestNoAnnotation sampleBuilderClassInstance = new SampleTestNoAnnotation();
+		Builder builderInstance = sampleBuilderClassInstance.getBuilderInstance();
 	}
 
-	@After
-	public void tearDown() throws IOException, DeviceNotFoundException, NotPossibleForDeviceException
+	@Test(expected = ServerConnectionFailedException.class)
+	public void wrongIpTest()
 	{
-		serverEnvironment.close();
+		@Server(ip = "149.111.400.154", port = SERVER_MANAGER_RMI_PORT)
+		class SampleTestWrongIpOne
+		{
+			public Builder getBuilderInstance()
+			{
+				Builder testerBuilder = Builder.getInstance();
+				return testerBuilder;
+			}
+		}
+		SampleTestWrongIpOne sampleBuilderClassInstance = new SampleTestWrongIpOne();
+		Builder builderInstance = sampleBuilderClassInstance.getBuilderInstance();
+	}
+
+	@Test(expected = ServerConnectionFailedException.class)
+	public void wrongIpTestTwo()
+	{
+		@Server(ip = "random_string", port = SERVER_MANAGER_RMI_PORT)
+		class SampleTestWrongIpTwo
+		{
+			public Builder getBuilderInstance()
+			{
+				Builder testerBuilder = Builder.getInstance();
+				return testerBuilder;
+			}
+		}
+		SampleTestWrongIpTwo sampleBuilderClassInstance = new SampleTestWrongIpTwo();
+		Builder builderInstance = sampleBuilderClassInstance.getBuilderInstance();
+	}
+
+	@Test(expected = ServerConnectionFailedException.class)
+	public void wrongPortTest()
+	{
+		@Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT + 148)
+		class SampleTestWrongPort
+		{
+			public Builder getBuilderInstance()
+			{
+				Builder testerBuilder = Builder.getInstance();
+				return testerBuilder;
+			}
+		}
+		SampleTestWrongPort sampleBuilderClassInstance = new SampleTestWrongPort();
+		Builder builderInstance = sampleBuilderClassInstance.getBuilderInstance();
 	}
 }

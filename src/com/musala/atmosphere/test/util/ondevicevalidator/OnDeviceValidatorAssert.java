@@ -71,7 +71,7 @@ public class OnDeviceValidatorAssert
 	 * @return - UI element with the given content descriptor.
 	 * @throws UiElementFetchingException
 	 */
-	public static UiElement getElementByContenDescriptor(String contentDescriptor) throws UiElementFetchingException
+	public static UiElement getElementByContentDescriptor(String contentDescriptor) throws UiElementFetchingException
 	{
 		Screen activeScreen = device.getActiveScreen();
 		final String query = String.format(CONTENT_DESCRIPTOR, contentDescriptor);
@@ -109,7 +109,7 @@ public class OnDeviceValidatorAssert
 	public static void assertValidatorIsStarted() throws UiElementFetchingException
 	{
 		// If the validator app activity is not started, this element fetching will fail.
-		UiElement validationView = getElementByContenDescriptor(VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC);
+		UiElement validationView = getElementByContentDescriptor(VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC);
 		assertIsEnabled("ATMOSPHERE Validator has not beeen started.", validationView);
 
 	}
@@ -210,7 +210,7 @@ public class OnDeviceValidatorAssert
 	 */
 	public static void assertBatteryLevel(String message, int expectedBatteryLevel) throws UiElementFetchingException
 	{
-		UiElement batteryLevelBox = getElementByContenDescriptor(ContentDescriptior.BATTERY_LEVEL_BOX.toString());
+		UiElement batteryLevelBox = getElementByContentDescriptor(ContentDescriptor.BATTERY_LEVEL_BOX.toString());
 
 		assertText(message, batteryLevelBox, String.valueOf(expectedBatteryLevel));
 	}
@@ -227,7 +227,7 @@ public class OnDeviceValidatorAssert
 	public static void assertBatteryState(String message, BatteryState expectedBatteryState)
 		throws UiElementFetchingException
 	{
-		UiElement batteryStateBox = getElementByContenDescriptor(ContentDescriptior.BATTERY_STATUS_BOX.toString());
+		UiElement batteryStateBox = getElementByContentDescriptor(ContentDescriptor.BATTERY_STATUS_BOX.toString());
 
 		assertText(message, batteryStateBox, expectedBatteryState.toString());
 	}
@@ -241,7 +241,7 @@ public class OnDeviceValidatorAssert
 	 */
 	public static void assertPowerConnected(String message) throws UiElementFetchingException
 	{
-		UiElement powerConnectedFlag = getElementByContenDescriptor(ContentDescriptior.POWER_CONNECTED_FLAG.toString());
+		UiElement powerConnectedFlag = getElementByContentDescriptor(ContentDescriptor.POWER_CONNECTED_FLAG.toString());
 
 		assertIsEnabled(message, powerConnectedFlag);
 	}
@@ -255,7 +255,7 @@ public class OnDeviceValidatorAssert
 	 */
 	public static void assertNotPowerConnected(String message) throws UiElementFetchingException
 	{
-		UiElement powerConnectedFlag = getElementByContenDescriptor(ContentDescriptior.POWER_CONNECTED_FLAG.toString());
+		UiElement powerConnectedFlag = getElementByContentDescriptor(ContentDescriptor.POWER_CONNECTED_FLAG.toString());
 
 		assertNotEnabled(message, powerConnectedFlag);
 	}
@@ -269,7 +269,7 @@ public class OnDeviceValidatorAssert
 	 */
 	public static void assertBatteryLow(String message) throws UiElementFetchingException
 	{
-		UiElement batteryLowFlag = getElementByContenDescriptor(ContentDescriptior.BATTERY_LOW_FLAG.toString());
+		UiElement batteryLowFlag = getElementByContentDescriptor(ContentDescriptor.BATTERY_LOW_FLAG.toString());
 
 		assertIsEnabled(message, batteryLowFlag);
 	}
@@ -283,7 +283,7 @@ public class OnDeviceValidatorAssert
 	 */
 	public static void assertBatteryNotLow(String message) throws UiElementFetchingException
 	{
-		UiElement batteryLowFlag = getElementByContenDescriptor(ContentDescriptior.BATTERY_LOW_FLAG.toString());
+		UiElement batteryLowFlag = getElementByContentDescriptor(ContentDescriptor.BATTERY_LOW_FLAG.toString());
 
 		assertNotEnabled(message, batteryLowFlag);
 	}
@@ -297,7 +297,7 @@ public class OnDeviceValidatorAssert
 	 */
 	public static void assertInAirplaneMode(String message) throws UiElementFetchingException
 	{
-		UiElement airplaneModeFlag = getElementByContenDescriptor(ContentDescriptior.AIRPLANE_MODE_FLAG.toString());
+		UiElement airplaneModeFlag = getElementByContentDescriptor(ContentDescriptor.AIRPLANE_MODE_FLAG.toString());
 
 		assertIsEnabled(message, airplaneModeFlag);
 	}
@@ -311,7 +311,7 @@ public class OnDeviceValidatorAssert
 	 */
 	public static void assertNotInAirplaneMode(String message) throws UiElementFetchingException
 	{
-		UiElement airplaneModeFlag = getElementByContenDescriptor(ContentDescriptior.AIRPLANE_MODE_FLAG.toString());
+		UiElement airplaneModeFlag = getElementByContentDescriptor(ContentDescriptor.AIRPLANE_MODE_FLAG.toString());
 
 		assertNotEnabled(message, airplaneModeFlag);
 	}
@@ -327,7 +327,7 @@ public class OnDeviceValidatorAssert
 	 */
 	public static void assertInputText(String message, String expected) throws UiElementFetchingException
 	{
-		UiElement inputTextBox = getElementByContenDescriptor(ContentDescriptior.INPUT_TEXT_BOX.toString());
+		UiElement inputTextBox = getElementByContentDescriptor(ContentDescriptor.INPUT_TEXT_BOX.toString());
 
 		assertText(message, inputTextBox, expected);
 	}
@@ -339,11 +339,11 @@ public class OnDeviceValidatorAssert
 	 *        - message to be displayed if assertion fails.
 	 * @throws UiElementFetchingException
 	 */
-	public static void assertBatteryStatusBoxIsFocused(String message) throws UiElementFetchingException
+	public static void assertInputTextBoxIsFocused(String message) throws UiElementFetchingException
 	{
-		UiElement batteryStatusBox = getElementByContenDescriptor(ContentDescriptior.BATTERY_STATUS_BOX.toString());
+		UiElement inputTextBox = getElementByContentDescriptor(ContentDescriptor.INPUT_TEXT_BOX.toString());
 
-		assertIsFocused(message, batteryStatusBox);
+		assertIsFocused(message, inputTextBox);
 	}
 
 	/**
@@ -357,7 +357,7 @@ public class OnDeviceValidatorAssert
 	 */
 	public static void assertOrientationRoll(String message, float expected) throws UiElementFetchingException
 	{
-		UiElement orientationRollBox = getElementByContenDescriptor(ContentDescriptior.ORIENTATION_ROLL_BOX.toString());
+		UiElement orientationRollBox = getElementByContentDescriptor(ContentDescriptor.ORIENTATION_ROLL_BOX.toString());
 
 		assertText(message, orientationRollBox, String.valueOf(expected));
 	}
@@ -373,7 +373,7 @@ public class OnDeviceValidatorAssert
 	 */
 	public static void assertOrientationPitch(String message, float expected) throws UiElementFetchingException
 	{
-		UiElement orientationPitchBox = getElementByContenDescriptor(ContentDescriptior.ORIENTATION_PITCH_BOX.toString());
+		UiElement orientationPitchBox = getElementByContentDescriptor(ContentDescriptor.ORIENTATION_PITCH_BOX.toString());
 
 		assertText(message, orientationPitchBox, String.valueOf(expected));
 	}
@@ -389,7 +389,7 @@ public class OnDeviceValidatorAssert
 	 */
 	public static void assertOrientationAzimuth(String message, float expected) throws UiElementFetchingException
 	{
-		UiElement orientationAzimuthBox = getElementByContenDescriptor(ContentDescriptior.ORIENTATION_AZIMUTH_BOX.toString());
+		UiElement orientationAzimuthBox = getElementByContentDescriptor(ContentDescriptor.ORIENTATION_AZIMUTH_BOX.toString());
 
 		assertText(message, orientationAzimuthBox, String.valueOf(expected));
 	}

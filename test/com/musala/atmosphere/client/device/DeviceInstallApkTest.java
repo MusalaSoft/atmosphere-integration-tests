@@ -32,6 +32,7 @@ import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.util.Server;
 import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
+import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
 public class DeviceInstallApkTest
 {
@@ -73,8 +74,8 @@ public class DeviceInstallApkTest
 	@Before
 	public void setUp() throws Exception
 	{
-		agentEnvironment = new AgentIntegrationEnvironmentCreator(AGENTMANAGER_RMI_PORT);
-		serverEnvironment = new ServerIntegrationEnvironmentCreator(SERVERMANAGER_RMI_PORT);
+		agentEnvironment = AtmosphereIntegrationTestsSuite.getAgentIntegrationEnvironmentCreator();
+		serverEnvironment = AtmosphereIntegrationTestsSuite.getServerIntegrationEnvironmentCreator();
 
 		mockDevice = mock(IDevice.class);
 		when(mockDevice.getSerialNumber()).thenReturn(MOCK_SERIAL_NUMBER);
@@ -103,8 +104,7 @@ public class DeviceInstallApkTest
 	@After
 	public void tearDown() throws Exception
 	{
-		serverEnvironment.close();
-		agentEnvironment.close();
+
 	}
 
 	@Test

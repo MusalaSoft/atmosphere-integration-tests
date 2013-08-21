@@ -207,7 +207,7 @@ public class AgentIntegrationEnvironmentCreator
 			List<String> wrapperIdentifiers = remoteAgentManager.getAllDeviceWrappers();
 			for (String wrapperId : wrapperIdentifiers)
 			{
-				if (wrappersBeforeEmulatorCreation.contains(wrapperId) == false)
+				if (!wrappersBeforeEmulatorCreation.contains(wrapperId))
 				{
 					IWrapDevice newDeviceWrapper = (IWrapDevice) remoteAgentRegistry.lookup(wrapperId);
 					DeviceInformation newDeviceInformation = newDeviceWrapper.getDeviceInformation();
@@ -256,7 +256,7 @@ public class AgentIntegrationEnvironmentCreator
 				String response = deviceWrapper.executeShellCommand("ps .location.fused");
 				// The calendar will not be loaded until the graphical environment is loaded
 				// If the graphical environment is not loaded, naturally, we can not fetch ui xml
-				if (response.contains("com.android.location.fused") == false)
+				if (!response.contains("com.android.location.fused"))
 				{
 					continue;
 				}
