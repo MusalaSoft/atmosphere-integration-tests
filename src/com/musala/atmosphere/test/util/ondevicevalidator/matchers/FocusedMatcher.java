@@ -20,7 +20,7 @@ public class FocusedMatcher extends BaseMatcher<UiElement>
 		if (obj instanceof UiElement)
 		{
 			UiElement uiElement = (UiElement) obj;
-			UiElementAttributes uiElementAttributes = uiElement.getElementAttributes();
+			UiElementAttributes uiElementAttributes = uiElement.getElementAttributes(false);
 			return uiElementAttributes.isFocused();
 		}
 		return false;

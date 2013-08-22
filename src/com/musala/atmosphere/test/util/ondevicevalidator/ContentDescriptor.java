@@ -11,7 +11,8 @@ public enum ContentDescriptor
 	BATTERY_LEVEL_BOX("BatteryLevelBox"), BATTERY_STATUS_BOX("BatteryStatusBox"), POWER_CONNECTED_FLAG(
 			"PowerConnectedFlag"), BATTERY_LOW_FLAG("BatteryLowFlag"), AIRPLANE_MODE_FLAG("AirplaneModeFlag"), INPUT_TEXT_BOX(
 			"InputTextBox"), ORIENTATION_AZIMUTH_BOX("OrientationAzimuthBox"), ORIENTATION_PITCH_BOX(
-			"OrientationPitchBox"), ORIENTATION_ROLL_BOX("OrientationRollBox");
+			"OrientationPitchBox"), ORIENTATION_ROLL_BOX("OrientationRollBox"), ACCELERATION_X_BOX("AccelerationXBox"), ACCELERATION_Y_BOX(
+			"AccelerationYBox"), ACCELERATION_Z_BOX("AccelerationZBox");
 
 	private String value;
 

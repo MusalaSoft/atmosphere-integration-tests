@@ -36,6 +36,8 @@ public class OnDeviceValidatorAssert
 
 	private final static String VALIDATOR_ORIENTATION_ACTIVITY = "OrientationActivity";
 
+	private final static String VALIDATOR_ACCELERATION_ACTIVITY = "AccelerationActivity";
+
 	private final static String VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC = "ATMOSPHEREValidator";
 
 	private final static int APP_STARTUP_WAIT_TIME = 2000;
@@ -168,6 +170,21 @@ public class OnDeviceValidatorAssert
 	}
 
 	/**
+	 * Starts OnDeviceValidator's acceleration activity.
+	 * 
+	 * @throws ActivityStartingException
+	 * @throws InterruptedException
+	 * @throws UiElementFetchingException
+	 */
+	public static void startAccelerationActivity()
+		throws ActivityStartingException,
+			InterruptedException,
+			UiElementFetchingException
+	{
+		startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_ACCELERATION_ACTIVITY);
+	}
+
+	/**
 	 * Setups the OnDeviceValidator on the test device and starts its main activity.
 	 * 
 	 * @throws ActivityStartingException
@@ -197,6 +214,22 @@ public class OnDeviceValidatorAssert
 	{
 		setupOndeviceValidator();
 		startOrientationActivity();
+	}
+
+	/**
+	 * Setups the OnDeviceValidator on the test device and starts its acceleration activity.
+	 * 
+	 * @throws ActivityStartingException
+	 * @throws InterruptedException
+	 * @throws UiElementFetchingException
+	 */
+	public static void setupAndStartAccelerationActivity()
+		throws ActivityStartingException,
+			InterruptedException,
+			UiElementFetchingException
+	{
+		setupOndeviceValidator();
+		startAccelerationActivity();
 	}
 
 	/**
@@ -392,5 +425,53 @@ public class OnDeviceValidatorAssert
 		UiElement orientationAzimuthBox = getElementByContentDescriptor(ContentDescriptor.ORIENTATION_AZIMUTH_BOX.toString());
 
 		assertText(message, orientationAzimuthBox, String.valueOf(expected));
+	}
+
+	/**
+	 * Asserts that the acceleration on the x axis of the test device has been set to the expected value.
+	 * 
+	 * @param message
+	 *        - message to be displayed if assertion fails.
+	 * @param expected
+	 *        - the expected acceleration on the x axis.
+	 * @throws UiElementFetchingException
+	 */
+	public static void assertAccelerationX(String message, float expected) throws UiElementFetchingException
+	{
+		UiElement accelerationXBox = getElementByContentDescriptor(ContentDescriptor.ACCELERATION_X_BOX.toString());
+
+		assertText(message, accelerationXBox, String.valueOf(expected));
+	}
+
+	/**
+	 * Asserts that the acceleration on the y axis of the test device has been set to the expected value.
+	 * 
+	 * @param message
+	 *        - message to be displayed if assertion fails.
+	 * @param expected
+	 *        - the expected acceleration on the y axis.
+	 * @throws UiElementFetchingException
+	 */
+	public static void assertAccelerationY(String message, float expected) throws UiElementFetchingException
+	{
+		UiElement accelerationYBox = getElementByContentDescriptor(ContentDescriptor.ACCELERATION_Y_BOX.toString());
+
+		assertText(message, accelerationYBox, String.valueOf(expected));
+	}
+
+	/**
+	 * Asserts that the acceleration on the z axis of the test device has been set to the expected value.
+	 * 
+	 * @param message
+	 *        - message to be displayed if assertion fails.
+	 * @param expected
+	 *        - the expected acceleration on the z axis.
+	 * @throws UiElementFetchingException
+	 */
+	public static void assertAccelerationZ(String message, float expected) throws UiElementFetchingException
+	{
+		UiElement accelerationZBox = getElementByContentDescriptor(ContentDescriptor.ACCELERATION_Z_BOX.toString());
+
+		assertText(message, accelerationZBox, String.valueOf(expected));
 	}
 }

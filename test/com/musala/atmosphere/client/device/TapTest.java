@@ -59,7 +59,7 @@ public class TapTest extends BaseIntegrationTest
 		Point BatteryStatusRelativeUpperLeftCorner = widgetRelativeLayoutAttributes.getBounds()
 																					.getRelativePoint(batteryStatusBoxUpperLeftCorner);
 
-		widgetRelativeLayout.tap(BatteryStatusRelativeUpperLeftCorner);
+		widgetRelativeLayout.tap(BatteryStatusRelativeUpperLeftCorner, false);
 
 		assertInputTextBoxIsFocused("Input text box not focused.");
 	}

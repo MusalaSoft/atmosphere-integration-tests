@@ -29,7 +29,7 @@ public class TextMatcher extends BaseMatcher<UiElement>
 			String expectedText = (String) expected;
 
 			UiElement uiElement = (UiElement) obj;
-			UiElementAttributes uiElementAttributes = uiElement.getElementAttributes();
+			UiElementAttributes uiElementAttributes = uiElement.getElementAttributes(false);
 			String actualText = uiElementAttributes.getText();
 
 			return actualText.equals(expectedText);

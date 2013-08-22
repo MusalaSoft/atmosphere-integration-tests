@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.DeviceOrientation;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 
 public class DeviceOrientationTest extends BaseIntegrationTest
 {
@@ -17,8 +18,12 @@ public class DeviceOrientationTest extends BaseIntegrationTest
 	@BeforeClass
 	public static void setUp() throws Exception
 	{
-		initTestDevice(new DeviceParameters());
+
+		DeviceParameters emulatorTestDevice = new DeviceParameters();
+		emulatorTestDevice.setDeviceType(DeviceType.EMULATOR_ONLY);
+		initTestDevice(emulatorTestDevice);
 		installValidatorApp();
+		// TODO start orientation activity here.
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY, true);
 		Thread.sleep(1000);
 	}

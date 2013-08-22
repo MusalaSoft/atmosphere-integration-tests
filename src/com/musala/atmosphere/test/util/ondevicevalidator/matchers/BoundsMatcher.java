@@ -30,7 +30,7 @@ public class BoundsMatcher extends BaseMatcher<UiElement>
 			Bounds expectedBounds = (Bounds) obj;
 
 			UiElement uiElement = (UiElement) obj;
-			UiElementAttributes uiElementAttributes = uiElement.getElementAttributes();
+			UiElementAttributes uiElementAttributes = uiElement.getElementAttributes(false);
 			Bounds actualBounds = uiElementAttributes.getBounds();
 
 			return actualBounds.equals(expectedBounds);
