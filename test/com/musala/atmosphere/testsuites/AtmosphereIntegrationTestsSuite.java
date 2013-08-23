@@ -9,6 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
 import com.musala.atmosphere.agent.devicewrapper.AirplaneModeTest;
 import com.musala.atmosphere.agent.devicewrapper.BatteryRelatedMethodsTest;
+import com.musala.atmosphere.agent.devicewrapper.DeviceOrientationTest;
 import com.musala.atmosphere.agent.devicewrapper.GetUiXmlTest;
 import com.musala.atmosphere.client.builder.BuilderDeviceSelectionIntegrationTest;
 import com.musala.atmosphere.client.device.DeviceInstallApkTest;
@@ -29,7 +30,7 @@ import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({AirplaneModeTest.class, InputTextTest.class, PoolEventHandlerTest.class,
+@SuiteClasses({AirplaneModeTest.class, DeviceOrientationTest.class, InputTextTest.class, PoolEventHandlerTest.class,
 		BatteryRelatedMethodsTest.class, TapTest.class, LockUnlockTest.class, StartActivityTest.class,
 		BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class, DeviceInstallApkTest.class})
 public class AtmosphereIntegrationTestsSuite
