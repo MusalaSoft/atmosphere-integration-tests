@@ -3,22 +3,21 @@ package com.musala.atmosphere.agent.devicewrapper;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertAccelerationX;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertAccelerationY;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertAccelerationZ;
-
-import java.rmi.RemoteException;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
-import com.musala.atmosphere.commons.CommandFailedException;
 import com.musala.atmosphere.commons.DeviceAcceleration;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 
 public class DeviceAcceleratoinTest extends BaseIntegrationTest
 {
+	private final static String VALIDATOR_APP_ACCELERATION_ACTIVITY = "AccelerationActivity";
+
 	@BeforeClass
 	public static void setUp() throws Exception
 	{
@@ -27,18 +26,12 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 		emulatorTestDevice.setDeviceType(DeviceType.EMULATOR_ONLY);
 		initTestDevice(emulatorTestDevice);
 		installValidatorApp();
-		// TODO start acceleration activity here.
-		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY, true);
+		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACCELERATION_ACTIVITY, true);
 		Thread.sleep(1000);
 	}
 
 	@Test
-	public void testDeviceRandomAccelerationSetting()
-		throws UiElementFetchingException,
-			ActivityStartingException,
-			InterruptedException,
-			CommandFailedException,
-			RemoteException
+	public void testDeviceRandomAccelerationSetting() throws UiElementFetchingException
 	{
 		// set "random" acceleration
 		final float accelerationX = 3.087f;
@@ -53,12 +46,7 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 	}
 
 	@Test
-	public void testDeviceLandscapeAccelerationSetting()
-		throws UiElementFetchingException,
-			ActivityStartingException,
-			InterruptedException,
-			CommandFailedException,
-			RemoteException
+	public void testDeviceLandscapeAccelerationSetting() throws UiElementFetchingException
 	{
 		// set landscape acceleration
 		DeviceAcceleration landscapeAcceleration = DeviceAcceleration.getLandscape();
@@ -72,12 +60,7 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 							landscapeAcceleration.getAccelerationZ());
 	}
 
-	public void testDeviceReverseLandscapeAccelerationSetting()
-		throws UiElementFetchingException,
-			ActivityStartingException,
-			InterruptedException,
-			CommandFailedException,
-			RemoteException
+	public void testDeviceReverseLandscapeAccelerationSetting() throws UiElementFetchingException
 	{
 		// set landscape acceleration
 		DeviceAcceleration reverseLandscapeAcceleration = DeviceAcceleration.getReverseLandscape();
@@ -92,12 +75,7 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 	}
 
 	@Test
-	public void testDevicePortraitAccelerationSetting()
-		throws UiElementFetchingException,
-			ActivityStartingException,
-			InterruptedException,
-			CommandFailedException,
-			RemoteException
+	public void testDevicePortraitAccelerationSetting() throws UiElementFetchingException
 	{
 		// set portrait acceleration
 		DeviceAcceleration portraitAcceleration = DeviceAcceleration.getPortrait();
@@ -112,12 +90,7 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 	}
 
 	@Test
-	public void testDeviceReversePortraitAccelerationSetting()
-		throws UiElementFetchingException,
-			ActivityStartingException,
-			InterruptedException,
-			CommandFailedException,
-			RemoteException
+	public void testDeviceReversePortraitAccelerationSetting() throws UiElementFetchingException
 	{
 		// set portrait acceleration
 		DeviceAcceleration reversePortraitAcceleration = DeviceAcceleration.getReversePortrait();
@@ -132,12 +105,7 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 	}
 
 	@Test
-	public void testDeviceLieDownAccelerationSetting()
-		throws UiElementFetchingException,
-			ActivityStartingException,
-			InterruptedException,
-			CommandFailedException,
-			RemoteException
+	public void testDeviceLieDownAccelerationSetting() throws UiElementFetchingException
 	{
 		// set portrait acceleration
 		DeviceAcceleration lieDownAcceleration = DeviceAcceleration.getLieDown();
@@ -152,12 +120,7 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 	}
 
 	@Test
-	public void testDeviceReverseLieDownAccelerationSetting()
-		throws UiElementFetchingException,
-			ActivityStartingException,
-			InterruptedException,
-			CommandFailedException,
-			RemoteException
+	public void testDeviceReverseLieDownAccelerationSetting() throws UiElementFetchingException
 	{
 		// set portrait acceleration
 		DeviceAcceleration reverseLieDownAcceleration = DeviceAcceleration.getReverseLieDown();
@@ -169,5 +132,15 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 							reverseLieDownAcceleration.getAccelerationY());
 		assertAccelerationZ("Device acceleration on the Z axis not set to the expected value.",
 							reverseLieDownAcceleration.getAccelerationZ());
+	}
+
+	@Test
+	public void testGetDeviceAcceleration() throws Exception
+	{
+		// Getting device acceleration works for both real devices and emulators.
+		DeviceAcceleration deviceAcceleration = testDevice.getDeviceAcceleration();
+		assertNotNull("Failed getting device acceleration value on the X axis.", deviceAcceleration.getAccelerationX());
+		assertNotNull("Failed getting device acceleration value on the Y axis.", deviceAcceleration.getAccelerationY());
+		assertNotNull("Failed getting device acceleration value on the Z axis.", deviceAcceleration.getAccelerationZ());
 	}
 }
