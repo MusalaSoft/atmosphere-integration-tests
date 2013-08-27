@@ -11,6 +11,7 @@ import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.BatteryState;
+import com.musala.atmosphere.commons.ScreenOrientation;
 
 /**
  * Class containing assertions and other useful methods implementing logic for the OnDeviceValidator.
@@ -473,5 +474,50 @@ public class OnDeviceValidatorAssert
 		UiElement accelerationZBox = getElementByContentDescriptor(ContentDescriptor.ACCELERATION_Z_BOX.toString());
 
 		assertText(message, accelerationZBox, String.valueOf(expected));
+	}
+
+	/**
+	 * Asserts that the auto rotation of the test device is turned on.
+	 * 
+	 * @param message
+	 *        - message to be displayed if assertion fails.
+	 * @throws UiElementFetchingException
+	 */
+	public static void assertAutoRotationOn(String message) throws UiElementFetchingException
+	{
+		UiElement autoRotationFlag = getElementByContentDescriptor(ContentDescriptor.AUTO_ROTATION_BUTTON.toString());
+
+		assertIsEnabled(message, autoRotationFlag);
+	}
+
+	/**
+	 * Asserts that the auto rotation of the test device is turned off.
+	 * 
+	 * @param message
+	 *        - message to be displayed if assertion fails.
+	 * @throws UiElementFetchingException
+	 */
+	public static void assertAutoRotationOff(String message) throws UiElementFetchingException
+	{
+		UiElement autoRotationFlag = getElementByContentDescriptor(ContentDescriptor.AUTO_ROTATION_BUTTON.toString());
+
+		assertNotEnabled(message, autoRotationFlag);
+	}
+
+	/**
+	 * Asserts that the screen rotation of the test device has been set to the expected value.
+	 * 
+	 * @param message
+	 *        - message to be displayed if assertion fails.
+	 * @param expected
+	 *        - the expected screen orientation.
+	 * @throws UiElementFetchingException
+	 */
+	public static void assertScreenOrientation(String message, ScreenOrientation expected)
+		throws UiElementFetchingException
+	{
+		UiElement screenOrientationBox = getElementByContentDescriptor(ContentDescriptor.SCREEN_ORIENTATION_BOX.toString());
+
+		assertText(message, screenOrientationBox, String.valueOf(expected.getOrientationNumber()));
 	}
 }

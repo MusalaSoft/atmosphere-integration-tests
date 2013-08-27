@@ -12,6 +12,7 @@ import com.musala.atmosphere.agent.devicewrapper.BatteryRelatedMethodsTest;
 import com.musala.atmosphere.agent.devicewrapper.DeviceAcceleratoinTest;
 import com.musala.atmosphere.agent.devicewrapper.DeviceOrientationTest;
 import com.musala.atmosphere.agent.devicewrapper.GetUiXmlTest;
+import com.musala.atmosphere.agent.devicewrapper.ScreenOrientationTest;
 import com.musala.atmosphere.client.builder.BuilderDeviceSelectionIntegrationTest;
 import com.musala.atmosphere.client.device.DeviceInstallApkTest;
 import com.musala.atmosphere.client.device.InputTextTest;
@@ -31,10 +32,10 @@ import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({AirplaneModeTest.class, DeviceOrientationTest.class, DeviceAcceleratoinTest.class, InputTextTest.class,
-		PoolEventHandlerTest.class, BatteryRelatedMethodsTest.class, TapTest.class, LockUnlockTest.class,
-		StartActivityTest.class, BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class,
-		DeviceInstallApkTest.class})
+@SuiteClasses({AirplaneModeTest.class, DeviceOrientationTest.class, DeviceAcceleratoinTest.class,
+		ScreenOrientationTest.class, InputTextTest.class, PoolEventHandlerTest.class, BatteryRelatedMethodsTest.class,
+		TapTest.class, LockUnlockTest.class, StartActivityTest.class, BuilderDeviceSelectionIntegrationTest.class,
+		GetUiXmlTest.class, DeviceInstallApkTest.class})
 public class AtmosphereIntegrationTestsSuite
 {
 	private final static int SERVER_MANAGER_RMI_PORT = 2099;
