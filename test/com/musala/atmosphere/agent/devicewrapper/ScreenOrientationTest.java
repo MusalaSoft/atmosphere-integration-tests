@@ -23,31 +23,47 @@ public class ScreenOrientationTest extends BaseIntegrationTest
 	}
 
 	@Test
-	public void testAutoRotationSetting() throws Exception
+	public void testSettingAutoRotationOn() throws Exception
 	{
 		testDevice.setAutoRotation(false);
 		assertAutoRotationOff("Auto ratation is not off.");
+	}
 
+	@Test
+	public void testSettingAutoRotationOff() throws Exception
+	{
 		testDevice.setAutoRotation(true);
 		assertAutoRotationOn("Auto ratation is not on.");
 	}
 
 	@Test
-	public void testScreenOrientationSetting() throws Exception
+	public void testSettingScreenOrientationPortrait() throws Exception
 	{
-		testDevice.setScreenOrientation(ScreenOrientation.LANDSCAPE);
-		assertScreenOrientation("Screen rotation expected to be landscape", ScreenOrientation.LANDSCAPE);
-
 		testDevice.setScreenOrientation(ScreenOrientation.PORTRAIT);
 		assertScreenOrientation("Screen rotation expected to be portrait", ScreenOrientation.PORTRAIT);
+	}
 
-		testDevice.setScreenOrientation(ScreenOrientation.UPSIDE_DOWN_LANDSCAPE);
-		assertScreenOrientation("Screen rotation expected to be upside down landscape",
-								ScreenOrientation.UPSIDE_DOWN_LANDSCAPE);
-
+	@Test
+	public void testSettingScreenOrientationUpsideDownPortrait() throws Exception
+	{
 		testDevice.setScreenOrientation(ScreenOrientation.UPSIDE_DOWN_PORTRAIT);
 		assertScreenOrientation("Screen rotation expected to be upside down portrait",
 								ScreenOrientation.UPSIDE_DOWN_PORTRAIT);
+	}
+
+	@Test
+	public void testSettingScreenOrientationLandscape() throws Exception
+	{
+		testDevice.setScreenOrientation(ScreenOrientation.LANDSCAPE);
+		assertScreenOrientation("Screen rotation expected to be landscape", ScreenOrientation.LANDSCAPE);
+	}
+
+	@Test
+	public void testSettingScreenOrientationUpsideDown() throws Exception
+	{
+		testDevice.setScreenOrientation(ScreenOrientation.UPSIDE_DOWN_LANDSCAPE);
+		assertScreenOrientation("Screen rotation expected to be upside down landscape",
+								ScreenOrientation.UPSIDE_DOWN_LANDSCAPE);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)

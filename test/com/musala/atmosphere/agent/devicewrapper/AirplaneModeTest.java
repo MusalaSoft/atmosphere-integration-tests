@@ -21,11 +21,16 @@ public class AirplaneModeTest extends BaseIntegrationTest
 	}
 
 	@Test
-	public void testAirplaneMode() throws Exception
+	public void testSetAirplaneModeOn() throws Exception
 	{
 		// set airplane mode on
 		testDevice.setAirplaneMode(true);
 		assertInAirplaneMode("Airplane mode not set to the expected value.");
+	}
+
+	@Test
+	public void testSetAirplaneModeOff() throws Exception
+	{
 
 		// set airplane mode off
 		testDevice.setAirplaneMode(false);
