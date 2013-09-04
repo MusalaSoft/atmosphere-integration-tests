@@ -32,10 +32,11 @@ import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({AirplaneModeTest.class, DeviceOrientationTest.class, DeviceAcceleratoinTest.class,
-		ScreenOrientationTest.class, InputTextTest.class, PoolEventHandlerTest.class, BatteryRelatedMethodsTest.class,
-		TapTest.class, LockUnlockTest.class, StartActivityTest.class, BuilderDeviceSelectionIntegrationTest.class,
-		GetUiXmlTest.class, DeviceInstallApkTest.class})
+// @SuiteClasses({AirplaneModeTest.class, DeviceOrientationTest.class, DeviceAcceleratoinTest.class,
+// ScreenOrientationTest.class, InputTextTest.class, PoolEventHandlerTest.class, BatteryRelatedMethodsTest.class,
+// TapTest.class, LockUnlockTest.class, StartActivityTest.class, BuilderDeviceSelectionIntegrationTest.class,
+// GetUiXmlTest.class, DeviceInstallApkTest.class})
+@SuiteClasses({BuilderDeviceSelectionIntegrationTest.class})
 public class AtmosphereIntegrationTestsSuite
 {
 	private final static int SERVER_MANAGER_RMI_PORT = 2099;

@@ -1,12 +1,17 @@
 package com.musala.atmosphere.client.builder;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.NoSuchElementException;
 
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -37,13 +42,17 @@ public class BuilderDeviceSelectionIntegrationTest
 
 	private final static String DEVICE1_SN = "mockdevice1";
 
+	private final static String DEVICE1_MODEL = "awesomemockdevice1";
+
 	private final static String DEVICE2_SN = "mockdevice2";
+
+	private final static String DEVICE2_MODEL = "awesomemockdevice2";
 
 	private final static String DEVICE3_SN = "mockdevice3";
 
-	private final static String DEVICE4_SN = "mockdevice4";
+	private final static String DEVICE3_MODEL = "awesomemockdevice3";
 
-	private final static String DEVICE5_SN = "mockdevice5";
+	private Builder builder;
 
 	@Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT)
 	static class GettingDeviceSampleClass
@@ -63,52 +72,35 @@ public class BuilderDeviceSelectionIntegrationTest
 		IWrapDevice mockedDeviceOne = mock(IWrapDevice.class);
 		DeviceInformation mockedDeviceInfoOne = new DeviceInformation();
 		mockedDeviceInfoOne.setSerialNumber(DEVICE1_SN);
-		mockedDeviceInfoOne.setOs("4.2.1");
+		mockedDeviceInfoOne.setModel(DEVICE1_MODEL);
+		mockedDeviceInfoOne.setOs("Android 4.2.1");
 		mockedDeviceInfoOne.setEmulator(true);
-		mockedDeviceInfoOne.setRam(128);
-		mockedDeviceInfoOne.setResolution(new Pair<>(600, 800));
-		mockedDeviceInfoOne.setDpi(120);
+		mockedDeviceInfoOne.setRam(511);
+		mockedDeviceInfoOne.setResolution(new Pair<>(801, 601));
+		mockedDeviceInfoOne.setDpi(121);
 		when(mockedDeviceOne.getDeviceInformation()).thenReturn(mockedDeviceInfoOne);
 
 		IWrapDevice mockedDeviceTwo = mock(IWrapDevice.class);
 		DeviceInformation mockedDeviceInfoTwo = new DeviceInformation();
 		mockedDeviceInfoTwo.setSerialNumber(DEVICE2_SN);
-		mockedDeviceInfoTwo.setOs("4.1");
+		mockedDeviceInfoTwo.setModel(DEVICE2_MODEL);
+		mockedDeviceInfoTwo.setOs("Android 4.2.2");
 		mockedDeviceInfoTwo.setEmulator(true);
-		mockedDeviceInfoTwo.setRam(256);
-		mockedDeviceInfoTwo.setResolution(new Pair<>(200, 200));
-		mockedDeviceInfoTwo.setDpi(240);
+		mockedDeviceInfoTwo.setRam(512);
+		mockedDeviceInfoTwo.setResolution(new Pair<>(802, 602));
+		mockedDeviceInfoTwo.setDpi(122);
 		when(mockedDeviceTwo.getDeviceInformation()).thenReturn(mockedDeviceInfoTwo);
 
 		IWrapDevice mockedDeviceThree = mock(IWrapDevice.class);
 		DeviceInformation mockedDeviceInfoThree = new DeviceInformation();
 		mockedDeviceInfoThree.setSerialNumber(DEVICE3_SN);
-		mockedDeviceInfoThree.setOs("4.0.2");
+		mockedDeviceInfoThree.setModel(DEVICE3_MODEL);
+		mockedDeviceInfoThree.setOs("Android 4.2.3");
 		mockedDeviceInfoThree.setEmulator(false);
-		mockedDeviceInfoThree.setRam(256);
-		mockedDeviceInfoThree.setResolution(new Pair<>(400, 500));
-		mockedDeviceInfoThree.setDpi(80);
+		mockedDeviceInfoThree.setRam(513);
+		mockedDeviceInfoThree.setResolution(new Pair<>(803, 603));
+		mockedDeviceInfoThree.setDpi(123);
 		when(mockedDeviceThree.getDeviceInformation()).thenReturn(mockedDeviceInfoThree);
-
-		IWrapDevice mockedDeviceFour = mock(IWrapDevice.class);
-		DeviceInformation mockedDeviceInfoFour = new DeviceInformation();
-		mockedDeviceInfoFour.setSerialNumber(DEVICE4_SN);
-		mockedDeviceInfoFour.setOs("4.0.1");
-		mockedDeviceInfoFour.setEmulator(false);
-		mockedDeviceInfoFour.setRam(512);
-		mockedDeviceInfoFour.setResolution(new Pair<>(200, 200));
-		mockedDeviceInfoFour.setDpi(180);
-		when(mockedDeviceFour.getDeviceInformation()).thenReturn(mockedDeviceInfoFour);
-
-		IWrapDevice mockedDeviceFive = mock(IWrapDevice.class);
-		DeviceInformation mockedDeviceInfoFive = new DeviceInformation();
-		mockedDeviceInfoFive.setSerialNumber(DEVICE5_SN);
-		mockedDeviceInfoFive.setOs("4.2.1");
-		mockedDeviceInfoFive.setEmulator(true);
-		mockedDeviceInfoFive.setRam(512);
-		mockedDeviceInfoFive.setResolution(new Pair<>(200, 200));
-		mockedDeviceInfoFive.setDpi(180);
-		when(mockedDeviceFive.getDeviceInformation()).thenReturn(mockedDeviceInfoFive);
 
 		ServerManager serverManager = AtmosphereIntegrationTestsSuite.getServerIntegrationEnvironmentCreator()
 																		.getServerManager();
@@ -120,10 +112,18 @@ public class BuilderDeviceSelectionIntegrationTest
 		poolManager.addDevice(DEVICE2_SN, mockedDeviceTwo, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
 
 		poolManager.addDevice(DEVICE3_SN, mockedDeviceThree, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
+	}
 
-		poolManager.addDevice(DEVICE4_SN, mockedDeviceFour, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
+	@Before
+	public void setUpBeforeEachTest()
+	{
+		builder = GettingDeviceSampleClass.getBuilderInstance();
+	}
 
-		poolManager.addDevice(DEVICE5_SN, mockedDeviceFive, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
+	@After
+	public void tearDownAfterEachTest()
+	{
+		builder.releaseAllDevices();
 	}
 
 	@AfterClass
@@ -135,197 +135,234 @@ public class BuilderDeviceSelectionIntegrationTest
 		poolManager.refreshDevice(DEVICE1_SN, AGENT_ID, false);
 		poolManager.refreshDevice(DEVICE2_SN, AGENT_ID, false);
 		poolManager.refreshDevice(DEVICE3_SN, AGENT_ID, false);
-		poolManager.refreshDevice(DEVICE4_SN, AGENT_ID, false);
-		poolManager.refreshDevice(DEVICE5_SN, AGENT_ID, false);
-	}
-
-	private boolean parametersMatchInformation(	DeviceParameters wantedDeviceParameters,
-												com.musala.atmosphere.client.DeviceInformation realDeviceInformation)
-	{
-
-		DeviceType wantedDeviceType = wantedDeviceParameters.getDeviceType();
-		if (wantedDeviceType != DeviceParameters.DEVICE_TYPE_NO_PREFERENCE)
-		{
-			boolean isDeviceEmulator = realDeviceInformation.isEmulator();
-
-			if (wantedDeviceType == DeviceType.EMULATOR_ONLY && !isDeviceEmulator)
-			{
-				return false;
-			}
-
-			if (wantedDeviceType == DeviceType.DEVICE_ONLY && isDeviceEmulator)
-			{
-				return false;
-			}
-		}
-
-		if (wantedDeviceParameters.getDpi() != DeviceParameters.DPI_NO_PREFERENCE)
-		{
-			int realDeviceDpi = realDeviceInformation.getDpi();
-			int wantedDeviceDpi = wantedDeviceParameters.getDpi();
-			if (realDeviceDpi != wantedDeviceDpi)
-			{
-				return false;
-			}
-		}
-		if (wantedDeviceParameters.getOs() != DeviceParameters.DEVICE_OS_NO_PREFERENCE)
-		{
-			if (!wantedDeviceParameters.getOs().toString().equals(realDeviceInformation.getOS()))
-			{
-				return false;
-			}
-		}
-
-		if (wantedDeviceParameters.getRam() != DeviceParameters.RAM_NO_PREFERENCE)
-		{
-			if (wantedDeviceParameters.getRam() != realDeviceInformation.getRam())
-			{
-				return false;
-			}
-		}
-
-		boolean hasResolutionHeightPreference = (wantedDeviceParameters.getResolutionHeight() == DeviceParameters.RESOLUTION_HEIGHT_NO_PREFERENCE);
-		boolean hasResolutionWidthPreference = (wantedDeviceParameters.getResolutionWidth() != DeviceParameters.RESOLUTION_WIDTH_NO_PREFERENCE);
-
-		if (!hasResolutionHeightPreference && !hasResolutionWidthPreference)
-		{
-			Integer resolutionHeight = realDeviceInformation.getResolution().getKey();
-			Integer resolutionWidth = realDeviceInformation.getResolution().getValue();
-
-			boolean hasResolutionHeightsMatch = wantedDeviceParameters.getResolutionHeight() == resolutionHeight;
-			boolean hasResolutionWidthMatch = wantedDeviceParameters.getResolutionWidth() == resolutionWidth;
-
-			if (!hasResolutionHeightsMatch && !hasResolutionWidthMatch)
-			{
-				return false;
-			}
-		}
-		return true;
 	}
 
 	@Test
-	public void getMockedDeviceOneTest()
+	public void testGetDeviceByNoPrefference()
 	{
-
 		DeviceParameters parameters = new DeviceParameters();
-		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
-
-		parameters.setRam(128);
-		parameters.setDpi(120);
 
 		Device receivedDevice = builder.getDevice(parameters);
-		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
 
-		assertTrue(	"Wanted device and returned device parameters don't match.",
-					parametersMatchInformation(parameters, information));
-
-		builder.releaseDevice(receivedDevice);
+		assertNotNull("Got null device.", receivedDevice);
 	}
 
 	@Test
-	public void getMockedDeviceTwoTest()
+	public void testGetDeviceBySerialNumber()
 	{
-		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 		DeviceParameters parameters = new DeviceParameters();
-		parameters.setDeviceType(DeviceType.EMULATOR_PREFERRED);
-		parameters.setOs(DeviceOs.JELLY_BEAN_4_1);
-		parameters.setRam(256);
+
+		String wantedSerialNumber = DEVICE1_SN;
+		parameters.setSerialNumber(wantedSerialNumber);
 
 		Device receivedDevice = builder.getDevice(parameters);
+
 		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		String realSerialNumber = information.getSerialNumber();
 
-		assertTrue(	"Wanted device and returned device parameters don't match.",
-					parametersMatchInformation(parameters, information));
-
-		builder.releaseDevice(receivedDevice);
-	}
-
-	@Test
-	public void getMockedDeviceThreeTest()
-	{
-
-		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
-		DeviceParameters parameters = new DeviceParameters();
-		parameters.setDpi(80);
-		parameters.setRam(256);
-
-		Device receivedDevice = builder.getDevice(parameters);
-		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
-
-		assertTrue(	"Wanted device and returned device parameters don't match.",
-					parametersMatchInformation(parameters, information));
-
-		builder.releaseDevice(receivedDevice);
-	}
-
-	@Test
-	public void getMockedDeviceFourTest()
-	{
-		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
-		DeviceParameters parameters = new DeviceParameters();
-		parameters.setDeviceType(DeviceType.DEVICE_ONLY);
-		parameters.setRam(512);
-
-		Device receivedDevice = builder.getDevice(parameters);
-		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
-
-		assertTrue(	"Wanted device and returned device parameters don't match.",
-					parametersMatchInformation(parameters, information));
-
-		builder.releaseDevice(receivedDevice);
-	}
-
-	@Test
-	public void getMockedDeviceFiveTest()
-	{
-		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
-
-		DeviceParameters parameters = new DeviceParameters();
-		parameters.setDeviceType(DeviceType.DEVICE_PREFERRED);
-		parameters.setRam(512);
-		parameters.setResolutionHeight(200);
-		parameters.setResolutionWidth(200);
-		parameters.setDpi(180);
-		parameters.setOs(DeviceOs.JELLY_BEAN_MR1_4_2_1);
-
-		Device receivedDevice = builder.getDevice(parameters);
-		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
-
-		assertTrue(	"Wanted device and returned device parameters don't match.",
-					parametersMatchInformation(parameters, information));
-
-		builder.releaseDevice(receivedDevice);
-	}
-
-	@Test
-	public void getMockedDeviceFourOrFiveTest()
-	{
-		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
-		DeviceParameters parameters = new DeviceParameters();
-		parameters.setRam(512);
-
-		Device receivedDevice = builder.getDevice(parameters);
-		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
-
-		assertTrue(	"Wanted device and returned device parameters don't match.",
-					parametersMatchInformation(parameters, information));
-
-		builder.releaseDevice(receivedDevice);
+		assertEquals(	"Device serial number does not match requested serial number.",
+						wantedSerialNumber,
+						realSerialNumber);
 	}
 
 	@Test(expected = NoSuchElementException.class)
-	public void getNoneExistingDeviceTest()
+	public void testGetDeviceByNonexistingSerialNumber()
 	{
-		Builder builder = GettingDeviceSampleClass.getBuilderInstance();
 		DeviceParameters parameters = new DeviceParameters();
-		parameters.setRam(9999);
+
+		parameters.setSerialNumber("nonexisting_serial_number");
+
+		builder.getDevice(parameters);
+	}
+
+	@Test
+	public void testGetEmulatorDevice()
+	{
+		DeviceParameters parameters = new DeviceParameters();
+
+		parameters.setDeviceType(DeviceType.EMULATOR_ONLY);
 
 		Device receivedDevice = builder.getDevice(parameters);
 		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		boolean isDeviceEmulator = information.isEmulator();
 
-		assertTrue(	"Wanted device and returned device parameters don't match.",
-					parametersMatchInformation(parameters, information));
+		assertTrue("Device is not an emulator.", isDeviceEmulator);
+	}
 
-		builder.releaseDevice(receivedDevice);
+	@Test
+	public void testGetRealDevice()
+	{
+		DeviceParameters parameters = new DeviceParameters();
+
+		parameters.setDeviceType(DeviceType.DEVICE_ONLY);
+
+		Device receivedDevice = builder.getDevice(parameters);
+
+		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		boolean isDeviceEmulator = information.isEmulator();
+
+		assertFalse("Device is not real device.", isDeviceEmulator);
+	}
+
+	@Test
+	public void testGetDeviceByOperatingSystem()
+	{
+		DeviceParameters parameters = new DeviceParameters();
+
+		DeviceOs wantedOS = DeviceOs.JELLY_BEAN_MR1_4_2_2;
+		parameters.setOs(wantedOS);
+
+		Device receivedDevice = builder.getDevice(parameters);
+
+		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		String realOS = information.getOS();
+
+		assertEquals("Device OS does not match requested OS.", wantedOS.toString(), realOS);
+	}
+
+	// FIXME If a test device with OS DeviceOs.JELLY_BEAN_4_1 is connected to the server this test will fail.
+	@Test(expected = NoSuchElementException.class)
+	public void testGetDeviceByNonexistingOperatingSystem()
+	{
+		DeviceParameters parameters = new DeviceParameters();
+
+		parameters.setOs(DeviceOs.JELLY_BEAN_4_1);
+
+		builder.getDevice(parameters);
+	}
+
+	@Test
+	public void testGetDeviceByModel()
+	{
+		DeviceParameters parameters = new DeviceParameters();
+
+		String wantedModel = DEVICE2_MODEL;
+		parameters.setModel(wantedModel);
+
+		Device receivedDevice = builder.getDevice(parameters);
+
+		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		String realModel = information.getModel();
+
+		assertEquals("Device model does not match requested model.", wantedModel, realModel);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testGetDeviceByNonexistingModel()
+	{
+		DeviceParameters parameters = new DeviceParameters();
+
+		parameters.setModel("nonexisting_model");
+
+		builder.getDevice(parameters);
+	}
+
+	@Test
+	public void testGetDeviceByRAM()
+	{
+		DeviceParameters parameters = new DeviceParameters();
+
+		int wantedRAM = 513;
+		parameters.setRam(wantedRAM);
+
+		Device receivedDevice = builder.getDevice(parameters);
+
+		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		int realRAM = information.getRam();
+
+		assertEquals("Device RAM does not match requested RAM.", wantedRAM, realRAM);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testGetDeviceByNonexistingRAM()
+	{
+		DeviceParameters parameters = new DeviceParameters();
+
+		parameters.setRam(999);
+
+		builder.getDevice(parameters);
+	}
+
+	@Test
+	public void testGetDeviceByResolutionWidth()
+	{
+		DeviceParameters parameters = new DeviceParameters();
+
+		int wantedResolutionWidth = 601;
+		parameters.setResolutionWidth(wantedResolutionWidth);
+
+		Device receivedDevice = builder.getDevice(parameters);
+
+		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		int realResolutionWidth = information.getResolution().getValue();
+
+		assertEquals(	"Device resolution width does not match requested resolution width.",
+						wantedResolutionWidth,
+						realResolutionWidth);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testGetDeviceByNonexistingResolutionWidth()
+	{
+		DeviceParameters parameters = new DeviceParameters();
+
+		parameters.setResolutionWidth(999);
+
+		builder.getDevice(parameters);
+	}
+
+	@Test
+	public void testGetDeviceByResolutionHeight()
+	{
+		DeviceParameters parameters = new DeviceParameters();
+
+		int wantedResolutionHeight = 801;
+		parameters.setResolutionHeight(wantedResolutionHeight);
+
+		Device receivedDevice = builder.getDevice(parameters);
+
+		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		int realResolutionHeight = information.getResolution().getKey();
+
+		assertEquals(	"Device resolution width does not match requested resolution height.",
+						wantedResolutionHeight,
+						realResolutionHeight);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testGetDeviceByNonexistingResolutionHeight()
+	{
+		DeviceParameters parameters = new DeviceParameters();
+
+		parameters.setResolutionHeight(999);
+
+		builder.getDevice(parameters);
+	}
+
+	@Test
+	public void testGetDeviceByDPI()
+	{
+		DeviceParameters parameters = new DeviceParameters();
+
+		int wantedDPI = 122;
+		parameters.setDpi(wantedDPI);
+
+		Device receivedDevice = builder.getDevice(parameters);
+
+		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		int realDPI = information.getDpi();
+
+		assertEquals("Device DPI does not match requested DPI.", wantedDPI, realDPI);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testGetDeviceByNonexistingDPI()
+	{
+
+		DeviceParameters parameters = new DeviceParameters();
+
+		parameters.setDpi(999);
+
+		builder.getDevice(parameters);
 	}
 }
