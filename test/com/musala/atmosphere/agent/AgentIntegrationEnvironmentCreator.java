@@ -42,7 +42,7 @@ public class AgentIntegrationEnvironmentCreator
 																										// publication
 																										// checks
 
-	private static final String PATH_TO_ADB = AgentPropertiesLoader.getPathToADB();
+	private static final String PATH_TO_ADB = AgentPropertiesLoader.getADBPath();
 
 	private AgentManager agentManager;
 
