@@ -30,7 +30,7 @@ public class TapTest extends BaseIntegrationTest
 	public static void setUp()
 	{
 		initTestDevice(new DeviceParameters());
-		installValidatorApp();
+		installValidatorApplication();
 	}
 
 	@Test

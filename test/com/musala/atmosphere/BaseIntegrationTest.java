@@ -24,7 +24,7 @@ public class BaseIntegrationTest
 
 	protected final static String PATH_TO_APK_DIR = "./";
 
-	protected final static String PATH_TO_APK = PATH_TO_APK_DIR + NAME_OF_APK_FILE;
+	final static String PATH_TO_APK = PATH_TO_APK_DIR + NAME_OF_APK_FILE;
 
 	protected final static String VALIDATOR_APP_PACKAGE = "com.musala.atmosphere.ondevice.validator";
 
@@ -44,33 +44,37 @@ public class BaseIntegrationTest
 		assertNotNull("Could not get a device.", testDevice);
 	}
 
-	protected static void installValidatorApp()
-	{
-		assertNotNull("There is no allocated test device.", testDevice);
-		testDevice.installAPK(PATH_TO_APK);
-		setTestDevice(testDevice);
-	}
-
 	@Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT)
 	private static class GettingBuilderClass
 	{
 		public GettingBuilderClass()
 		{
 		}
-
+		
 		public Builder getBuilder()
 		{
 			Builder classDeviceBuilder = Builder.getInstance();
 			return classDeviceBuilder;
 		}
 	}
+	
+	protected static void installValidatorApplication()
+	{
+		assertNotNull("There is no allocated test device.", testDevice);
+		
+		testDevice.installAPK(PATH_TO_APK);
+		setTestDevice(testDevice);
+	}
+
 
 	@AfterClass
 	public static void releaseDevice()
 	{
 		GettingBuilderClass builderGet = new GettingBuilderClass();
 		Builder deviceBuilder = builderGet.getBuilder();
+		
 		deviceBuilder.releaseDevice(testDevice);
+		
 		testDevice = null;
 	}
 }

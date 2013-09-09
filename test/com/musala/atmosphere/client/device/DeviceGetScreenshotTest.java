@@ -35,11 +35,13 @@ public class DeviceGetScreenshotTest extends BaseIntegrationTest
 		testDevice.unlock();
 		// getting screenshot without dumping it to file
 		byte[] screenshot = testDevice.getScreenshot();
+		
 		assertNotNull("Getting screenshot returned 'null'", screenshot);
 
 		// getting screenshot with dumping it to file
 		testDevice.getScreenshot(PATH_TO_SCREENSHOT);
 		File dumpedScreenshot = new File(PATH_TO_SCREENSHOT);
+		
 		assertTrue("Getting screenshot failed!", dumpedScreenshot.exists());
 	}
 

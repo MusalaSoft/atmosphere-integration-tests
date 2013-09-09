@@ -31,19 +31,6 @@ import com.musala.atmosphere.commons.sa.exceptions.NotPossibleForDeviceException
  */
 public class AgentIntegrationEnvironmentCreator
 {
-	private static final int EMULATOR_CREATION_WAIT_TIMEOUT = AgentPropertiesLoader.getEmulatorCreationWaitTimeout(); // 1
-																														// minute
-
-	private static final int EMULATOR_CREATION_WAIT = AgentPropertiesLoader.getEmulatorCreationWait(); // 100
-																										// ms
-																										// between
-																										// new
-																										// wrapper
-																										// publication
-																										// checks
-
-	private static final String PATH_TO_ADB = AgentPropertiesLoader.getADBPath();
-
 	private AgentManager agentManager;
 
 	private IAgentManager remoteAgentManager;
@@ -66,7 +53,7 @@ public class AgentIntegrationEnvironmentCreator
 			ADBridgeFailException,
 			NotBoundException
 	{
-		agentManager = new AgentManager(PATH_TO_ADB, rmiPort);
+		agentManager = new AgentManager(AgentPropertiesLoader.getADBPath(), rmiPort);
 
 		remoteAgentRegistry = LocateRegistry.getRegistry("localhost", rmiPort);
 		remoteAgentManager = (IAgentManager) remoteAgentRegistry.lookup(RmiStringConstants.AGENT_MANAGER.toString());
@@ -183,7 +170,7 @@ public class AgentIntegrationEnvironmentCreator
 		}
 		throw new IllegalStateException("No emulator devices are present on the agent (current machine).");
 	}
-
+	
 	/**
 	 * Creates and starts an emulator with specified parameters.
 	 * 
@@ -194,22 +181,27 @@ public class AgentIntegrationEnvironmentCreator
 	 * @throws IOException
 	 */
 	public IWrapDevice startEmulator(DeviceParameters emulatorCreationParameters)
-		throws NotBoundException,
-			IOException,
+		throws IOException,
+			NotBoundException,
 			TimeoutException
 	{
 		List<String> wrappersBeforeEmulatorCreation = remoteAgentManager.getAllDeviceWrappers();
 
 		remoteAgentManager.createAndStartEmulator(emulatorCreationParameters);
 
-		for (int i = 0; i < EMULATOR_CREATION_WAIT_TIMEOUT / EMULATOR_CREATION_WAIT; i++)
+		int timeout = AgentPropertiesLoader.getEmulatorCreationWaitTimeout();
+
+		try
 		{
-			List<String> wrapperIdentifiers = remoteAgentManager.getAllDeviceWrappers();
-			for (String wrapperId : wrapperIdentifiers)
+			// FIXME This method should be moved in the EmulatorManager
+			do
 			{
-				if (!wrappersBeforeEmulatorCreation.contains(wrapperId))
+				LinkedList<String> currentWrappers = new LinkedList<String>(remoteAgentManager.getAllDeviceWrappers());
+				currentWrappers.removeAll(wrappersBeforeEmulatorCreation);
+
+				for (String currentWrapperId : currentWrappers)
 				{
-					IWrapDevice newDeviceWrapper = (IWrapDevice) remoteAgentRegistry.lookup(wrapperId);
+					IWrapDevice newDeviceWrapper = (IWrapDevice) remoteAgentRegistry.lookup(currentWrapperId);
 					DeviceInformation newDeviceInformation = newDeviceWrapper.getDeviceInformation();
 
 					if (newDeviceInformation.isEmulator())
@@ -217,22 +209,21 @@ public class AgentIntegrationEnvironmentCreator
 						// this must be our newly created emulator.
 						String createdEmulatorSerialNumber = newDeviceInformation.getSerialNumber();
 						createdEmulatorsSerialNumbers.add(createdEmulatorSerialNumber);
+
 						return newDeviceWrapper;
 					}
 				}
-			}
 
-			try
-			{
-				Thread.sleep(EMULATOR_CREATION_WAIT);
-			}
-			catch (InterruptedException e)
-			{
-				// sleep was interrupted. noone cares.
-			}
+				Thread.sleep(1000);
+				timeout -= 1000;
+			} while (timeout > 0);
 		}
-		throw new TimeoutException("Waiting for device to appear in the wrappers list timed out.");
+		catch (InterruptedException e)
+		{
+			// Sleep interupted. Doesn't reflect the logic.
+		}
 
+		throw new TimeoutException("Waiting for device to appear in the wrappers list timed out.");
 	}
 
 	/**
@@ -246,29 +237,33 @@ public class AgentIntegrationEnvironmentCreator
 	{
 		// Wait for the device to become ready
 		boolean deviceReady = false;
-		while (deviceReady == false)
+
+		while (!deviceReady)
 		{
 			try
 			{
 				Thread.sleep(100);
+
 				// TODO add a method in the IWrapDevice interface to do this a better way
 				// This will throw a CommandFailedException if the device is not ready
 				String response = deviceWrapper.executeShellCommand("ps .location.fused");
+
 				// The calendar will not be loaded until the graphical environment is loaded
 				// If the graphical environment is not loaded, naturally, we can not fetch ui xml
 				if (!response.contains("com.android.location.fused"))
 				{
 					continue;
 				}
+
 				deviceReady = true;
 			}
 			catch (CommandFailedException e)
 			{
-				// command could not be sent, so the device must be offline still
+				// command could not be sent, so the device must be still offline.
 			}
 			catch (InterruptedException e)
 			{
-				// sleep was interrupted. no one cares.
+				// Sleep was interrupted. No certain meening in this case.
 			}
 		}
 	}

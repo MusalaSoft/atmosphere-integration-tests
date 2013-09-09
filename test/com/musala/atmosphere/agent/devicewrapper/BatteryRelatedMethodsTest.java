@@ -1,8 +1,10 @@
 package com.musala.atmosphere.agent.devicewrapper;
 
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertBatteryLevel;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertBatteryNotLow;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertBatteryState;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertNotPowerConnected;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertPowerConnected;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,11 +20,14 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
  */
 public class BatteryRelatedMethodsTest extends BaseIntegrationTest
 {
+	private static final String BATTERY_STATUS_MESSAGE = "Battery status not set to the expected value.";
+
 	@BeforeClass
 	public static void setUp() throws Exception
 	{
 		initTestDevice(new DeviceParameters());
-		installValidatorApp();
+		installValidatorApplication();
+		
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
 		Thread.sleep(2000);
 	}
@@ -33,7 +38,9 @@ public class BatteryRelatedMethodsTest extends BaseIntegrationTest
 		// set battery level to 75
 		final int batteryLevel = 75;
 		testDevice.setBatteryLevel(batteryLevel);
+		
 		assertBatteryNotLow("Battery low flag not set as expected.");
+		assertBatteryLevel("Battery level is not as expected", batteryLevel);
 	}
 
 	@Test
@@ -41,44 +48,43 @@ public class BatteryRelatedMethodsTest extends BaseIntegrationTest
 	{
 		BatteryState batteryState;
 
-		// set battery state unknown
+		// battery state unknown
 		batteryState = BatteryState.UNKNOWN;
 		testDevice.setBatteryState(batteryState);
-		assertBatteryState("Battery status not set to the expected value.", BatteryState.UNKNOWN);
+		assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
 
-		// set battery state charging
+		// battery state charging
 		batteryState = BatteryState.CHARGING;
 		testDevice.setBatteryState(batteryState);
-		assertBatteryState("Battery status not set to the expected value.", BatteryState.CHARGING);
+		assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
 
-		// set battery state discharging
+		// battery state discharging
 		batteryState = BatteryState.DISCHARGING;
 		testDevice.setBatteryState(batteryState);
-		assertBatteryState("Battery status not set to the expected value.", BatteryState.DISCHARGING);
+		assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
 
-		// set battery state not_charging
+		// battery state not_charging
 		batteryState = BatteryState.NOT_CHARGING;
 		testDevice.setBatteryState(batteryState);
-		assertBatteryState("Battery status not set to the expected value.", BatteryState.NOT_CHARGING);
+		assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
 
-		// set battery state full
+		// battery state full
 		batteryState = BatteryState.FULL;
 		testDevice.setBatteryState(batteryState);
-		assertBatteryState("Battery status not set to the expected value.", BatteryState.FULL);
+		assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
 	}
 
 	@Test
 	public void testSetPowerState() throws Exception
 	{
 		// set device power connection off
-		boolean powerState = false;
-		testDevice.setPowerState(powerState);
+		testDevice.setPowerState(false);
 		Thread.sleep(1000);
+		
 		assertNotPowerConnected("Power state not set to the expected value.");
 
-		// set device power connection on
-		// powerState = true;
-		// testDevice.setPowerState(powerState);
-		// assertPowerConnected("Power state not set to the expected value.");
+		 // set device power connection on
+		 testDevice.setPowerState(true);
+		 assertPowerConnected("Power state not set to the expected value.");
 	}
 }

@@ -15,7 +15,7 @@ public class AirplaneModeTest extends BaseIntegrationTest
 	public static void setUp() throws Exception
 	{
 		initTestDevice(new DeviceParameters());
-		installValidatorApp();
+		installValidatorApplication();
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY, true);
 		Thread.sleep(1000);
 	}

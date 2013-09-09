@@ -27,7 +27,7 @@ public class LockUnlockTest extends BaseIntegrationTest
 	public static void setUp() throws Exception
 	{
 		initTestDevice(new DeviceParameters());
-		installValidatorApp();
+		installValidatorApplication();
 	}
 
 	@Test

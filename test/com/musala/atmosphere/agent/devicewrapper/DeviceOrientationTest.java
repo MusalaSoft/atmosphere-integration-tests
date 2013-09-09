@@ -30,7 +30,7 @@ public class DeviceOrientationTest extends BaseIntegrationTest
 		DeviceParameters emulatorTestDevice = new DeviceParameters();
 		emulatorTestDevice.setDeviceType(DeviceType.EMULATOR_ONLY);
 		initTestDevice(emulatorTestDevice);
-		installValidatorApp();
+		installValidatorApplication();
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ORIENTATION_ACTIVITY, true);
 		Thread.sleep(1000);
 	}

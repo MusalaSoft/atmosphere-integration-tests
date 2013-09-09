@@ -1,6 +1,8 @@
 package com.musala.atmosphere.agent.devicewrapper;
 
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.*;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertAutoRotationOff;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertAutoRotationOn;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertScreenOrientation;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -17,7 +19,7 @@ public class ScreenOrientationTest extends BaseIntegrationTest
 
 		DeviceParameters testDeviceParams = new DeviceParameters();
 		initTestDevice(testDeviceParams);
-		installValidatorApp();
+		installValidatorApplication();
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY, true);
 		Thread.sleep(1000);
 	}

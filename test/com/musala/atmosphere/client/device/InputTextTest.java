@@ -26,7 +26,7 @@ public class InputTextTest extends BaseIntegrationTest
 	@Test
 	public void inputTextTestOne() throws Exception
 	{
-		installValidatorApp();
+		installValidatorApplication();
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY, true);
 		Thread.sleep(1000);
 		String textToInput = "Hi! Кирилица. €%@$§№%()456*/0,.";
@@ -39,7 +39,7 @@ public class InputTextTest extends BaseIntegrationTest
 	public void inputTextTestTwo() throws Exception
 	{
 		testDevice.pressButton(HardwareButton.HOME);
-		installValidatorApp();
+		installValidatorApplication();
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY, true);
 		Thread.sleep(1000);
 		String textToInput = "Letters."; // Text to input.

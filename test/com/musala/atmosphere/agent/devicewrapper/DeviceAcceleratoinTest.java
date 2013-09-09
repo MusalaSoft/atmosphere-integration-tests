@@ -25,7 +25,7 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 		DeviceParameters emulatorTestDevice = new DeviceParameters();
 		emulatorTestDevice.setDeviceType(DeviceType.EMULATOR_ONLY);
 		initTestDevice(emulatorTestDevice);
-		installValidatorApp();
+		installValidatorApplication();
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACCELERATION_ACTIVITY, true);
 		Thread.sleep(1000);
 	}
