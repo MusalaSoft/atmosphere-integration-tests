@@ -48,7 +48,7 @@ public class PoolEventHandlerTest
 		AgentManager underlyingAgentManager = agentEnvironment.getAgentManagerInstance();
 
 		ServerManager serverManager = serverEnvironment.getServerManager();
-		poolManager = PoolManager.getInstance(serverManager);
+		poolManager = PoolManager.getInstance();
 
 		Field deviceChangeListenerField = underlyingAgentManager.getClass()
 																.getDeclaredField("currentDeviceChangeListener");
@@ -88,9 +88,9 @@ public class PoolEventHandlerTest
 		when(fakeDevice.isOnline()).thenReturn(false);
 		when(fakeDevice.isOffline()).thenReturn(true);
 
-		int poolItemsBeforeAdd = poolManager.getAllDeviceProxyIds().size();
+		int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
-		int poolItemsAfterAdd = poolManager.getAllDeviceProxyIds().size();
+		int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		assertEquals(	"Connecting an offline device resulted in device connect event.",
 						poolItemsBeforeAdd,
 						poolItemsAfterAdd);
@@ -105,9 +105,9 @@ public class PoolEventHandlerTest
 		when(fakeDevice.isOnline()).thenReturn(true);
 		when(fakeDevice.isOffline()).thenReturn(false);
 
-		int poolItemsBeforeAdd = poolManager.getAllDeviceProxyIds().size();
+		int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
-		int poolItemsAfterAdd = poolManager.getAllDeviceProxyIds().size();
+		int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 
 		assertEquals(	"Connecting an online device did not result in device connect event.",
 						poolItemsBeforeAdd + 1,
@@ -123,16 +123,16 @@ public class PoolEventHandlerTest
 		when(fakeDevice.isOnline()).thenReturn(true);
 		when(fakeDevice.isOffline()).thenReturn(false);
 
-		int poolItemsBeforeAdd = poolManager.getAllDeviceProxyIds().size();
+		int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
-		int poolItemsAfterAdd = poolManager.getAllDeviceProxyIds().size();
+		int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		assertEquals(	"Connecting an online device did not result in device connect event.",
 						poolItemsBeforeAdd + 1,
 						poolItemsAfterAdd);
 
-		int poolItemsBeforeRemove = poolManager.getAllDeviceProxyIds().size();
+		int poolItemsBeforeRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
-		int poolItemsAfterRemove = poolManager.getAllDeviceProxyIds().size();
+		int poolItemsAfterRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		assertEquals(	"Disconnecting an online device did not result in device disconnect event.",
 						poolItemsBeforeRemove - 1,
 						poolItemsAfterRemove);
@@ -147,16 +147,16 @@ public class PoolEventHandlerTest
 		when(fakeDevice.isOnline()).thenReturn(false);
 		when(fakeDevice.isOffline()).thenReturn(true);
 
-		int poolItemsBeforeAdd = poolManager.getAllDeviceProxyIds().size();
+		int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
-		int poolItemsAfterAdd = poolManager.getAllDeviceProxyIds().size();
+		int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		assertEquals(	"Connecting an offline device resulted in device connect event.",
 						poolItemsBeforeAdd,
 						poolItemsAfterAdd);
 
-		int poolItemsBeforeRemove = poolManager.getAllDeviceProxyIds().size();
+		int poolItemsBeforeRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
-		int poolItemsAfterRemove = poolManager.getAllDeviceProxyIds().size();
+		int poolItemsAfterRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		assertEquals(	"Disconnecting an offline device resulted in device disconnect event.",
 						poolItemsBeforeRemove,
 						poolItemsAfterRemove);

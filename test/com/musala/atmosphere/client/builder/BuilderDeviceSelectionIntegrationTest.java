@@ -105,7 +105,7 @@ public class BuilderDeviceSelectionIntegrationTest
 		ServerManager serverManager = AtmosphereIntegrationTestsSuite.getServerIntegrationEnvironmentCreator()
 																		.getServerManager();
 
-		PoolManager poolManager = PoolManager.getInstance(serverManager);
+		PoolManager poolManager = PoolManager.getInstance();
 
 		poolManager.addDevice(DEVICE1_SN, mockedDeviceOne, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
 
@@ -131,7 +131,7 @@ public class BuilderDeviceSelectionIntegrationTest
 	{
 		ServerManager serverManager = AtmosphereIntegrationTestsSuite.getServerIntegrationEnvironmentCreator()
 																		.getServerManager();
-		PoolManager poolManager = PoolManager.getInstance(serverManager);
+		PoolManager poolManager = PoolManager.getInstance();
 		poolManager.refreshDevice(DEVICE1_SN, AGENT_ID, false);
 		poolManager.refreshDevice(DEVICE2_SN, AGENT_ID, false);
 		poolManager.refreshDevice(DEVICE3_SN, AGENT_ID, false);

@@ -22,7 +22,7 @@ public class EmulatorCreationTest
 
 	private ServerManager serverManager = serverEnvironment.getServerManager();
 
-	private PoolManager poolManager = PoolManager.getInstance(serverManager);
+	private PoolManager poolManager = PoolManager.getInstance();
 
 	private static final int MAX_TIMEOUT = 240; // max timeout in seconds for waiting for a newly created emulator
 												// to be registered on the Agent
@@ -73,7 +73,7 @@ public class EmulatorCreationTest
 	@Test
 	public void createEmulatorTest() throws Exception
 	{
-		List<String> initialListOfDevices = poolManager.getAllDeviceProxyIds();
+		List<String> initialListOfDevices = poolManager.getAllUnderlyingDeviceProxyIds();
 		int initialNumberOfDevices = initialListOfDevices.size();
 		int expectedNumberOfDevices = initialNumberOfDevices + 1;
 
@@ -84,18 +84,18 @@ public class EmulatorCreationTest
 		for (int timeout = MAX_TIMEOUT; timeout > 0; timeout--)
 		{
 			Thread.sleep(1000);
-			if (poolManager.getAllDeviceProxyIds().size() != initialNumberOfDevices)
+			if (poolManager.getAllUnderlyingDeviceProxyIds().size() != initialNumberOfDevices)
 			{
 				break;
 			}
 		}
 
-		int actualNumberOfDevices = poolManager.getAllDeviceProxyIds().size();
+		int actualNumberOfDevices = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		assertEquals(	"Number of expected and actual devices doesn't match.",
 						expectedNumberOfDevices,
 						actualNumberOfDevices);
 
-		List<String> newListOfDevices = poolManager.getAllDeviceProxyIds();
+		List<String> newListOfDevices = poolManager.getAllUnderlyingDeviceProxyIds();
 		discardCreatedEmulators(initialListOfDevices, newListOfDevices);
 	}
 }

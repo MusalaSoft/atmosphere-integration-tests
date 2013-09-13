@@ -21,7 +21,7 @@ public class ServerIntegrationEnvironmentCreator
 	public ServerIntegrationEnvironmentCreator(int serverRmiPort) throws RemoteException
 	{
 		serverManager = new ServerManager(serverRmiPort);
-		poolManager = PoolManager.getInstance(serverManager);
+		poolManager = PoolManager.getInstance();
 	}
 
 	public void close() throws IOException, DeviceNotFoundException, NotPossibleForDeviceException
