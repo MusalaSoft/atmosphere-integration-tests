@@ -19,12 +19,12 @@ import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.util.Server;
 import com.musala.atmosphere.commons.DeviceInformation;
-import com.musala.atmosphere.commons.Pair;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceOs;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.commons.sa.IAgentManager;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
+import com.musala.atmosphere.commons.util.Pair;
 import com.musala.atmosphere.server.ServerManager;
 import com.musala.atmosphere.server.pool.PoolManager;
 import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
@@ -157,7 +157,7 @@ public class BuilderDeviceSelectionIntegrationTest
 
 		Device receivedDevice = builder.getDevice(parameters);
 
-		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		DeviceInformation information = receivedDevice.getInformation();
 		String realSerialNumber = information.getSerialNumber();
 
 		assertEquals(	"Device serial number does not match requested serial number.",
@@ -183,7 +183,7 @@ public class BuilderDeviceSelectionIntegrationTest
 		parameters.setDeviceType(DeviceType.EMULATOR_ONLY);
 
 		Device receivedDevice = builder.getDevice(parameters);
-		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		DeviceInformation information = receivedDevice.getInformation();
 		boolean isDeviceEmulator = information.isEmulator();
 
 		assertTrue("Device is not an emulator.", isDeviceEmulator);
@@ -198,7 +198,7 @@ public class BuilderDeviceSelectionIntegrationTest
 
 		Device receivedDevice = builder.getDevice(parameters);
 
-		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		DeviceInformation information = receivedDevice.getInformation();
 		boolean isDeviceEmulator = information.isEmulator();
 
 		assertFalse("Device is not real device.", isDeviceEmulator);
@@ -214,7 +214,7 @@ public class BuilderDeviceSelectionIntegrationTest
 
 		Device receivedDevice = builder.getDevice(parameters);
 
-		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		DeviceInformation information = receivedDevice.getInformation();
 		String realOS = information.getOS();
 
 		assertEquals("Device OS does not match requested OS.", wantedOS.toString(), realOS);
@@ -241,7 +241,7 @@ public class BuilderDeviceSelectionIntegrationTest
 
 		Device receivedDevice = builder.getDevice(parameters);
 
-		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		DeviceInformation information = receivedDevice.getInformation();
 		String realModel = information.getModel();
 
 		assertEquals("Device model does not match requested model.", wantedModel, realModel);
@@ -267,7 +267,7 @@ public class BuilderDeviceSelectionIntegrationTest
 
 		Device receivedDevice = builder.getDevice(parameters);
 
-		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		DeviceInformation information = receivedDevice.getInformation();
 		int realRAM = information.getRam();
 
 		assertEquals("Device RAM does not match requested RAM.", wantedRAM, realRAM);
@@ -293,7 +293,7 @@ public class BuilderDeviceSelectionIntegrationTest
 
 		Device receivedDevice = builder.getDevice(parameters);
 
-		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		DeviceInformation information = receivedDevice.getInformation();
 		int realResolutionWidth = information.getResolution().getValue();
 
 		assertEquals(	"Device resolution width does not match requested resolution width.",
@@ -321,7 +321,7 @@ public class BuilderDeviceSelectionIntegrationTest
 
 		Device receivedDevice = builder.getDevice(parameters);
 
-		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		DeviceInformation information = receivedDevice.getInformation();
 		int realResolutionHeight = information.getResolution().getKey();
 
 		assertEquals(	"Device resolution width does not match requested resolution height.",
@@ -349,7 +349,7 @@ public class BuilderDeviceSelectionIntegrationTest
 
 		Device receivedDevice = builder.getDevice(parameters);
 
-		com.musala.atmosphere.client.DeviceInformation information = receivedDevice.getInformation();
+		DeviceInformation information = receivedDevice.getInformation();
 		int realDPI = information.getDpi();
 
 		assertEquals("Device DPI does not match requested DPI.", wantedDPI, realDPI);

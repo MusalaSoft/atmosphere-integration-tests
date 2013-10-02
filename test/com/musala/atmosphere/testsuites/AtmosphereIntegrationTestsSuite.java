@@ -19,9 +19,9 @@ import com.musala.atmosphere.client.device.InputTextTest;
 import com.musala.atmosphere.client.device.LockUnlockTest;
 import com.musala.atmosphere.client.device.StartActivityTest;
 import com.musala.atmosphere.client.device.TapTest;
-import com.musala.atmosphere.commons.Pair;
 import com.musala.atmosphere.commons.sa.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
+import com.musala.atmosphere.commons.util.Pair;
 import com.musala.atmosphere.server.PoolEventHandlerTest;
 import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
 

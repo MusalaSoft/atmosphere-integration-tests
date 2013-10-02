@@ -13,8 +13,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.client.DeviceInformation;
-import com.musala.atmosphere.commons.Pair;
+import com.musala.atmosphere.commons.DeviceInformation;
+import com.musala.atmosphere.commons.util.Pair;
 
 public class GetScreenshotTest extends BaseIntegrationTest
 {
