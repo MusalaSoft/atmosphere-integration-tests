@@ -9,6 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
 import com.musala.atmosphere.agent.devicewrapper.EmulatorConsoleTest;
 import com.musala.atmosphere.agent.devicewrapper.NetworkConnectionTest;
+import com.musala.atmosphere.agent.devicewrapper.ServiceConnectionTest;
 import com.musala.atmosphere.client.builder.BuilderIntegrationTest;
 import com.musala.atmosphere.commons.sa.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
@@ -24,7 +25,7 @@ import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
  */
 @RunWith(Suite.class)
 @SuiteClasses({BuilderIntegrationTest.class, EmulatorConsoleTest.class, EmulatorCreationTest.class,
-		NetworkConnectionTest.class})
+		NetworkConnectionTest.class, ServiceConnectionTest.class})
 public class AtmosphereFailingIntegrationTestsSuite
 {
 	private final static int SERVER_MANAGER_RMI_PORT = 2099;
