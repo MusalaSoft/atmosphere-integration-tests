@@ -5,6 +5,9 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertBatteryState;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertNotPowerConnected;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertPowerConnected;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,7 +30,7 @@ public class BatteryRelatedMethodsTest extends BaseIntegrationTest
 	{
 		initTestDevice(new DeviceParameters());
 		installValidatorApplication();
-		
+
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
 		Thread.sleep(2000);
 	}
@@ -38,9 +41,10 @@ public class BatteryRelatedMethodsTest extends BaseIntegrationTest
 		// set battery level to 75
 		final int batteryLevel = 75;
 		testDevice.setBatteryLevel(batteryLevel);
-		
+
 		assertBatteryNotLow("Battery low flag not set as expected.");
-		assertBatteryLevel("Battery level is not as expected", batteryLevel);
+		assertBatteryLevel("Battery level is not as expected.", batteryLevel);
+		assertEquals("Battery level is not as expected.", batteryLevel, testDevice.getBatteryLevel());
 	}
 
 	@Test
@@ -80,11 +84,13 @@ public class BatteryRelatedMethodsTest extends BaseIntegrationTest
 		// set device power connection off
 		testDevice.setPowerState(false);
 		Thread.sleep(1000);
-		
 		assertNotPowerConnected("Power state not set to the expected value.");
+		assertFalse("Power state not set to the expected value", testDevice.getPowerState());
 
-		 // set device power connection on
-		 testDevice.setPowerState(true);
-		 assertPowerConnected("Power state not set to the expected value.");
+		// set device power connection on
+		testDevice.setPowerState(true);
+		Thread.sleep(1000);
+		assertPowerConnected("Power state not set to the expected value.");
+		assertTrue("Power state not set to the expected value.", testDevice.getPowerState());
 	}
 }
