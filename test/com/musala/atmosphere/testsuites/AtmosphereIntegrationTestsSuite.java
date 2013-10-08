@@ -7,22 +7,10 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
-import com.musala.atmosphere.agent.devicewrapper.AirplaneModeTest;
 import com.musala.atmosphere.agent.devicewrapper.BatteryRelatedMethodsTest;
-import com.musala.atmosphere.agent.devicewrapper.DeviceAcceleratoinTest;
-import com.musala.atmosphere.agent.devicewrapper.DeviceOrientationTest;
-import com.musala.atmosphere.agent.devicewrapper.GetUiXmlTest;
-import com.musala.atmosphere.agent.devicewrapper.ScreenOrientationTest;
-import com.musala.atmosphere.client.builder.BuilderDeviceSelectionIntegrationTest;
-import com.musala.atmosphere.client.device.DeviceInstallApkTest;
-import com.musala.atmosphere.client.device.InputTextTest;
-import com.musala.atmosphere.client.device.LockUnlockTest;
-import com.musala.atmosphere.client.device.StartActivityTest;
-import com.musala.atmosphere.client.device.TapTest;
 import com.musala.atmosphere.commons.sa.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
 import com.musala.atmosphere.commons.util.Pair;
-import com.musala.atmosphere.server.PoolEventHandlerTest;
 import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
 
 /**
@@ -36,7 +24,7 @@ import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
 // ScreenOrientationTest.class, InputTextTest.class, PoolEventHandlerTest.class, BatteryRelatedMethodsTest.class,
 // TapTest.class, LockUnlockTest.class, StartActivityTest.class, BuilderDeviceSelectionIntegrationTest.class,
 // GetUiXmlTest.class, DeviceInstallApkTest.class})
-@SuiteClasses({BuilderDeviceSelectionIntegrationTest.class})
+@SuiteClasses({BatteryRelatedMethodsTest.class})
 public class AtmosphereIntegrationTestsSuite
 {
 	private final static int SERVER_MANAGER_RMI_PORT = 2099;
@@ -74,6 +62,10 @@ public class AtmosphereIntegrationTestsSuite
 		agentEnvironment.connectToLocalhostServer(SERVER_MANAGER_RMI_PORT);
 		String agentId = agentEnvironment.getUnderlyingAgentId();
 		serverEnvironment.waitForAgentConnection(agentId);
+
+		// This wait is done so we can be sure that all connection related and wrapper creation related logic has been
+		// executed and the framework is ready for testing.
+		Thread.sleep(1000);
 	}
 
 	@AfterClass
