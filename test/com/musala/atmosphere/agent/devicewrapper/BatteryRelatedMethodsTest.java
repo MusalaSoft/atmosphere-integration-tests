@@ -93,4 +93,14 @@ public class BatteryRelatedMethodsTest extends BaseIntegrationTest
 		assertPowerConnected("Power state not set to the expected value.");
 		assertTrue("Power state not set to the expected value.", testDevice.getPowerState());
 	}
+
+	@Test
+	public void testGetAndSetBatteryState() throws Exception
+	{
+		for (BatteryState batteryState : BatteryState.values())
+		{
+			testDevice.setBatteryState(batteryState);
+			assertEquals(batteryState, testDevice.getBatteryState());
+		}
+	}
 }
