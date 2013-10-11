@@ -381,6 +381,34 @@ public class OnDeviceValidatorAssert
 	}
 
 	/**
+	 * Asserts that the WiFi button is enabled.
+	 * 
+	 * @param message
+	 *        - message to be displayed if assertion fails.
+	 * @throws UiElementFetchingException
+	 */
+	public static void assertWiFiIsOn(String message) throws UiElementFetchingException
+	{
+		UiElement wifiButtonFlag = getElementByContentDescriptor(ContentDescriptor.WIFI_FLAG.toString());
+
+		assertIsEnabled(message, wifiButtonFlag);
+	}
+
+	/**
+	 * Asserts that the WiFi button is disabled.
+	 * 
+	 * @param message
+	 *        - message to be displayed if assertion fails.
+	 * @throws UiElementFetchingException
+	 */
+	public static void assertWiFiIsOff(String message) throws UiElementFetchingException
+	{
+		UiElement wifiButtonFlag = getElementByContentDescriptor(ContentDescriptor.WIFI_FLAG.toString());
+
+		assertNotEnabled(message, wifiButtonFlag);
+	}
+
+	/**
 	 * Asserts that the orientation roll of the test device has been set to the expected value.
 	 * 
 	 * @param message
