@@ -22,7 +22,7 @@ import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
 @RunWith(Suite.class)
 // @SuiteClasses({AirplaneModeTest.class, DeviceOrientationTest.class, DeviceAcceleratoinTest.class,
 // ScreenOrientationTest.class, InputTextTest.class, PoolEventHandlerTest.class, BatteryRelatedMethodsTest.class,
-// WiFiStateTest.class, TapTest.class, LockUnlockTest.class, StartActivityTest.class,
+// WiFiStateTest.class, ConnectionTypeTest.class, TapTest.class, LockUnlockTest.class, StartActivityTest.class,
 // BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class, DeviceInstallApkTest.class})
 @SuiteClasses({BatteryRelatedMethodsTest.class})
 public class AtmosphereIntegrationTestsSuite

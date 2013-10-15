@@ -409,6 +409,22 @@ public class OnDeviceValidatorAssert
 	}
 
 	/**
+	 * Asserts that the connection type of the test device has been set to the expected value.
+	 * 
+	 * @param message
+	 *        - message to be displayed if assertion fails.
+	 * @param expected
+	 *        - the expected connection type.
+	 * @throws UiElementFetchingException
+	 */
+	public static void assertConnectionType(String message, int expected) throws UiElementFetchingException
+	{
+		UiElement connectionTypeBox = getElementByContentDescriptor(ContentDescriptor.CONNECTION_TYPE_BOX.toString());
+
+		assertText(message, connectionTypeBox, String.valueOf(expected));
+	}
+
+	/**
 	 * Asserts that the orientation roll of the test device has been set to the expected value.
 	 * 
 	 * @param message
