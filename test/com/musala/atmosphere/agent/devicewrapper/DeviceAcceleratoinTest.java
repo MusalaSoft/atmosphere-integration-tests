@@ -18,10 +18,12 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 {
 	private final static String VALIDATOR_APP_ACCELERATION_ACTIVITY = "AccelerationActivity";
 
+	// FIXME: Dirty fix - waits until the device screen rotation is over. It should be fixed!!!
+	private final static int TIME_TO_WAIT_FOR_ROTATION = 3000; // in ms
+
 	@BeforeClass
 	public static void setUp() throws Exception
 	{
-
 		DeviceParameters emulatorTestDevice = new DeviceParameters();
 		emulatorTestDevice.setDeviceType(DeviceType.EMULATOR_ONLY);
 		initTestDevice(emulatorTestDevice);
@@ -31,7 +33,7 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 	}
 
 	@Test
-	public void testDeviceRandomAccelerationSetting() throws UiElementFetchingException
+	public void testDeviceRandomAccelerationSetting() throws UiElementFetchingException, InterruptedException
 	{
 		// set "random" acceleration
 		final float accelerationX = 3.087f;
@@ -40,17 +42,21 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 		DeviceAcceleration deviceAcceleration = new DeviceAcceleration(accelerationX, accelerationY, accelerationZ);
 		testDevice.setAcceleration(deviceAcceleration);
 
+		Thread.sleep(TIME_TO_WAIT_FOR_ROTATION);
+
 		assertAccelerationX("Device acceleration on the X axis not set to the expected value.", accelerationX);
 		assertAccelerationY("Device acceleration on the Y axis not set to the expected value.", accelerationY);
 		assertAccelerationZ("Device acceleration on the Z axis not set to the expected value.", accelerationZ);
 	}
 
 	@Test
-	public void testDeviceLandscapeAccelerationSetting() throws UiElementFetchingException
+	public void testDeviceLandscapeAccelerationSetting() throws UiElementFetchingException, InterruptedException
 	{
 		// set landscape acceleration
 		DeviceAcceleration landscapeAcceleration = DeviceAcceleration.getLandscape();
 		testDevice.setAcceleration(landscapeAcceleration);
+
+		Thread.sleep(TIME_TO_WAIT_FOR_ROTATION);
 
 		assertAccelerationX("Device acceleration on the X axis not set to the expected value.",
 							landscapeAcceleration.getAccelerationX());
@@ -60,11 +66,13 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 							landscapeAcceleration.getAccelerationZ());
 	}
 
-	public void testDeviceReverseLandscapeAccelerationSetting() throws UiElementFetchingException
+	public void testDeviceReverseLandscapeAccelerationSetting() throws UiElementFetchingException, InterruptedException
 	{
 		// set landscape acceleration
 		DeviceAcceleration reverseLandscapeAcceleration = DeviceAcceleration.getReverseLandscape();
 		testDevice.setAcceleration(reverseLandscapeAcceleration);
+
+		Thread.sleep(TIME_TO_WAIT_FOR_ROTATION);
 
 		assertAccelerationX("Device acceleration on the X axis not set to the expected value.",
 							reverseLandscapeAcceleration.getAccelerationX());
@@ -75,11 +83,13 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 	}
 
 	@Test
-	public void testDevicePortraitAccelerationSetting() throws UiElementFetchingException
+	public void testDevicePortraitAccelerationSetting() throws UiElementFetchingException, InterruptedException
 	{
 		// set portrait acceleration
 		DeviceAcceleration portraitAcceleration = DeviceAcceleration.getPortrait();
 		testDevice.setAcceleration(portraitAcceleration);
+
+		Thread.sleep(TIME_TO_WAIT_FOR_ROTATION);
 
 		assertAccelerationX("Device acceleration on the X axis not set to the expected value.",
 							portraitAcceleration.getAccelerationX());
@@ -90,11 +100,13 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 	}
 
 	@Test
-	public void testDeviceReversePortraitAccelerationSetting() throws UiElementFetchingException
+	public void testDeviceReversePortraitAccelerationSetting() throws UiElementFetchingException, InterruptedException
 	{
 		// set portrait acceleration
 		DeviceAcceleration reversePortraitAcceleration = DeviceAcceleration.getReversePortrait();
 		testDevice.setAcceleration(reversePortraitAcceleration);
+
+		Thread.sleep(TIME_TO_WAIT_FOR_ROTATION);
 
 		assertAccelerationX("Device acceleration on the X axis not set to the expected value.",
 							reversePortraitAcceleration.getAccelerationX());
@@ -105,11 +117,13 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 	}
 
 	@Test
-	public void testDeviceLieDownAccelerationSetting() throws UiElementFetchingException
+	public void testDeviceLieDownAccelerationSetting() throws UiElementFetchingException, InterruptedException
 	{
 		// set portrait acceleration
 		DeviceAcceleration lieDownAcceleration = DeviceAcceleration.getLieDown();
 		testDevice.setAcceleration(lieDownAcceleration);
+
+		Thread.sleep(TIME_TO_WAIT_FOR_ROTATION);
 
 		assertAccelerationX("Device acceleration on the X axis not set to the expected value.",
 							lieDownAcceleration.getAccelerationX());
@@ -120,11 +134,13 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 	}
 
 	@Test
-	public void testDeviceReverseLieDownAccelerationSetting() throws UiElementFetchingException
+	public void testDeviceReverseLieDownAccelerationSetting() throws UiElementFetchingException, InterruptedException
 	{
 		// set portrait acceleration
 		DeviceAcceleration reverseLieDownAcceleration = DeviceAcceleration.getReverseLieDown();
 		testDevice.setAcceleration(reverseLieDownAcceleration);
+
+		// Thread.sleep(TIME_TO_WAIT_FOR_ROTATION);
 
 		assertAccelerationX("Device acceleration on the X axis not set to the expected value.",
 							reverseLieDownAcceleration.getAccelerationX());

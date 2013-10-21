@@ -8,7 +8,7 @@ import com.musala.atmosphere.commons.sa.exceptions.DeviceNotFoundException;
 import com.musala.atmosphere.commons.sa.exceptions.NotPossibleForDeviceException;
 import com.musala.atmosphere.server.pool.PoolManager;
 
-public class ServerIntegrationEnvironmentCreator
+public class ServerIntegrationEnvironment
 {
 	private static final int AGENT_CONNECTION_CYCLE_WAIT = 300;
 
@@ -18,7 +18,7 @@ public class ServerIntegrationEnvironmentCreator
 
 	private PoolManager poolManager;
 
-	public ServerIntegrationEnvironmentCreator(int serverRmiPort) throws RemoteException
+	public ServerIntegrationEnvironment(int serverRmiPort) throws RemoteException
 	{
 		serverManager = new ServerManager(serverRmiPort);
 		poolManager = PoolManager.getInstance();
@@ -34,6 +34,27 @@ public class ServerIntegrationEnvironmentCreator
 		List<String> connectedAgentIds = serverManager.getAllConnectedAgentIds();
 		boolean connected = connectedAgentIds.contains(agentId);
 		return connected;
+	}
+
+	public boolean hasAgentConnected()
+	{
+		boolean result = !serverManager.getAllConnectedAgentIds().isEmpty();
+		return result;
+	}
+
+	public void waitForAgentToConnect()
+	{
+		while (!hasAgentConnected())
+		{
+			try
+			{
+				Thread.sleep(AGENT_CONNECTION_CYCLE_WAIT);
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void waitForAgentConnection(String agentId)

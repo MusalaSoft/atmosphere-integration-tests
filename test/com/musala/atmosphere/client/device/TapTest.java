@@ -1,7 +1,6 @@
 package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertInputTextBoxIsFocused;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByClass;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 
 import org.junit.BeforeClass;
@@ -22,7 +21,7 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
  */
 public class TapTest extends BaseIntegrationTest
 {
-	private final static String WIDGET_RELATIVE_LAYOUT = "android.widget.RelativeLayout";
+	private final static String WIDGET_MAIN_LAYOUT = "MainLinearLayout";
 
 	private final static String INPUT_TEXT_BOX = "InputTextBox";
 
@@ -50,8 +49,8 @@ public class TapTest extends BaseIntegrationTest
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
 		Thread.sleep(1000);
 		// test relative tapping
-		UiElement widgetRelativeLayout = getElementByClass(WIDGET_RELATIVE_LAYOUT);
-		UiElementAttributes widgetRelativeLayoutAttributes = widgetRelativeLayout.getElementAttributes();
+		UiElement widgetMainLayout = getElementByContentDescriptor(WIDGET_MAIN_LAYOUT);
+		UiElementAttributes widgetRelativeLayoutAttributes = widgetMainLayout.getElementAttributes();
 		UiElement batteryStatusBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
 		UiElementAttributes batteryStatusBoxAttributes = batteryStatusBox.getElementAttributes();
 
@@ -59,7 +58,7 @@ public class TapTest extends BaseIntegrationTest
 		Point BatteryStatusRelativeUpperLeftCorner = widgetRelativeLayoutAttributes.getBounds()
 																					.getRelativePoint(batteryStatusBoxUpperLeftCorner);
 
-		widgetRelativeLayout.tap(BatteryStatusRelativeUpperLeftCorner, false);
+		widgetMainLayout.tap(BatteryStatusRelativeUpperLeftCorner, false);
 
 		assertInputTextBoxIsFocused("Input text box not focused.");
 	}

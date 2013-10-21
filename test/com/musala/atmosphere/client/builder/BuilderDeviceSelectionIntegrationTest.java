@@ -25,9 +25,7 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.commons.sa.IAgentManager;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
 import com.musala.atmosphere.commons.util.Pair;
-import com.musala.atmosphere.server.ServerManager;
 import com.musala.atmosphere.server.pool.PoolManager;
-import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
 /**
  * 
@@ -73,7 +71,7 @@ public class BuilderDeviceSelectionIntegrationTest
 		DeviceInformation mockedDeviceInfoOne = new DeviceInformation();
 		mockedDeviceInfoOne.setSerialNumber(DEVICE1_SN);
 		mockedDeviceInfoOne.setModel(DEVICE1_MODEL);
-		mockedDeviceInfoOne.setOs("Android 4.2.1");
+		mockedDeviceInfoOne.setOs("4.2.1");
 		mockedDeviceInfoOne.setEmulator(true);
 		mockedDeviceInfoOne.setRam(511);
 		mockedDeviceInfoOne.setResolution(new Pair<>(801, 601));
@@ -84,7 +82,7 @@ public class BuilderDeviceSelectionIntegrationTest
 		DeviceInformation mockedDeviceInfoTwo = new DeviceInformation();
 		mockedDeviceInfoTwo.setSerialNumber(DEVICE2_SN);
 		mockedDeviceInfoTwo.setModel(DEVICE2_MODEL);
-		mockedDeviceInfoTwo.setOs("Android 4.2.2");
+		mockedDeviceInfoTwo.setOs("4.2.2");
 		mockedDeviceInfoTwo.setEmulator(true);
 		mockedDeviceInfoTwo.setRam(512);
 		mockedDeviceInfoTwo.setResolution(new Pair<>(802, 602));
@@ -95,15 +93,12 @@ public class BuilderDeviceSelectionIntegrationTest
 		DeviceInformation mockedDeviceInfoThree = new DeviceInformation();
 		mockedDeviceInfoThree.setSerialNumber(DEVICE3_SN);
 		mockedDeviceInfoThree.setModel(DEVICE3_MODEL);
-		mockedDeviceInfoThree.setOs("Android 4.2.3");
+		mockedDeviceInfoThree.setOs("4.2.3");
 		mockedDeviceInfoThree.setEmulator(false);
 		mockedDeviceInfoThree.setRam(513);
 		mockedDeviceInfoThree.setResolution(new Pair<>(803, 603));
 		mockedDeviceInfoThree.setDpi(123);
 		when(mockedDeviceThree.getDeviceInformation()).thenReturn(mockedDeviceInfoThree);
-
-		ServerManager serverManager = AtmosphereIntegrationTestsSuite.getServerIntegrationEnvironmentCreator()
-																		.getServerManager();
 
 		PoolManager poolManager = PoolManager.getInstance();
 
@@ -129,8 +124,6 @@ public class BuilderDeviceSelectionIntegrationTest
 	@AfterClass
 	public static void tearDown() throws Exception
 	{
-		ServerManager serverManager = AtmosphereIntegrationTestsSuite.getServerIntegrationEnvironmentCreator()
-																		.getServerManager();
 		PoolManager poolManager = PoolManager.getInstance();
 		poolManager.refreshDevice(DEVICE1_SN, AGENT_ID, false);
 		poolManager.refreshDevice(DEVICE2_SN, AGENT_ID, false);

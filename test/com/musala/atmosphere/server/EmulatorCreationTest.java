@@ -2,30 +2,20 @@ package com.musala.atmosphere.server;
 
 import static org.junit.Assert.assertEquals;
 
-import java.rmi.RemoteException;
 import java.util.List;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
+import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.util.Pair;
 import com.musala.atmosphere.server.pool.PoolManager;
-import com.musala.atmosphere.testsuites.AtmosphereFailingIntegrationTestsSuite;
-import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
-public class EmulatorCreationTest
+public class EmulatorCreationTest extends BaseIntegrationTest
 {
-	private static ServerIntegrationEnvironmentCreator serverEnvironment;
-
-	private static AgentIntegrationEnvironmentCreator agentEnvironment;
-
-	private ServerManager serverManager = serverEnvironment.getServerManager();
-
 	private PoolManager poolManager = PoolManager.getInstance();
 
-	private static final int MAX_TIMEOUT = 240; // max timeout in seconds for waiting for a newly created emulator
-												// to be registered on the Agent
+	// max timeout in seconds for waiting for a newly created emulator to be registered on the Agent
+	private static final int MAX_TIMEOUT = 240;
 
 	private com.musala.atmosphere.commons.sa.DeviceParameters getEmulatorDeviceParameters()
 	{
@@ -57,17 +47,9 @@ public class EmulatorCreationTest
 			String currentDeviceId = listOfDevicesAfterTest.get(indexOfDevice);
 			if (!initialListOfDevices.contains(currentDeviceId))
 			{
-				poolManager.refreshDevice(currentDeviceId, agentEnvironment.getUnderlyingAgentId(), false);
+				poolManager.refreshDevice(currentDeviceId, agentIntegrationEnvironment.getUnderlyingAgentId(), false);
 			}
 		}
-	}
-
-	@BeforeClass
-	public static void setUp() throws RemoteException, InterruptedException
-	{
-		
-		serverEnvironment = AtmosphereIntegrationTestsSuite.getServerIntegrationEnvironmentCreator();
-		agentEnvironment = AtmosphereIntegrationTestsSuite.getAgentIntegrationEnvironmentCreator();
 	}
 
 	@Test
@@ -76,9 +58,6 @@ public class EmulatorCreationTest
 		List<String> initialListOfDevices = poolManager.getAllUnderlyingDeviceProxyIds();
 		int initialNumberOfDevices = initialListOfDevices.size();
 		int expectedNumberOfDevices = initialNumberOfDevices + 1;
-
-		com.musala.atmosphere.commons.sa.DeviceParameters params = getEmulatorDeviceParameters();
-		AtmosphereFailingIntegrationTestsSuite.createAndPublishEmulator(params);
 
 		// FIXME This timeout mechanism should be revised.
 		for (int timeout = MAX_TIMEOUT; timeout > 0; timeout--)

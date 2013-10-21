@@ -29,7 +29,7 @@ import com.musala.atmosphere.commons.sa.exceptions.NotPossibleForDeviceException
  * @author georgi.gaydarov
  * 
  */
-public class AgentIntegrationEnvironmentCreator
+public class AgentIntegrationEnvironment
 {
 	private AgentManager agentManager;
 
@@ -48,41 +48,12 @@ public class AgentIntegrationEnvironmentCreator
 	 * @throws ADBridgeFailException
 	 * @throws NotBoundException
 	 */
-	public AgentIntegrationEnvironmentCreator(int rmiPort)
-		throws RemoteException,
-			ADBridgeFailException,
-			NotBoundException
+	public AgentIntegrationEnvironment(int rmiPort) throws RemoteException, ADBridgeFailException, NotBoundException
 	{
 		agentManager = new AgentManager(AgentPropertiesLoader.getADBPath(), rmiPort);
 
 		remoteAgentRegistry = LocateRegistry.getRegistry("localhost", rmiPort);
 		remoteAgentManager = (IAgentManager) remoteAgentRegistry.lookup(RmiStringConstants.AGENT_MANAGER.toString());
-	}
-
-	/**
-	 * 
-	 * @return the underlying {@link IAgentManager IAgentManager} stub.
-	 */
-	public IAgentManager getAgentManagerRmiStub()
-	{
-		return remoteAgentManager;
-	}
-
-	/**
-	 * @return the underlying {@link AgentManager AgentManager} instance.
-	 */
-	public AgentManager getAgentManagerInstance()
-	{
-		return agentManager;
-	}
-
-	/**
-	 * 
-	 * @return the underlying agent RMI Registry.
-	 */
-	public Registry getAgentManagerRegistry()
-	{
-		return remoteAgentRegistry;
 	}
 
 	/**
@@ -93,9 +64,15 @@ public class AgentIntegrationEnvironmentCreator
 	 */
 	public boolean isAnyDevicePresent() throws RemoteException
 	{
-		List<String> wrapperIdentifiers = remoteAgentManager.getAllDeviceWrappers();
-		boolean devicePresent = wrapperIdentifiers.size() > 0;
-		return devicePresent;
+		List<String> deviceWrappers = agentManager.getAllDeviceWrappers();
+		if (deviceWrappers.isEmpty())
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 
 	/**
@@ -135,7 +112,8 @@ public class AgentIntegrationEnvironmentCreator
 			IllegalStateException
 	{
 		List<String> wrapperIdentifiers = remoteAgentManager.getAllDeviceWrappers();
-		if (wrapperIdentifiers.size() == 0)
+
+		if (wrapperIdentifiers.isEmpty())
 		{
 			throw new IllegalStateException("No devices are present on the current agent. Consider creating and starting an emulator.");
 		}
@@ -170,7 +148,7 @@ public class AgentIntegrationEnvironmentCreator
 		}
 		throw new IllegalStateException("No emulator devices are present on the agent (current machine).");
 	}
-	
+
 	/**
 	 * Creates and starts an emulator with specified parameters.
 	 * 
@@ -245,12 +223,11 @@ public class AgentIntegrationEnvironmentCreator
 				Thread.sleep(100);
 
 				// TODO add a method in the IWrapDevice interface to do this a better way
-				// This will throw a CommandFailedException if the device is not ready
-				String response = deviceWrapper.executeShellCommand("ps .location.fused");
+				// This will return if the boot animation is running
+				String response = deviceWrapper.executeShellCommand("getprop init.svc.bootanim");
 
-				// The calendar will not be loaded until the graphical environment is loaded
-				// If the graphical environment is not loaded, naturally, we can not fetch ui xml
-				if (!response.contains("com.android.location.fused"))
+				// When the boot animation finishes this property will be set to stopped.
+				if (!response.contains("stopped"))
 				{
 					continue;
 				}
@@ -304,5 +281,14 @@ public class AgentIntegrationEnvironmentCreator
 	{
 		String agentId = agentManager.getAgentId();
 		return agentId;
+	}
+
+	/**
+	 * 
+	 * @return current environment agent manager
+	 */
+	public AgentManager getAgentManager()
+	{
+		return agentManager;
 	}
 }

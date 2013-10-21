@@ -6,13 +6,14 @@ import static junit.framework.Assert.assertEquals;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.ConnectionType;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
-public class ConnectionTypeTest extends com.musala.atmosphere.BaseIntegrationTest
+public class ConnectionTypeTest extends BaseIntegrationTest
 {
 	@BeforeClass
 	public static void setUp() throws Exception

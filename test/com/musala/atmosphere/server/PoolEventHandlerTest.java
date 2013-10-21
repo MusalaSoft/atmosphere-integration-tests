@@ -18,10 +18,9 @@ import org.mockito.stubbing.Answer;
 
 import com.android.ddmlib.IDevice;
 import com.android.ddmlib.IShellOutputReceiver;
-import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
+import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.agent.AgentManager;
 import com.musala.atmosphere.server.pool.PoolManager;
-import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
 /**
  * 
@@ -29,7 +28,7 @@ import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
  * 
  */
 
-public class PoolEventHandlerTest
+public class PoolEventHandlerTest extends BaseIntegrationTest
 {
 	private static Object deviceChangeListener;
 
@@ -42,12 +41,8 @@ public class PoolEventHandlerTest
 	@Before
 	public void setUp() throws Exception
 	{
-		AgentIntegrationEnvironmentCreator agentEnvironment = AtmosphereIntegrationTestsSuite.getAgentIntegrationEnvironmentCreator();
-		ServerIntegrationEnvironmentCreator serverEnvironment = AtmosphereIntegrationTestsSuite.getServerIntegrationEnvironmentCreator();
+		AgentManager underlyingAgentManager = agentIntegrationEnvironment.getAgentManager();
 
-		AgentManager underlyingAgentManager = agentEnvironment.getAgentManagerInstance();
-
-		ServerManager serverManager = serverEnvironment.getServerManager();
 		poolManager = PoolManager.getInstance();
 
 		Field deviceChangeListenerField = underlyingAgentManager.getClass()

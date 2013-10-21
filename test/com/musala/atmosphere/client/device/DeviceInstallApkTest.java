@@ -25,30 +25,24 @@ import org.mockito.stubbing.Answer;
 
 import com.android.ddmlib.IDevice;
 import com.android.ddmlib.InstallException;
-import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
+import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.agent.AgentManager;
 import com.musala.atmosphere.agent.DevicePropertyStringConstants;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.util.Server;
-import com.musala.atmosphere.server.ServerIntegrationEnvironmentCreator;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
-public class DeviceInstallApkTest
+public class DeviceInstallApkTest extends BaseIntegrationTest
 {
 	private final static int SERVERMANAGER_RMI_PORT = 2099;
-
-	private final static int AGENTMANAGER_RMI_PORT = 2000;
 
 	private final static String PATH_TO_APK_DIR = "./";
 
 	private final static String NAME_OF_APK_FILE = "Eventrix.apk";
 
 	private final static String PATH_TO_APK = PATH_TO_APK_DIR + NAME_OF_APK_FILE;
-
-	private AgentIntegrationEnvironmentCreator agentEnvironment;
-
-	private ServerIntegrationEnvironmentCreator serverEnvironment;
 
 	private final static String MOCK_SERIAL_NUMBER = "mockedDevice";
 
@@ -63,7 +57,7 @@ public class DeviceInstallApkTest
 		{
 		}
 
-		public void getDeviceAndInstallApk(com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters parameters)
+		public void getDeviceAndInstallApk(DeviceParameters parameters)
 		{
 			Builder builder = Builder.getInstance();
 			Device device = builder.getDevice(parameters);
@@ -74,8 +68,8 @@ public class DeviceInstallApkTest
 	@Before
 	public void setUp() throws Exception
 	{
-		agentEnvironment = AtmosphereIntegrationTestsSuite.getAgentIntegrationEnvironmentCreator();
-		serverEnvironment = AtmosphereIntegrationTestsSuite.getServerIntegrationEnvironmentCreator();
+		agentIntegrationEnvironment = AtmosphereIntegrationTestsSuite.getAgentEnvironment();
+		serverIntegrationEnvironment = AtmosphereIntegrationTestsSuite.getServerEnvironment();
 
 		mockDevice = mock(IDevice.class);
 		when(mockDevice.getSerialNumber()).thenReturn(MOCK_SERIAL_NUMBER);
@@ -87,18 +81,18 @@ public class DeviceInstallApkTest
 									Integer.toString(MOCK_DEVICE_DENSITY));
 		when(mockDevice.getProperties()).thenReturn(mockDeviceProperties);
 
-		AgentManager am = agentEnvironment.getAgentManagerInstance();
+		AgentManager am = agentIntegrationEnvironment.getAgentManager();
 		Method agentManagerRegisterNewDeviceMethod = am.getClass().getDeclaredMethod(	"registerDeviceOnAgent",
 																						IDevice.class);
 		agentManagerRegisterNewDeviceMethod.setAccessible(true);
 
-		String deviceRmiId = (String) agentManagerRegisterNewDeviceMethod.invoke(am, mockDevice);
-		agentEnvironment.connectToLocalhostServer(SERVERMANAGER_RMI_PORT);
+		agentManagerRegisterNewDeviceMethod.invoke(am, mockDevice);
+		agentIntegrationEnvironment.connectToLocalhostServer(SERVERMANAGER_RMI_PORT);
 
-		String agentId = agentEnvironment.getUnderlyingAgentId();
-		serverEnvironment.waitForAgentConnection(agentId);
+		String agentId = agentIntegrationEnvironment.getUnderlyingAgentId();
+		serverIntegrationEnvironment.waitForAgentConnection(agentId);
 
-		serverEnvironment.waitForDeviceToBeAvailable(MOCK_SERIAL_NUMBER, agentId);
+		serverIntegrationEnvironment.waitForDeviceToBeAvailable(MOCK_SERIAL_NUMBER, agentId);
 	}
 
 	@After
@@ -108,7 +102,7 @@ public class DeviceInstallApkTest
 	}
 
 	@Test
-	public void transferringApkCorrectlyTest() throws InstallException
+	public void testTransferringApk() throws InstallException
 	{
 		when(mockDevice.installPackage(anyString(), anyBoolean())).thenAnswer(new Answer<String>()
 		{
@@ -136,7 +130,7 @@ public class DeviceInstallApkTest
 			}
 		});
 
-		com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters parameters = new com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters();
+		DeviceParameters parameters = new DeviceParameters();
 		parameters.setDpi(MOCK_DEVICE_DENSITY);
 		GettingDeviceSampleClass userTest = new GettingDeviceSampleClass();
 		userTest.getDeviceAndInstallApk(parameters);

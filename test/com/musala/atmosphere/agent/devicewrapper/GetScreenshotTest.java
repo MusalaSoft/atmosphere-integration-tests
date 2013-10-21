@@ -14,6 +14,8 @@ import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.DeviceInformation;
+import com.musala.atmosphere.commons.ScreenOrientation;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.util.Pair;
 
 public class GetScreenshotTest extends BaseIntegrationTest
@@ -21,7 +23,8 @@ public class GetScreenshotTest extends BaseIntegrationTest
 	@BeforeClass
 	public static void setUp() throws Exception
 	{
-		initTestDevice(new com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters());
+		initTestDevice(new DeviceParameters());
+		testDevice.setScreenOrientation(ScreenOrientation.PORTRAIT);
 	}
 
 	@Test

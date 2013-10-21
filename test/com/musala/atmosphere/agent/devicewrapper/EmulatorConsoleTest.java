@@ -6,18 +6,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.agent.AgentIntegrationEnvironmentCreator;
 import com.musala.atmosphere.commons.BatteryState;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.commons.sa.DeviceParameters;
 import com.musala.atmosphere.commons.util.Pair;
-import com.musala.atmosphere.testsuites.AtmosphereFailingIntegrationTestsSuite;
-import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
 public class EmulatorConsoleTest extends BaseIntegrationTest
 {
-	private static AgentIntegrationEnvironmentCreator agentEnvironment = AtmosphereIntegrationTestsSuite.getAgentIntegrationEnvironmentCreator();
-
 	private static final int EMULATOR_CREATION_DPI = 120;
 
 	private static final int EMULATOR_CREATION_RAM = 256;
@@ -29,14 +24,13 @@ public class EmulatorConsoleTest extends BaseIntegrationTest
 	@BeforeClass
 	public static void setUp() throws Exception
 	{
-		if (!agentEnvironment.isAnyEmulatorPresent())
+		if (!agentIntegrationEnvironment.isAnyEmulatorPresent())
 		{
 			DeviceParameters emulatorCreationParameters = new DeviceParameters();
 			emulatorCreationParameters.setDpi(EMULATOR_CREATION_DPI);
 			emulatorCreationParameters.setRam(EMULATOR_CREATION_RAM);
 			emulatorCreationParameters.setResolution(new Pair<Integer, Integer>(EMULATOR_CREATION_RESOLUTION_H,
 																				EMULATOR_CREATION_RESOLUTION_W));
-			AtmosphereFailingIntegrationTestsSuite.createAndPublishEmulator(emulatorCreationParameters);
 		}
 
 		com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters emulatorInformation = new com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters();

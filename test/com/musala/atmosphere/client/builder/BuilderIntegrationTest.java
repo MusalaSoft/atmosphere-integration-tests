@@ -23,7 +23,6 @@ public class BuilderIntegrationTest
 			}
 		}
 		SampleTestNoAnnotation sampleBuilderClassInstance = new SampleTestNoAnnotation();
-		Builder builderInstance = sampleBuilderClassInstance.getBuilderInstance();
 	}
 
 	@Test(expected = ServerConnectionFailedException.class)
