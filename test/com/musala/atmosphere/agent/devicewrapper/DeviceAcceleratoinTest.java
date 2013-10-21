@@ -3,7 +3,8 @@ package com.musala.atmosphere.agent.devicewrapper;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertAccelerationX;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertAccelerationY;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertAccelerationZ;
-import static org.junit.Assert.assertNotNull;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.DeviceAcceleration;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 public class DeviceAcceleratoinTest extends BaseIntegrationTest
 {
@@ -155,8 +157,20 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 	{
 		// Getting device acceleration works for both real devices and emulators.
 		DeviceAcceleration deviceAcceleration = testDevice.getDeviceAcceleration();
-		assertNotNull("Failed getting device acceleration value on the X axis.", deviceAcceleration.getAccelerationX());
-		assertNotNull("Failed getting device acceleration value on the Y axis.", deviceAcceleration.getAccelerationY());
-		assertNotNull("Failed getting device acceleration value on the Z axis.", deviceAcceleration.getAccelerationZ());
+		String validatorAccelerationX = getElementByContentDescriptor(ContentDescriptor.ACCELERATION_X_BOX.toString()).getElementAttributes()
+																														.getText();
+		String validatorAccelerationY = getElementByContentDescriptor(ContentDescriptor.ACCELERATION_Y_BOX.toString()).getElementAttributes()
+																														.getText();
+		String validatorAccelerationZ = getElementByContentDescriptor(ContentDescriptor.ACCELERATION_Z_BOX.toString()).getElementAttributes()
+																														.getText();
+		assertEquals(	"Received acceleration value on the X axis does not match the on-device information.",
+						validatorAccelerationX,
+						String.valueOf(deviceAcceleration.getAccelerationX()));
+		assertEquals(	"Received acceleration value on the Y axis does not match the on-device information.",
+						validatorAccelerationY,
+						String.valueOf(deviceAcceleration.getAccelerationY()));
+		assertEquals(	"Received acceleration value on the Z axis does not match the on-device information.",
+						validatorAccelerationZ,
+						String.valueOf(deviceAcceleration.getAccelerationZ()));
 	}
 }
