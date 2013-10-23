@@ -80,8 +80,10 @@ public class BaseIntegrationTest
 		GettingBuilderClass builderGet = new GettingBuilderClass();
 		Builder deviceBuilder = builderGet.getBuilder();
 
-		deviceBuilder.releaseDevice(testDevice);
-
-		testDevice = null;
+		if (testDevice != null)
+		{
+			deviceBuilder.releaseDevice(testDevice);
+			testDevice = null;
+		}
 	}
 }
