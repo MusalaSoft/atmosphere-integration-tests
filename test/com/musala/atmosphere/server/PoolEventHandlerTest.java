@@ -20,6 +20,7 @@ import com.android.ddmlib.IDevice;
 import com.android.ddmlib.IShellOutputReceiver;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.agent.AgentManager;
+import com.musala.atmosphere.agent.util.FakeServiceAnswer;
 import com.musala.atmosphere.server.pool.PoolManager;
 
 /**
@@ -61,16 +62,11 @@ public class PoolEventHandlerTest extends BaseIntegrationTest
 		IDevice fakeDevice = mock(IDevice.class);
 		when(fakeDevice.getSerialNumber()).thenReturn(fakeDeviceSerialNumber);
 
-		DumpsysBatteryAnswer dumpsysBatteryAnswer = new DumpsysBatteryAnswer();
-		DumpsysPowerAnswer dumpsysPowerAnswer = new DumpsysPowerAnswer();
-
 		when(fakeDevice.getBatteryLevel()).thenReturn(50);
-		doAnswer(dumpsysPowerAnswer).when(fakeDevice).executeShellCommand(	Mockito.eq("dumpsys power"),
-																			any(IShellOutputReceiver.class),
-																			anyInt());
-		doAnswer(dumpsysBatteryAnswer).when(fakeDevice).executeShellCommand(Mockito.eq("dumpsys battery"),
-																			any(IShellOutputReceiver.class),
-																			anyInt());
+
+		FakeServiceAnswer fakeServiceAnswer = new FakeServiceAnswer();
+		Mockito.doAnswer(fakeServiceAnswer).when(fakeDevice).createForward(anyInt(), anyInt());
+		
 		return fakeDevice;
 	}
 
@@ -89,6 +85,8 @@ public class PoolEventHandlerTest extends BaseIntegrationTest
 		assertEquals(	"Connecting an offline device resulted in device connect event.",
 						poolItemsBeforeAdd,
 						poolItemsAfterAdd);
+		
+		deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
 	}
 
 	@Test
@@ -107,6 +105,8 @@ public class PoolEventHandlerTest extends BaseIntegrationTest
 		assertEquals(	"Connecting an online device did not result in device connect event.",
 						poolItemsBeforeAdd + 1,
 						poolItemsAfterAdd);
+		
+		deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
 	}
 
 	@Test
@@ -115,6 +115,9 @@ public class PoolEventHandlerTest extends BaseIntegrationTest
 		final String fakeDeviceSerialNumber = "mockDevice3";
 		IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
 
+		FakeServiceAnswer fakeServiceAnswer = new FakeServiceAnswer();
+		Mockito.doAnswer(fakeServiceAnswer).when(fakeDevice).createForward(anyInt(), anyInt());
+		
 		when(fakeDevice.isOnline()).thenReturn(true);
 		when(fakeDevice.isOffline()).thenReturn(false);
 
@@ -155,36 +158,5 @@ public class PoolEventHandlerTest extends BaseIntegrationTest
 		assertEquals(	"Disconnecting an offline device resulted in device disconnect event.",
 						poolItemsBeforeRemove,
 						poolItemsAfterRemove);
-	}
-}
-
-class DumpsysPowerAnswer implements Answer<Void>
-{
-	@Override
-	public Void answer(InvocationOnMock invocation) throws Exception
-	{
-
-		Object[] arguments = invocation.getArguments();
-		IShellOutputReceiver shellOutputReceiver = (IShellOutputReceiver) arguments[1];
-		String stringResponse = "mPlugType=1";
-		byte[] response = stringResponse.getBytes("ISO-8859-1");
-		shellOutputReceiver.addOutput(response, 0, response.length);
-		shellOutputReceiver.flush();
-		return null;
-	}
-}
-
-class DumpsysBatteryAnswer implements Answer<Void>
-{
-	@Override
-	public Void answer(InvocationOnMock invocation) throws Exception
-	{
-		Object[] arguments = invocation.getArguments();
-		IShellOutputReceiver shellOutputReceiver = (IShellOutputReceiver) arguments[1];
-		String stringResponse = "status: 1";
-		byte[] response = stringResponse.getBytes("ISO-8859-1");
-		shellOutputReceiver.addOutput(response, 0, response.length);
-		shellOutputReceiver.flush();
-		return null;
 	}
 }

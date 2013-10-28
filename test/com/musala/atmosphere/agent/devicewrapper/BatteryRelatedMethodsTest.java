@@ -15,6 +15,7 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.BatteryState;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 
 /**
  * 
@@ -42,6 +43,7 @@ public class BatteryRelatedMethodsTest extends BaseIntegrationTest
 		final int batteryLevel = 75;
 		testDevice.setBatteryLevel(batteryLevel);
 
+		Thread.sleep(2000);
 		assertBatteryNotLow("Battery low flag not set as expected.");
 		assertBatteryLevel("Battery level is not as expected.", batteryLevel);
 		assertEquals("Battery level is not as expected.", batteryLevel, testDevice.getBatteryLevel());
@@ -55,26 +57,35 @@ public class BatteryRelatedMethodsTest extends BaseIntegrationTest
 		// battery state unknown
 		batteryState = BatteryState.UNKNOWN;
 		testDevice.setBatteryState(batteryState);
+		// Sleep required for proper UI refreshing
+		Thread.sleep(2000);
 		assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
 
 		// battery state charging
 		batteryState = BatteryState.CHARGING;
 		testDevice.setBatteryState(batteryState);
+		// Sleep required for proper UI refreshing
+		Thread.sleep(2000);
 		assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
 
 		// battery state discharging
 		batteryState = BatteryState.DISCHARGING;
 		testDevice.setBatteryState(batteryState);
+		// Sleep required for proper UI refreshing
+		Thread.sleep(2000);
 		assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
 
 		// battery state not_charging
 		batteryState = BatteryState.NOT_CHARGING;
 		testDevice.setBatteryState(batteryState);
+		Thread.sleep(2000);
 		assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
 
 		// battery state full
 		batteryState = BatteryState.FULL;
 		testDevice.setBatteryState(batteryState);
+		// Sleep required for proper UI refreshing
+		Thread.sleep(2000);
 		assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
 	}
 
@@ -100,6 +111,7 @@ public class BatteryRelatedMethodsTest extends BaseIntegrationTest
 		for (BatteryState batteryState : BatteryState.values())
 		{
 			testDevice.setBatteryState(batteryState);
+			Thread.sleep(2000);
 			assertEquals(batteryState, testDevice.getBatteryState());
 		}
 	}

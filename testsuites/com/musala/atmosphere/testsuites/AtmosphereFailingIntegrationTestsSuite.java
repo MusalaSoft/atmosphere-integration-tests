@@ -4,6 +4,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.musala.atmosphere.agent.devicewrapper.DeviceAcceleratoinTest;
+import com.musala.atmosphere.agent.devicewrapper.DeviceOrientationTest;
 import com.musala.atmosphere.agent.devicewrapper.EmulatorConsoleTest;
 import com.musala.atmosphere.agent.devicewrapper.NetworkConnectionTest;
 import com.musala.atmosphere.client.builder.BuilderIntegrationTest;
@@ -16,7 +18,7 @@ import com.musala.atmosphere.server.EmulatorCreationTest;
  * 
  */
 @RunWith(Suite.class)
-@SuiteClasses({BuilderIntegrationTest.class, EmulatorConsoleTest.class, EmulatorCreationTest.class,
+@SuiteClasses({DeviceAcceleratoinTest.class, DeviceOrientationTest.class, BuilderIntegrationTest.class, EmulatorConsoleTest.class, EmulatorCreationTest.class,
 		NetworkConnectionTest.class})
 public class AtmosphereFailingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite
 {

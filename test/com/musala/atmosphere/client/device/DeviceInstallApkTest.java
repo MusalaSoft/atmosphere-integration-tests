@@ -2,6 +2,7 @@ package com.musala.atmosphere.client.device;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -20,6 +21,7 @@ import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -28,6 +30,7 @@ import com.android.ddmlib.InstallException;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.agent.AgentManager;
 import com.musala.atmosphere.agent.DevicePropertyStringConstants;
+import com.musala.atmosphere.agent.util.FakeServiceAnswer;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.util.Server;
@@ -76,6 +79,10 @@ public class DeviceInstallApkTest extends BaseIntegrationTest
 		when(mockDevice.isEmulator()).thenReturn(true);
 		when(mockDevice.arePropertiesSet()).thenReturn(true);
 		when(mockDevice.isOffline()).thenReturn(false);
+
+		FakeServiceAnswer fakeServiceAnswer = new FakeServiceAnswer();
+		Mockito.doAnswer(fakeServiceAnswer).when(mockDevice).createForward(anyInt(), anyInt());
+		
 		Map<String, String> mockDeviceProperties = new HashMap<String, String>();
 		mockDeviceProperties.put(	DevicePropertyStringConstants.PROPERTY_EMUDEVICE_LCD_DENSITY.toString(),
 									Integer.toString(MOCK_DEVICE_DENSITY));

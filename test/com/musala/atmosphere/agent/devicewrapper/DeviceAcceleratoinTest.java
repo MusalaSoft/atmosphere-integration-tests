@@ -21,7 +21,7 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 	private final static String VALIDATOR_APP_ACCELERATION_ACTIVITY = "AccelerationActivity";
 
 	// FIXME: Dirty fix - waits until the device screen rotation is over. It should be fixed!!!
-	private final static int TIME_TO_WAIT_FOR_ROTATION = 3000; // in ms
+	private final static int TIME_TO_WAIT_FOR_ROTATION = 10000; // in ms
 
 	@BeforeClass
 	public static void setUp() throws Exception
@@ -142,7 +142,7 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 		DeviceAcceleration reverseLieDownAcceleration = DeviceAcceleration.getReverseLieDown();
 		testDevice.setAcceleration(reverseLieDownAcceleration);
 
-		// Thread.sleep(TIME_TO_WAIT_FOR_ROTATION);
+		Thread.sleep(TIME_TO_WAIT_FOR_ROTATION);
 
 		assertAccelerationX("Device acceleration on the X axis not set to the expected value.",
 							reverseLieDownAcceleration.getAccelerationX());

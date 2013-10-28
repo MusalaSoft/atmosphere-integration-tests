@@ -34,8 +34,9 @@ public class LockUnlockTest extends BaseIntegrationTest
 	public void testUnlockLockDevice() throws Exception
 	{
 		testDevice.unlock();
-		testDevice.pressButton(HardwareButton.HOME);
-
+		//testDevice.pressButton(HardwareButton.HOME);
+Thread.sleep(2000);
+		
 		assertFalse("Device shouldn't be locked after .unlock().", testDevice.isLocked());
 		assertTrue("Device should be awake after .unlock().", testDevice.isAwake());
 
