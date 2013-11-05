@@ -76,21 +76,21 @@ public class DeviceInstallApkTest extends BaseIntegrationTest
 
 		mockDevice = mock(IDevice.class);
 		when(mockDevice.getSerialNumber()).thenReturn(MOCK_SERIAL_NUMBER);
-		when(mockDevice.isEmulator()).thenReturn(true);
+		when(mockDevice.isEmulator()).thenReturn(false);
 		when(mockDevice.arePropertiesSet()).thenReturn(true);
 		when(mockDevice.isOffline()).thenReturn(false);
 
 		FakeServiceAnswer fakeServiceAnswer = new FakeServiceAnswer();
 		Mockito.doAnswer(fakeServiceAnswer).when(mockDevice).createForward(anyInt(), anyInt());
-		
+
 		Map<String, String> mockDeviceProperties = new HashMap<String, String>();
 		mockDeviceProperties.put(	DevicePropertyStringConstants.PROPERTY_EMUDEVICE_LCD_DENSITY.toString(),
 									Integer.toString(MOCK_DEVICE_DENSITY));
 		when(mockDevice.getProperties()).thenReturn(mockDeviceProperties);
 
 		AgentManager am = agentIntegrationEnvironment.getAgentManager();
-		Method agentManagerRegisterNewDeviceMethod = am.getClass().getDeclaredMethod(	"registerDeviceOnAgent",
-																						IDevice.class);
+		Method agentManagerRegisterNewDeviceMethod = AgentManager.class.getDeclaredMethod(	"registerDeviceOnAgent",
+																							IDevice.class);
 		agentManagerRegisterNewDeviceMethod.setAccessible(true);
 
 		agentManagerRegisterNewDeviceMethod.invoke(am, mockDevice);
@@ -105,7 +105,11 @@ public class DeviceInstallApkTest extends BaseIntegrationTest
 	@After
 	public void tearDown() throws Exception
 	{
-
+		AgentManager am = agentIntegrationEnvironment.getAgentManager();
+		Method agentManagerUnregisterDeviceMethod = AgentManager.class.getDeclaredMethod(	"unregisterDeviceOnAgent",
+																							IDevice.class);
+		agentManagerUnregisterDeviceMethod.setAccessible(true);
+		agentManagerUnregisterDeviceMethod.invoke(am, mockDevice);
 	}
 
 	@Test
@@ -138,7 +142,7 @@ public class DeviceInstallApkTest extends BaseIntegrationTest
 		});
 
 		DeviceParameters parameters = new DeviceParameters();
-		parameters.setDpi(MOCK_DEVICE_DENSITY);
+		parameters.setSerialNumber(MOCK_SERIAL_NUMBER);
 		GettingDeviceSampleClass userTest = new GettingDeviceSampleClass();
 		userTest.getDeviceAndInstallApk(parameters);
 

@@ -47,7 +47,7 @@ public class EmulatorCreationTest extends BaseIntegrationTest
 			String currentDeviceId = listOfDevicesAfterTest.get(indexOfDevice);
 			if (!initialListOfDevices.contains(currentDeviceId))
 			{
-				poolManager.refreshDevice(currentDeviceId, agentIntegrationEnvironment.getUnderlyingAgentId(), false);
+				poolManager.removeDevice(currentDeviceId, agentIntegrationEnvironment.getUnderlyingAgentId());
 			}
 		}
 	}

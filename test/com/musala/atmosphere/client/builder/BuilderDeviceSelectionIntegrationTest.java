@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.rmi.registry.Registry;
 import java.util.NoSuchElementException;
 
 import org.junit.After;
@@ -100,13 +101,16 @@ public class BuilderDeviceSelectionIntegrationTest
 		mockedDeviceInfoThree.setDpi(123);
 		when(mockedDeviceThree.getDeviceInformation()).thenReturn(mockedDeviceInfoThree);
 
+		Registry mockRegistry = mock(Registry.class);
+		when(mockRegistry.lookup(DEVICE1_SN)).thenReturn(mockedDeviceOne);
+		when(mockRegistry.lookup(DEVICE2_SN)).thenReturn(mockedDeviceTwo);
+		when(mockRegistry.lookup(DEVICE3_SN)).thenReturn(mockedDeviceThree);
+
 		PoolManager poolManager = PoolManager.getInstance();
 
-		poolManager.addDevice(DEVICE1_SN, mockedDeviceOne, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
-
-		poolManager.addDevice(DEVICE2_SN, mockedDeviceTwo, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
-
-		poolManager.addDevice(DEVICE3_SN, mockedDeviceThree, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
+		poolManager.addDevice(DEVICE1_SN, mockRegistry, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
+		poolManager.addDevice(DEVICE2_SN, mockRegistry, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
+		poolManager.addDevice(DEVICE3_SN, mockRegistry, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
 	}
 
 	@Before
@@ -125,9 +129,9 @@ public class BuilderDeviceSelectionIntegrationTest
 	public static void tearDown() throws Exception
 	{
 		PoolManager poolManager = PoolManager.getInstance();
-		poolManager.refreshDevice(DEVICE1_SN, AGENT_ID, false);
-		poolManager.refreshDevice(DEVICE2_SN, AGENT_ID, false);
-		poolManager.refreshDevice(DEVICE3_SN, AGENT_ID, false);
+		poolManager.removeDevice(DEVICE1_SN, AGENT_ID);
+		poolManager.removeDevice(DEVICE2_SN, AGENT_ID);
+		poolManager.removeDevice(DEVICE3_SN, AGENT_ID);
 	}
 
 	@Test

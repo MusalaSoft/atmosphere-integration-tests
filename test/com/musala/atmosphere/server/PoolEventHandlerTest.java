@@ -1,9 +1,7 @@
 package com.musala.atmosphere.server;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -13,11 +11,8 @@ import java.lang.reflect.Method;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import com.android.ddmlib.IDevice;
-import com.android.ddmlib.IShellOutputReceiver;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.agent.AgentManager;
 import com.musala.atmosphere.agent.util.FakeServiceAnswer;
@@ -46,8 +41,7 @@ public class PoolEventHandlerTest extends BaseIntegrationTest
 
 		poolManager = PoolManager.getInstance();
 
-		Field deviceChangeListenerField = underlyingAgentManager.getClass()
-																.getDeclaredField("currentDeviceChangeListener");
+		Field deviceChangeListenerField = AgentManager.class.getDeclaredField("currentDeviceChangeListener");
 		deviceChangeListenerField.setAccessible(true);
 		deviceChangeListener = deviceChangeListenerField.get(underlyingAgentManager);
 		deviceConnectedMethod = deviceChangeListener.getClass().getDeclaredMethod("deviceConnected", IDevice.class);
@@ -57,7 +51,7 @@ public class PoolEventHandlerTest extends BaseIntegrationTest
 		deviceDisconnectedMethod.setAccessible(true);
 	}
 
-	private IDevice configureFakeDevice(String fakeDeviceSerialNumber) throws Exception
+	private static IDevice configureFakeDevice(String fakeDeviceSerialNumber) throws Exception
 	{
 		IDevice fakeDevice = mock(IDevice.class);
 		when(fakeDevice.getSerialNumber()).thenReturn(fakeDeviceSerialNumber);
@@ -66,7 +60,7 @@ public class PoolEventHandlerTest extends BaseIntegrationTest
 
 		FakeServiceAnswer fakeServiceAnswer = new FakeServiceAnswer();
 		Mockito.doAnswer(fakeServiceAnswer).when(fakeDevice).createForward(anyInt(), anyInt());
-		
+
 		return fakeDevice;
 	}
 
@@ -81,11 +75,14 @@ public class PoolEventHandlerTest extends BaseIntegrationTest
 
 		int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
+		// required for proper device registering
+		Thread.sleep(1500);
+
 		int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		assertEquals(	"Connecting an offline device resulted in device connect event.",
 						poolItemsBeforeAdd,
 						poolItemsAfterAdd);
-		
+
 		deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
 	}
 
@@ -100,12 +97,15 @@ public class PoolEventHandlerTest extends BaseIntegrationTest
 
 		int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
+		// required for proper device registering
+		Thread.sleep(1500);
+
 		int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 
 		assertEquals(	"Connecting an online device did not result in device connect event.",
 						poolItemsBeforeAdd + 1,
 						poolItemsAfterAdd);
-		
+
 		deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
 	}
 
@@ -117,12 +117,15 @@ public class PoolEventHandlerTest extends BaseIntegrationTest
 
 		FakeServiceAnswer fakeServiceAnswer = new FakeServiceAnswer();
 		Mockito.doAnswer(fakeServiceAnswer).when(fakeDevice).createForward(anyInt(), anyInt());
-		
+
 		when(fakeDevice.isOnline()).thenReturn(true);
 		when(fakeDevice.isOffline()).thenReturn(false);
 
 		int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
+		// required for proper device registering
+		Thread.sleep(1500);
+
 		int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		assertEquals(	"Connecting an online device did not result in device connect event.",
 						poolItemsBeforeAdd + 1,
@@ -147,6 +150,9 @@ public class PoolEventHandlerTest extends BaseIntegrationTest
 
 		int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
+		// required for proper device registering
+		Thread.sleep(1500);
+
 		int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 		assertEquals(	"Connecting an offline device resulted in device connect event.",
 						poolItemsBeforeAdd,
