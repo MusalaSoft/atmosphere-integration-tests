@@ -10,6 +10,8 @@ import com.musala.atmosphere.server.pool.PoolManager;
 
 public class ServerIntegrationEnvironment
 {
+	// TODO consider moving some of the methods implemented here to the server.
+
 	private static final int AGENT_CONNECTION_CYCLE_WAIT = 300;
 
 	private static final int DEVICE_PRESENCE_CYCLE_WAIT = 300;

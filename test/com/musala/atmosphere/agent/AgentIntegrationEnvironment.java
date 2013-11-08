@@ -31,6 +31,8 @@ import com.musala.atmosphere.commons.sa.exceptions.NotPossibleForDeviceException
  */
 public class AgentIntegrationEnvironment
 {
+	// TODO consider moving some of the methods implemented g=here to the agent.
+
 	private AgentManager agentManager;
 
 	private IAgentManager remoteAgentManager;
