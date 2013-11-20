@@ -31,7 +31,7 @@ public class BaseIntegrationTest
 
 	protected final static String VALIDATOR_APP_PACKAGE = "com.musala.atmosphere.ondevice.validator";
 
-	protected final static String VALIDATOR_APP_ACTIVITY = "MainActivity";
+	protected final static String VALIDATOR_APP_ACTIVITY = ".MainActivity";
 
 	protected static Device testDevice;
 

@@ -20,7 +20,7 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
  */
 public class DeviceOrientationTest extends BaseIntegrationTest
 {
-	private static final String VALIDATOR_APP_ORIENTATION_ACTIVITY = "OrientationActivity";
+	private static final String VALIDATOR_APP_ORIENTATION_ACTIVITY = ".OrientationActivity";
 
 	// FIXME: Dirty fix - waits until the device screen rotation is over. It should be fixed!!!
 	private final static int TIME_TO_WAIT_FOR_ROTATION = 5000; // in ms

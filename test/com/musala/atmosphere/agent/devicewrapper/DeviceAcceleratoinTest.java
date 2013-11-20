@@ -18,7 +18,7 @@ import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 public class DeviceAcceleratoinTest extends BaseIntegrationTest
 {
-	private final static String VALIDATOR_APP_ACCELERATION_ACTIVITY = "AccelerationActivity";
+	private final static String VALIDATOR_APP_ACCELERATION_ACTIVITY = ".AccelerationActivity";
 
 	// FIXME: Dirty fix - waits until the device screen rotation is over. It should be fixed!!!
 	private final static int TIME_TO_WAIT_FOR_ROTATION = 10000; // in ms

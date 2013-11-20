@@ -33,11 +33,11 @@ public class OnDeviceValidatorAssert
 
 	private final static String VALIDATOR_APP_PACKAGE = "com.musala.atmosphere.ondevice.validator";
 
-	private final static String VALIDATOR_MAIN_ACTIVITY = "MainActivity";
+	private final static String VALIDATOR_MAIN_ACTIVITY = ".MainActivity";
 
-	private final static String VALIDATOR_ORIENTATION_ACTIVITY = "OrientationActivity";
+	private final static String VALIDATOR_ORIENTATION_ACTIVITY = ".OrientationActivity";
 
-	private final static String VALIDATOR_ACCELERATION_ACTIVITY = "AccelerationActivity";
+	private final static String VALIDATOR_ACCELERATION_ACTIVITY = ".AccelerationActivity";
 
 	private final static String VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC = "ATMOSPHEREValidator";
 
@@ -78,7 +78,7 @@ public class OnDeviceValidatorAssert
 	{
 		Screen activeScreen = device.getActiveScreen();
 		final String query = String.format(CONTENT_DESCRIPTOR, contentDescriptor);
-		return activeScreen.getElementCSS(query);
+		return activeScreen.getElementByCSS(query);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class OnDeviceValidatorAssert
 	{
 		Screen activeScreen = device.getActiveScreen();
 		final String query = String.format(CSS_CLASS, cssClass);
-		return activeScreen.getElementCSS(query);
+		return activeScreen.getElementByCSS(query);
 	}
 
 	/**

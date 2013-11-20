@@ -21,7 +21,7 @@ public class LockUnlockTest extends BaseIntegrationTest
 {
 	private final static String VALIDATOR_APP_PACKAGE = "com.musala.atmosphere.ondevice.validator";
 
-	private final static String VALIDATOR_APP_ACTIVITY = "MainActivity";
+	private final static String VALIDATOR_APP_ACTIVITY = ".MainActivity";
 
 	@BeforeClass
 	public static void setUp() throws Exception
