@@ -53,7 +53,7 @@ public class BuilderDeviceSelectionIntegrationTest
 
 	private Builder builder;
 
-	@Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT)
+	@Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 10)
 	static class GettingDeviceSampleClass
 	{
 		public static Builder getBuilderInstance()

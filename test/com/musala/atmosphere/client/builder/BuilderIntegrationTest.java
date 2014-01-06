@@ -28,7 +28,7 @@ public class BuilderIntegrationTest
 	@Test(expected = ServerConnectionFailedException.class)
 	public void wrongIpTest()
 	{
-		@Server(ip = "149.111.400.154", port = SERVER_MANAGER_RMI_PORT)
+		@Server(ip = "149.111.400.154", port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 10)
 		class SampleTestWrongIpOne
 		{
 			public Builder getBuilderInstance()
@@ -44,7 +44,7 @@ public class BuilderIntegrationTest
 	@Test(expected = ServerConnectionFailedException.class)
 	public void wrongIpTestTwo()
 	{
-		@Server(ip = "random_string", port = SERVER_MANAGER_RMI_PORT)
+		@Server(ip = "random_string", port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 10)
 		class SampleTestWrongIpTwo
 		{
 			public Builder getBuilderInstance()
@@ -60,7 +60,7 @@ public class BuilderIntegrationTest
 	@Test(expected = ServerConnectionFailedException.class)
 	public void wrongPortTest()
 	{
-		@Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT + 148)
+		@Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT + 148, connectionRetryLimit = 10)
 		class SampleTestWrongPort
 		{
 			public Builder getBuilderInstance()

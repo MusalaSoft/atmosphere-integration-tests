@@ -53,7 +53,7 @@ public class DeviceInstallApkTest extends BaseIntegrationTest
 
 	private IDevice mockDevice;
 
-	@Server(ip = "localhost", port = SERVERMANAGER_RMI_PORT)
+	@Server(ip = "localhost", port = SERVERMANAGER_RMI_PORT, connectionRetryLimit = 10)
 	private class GettingDeviceSampleClass
 	{
 		public GettingDeviceSampleClass()
