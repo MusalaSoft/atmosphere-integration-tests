@@ -29,7 +29,7 @@ public class DeviceGetScreenshotTest extends BaseIntegrationTest
 	@Test
 	public void getScreenShotTest()
 	{
-		testDevice.unlock();
+		testDevice.setLocked(false);
 		// getting screenshot without dumping it to file
 		byte[] screenshot = testDevice.getScreenshot();
 

@@ -21,7 +21,7 @@ public class ScreenOrientationTest extends BaseIntegrationTest
 		initTestDevice(testDeviceParams);
 		installValidatorApplication();
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY, true);
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 	}
 
 	@Test

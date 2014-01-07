@@ -133,7 +133,7 @@ public class OnDeviceValidatorAssert
 			InterruptedException,
 			UiElementFetchingException
 	{
-		device.unlock();
+		device.setLocked(false);
 		device.startActivity(appPackage, appActivity);
 		Thread.sleep(APP_STARTUP_WAIT_TIME);
 

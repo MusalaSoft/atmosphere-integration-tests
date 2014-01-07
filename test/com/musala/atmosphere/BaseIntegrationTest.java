@@ -52,7 +52,7 @@ public class BaseIntegrationTest
 		assertNotNull("Could not get a device.", testDevice);
 	}
 
-	@Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT)
+	@Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 0)
 	private static class GettingBuilderClass
 	{
 		public GettingBuilderClass()
