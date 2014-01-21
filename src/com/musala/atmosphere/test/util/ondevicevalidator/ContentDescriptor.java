@@ -14,7 +14,7 @@ public enum ContentDescriptor
 			"OrientationAzimuthBox"), ORIENTATION_PITCH_BOX("OrientationPitchBox"), ORIENTATION_ROLL_BOX(
 			"OrientationRollBox"), ACCELERATION_X_BOX("AccelerationXBox"), ACCELERATION_Y_BOX("AccelerationYBox"), ACCELERATION_Z_BOX(
 			"AccelerationZBox"), AUTO_ROTATION_BUTTON("AutoRotationFlag"), SCREEN_ORIENTATION_BOX(
-			"ScreenOrientationBox");
+			"ScreenOrientationBox"), SMS_SENDER_PHONE_BOX("SmsSenderPhone"), SMS_TEXT_BOX("SmsText");
 
 	private String value;
 

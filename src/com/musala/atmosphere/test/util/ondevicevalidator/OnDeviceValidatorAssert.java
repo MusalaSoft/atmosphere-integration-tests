@@ -12,6 +12,7 @@ import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.BatteryState;
 import com.musala.atmosphere.commons.ScreenOrientation;
+import com.musala.atmosphere.commons.SmsMessage;
 
 /**
  * Class containing assertions and other useful methods implementing logic for the OnDeviceValidator.
@@ -563,5 +564,24 @@ public class OnDeviceValidatorAssert
 		UiElement screenOrientationBox = getElementByContentDescriptor(ContentDescriptor.SCREEN_ORIENTATION_BOX.toString());
 
 		assertText(message, screenOrientationBox, String.valueOf(expected.getOrientationNumber()));
+	}
+
+	/**
+	 * Asserts that the sent sms message is successfully received by device
+	 * 
+	 * @param message
+	 *        - message to be displayed if assertion fails.
+	 * @param smsMessage
+	 *        - the expected message to be received.
+	 * 
+	 * @throws UiElementFetchingException
+	 */
+	public static void assertReceivedSms(String message, SmsMessage smsMessage) throws UiElementFetchingException
+	{
+		UiElement senderPhoneBox = getElementByContentDescriptor(ContentDescriptor.SMS_SENDER_PHONE_BOX.toString());
+		UiElement smsTextBox = getElementByContentDescriptor(ContentDescriptor.SMS_TEXT_BOX.toString());
+
+		assertText(message, senderPhoneBox, smsMessage.getPhoneNumber());
+		assertText(message, smsTextBox, smsMessage.getText());
 	}
 }
