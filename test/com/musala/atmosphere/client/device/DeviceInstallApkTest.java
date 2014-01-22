@@ -30,6 +30,7 @@ import com.android.ddmlib.InstallException;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.agent.AgentManager;
 import com.musala.atmosphere.agent.DevicePropertyStringConstants;
+import com.musala.atmosphere.agent.util.FakeOnDeviceComponentAnswer;
 import com.musala.atmosphere.agent.util.FakeServiceAnswer;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
@@ -80,8 +81,8 @@ public class DeviceInstallApkTest extends BaseIntegrationTest
 		when(mockDevice.arePropertiesSet()).thenReturn(true);
 		when(mockDevice.isOffline()).thenReturn(false);
 
-		FakeServiceAnswer fakeServiceAnswer = new FakeServiceAnswer();
-		Mockito.doAnswer(fakeServiceAnswer).when(mockDevice).createForward(anyInt(), anyInt());
+		FakeOnDeviceComponentAnswer fakeOnDeviceComponentAnswer = new FakeOnDeviceComponentAnswer();
+		Mockito.doAnswer(fakeOnDeviceComponentAnswer).when(mockDevice).createForward(anyInt(), anyInt());
 
 		Map<String, String> mockDeviceProperties = new HashMap<String, String>();
 		mockDeviceProperties.put(	DevicePropertyStringConstants.PROPERTY_EMUDEVICE_LCD_DENSITY.toString(),

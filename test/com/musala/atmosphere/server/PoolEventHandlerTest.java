@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import com.android.ddmlib.IDevice;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.agent.AgentManager;
+import com.musala.atmosphere.agent.util.FakeOnDeviceComponentAnswer;
 import com.musala.atmosphere.agent.util.FakeServiceAnswer;
 import com.musala.atmosphere.server.pool.PoolManager;
 
@@ -58,8 +59,8 @@ public class PoolEventHandlerTest extends BaseIntegrationTest
 
 		when(fakeDevice.getBatteryLevel()).thenReturn(50);
 
-		FakeServiceAnswer fakeServiceAnswer = new FakeServiceAnswer();
-		Mockito.doAnswer(fakeServiceAnswer).when(fakeDevice).createForward(anyInt(), anyInt());
+		FakeOnDeviceComponentAnswer fakeOnDeviceComponentAnswer = new FakeOnDeviceComponentAnswer();
+		Mockito.doAnswer(fakeOnDeviceComponentAnswer).when(fakeDevice).createForward(anyInt(), anyInt());
 
 		return fakeDevice;
 	}
@@ -115,8 +116,8 @@ public class PoolEventHandlerTest extends BaseIntegrationTest
 		final String fakeDeviceSerialNumber = "mockDevice3";
 		IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
 
-		FakeServiceAnswer fakeServiceAnswer = new FakeServiceAnswer();
-		Mockito.doAnswer(fakeServiceAnswer).when(fakeDevice).createForward(anyInt(), anyInt());
+		FakeOnDeviceComponentAnswer fakeOnDeviceComponentAnswer = new FakeOnDeviceComponentAnswer();
+		Mockito.doAnswer(fakeOnDeviceComponentAnswer).when(fakeDevice).createForward(anyInt(), anyInt());
 
 		when(fakeDevice.isOnline()).thenReturn(true);
 		when(fakeDevice.isOffline()).thenReturn(false);
