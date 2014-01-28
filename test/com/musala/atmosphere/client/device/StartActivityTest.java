@@ -1,5 +1,7 @@
 package com.musala.atmosphere.client.device;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -22,7 +24,8 @@ public class StartActivityTest extends BaseIntegrationTest
 	@Test
 	public void testStartActivity() throws Exception
 	{
-		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY, true);
+		assertTrue(	"Starting the activity returned false.",
+					testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY, true));
 		Thread.sleep(1000);
 	}
 }

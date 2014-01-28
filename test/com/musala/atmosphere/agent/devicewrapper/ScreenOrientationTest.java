@@ -3,6 +3,7 @@ package com.musala.atmosphere.agent.devicewrapper;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertAutoRotationOff;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertAutoRotationOn;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertScreenOrientation;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,28 +28,30 @@ public class ScreenOrientationTest extends BaseIntegrationTest
 	@Test
 	public void testSettingAutoRotationOff() throws Exception
 	{
-		testDevice.setAutoRotation(false);
+		assertTrue("Setting auto rotation returned false.", testDevice.setAutoRotation(false));
 		assertAutoRotationOff("Auto ratation is not off.");
 	}
 
 	@Test
 	public void testSettingAutoRotationOn() throws Exception
 	{
-		testDevice.setAutoRotation(true);
+		assertTrue("Setting auto rotation returned false.", testDevice.setAutoRotation(true));
 		assertAutoRotationOn("Auto ratation is not on.");
 	}
 
 	@Test
 	public void testSettingScreenOrientationPortrait() throws Exception
 	{
-		testDevice.setScreenOrientation(ScreenOrientation.PORTRAIT);
+		assertTrue(	"Setting screen orientation returned false.",
+					testDevice.setScreenOrientation(ScreenOrientation.PORTRAIT));
 		assertScreenOrientation("Screen rotation expected to be portrait", ScreenOrientation.PORTRAIT);
 	}
 
 	@Test
 	public void testSettingScreenOrientationUpsideDownPortrait() throws Exception
 	{
-		testDevice.setScreenOrientation(ScreenOrientation.UPSIDE_DOWN_PORTRAIT);
+		assertTrue(	"Setting screen orientation returned false.",
+					testDevice.setScreenOrientation(ScreenOrientation.UPSIDE_DOWN_PORTRAIT));
 		assertScreenOrientation("Screen rotation expected to be upside down portrait",
 								ScreenOrientation.UPSIDE_DOWN_PORTRAIT);
 	}
@@ -56,14 +59,16 @@ public class ScreenOrientationTest extends BaseIntegrationTest
 	@Test
 	public void testSettingScreenOrientationLandscape() throws Exception
 	{
-		testDevice.setScreenOrientation(ScreenOrientation.LANDSCAPE);
+		assertTrue(	"Setting screen orientation returned false.",
+					testDevice.setScreenOrientation(ScreenOrientation.LANDSCAPE));
 		assertScreenOrientation("Screen rotation expected to be landscape", ScreenOrientation.LANDSCAPE);
 	}
 
 	@Test
 	public void testSettingScreenOrientationUpsideDown() throws Exception
 	{
-		testDevice.setScreenOrientation(ScreenOrientation.UPSIDE_DOWN_LANDSCAPE);
+		assertTrue(	"Setting screen orientation returned false.",
+					testDevice.setScreenOrientation(ScreenOrientation.UPSIDE_DOWN_LANDSCAPE));
 		assertScreenOrientation("Screen rotation expected to be upside down landscape",
 								ScreenOrientation.UPSIDE_DOWN_LANDSCAPE);
 	}

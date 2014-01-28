@@ -3,6 +3,8 @@ package com.musala.atmosphere.client.device;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertReceivedSms;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertValidatorIsStarted;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -30,7 +32,7 @@ public class ReceiveSmsTest extends BaseIntegrationTest
 	public void testReceiveSms() throws Exception
 	{
 		SmsMessage sms = new SmsMessage(SENDER_PHONE, SMS_TEXT);
-		testDevice.receiveSms(sms);
+		assertTrue("Sending SMS returned false.", testDevice.receiveSms(sms));
 		assertReceivedSms("Sms message was not received properly.", sms);
 
 	}

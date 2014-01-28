@@ -2,6 +2,7 @@ package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertInputTextBoxIsFocused;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class TapTest extends BaseIntegrationTest
 		Thread.sleep(1000);
 		// test tapping
 		UiElement inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
-		inputTextBox.tap();
+		assertTrue("Tapping screen returned false.", inputTextBox.tap());
 		assertInputTextBoxIsFocused("Input text box not focused.");
 	}
 
@@ -58,7 +59,7 @@ public class TapTest extends BaseIntegrationTest
 		Point BatteryStatusRelativeUpperLeftCorner = widgetRelativeLayoutAttributes.getBounds()
 																					.getRelativePoint(batteryStatusBoxUpperLeftCorner);
 
-		widgetMainLayout.tap(BatteryStatusRelativeUpperLeftCorner, false);
+		assertTrue("Tapping screen returned false.", widgetMainLayout.tap(BatteryStatusRelativeUpperLeftCorner, false));
 
 		assertInputTextBoxIsFocused("Input text box not focused.");
 	}

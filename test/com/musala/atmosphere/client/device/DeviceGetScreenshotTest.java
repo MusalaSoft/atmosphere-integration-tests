@@ -15,11 +15,6 @@ public class DeviceGetScreenshotTest extends BaseIntegrationTest
 {
 	private static final String PATH_TO_SCREENSHOT = "./Screenshot.png";
 
-	/**
-	 * {@value #WIDGET_DRAWING_TIMEOUT} milliseconds
-	 */
-	private static final long WIDGET_DRAWING_TIMEOUT = 2000;
-
 	@Before
 	public void setUp()
 	{
@@ -29,14 +24,13 @@ public class DeviceGetScreenshotTest extends BaseIntegrationTest
 	@Test
 	public void getScreenShotTest()
 	{
-		testDevice.setLocked(false);
 		// getting screenshot without dumping it to file
 		byte[] screenshot = testDevice.getScreenshot();
 
 		assertNotNull("Getting screenshot returned 'null'", screenshot);
 
 		// getting screenshot with dumping it to file
-		testDevice.getScreenshot(PATH_TO_SCREENSHOT);
+		assertTrue("Getting screenshot returned false.", testDevice.getScreenshot(PATH_TO_SCREENSHOT));
 		File dumpedScreenshot = new File(PATH_TO_SCREENSHOT);
 
 		assertTrue("Getting screenshot failed!", dumpedScreenshot.exists());

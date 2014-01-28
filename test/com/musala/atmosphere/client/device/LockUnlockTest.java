@@ -33,7 +33,7 @@ public class LockUnlockTest extends BaseIntegrationTest
 	@Test
 	public void testUnlockLockDevice() throws Exception
 	{
-		testDevice.setLocked(false);
+		assertTrue("Unlocking the device returned false.", testDevice.setLocked(false));
 		// testDevice.pressButton(HardwareButton.HOME);
 		Thread.sleep(2000);
 
@@ -45,7 +45,7 @@ public class LockUnlockTest extends BaseIntegrationTest
 
 		assertValidatorIsStarted();
 
-		testDevice.setLocked(true);
+		assertTrue("Locking the device returned false.", testDevice.setLocked(true));
 		Thread.sleep(1500);
 		try
 		{
