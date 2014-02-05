@@ -9,8 +9,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
+import com.musala.atmosphere.commons.PhoneNumber;
 import com.musala.atmosphere.commons.SmsMessage;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 
 public class ReceiveSmsTest extends BaseIntegrationTest
 {
@@ -21,7 +23,9 @@ public class ReceiveSmsTest extends BaseIntegrationTest
 	@BeforeClass
 	public static void setUp() throws Exception
 	{
-		initTestDevice(new DeviceParameters());
+		DeviceParameters testDeviceParameters = new DeviceParameters();
+		testDeviceParameters.setDeviceType(DeviceType.EMULATOR_ONLY);
+		initTestDevice(testDeviceParameters);
 		installValidatorApplication();
 		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
 		Thread.sleep(3000);
@@ -31,9 +35,9 @@ public class ReceiveSmsTest extends BaseIntegrationTest
 	@Test
 	public void testReceiveSms() throws Exception
 	{
-		SmsMessage sms = new SmsMessage(SENDER_PHONE, SMS_TEXT);
+		PhoneNumber phoneNumber = new PhoneNumber(SENDER_PHONE);
+		SmsMessage sms = new SmsMessage(phoneNumber, SMS_TEXT);
 		assertTrue("Sending SMS returned false.", testDevice.receiveSms(sms));
 		assertReceivedSms("Sms message was not received properly.", sms);
-
 	}
 }

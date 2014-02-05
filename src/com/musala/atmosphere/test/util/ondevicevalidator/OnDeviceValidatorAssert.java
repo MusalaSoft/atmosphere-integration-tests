@@ -4,6 +4,11 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertI
 import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertIsFocused;
 import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertNotEnabled;
 import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertText;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
 
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.Screen;
@@ -11,6 +16,7 @@ import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.BatteryState;
+import com.musala.atmosphere.commons.PhoneNumber;
 import com.musala.atmosphere.commons.ScreenOrientation;
 import com.musala.atmosphere.commons.SmsMessage;
 
@@ -25,6 +31,8 @@ public class OnDeviceValidatorAssert
 	private final static String CONTENT_DESCRIPTOR = "[content-desc=%s]";
 
 	private final static String CSS_CLASS = "[class=%s]";
+
+	private final static String CSS_PACKAGE = "[package=%s]";
 
 	private final static String PATH_TO_APK_DIR = "./";
 
@@ -41,6 +49,14 @@ public class OnDeviceValidatorAssert
 	private final static String VALIDATOR_ACCELERATION_ACTIVITY = ".AccelerationActivity";
 
 	private final static String VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC = "ATMOSPHEREValidator";
+
+	private final static String PHONE_PACKAGE_NAME = "com.android.phone";
+
+	private final static String INCOMING_CALL_TEXT = "Incoming call";
+
+	private final static String ON_HOLD_TEXT = "On hold";
+
+	private final static String END_CALL_BUTTON_DESCRIPTOR = "End";
 
 	private final static int APP_STARTUP_WAIT_TIME = 2000;
 
@@ -83,11 +99,11 @@ public class OnDeviceValidatorAssert
 	}
 
 	/**
-	 * Gets UI element by given css class.
+	 * Gets UI element by given CSS class.
 	 * 
 	 * @param cssClass
-	 *        - css class to search for.
-	 * @return - UI element withe the given class.
+	 *        - CSS class to search for.
+	 * @return - UI element with the given class.
 	 * @throws UiElementFetchingException
 	 */
 	public static UiElement getElementByClass(String cssClass) throws UiElementFetchingException
@@ -95,6 +111,21 @@ public class OnDeviceValidatorAssert
 		Screen activeScreen = device.getActiveScreen();
 		final String query = String.format(CSS_CLASS, cssClass);
 		return activeScreen.getElementByCSS(query);
+	}
+
+	/**
+	 * Gets list of UI elements by given CSS package.
+	 * 
+	 * @param packageName
+	 *        - package name to search for.
+	 * @return - UI element list with the given package.
+	 * @throws UiElementFetchingException
+	 */
+	public static List<UiElement> getElementsByPackage(String packageName) throws UiElementFetchingException
+	{
+		Screen activeScreen = device.getActiveScreen();
+		final String query = String.format(CSS_PACKAGE, packageName);
+		return activeScreen.getElementsByCSS(query);
 	}
 
 	/**
@@ -581,7 +612,149 @@ public class OnDeviceValidatorAssert
 		UiElement senderPhoneBox = getElementByContentDescriptor(ContentDescriptor.SMS_SENDER_PHONE_BOX.toString());
 		UiElement smsTextBox = getElementByContentDescriptor(ContentDescriptor.SMS_TEXT_BOX.toString());
 
-		assertText(message, senderPhoneBox, smsMessage.getPhoneNumber());
+		assertText(message, senderPhoneBox, smsMessage.getPhoneNumber().toString());
 		assertText(message, smsTextBox, smsMessage.getText());
+	}
+
+	/**
+	 * Asserts that a phone number is calling the device.
+	 * 
+	 * @param message
+	 *        - message to be displayed if assertion fails.
+	 * @param phoneNumber
+	 *        - the expected number to be calling the device.
+	 * 
+	 * @throws UiElementFetchingException
+	 */
+	public static void assertCallReceived(String message, PhoneNumber phoneNumber) throws UiElementFetchingException
+	{
+		boolean hasIncomingCallElement = false;
+		boolean hasPhoneNumberElement = false;
+
+		List<UiElement> uiElements = getElementsByPackage(PHONE_PACKAGE_NAME);
+		for (UiElement uiElement : uiElements)
+		{
+			String elementText = uiElement.getElementAttributes(false).getText();
+			if (phoneNumber.toString().equals(elementText))
+			{
+				hasPhoneNumberElement = true;
+			}
+			else if (INCOMING_CALL_TEXT.equals(elementText))
+			{
+				hasIncomingCallElement = true;
+			}
+		}
+
+		assertTrue(message, hasIncomingCallElement);
+		assertTrue(message, hasPhoneNumberElement);
+	}
+
+	/**
+	 * Asserts that a call by a phone number is accepted by the device.
+	 * 
+	 * @param message
+	 *        - message to be displayed if assertion fails.
+	 * @param phoneNumber
+	 *        - the expected number to be in call with the device.
+	 * 
+	 * @throws UiElementFetchingException
+	 */
+	public static void assertCallAccepted(String message, PhoneNumber phoneNumber) throws UiElementFetchingException
+	{
+		boolean hasIncomingCallElement = false;
+		boolean hasOnHoldElement = false;
+		boolean hasPhoneNumberElement = false;
+
+		List<UiElement> uiElements = getElementsByPackage(PHONE_PACKAGE_NAME);
+		for (UiElement uiElement : uiElements)
+		{
+			String elementText = uiElement.getElementAttributes(false).getText();
+			if (phoneNumber.toString().equals(elementText))
+			{
+				hasPhoneNumberElement = true;
+			}
+			else if (INCOMING_CALL_TEXT.equals(elementText))
+			{
+				hasIncomingCallElement = true;
+			}
+			else if (ON_HOLD_TEXT.equals(elementText))
+			{
+				hasOnHoldElement = true;
+			}
+		}
+
+		UiElement endCallButton = getElementByContentDescriptor(END_CALL_BUTTON_DESCRIPTOR);
+
+		assertNotNull(message, endCallButton);
+		assertFalse(message, hasIncomingCallElement);
+		assertFalse(message, hasOnHoldElement);
+		assertTrue(message, hasPhoneNumberElement);
+	}
+
+	/**
+	 * Asserts that a call by a phone number is put on hold by the device.
+	 * 
+	 * @param message
+	 *        - message to be displayed if assertion fails.
+	 * @param phoneNumber
+	 *        - the expected number to be put on hold on the device.
+	 * 
+	 * @throws UiElementFetchingException
+	 */
+	public static void assertCallOnHold(String message, PhoneNumber phoneNumber) throws UiElementFetchingException
+	{
+		boolean hasOnHoldElement = false;
+		boolean hasPhoneNumberElement = false;
+
+		List<UiElement> uiElements = getElementsByPackage(PHONE_PACKAGE_NAME);
+		for (UiElement uiElement : uiElements)
+		{
+			String elementText = uiElement.getElementAttributes(false).getText();
+			if (phoneNumber.toString().equals(elementText))
+			{
+				hasPhoneNumberElement = true;
+			}
+			else if (ON_HOLD_TEXT.equals(elementText))
+			{
+				hasOnHoldElement = true;
+			}
+		}
+
+		assertTrue(message, hasOnHoldElement);
+		assertTrue(message, hasPhoneNumberElement);
+	}
+
+	/**
+	 * Asserts that the sent call is successfully canceled by the device.
+	 * 
+	 * @param message
+	 *        - message to be displayed if assertion fails.
+	 * 
+	 * @throws UiElementFetchingException
+	 */
+	public static void assertCallCanceled(String message) throws UiElementFetchingException
+	{
+		boolean hasIncomingCallElement = false;
+
+		List<UiElement> uiElements = null;
+
+		try
+		{
+			uiElements = getElementsByPackage(PHONE_PACKAGE_NAME);
+		}
+		catch (UiElementFetchingException e)
+		{
+			return;
+		}
+		for (UiElement uiElement : uiElements)
+		{
+			String elementText = uiElement.getElementAttributes(false).getText();
+			if (INCOMING_CALL_TEXT.equals(elementText))
+			{
+				hasIncomingCallElement = true;
+			}
+		}
+
+		assertFalse(message, hasIncomingCallElement);
 	}
 }

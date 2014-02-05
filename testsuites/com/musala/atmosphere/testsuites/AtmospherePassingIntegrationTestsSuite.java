@@ -7,6 +7,7 @@ import com.musala.atmosphere.agent.devicewrapper.GetScreenshotTest;
 import com.musala.atmosphere.agent.devicewrapper.GetUiXmlTest;
 import com.musala.atmosphere.agent.devicewrapper.ScreenOrientationTest;
 import com.musala.atmosphere.client.builder.BuilderDeviceSelectionIntegrationTest;
+import com.musala.atmosphere.client.device.CallTest;
 import com.musala.atmosphere.client.device.DeviceGetScreenshotTest;
 import com.musala.atmosphere.client.device.DeviceInstallApkTest;
 import com.musala.atmosphere.client.device.LockUnlockTest;
@@ -18,7 +19,7 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
 @SuiteClasses({ReceiveSmsTest.class, ScreenOrientationTest.class, PoolEventHandlerTest.class,
 		BatteryRelatedMethodsTest.class, TapTest.class, LockUnlockTest.class, StartActivityTest.class,
 		BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class, DeviceInstallApkTest.class,
-		GetScreenshotTest.class, DeviceGetScreenshotTest.class})
+		GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class, CallTest.class})
 // @SuiteClasses({BatteryRelatedMethodsTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite
 {
