@@ -40,10 +40,10 @@ public class GetScreenshotTest extends BaseIntegrationTest
 		assertNotNull("Screenshot data is not a valid image.", image);
 
 		assertEquals(	"Device screen resolution height did not match screenshot height.",
-						(int) screenResolution.getKey(),
+						(int) screenResolution.getValue(),
 						image.getHeight());
 		assertEquals(	"Device screen resolution width did not match screenshot width.",
-						(int) screenResolution.getValue(),
+						(int) screenResolution.getKey(),
 						image.getWidth());
 	}
 }
