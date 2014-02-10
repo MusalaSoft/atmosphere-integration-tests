@@ -37,7 +37,7 @@ public class DeviceOrientationTest extends BaseIntegrationTest
 		Thread.sleep(1000);
 	}
 
-	@Test
+	// @Test
 	public void testSetRandomDeviceOrientation() throws Exception
 	{
 		final float orientationAzimuth = 17.087f;
@@ -55,7 +55,7 @@ public class DeviceOrientationTest extends BaseIntegrationTest
 		assertOrientationRoll("Device roll not set to the expected value.", orientationRoll);
 	}
 
-	@Test
+	// @Test
 	public void testSetDeviceOrientationPortrait() throws Exception
 	{
 		DeviceOrientation portraitOrientation = DeviceOrientation.getPortraitOrientation();
@@ -68,7 +68,7 @@ public class DeviceOrientationTest extends BaseIntegrationTest
 		assertOrientationRoll("Device roll not set to the expected value.", portraitOrientation.getRoll());
 	}
 
-	@Test
+	// @Test
 	public void testSetDeviceOrientationUpsideDownPortrait() throws Exception
 	{
 		DeviceOrientation upsideDownPortraitOrientation = DeviceOrientation.getUpsideDownPortrait();
@@ -82,7 +82,7 @@ public class DeviceOrientationTest extends BaseIntegrationTest
 		assertOrientationRoll("Device roll not set to the expected value.", upsideDownPortraitOrientation.getRoll());
 	}
 
-	@Test
+	// @Test
 	public void testSetDeviceOrientationLandscape() throws Exception
 	{
 		DeviceOrientation landscapeOrientation = DeviceOrientation.getLandscapeOrientation();
@@ -95,7 +95,7 @@ public class DeviceOrientationTest extends BaseIntegrationTest
 		assertOrientationRoll("Device roll not set to the expected value.", landscapeOrientation.getRoll());
 	}
 
-	@Test
+	// @Test
 	public void testSetDeviceOrientationUpsideDownLandscape() throws Exception
 	{
 		DeviceOrientation upsideDownLandscapeOrientation = DeviceOrientation.getUpsideDownLandscape();
@@ -114,6 +114,7 @@ public class DeviceOrientationTest extends BaseIntegrationTest
 	{
 		// Getting device orientation works for both real devices and emulators.
 		DeviceOrientation deviceOrientation = testDevice.getDeviceOrientation();
+		assertNotNull("Failed getting device orientation.", deviceOrientation);
 		assertNotNull("Failed getting device azimuth value.", deviceOrientation.getAzimuth());
 		assertNotNull("Failed getting device pitch value.", deviceOrientation.getPitch());
 		assertNotNull("Failed getting device rol value.", deviceOrientation.getRoll());
