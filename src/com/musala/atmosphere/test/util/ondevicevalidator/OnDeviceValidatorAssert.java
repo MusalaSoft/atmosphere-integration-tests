@@ -15,10 +15,10 @@ import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
-import com.musala.atmosphere.commons.BatteryState;
-import com.musala.atmosphere.commons.PhoneNumber;
 import com.musala.atmosphere.commons.ScreenOrientation;
 import com.musala.atmosphere.commons.SmsMessage;
+import com.musala.atmosphere.commons.beans.BatteryState;
+import com.musala.atmosphere.commons.beans.PhoneNumber;
 
 /**
  * Class containing assertions and other useful methods implementing logic for the OnDeviceValidator.

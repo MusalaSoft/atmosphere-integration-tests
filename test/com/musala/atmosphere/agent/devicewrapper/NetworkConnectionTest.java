@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.commons.ConnectionType;
-import com.musala.atmosphere.commons.MobileDataState;
+import com.musala.atmosphere.commons.beans.MobileDataState;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 

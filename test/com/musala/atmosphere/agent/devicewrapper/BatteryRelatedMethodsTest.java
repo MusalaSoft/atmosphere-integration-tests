@@ -13,14 +13,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.commons.BatteryState;
+import com.musala.atmosphere.commons.beans.BatteryState;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 
 /**
- * 
+ *
  * @author valyo.yolovski
- * 
+ *
  */
 public class BatteryRelatedMethodsTest extends BaseIntegrationTest
 {
@@ -41,7 +40,7 @@ public class BatteryRelatedMethodsTest extends BaseIntegrationTest
 	{
 		// set battery level to 75
 		final Integer batteryLevel = 75;
-		assertTrue("Setting battery level returned false.", testDevice.setBatteryLevel(batteryLevel));
+		assertTrue("Expected setting battery level to return true.", testDevice.setBatteryLevel(batteryLevel));
 
 		Thread.sleep(2000);
 		assertBatteryNotLow("Battery low flag not set as expected.");
