@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
+import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.commons.ConnectionType;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
@@ -29,7 +30,7 @@ public class ConnectionTypeTest extends BaseIntegrationTest
 	{
 		ConnectionType connectionType = testDevice.getConnectionType();
 		UiElement connectionTypeBox = getElementByContentDescriptor(ContentDescriptor.CONNECTION_TYPE_BOX.toString());
-		String connectionTypeBoxText = connectionTypeBox.getElementAttributes().getText();
+		String connectionTypeBoxText = connectionTypeBox.getElementSelector().getStringValue(CssAttribute.TEXT);
 		assertEquals(	"Getting connection type did not return the expected result.",
 						Integer.parseInt(connectionTypeBoxText),
 						connectionType.getId());

@@ -10,7 +10,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
+import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
+import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.commons.beans.DeviceAcceleration;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
@@ -157,12 +159,9 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 	{
 		// Getting device acceleration works for both real devices and emulators.
 		DeviceAcceleration deviceAcceleration = testDevice.getDeviceAcceleration();
-		String validatorAccelerationX = getElementByContentDescriptor(ContentDescriptor.ACCELERATION_X_BOX.toString()).getElementAttributes()
-																														.getText();
-		String validatorAccelerationY = getElementByContentDescriptor(ContentDescriptor.ACCELERATION_Y_BOX.toString()).getElementAttributes()
-																														.getText();
-		String validatorAccelerationZ = getElementByContentDescriptor(ContentDescriptor.ACCELERATION_Z_BOX.toString()).getElementAttributes()
-																														.getText();
+		String validatorAccelerationX = getElementText(ContentDescriptor.ACCELERATION_X_BOX);
+		String validatorAccelerationY = getElementText(ContentDescriptor.ACCELERATION_Y_BOX);
+		String validatorAccelerationZ = getElementText(ContentDescriptor.ACCELERATION_Z_BOX);
 		assertEquals(	"Received acceleration value on the X axis does not match the on-device information.",
 						validatorAccelerationX,
 						String.valueOf(deviceAcceleration.getAccelerationX()));
@@ -172,5 +171,11 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest
 		assertEquals(	"Received acceleration value on the Z axis does not match the on-device information.",
 						validatorAccelerationZ,
 						String.valueOf(deviceAcceleration.getAccelerationZ()));
+	}
+
+	private String getElementText(ContentDescriptor contentDescriptor) throws UiElementFetchingException
+	{
+		UiElement elementByContentDescriptor = getElementByContentDescriptor(contentDescriptor.toString());
+		return elementByContentDescriptor.getElementSelector().getStringValue(CssAttribute.TEXT);
 	}
 }

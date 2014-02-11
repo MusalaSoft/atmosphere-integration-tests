@@ -4,9 +4,9 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertI
 import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertIsFocused;
 import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertNotEnabled;
 import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertText;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
+import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.commons.ScreenOrientation;
 import com.musala.atmosphere.commons.SmsMessage;
 import com.musala.atmosphere.commons.beans.BatteryState;
@@ -22,9 +23,9 @@ import com.musala.atmosphere.commons.beans.PhoneNumber;
 
 /**
  * Class containing assertions and other useful methods implementing logic for the OnDeviceValidator.
- * 
+ *
  * @author yordan.petrov
- * 
+ *
  */
 public class OnDeviceValidatorAssert
 {
@@ -64,7 +65,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Sets the test device, on which the OnDeviceValidator will be installed and UI elements will be fetched.
-	 * 
+	 *
 	 * @param device
 	 *        - the test device to be set.
 	 */
@@ -75,7 +76,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Gets the current test device.
-	 * 
+	 *
 	 * @return - the current test device.
 	 */
 	public static Device getDevice()
@@ -85,7 +86,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Gets UI element by given content descriptor.
-	 * 
+	 *
 	 * @param contentDescriptor
 	 *        - content descriptor to search for.
 	 * @return - UI element with the given content descriptor.
@@ -100,7 +101,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Gets UI element by given CSS class.
-	 * 
+	 *
 	 * @param cssClass
 	 *        - CSS class to search for.
 	 * @return - UI element with the given class.
@@ -115,7 +116,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Gets list of UI elements by given CSS package.
-	 * 
+	 *
 	 * @param packageName
 	 *        - package name to search for.
 	 * @return - UI element list with the given package.
@@ -138,7 +139,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts the the OnDeviceValidator has been started.
-	 * 
+	 *
 	 * @throws UiElementFetchingException
 	 */
 	public static void assertValidatorIsStarted() throws UiElementFetchingException
@@ -151,7 +152,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Starts an activity on the test device by given application package and activity name.
-	 * 
+	 *
 	 * @param appPackage
 	 *        - application package.
 	 * @param appActivity
@@ -174,7 +175,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Starts OnDeviceValidator's main activity.
-	 * 
+	 *
 	 * @throws ActivityStartingException
 	 * @throws InterruptedException
 	 * @throws UiElementFetchingException
@@ -189,7 +190,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Starts OnDeviceValidator's orientation activity.
-	 * 
+	 *
 	 * @throws ActivityStartingException
 	 * @throws InterruptedException
 	 * @throws UiElementFetchingException
@@ -204,7 +205,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Starts OnDeviceValidator's acceleration activity.
-	 * 
+	 *
 	 * @throws ActivityStartingException
 	 * @throws InterruptedException
 	 * @throws UiElementFetchingException
@@ -219,7 +220,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Setups the OnDeviceValidator on the test device and starts its main activity.
-	 * 
+	 *
 	 * @throws ActivityStartingException
 	 * @throws InterruptedException
 	 * @throws UiElementFetchingException
@@ -235,7 +236,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Setups the OnDeviceValidator on the test device and starts its orientation activity.
-	 * 
+	 *
 	 * @throws ActivityStartingException
 	 * @throws InterruptedException
 	 * @throws UiElementFetchingException
@@ -251,7 +252,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Setups the OnDeviceValidator on the test device and starts its acceleration activity.
-	 * 
+	 *
 	 * @throws ActivityStartingException
 	 * @throws InterruptedException
 	 * @throws UiElementFetchingException
@@ -267,7 +268,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the battery level of the test device has been set to the expected value.
-	 * 
+	 *
 	 * @param message
 	 *        - message to display if assertion fails.
 	 * @param expectedBatteryLevel
@@ -283,7 +284,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the battery state of the device has been set to the expected value.
-	 * 
+	 *
 	 * @param message
 	 *        - message to display if assertion fails.
 	 * @param expectedBatteryState
@@ -300,7 +301,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the test device is connected to power.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @throws UiElementFetchingException
@@ -314,7 +315,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the test device is not connected to power.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @throws UiElementFetchingException
@@ -328,7 +329,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the battery of the test device is low.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if the assertion fails.
 	 * @throws UiElementFetchingException
@@ -342,7 +343,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the battery of the test device is not low.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if the assertion fails.
 	 * @throws UiElementFetchingException
@@ -356,7 +357,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the the test device is in airplane mode.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @throws UiElementFetchingException
@@ -370,7 +371,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the the test device is not in airplane mode.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @throws UiElementFetchingException
@@ -384,7 +385,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that a given string has been inputted on the test device.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @param expected
@@ -400,7 +401,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the battery status box is focused.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @throws UiElementFetchingException
@@ -414,7 +415,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the WiFi button is enabled.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @throws UiElementFetchingException
@@ -428,7 +429,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the WiFi button is disabled.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @throws UiElementFetchingException
@@ -442,7 +443,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the connection type of the test device has been set to the expected value.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @param expected
@@ -458,7 +459,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the orientation roll of the test device has been set to the expected value.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @param expected
@@ -474,7 +475,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the orientation pitch of the test device has been set to the expected value.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @param expected
@@ -490,7 +491,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the orientation azimuth of the test device has been set to the expected value.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @param expected
@@ -506,7 +507,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the acceleration on the x axis of the test device has been set to the expected value.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @param expected
@@ -522,7 +523,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the acceleration on the y axis of the test device has been set to the expected value.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @param expected
@@ -538,7 +539,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the acceleration on the z axis of the test device has been set to the expected value.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @param expected
@@ -554,7 +555,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the auto rotation of the test device is turned on.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @throws UiElementFetchingException
@@ -568,7 +569,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the auto rotation of the test device is turned off.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @throws UiElementFetchingException
@@ -582,7 +583,7 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the screen rotation of the test device has been set to the expected value.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @param expected
@@ -599,12 +600,12 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the sent sms message is successfully received by device
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @param smsMessage
 	 *        - the expected message to be received.
-	 * 
+	 *
 	 * @throws UiElementFetchingException
 	 */
 	public static void assertReceivedSms(String message, SmsMessage smsMessage) throws UiElementFetchingException
@@ -618,12 +619,12 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that a phone number is calling the device.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @param phoneNumber
 	 *        - the expected number to be calling the device.
-	 * 
+	 *
 	 * @throws UiElementFetchingException
 	 */
 	public static void assertCallReceived(String message, PhoneNumber phoneNumber) throws UiElementFetchingException
@@ -634,7 +635,7 @@ public class OnDeviceValidatorAssert
 		List<UiElement> uiElements = getElementsByPackage(PHONE_PACKAGE_NAME);
 		for (UiElement uiElement : uiElements)
 		{
-			String elementText = uiElement.getElementAttributes(false).getText();
+			String elementText = uiElement.getElementSelector(false).getStringValue(CssAttribute.TEXT);
 			if (phoneNumber.toString().equals(elementText))
 			{
 				hasPhoneNumberElement = true;
@@ -651,12 +652,12 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that a call by a phone number is accepted by the device.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @param phoneNumber
 	 *        - the expected number to be in call with the device.
-	 * 
+	 *
 	 * @throws UiElementFetchingException
 	 */
 	public static void assertCallAccepted(String message, PhoneNumber phoneNumber) throws UiElementFetchingException
@@ -668,7 +669,7 @@ public class OnDeviceValidatorAssert
 		List<UiElement> uiElements = getElementsByPackage(PHONE_PACKAGE_NAME);
 		for (UiElement uiElement : uiElements)
 		{
-			String elementText = uiElement.getElementAttributes(false).getText();
+			String elementText = uiElement.getElementSelector(false).getStringValue(CssAttribute.TEXT);
 			if (phoneNumber.toString().equals(elementText))
 			{
 				hasPhoneNumberElement = true;
@@ -693,12 +694,12 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that a call by a phone number is put on hold by the device.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
 	 * @param phoneNumber
 	 *        - the expected number to be put on hold on the device.
-	 * 
+	 *
 	 * @throws UiElementFetchingException
 	 */
 	public static void assertCallOnHold(String message, PhoneNumber phoneNumber) throws UiElementFetchingException
@@ -709,7 +710,7 @@ public class OnDeviceValidatorAssert
 		List<UiElement> uiElements = getElementsByPackage(PHONE_PACKAGE_NAME);
 		for (UiElement uiElement : uiElements)
 		{
-			String elementText = uiElement.getElementAttributes(false).getText();
+			String elementText = uiElement.getElementSelector(false).getStringValue(CssAttribute.TEXT);
 			if (phoneNumber.toString().equals(elementText))
 			{
 				hasPhoneNumberElement = true;
@@ -726,10 +727,10 @@ public class OnDeviceValidatorAssert
 
 	/**
 	 * Asserts that the sent call is successfully canceled by the device.
-	 * 
+	 *
 	 * @param message
 	 *        - message to be displayed if assertion fails.
-	 * 
+	 *
 	 * @throws UiElementFetchingException
 	 */
 	public static void assertCallCanceled(String message) throws UiElementFetchingException
@@ -748,7 +749,7 @@ public class OnDeviceValidatorAssert
 		}
 		for (UiElement uiElement : uiElements)
 		{
-			String elementText = uiElement.getElementAttributes(false).getText();
+			String elementText = uiElement.getElementSelector(false).getStringValue(CssAttribute.TEXT);
 			if (INCOMING_CALL_TEXT.equals(elementText))
 			{
 				hasIncomingCallElement = true;

@@ -17,7 +17,7 @@ import com.musala.atmosphere.client.device.StartActivityTest;
 import com.musala.atmosphere.client.device.TapTest;
 import com.musala.atmosphere.server.PoolEventHandlerTest;
 
-@SuiteClasses({ReceiveSmsTest.class, ScreenOrientationTest.class, PoolEventHandlerTest.class,
+@SuiteClasses({ScreenOrientationTest.class, PoolEventHandlerTest.class,
 		BatteryRelatedMethodsTest.class, TapTest.class, LockUnlockTest.class, StartActivityTest.class,
 		BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class, DeviceInstallApkTest.class,
 		GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class, CallTest.class,

@@ -9,16 +9,18 @@ import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.UiElementAttributes;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
+import com.musala.atmosphere.client.geometry.Bounds;
 import com.musala.atmosphere.client.geometry.Point;
+import com.musala.atmosphere.client.uiutils.CssAttribute;
+import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 
 /**
- * 
+ *
  * @author yordan.petrov
- * 
+ *
  */
 public class TapTest extends BaseIntegrationTest
 {
@@ -51,13 +53,14 @@ public class TapTest extends BaseIntegrationTest
 		Thread.sleep(1000);
 		// test relative tapping
 		UiElement widgetMainLayout = getElementByContentDescriptor(WIDGET_MAIN_LAYOUT);
-		UiElementAttributes widgetRelativeLayoutAttributes = widgetMainLayout.getElementAttributes();
+		UiElementSelector widgetRelativeLayoutSelector = widgetMainLayout.getElementSelector();
 		UiElement batteryStatusBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
-		UiElementAttributes batteryStatusBoxAttributes = batteryStatusBox.getElementAttributes();
+		UiElementSelector batteryStatusBoxSelector = batteryStatusBox.getElementSelector();
 
-		Point batteryStatusBoxUpperLeftCorner = batteryStatusBoxAttributes.getBounds().getUpperLeftCorner();
-		Point BatteryStatusRelativeUpperLeftCorner = widgetRelativeLayoutAttributes.getBounds()
-																					.getRelativePoint(batteryStatusBoxUpperLeftCorner);
+		Bounds batteryBoundsAttributeValue = batteryStatusBoxSelector.getBoundsValue(CssAttribute.BOUNDS);
+		Point batteryStatusBoxUpperLeftCorner = batteryBoundsAttributeValue.getUpperLeftCorner();
+		Bounds widgetBoundsAttributeValue = widgetRelativeLayoutSelector.getBoundsValue(CssAttribute.BOUNDS);
+		Point BatteryStatusRelativeUpperLeftCorner = widgetBoundsAttributeValue.getRelativePoint(batteryStatusBoxUpperLeftCorner);
 
 		assertTrue("Tapping screen returned false.", widgetMainLayout.tap(BatteryStatusRelativeUpperLeftCorner, false));
 

@@ -8,10 +8,11 @@ import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.UiElementAttributes;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.geometry.Bounds;
+import com.musala.atmosphere.client.uiutils.CssAttribute;
+import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.gesture.Anchor;
 import com.musala.atmosphere.commons.gesture.Gesture;
@@ -19,9 +20,9 @@ import com.musala.atmosphere.commons.gesture.Timeline;
 
 /**
  * Modified by georgi.gaydarov, originally by
- * 
+ *
  * @author yordan.petrov
- * 
+ *
  */
 public class GestureExecutionTest extends BaseIntegrationTest
 {
@@ -43,8 +44,8 @@ public class GestureExecutionTest extends BaseIntegrationTest
 		Thread.sleep(1000);
 		// test tapping
 		UiElement inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
-		UiElementAttributes attributes = inputTextBox.getElementAttributes();
-		Bounds boxBounds = attributes.getBounds();
+		UiElementSelector selector = inputTextBox.getElementSelector();
+		Bounds boxBounds = selector.getBoundsValue(CssAttribute.BOUNDS);
 		int xCoord = boxBounds.getCenter().getX();
 		int yCoord = boxBounds.getCenter().getY();
 		Anchor tapPoint = new Anchor(xCoord, yCoord, 0);
