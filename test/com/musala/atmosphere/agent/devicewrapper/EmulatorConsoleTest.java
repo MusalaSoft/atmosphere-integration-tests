@@ -6,7 +6,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
+import com.musala.atmosphere.commons.PowerProperties;
+import com.musala.atmosphere.commons.beans.BatteryLevel;
 import com.musala.atmosphere.commons.beans.BatteryState;
+import com.musala.atmosphere.commons.beans.PowerSource;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.commons.sa.DeviceParameters;
 import com.musala.atmosphere.commons.util.Pair;
@@ -44,12 +47,18 @@ public class EmulatorConsoleTest extends BaseIntegrationTest
 		final int initialBatteryLevel = 20;
 		final int batteryLevel = 80;
 
-		testDevice.setBatteryLevel(initialBatteryLevel);
-		int newBatteryLevel = testDevice.getBatteryLevel();
+		PowerProperties initialProps = new PowerProperties();
+		initialProps.setBatteryLevel(new BatteryLevel(initialBatteryLevel));
+		testDevice.setPowerProperties(initialProps);
+
+		PowerProperties newProps = testDevice.getPowerProperties();
+		int newBatteryLevel = newProps.getBatteryLevel().getLevel();
 		assertEquals("Battery level doesn't match.", initialBatteryLevel, newBatteryLevel);
 
-		testDevice.setBatteryLevel(batteryLevel);
-		int newBatteryLevel2 = testDevice.getBatteryLevel();
+		newProps.setBatteryLevel(new BatteryLevel(batteryLevel));
+		testDevice.setPowerProperties(newProps);
+		PowerProperties newProps2 = testDevice.getPowerProperties();
+		int newBatteryLevel2 = newProps2.getBatteryLevel().getLevel();
 		assertEquals("Battery level doesn't match.", batteryLevel, newBatteryLevel2);
 	}
 
@@ -57,17 +66,23 @@ public class EmulatorConsoleTest extends BaseIntegrationTest
 	public void testSetBatteryState()
 	{
 		BatteryState batteryState = BatteryState.NOT_CHARGING;
-		testDevice.setBatteryState(batteryState);
-		BatteryState actualBatteryState = testDevice.getBatteryState();
+		PowerProperties properties = new PowerProperties();
+		properties.setBatteryState(batteryState);
+		testDevice.setPowerProperties(properties);
+		PowerProperties newPowerProperties = testDevice.getPowerProperties();
+		BatteryState actualBatteryState = newPowerProperties.getBatteryState();
 		assertEquals("Failed setting battery state.", batteryState, actualBatteryState);
 	}
 
 	@Test
 	public void testSetPowerState() throws Exception
 	{
-		boolean state = false; // Connected.
-		testDevice.setPowerState(state);
-		boolean newState = testDevice.getPowerState();
+		PowerSource state = PowerSource.PLUGGED_AC; // Connected.
+		PowerProperties properties = new PowerProperties();
+		properties.setPowerSource(state);
+		testDevice.setPowerProperties(properties);
+		PowerProperties newProperties = testDevice.getPowerProperties();
+		PowerSource newState = newProperties.getPowerSource();
 		assertEquals("Power state doesn't match.", state, newState);
 	}
 }
