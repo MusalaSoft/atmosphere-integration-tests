@@ -43,4 +43,21 @@ public class AirplaneModeTest extends BaseIntegrationTest {
         assertFalse("Setting airplane mode returned true.", testDevice.setAirplaneMode(true));
         assertFalse("Setting airplane mode returned true.", testDevice.setAirplaneMode(false));
     }
+
+    @Test
+    public void testGetAirplaneModeOn() throws Exception {
+        // get airplane mode on
+        assumeTrue(!testDevice.getInformation().isEmulator());
+        assertTrue("Setting airplane mode returned false.", testDevice.setAirplaneMode(true));
+        assertTrue("Getting airplane mode returned false.", testDevice.getAirplaneMode());
+    }
+
+    @Test
+    public void testGetAirplaneModeOff() throws Exception {
+        // get airplane mode off
+        assumeTrue(!testDevice.getInformation().isEmulator());
+        assertTrue("Setting airplane mode returned false.", testDevice.setAirplaneMode(false));
+        assertFalse("Getting airplane mode returned false.", testDevice.getAirplaneMode());
+    }
+
 }
