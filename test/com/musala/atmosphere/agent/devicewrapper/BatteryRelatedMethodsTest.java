@@ -23,116 +23,110 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
  * @author valyo.yolovski
  * 
  */
-public class BatteryRelatedMethodsTest extends BaseIntegrationTest
-{
-	private static final String BATTERY_STATUS_MESSAGE = "Battery status not set to the expected value.";
+public class BatteryRelatedMethodsTest extends BaseIntegrationTest {
+    private static final String BATTERY_STATUS_MESSAGE = "Battery status not set to the expected value.";
 
-	@BeforeClass
-	public static void setUp() throws Exception
-	{
-		initTestDevice(new DeviceParameters());
-		installValidatorApplication();
+    @BeforeClass
+    public static void setUp() throws Exception {
+        initTestDevice(new DeviceParameters());
+        installValidatorApplication();
 
-		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
-		Thread.sleep(2000);
-	}
+        testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
+        Thread.sleep(2000);
+    }
 
-	@Test
-	public void testSetBatteryLevel() throws Exception
-	{
-		// set battery level to 75
-		final int batteryLevel = 75;
-		PowerProperties properties = new PowerProperties();
-		properties.setBatteryLevel(new BatteryLevel(batteryLevel));
-		assertTrue("Setting battery level returned false.", testDevice.setPowerProperties(properties));
+    @Test
+    public void testSetBatteryLevel() throws Exception {
+        // set battery level to 75
+        final int batteryLevel = 75;
+        PowerProperties properties = new PowerProperties();
+        properties.setBatteryLevel(new BatteryLevel(batteryLevel));
+        assertTrue("Setting battery level returned false.", testDevice.setPowerProperties(properties));
 
-		Thread.sleep(2000);
-		assertBatteryNotLow("Battery low flag not set as expected.");
-		assertBatteryLevel("Battery level is not as expected.", batteryLevel);
-		assertEquals("Battery level is not as expected.", batteryLevel, testDevice.getPowerProperties()
-																					.getBatteryLevel());
-	}
+        Thread.sleep(2000);
+        assertBatteryNotLow("Battery low flag not set as expected.");
+        assertBatteryLevel("Battery level is not as expected.", batteryLevel);
+        assertEquals("Battery level is not as expected.", batteryLevel, testDevice.getPowerProperties()
+                                                                                  .getBatteryLevel()
+                                                                                  .getLevel());
+    }
 
-	@Test
-	public void testSetBatteryState() throws Exception
-	{
-		PowerProperties properties = new PowerProperties();
+    @Test
+    public void testSetBatteryState() throws Exception {
+        PowerProperties properties = new PowerProperties();
 
-		// battery state unknown
-		BatteryState batteryState = BatteryState.UNKNOWN;
-		properties.setBatteryState(batteryState);
-		assertTrue("Setting battery state returned false.", testDevice.setPowerProperties(properties));
-		// Sleep required for proper UI refreshing
-		Thread.sleep(2000);
-		assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
+        // battery state unknown
+        BatteryState batteryState = BatteryState.UNKNOWN;
+        properties.setBatteryState(batteryState);
+        assertTrue("Setting battery state returned false.", testDevice.setPowerProperties(properties));
+        // Sleep required for proper UI refreshing
+        Thread.sleep(2000);
+        assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
 
-		// battery state charging
-		batteryState = BatteryState.CHARGING;
-		properties.setBatteryState(batteryState);
-		assertTrue("Setting battery state returned false.", testDevice.setPowerProperties(properties));
-		// Sleep required for proper UI refreshing
-		Thread.sleep(2000);
-		assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
+        // battery state charging
+        batteryState = BatteryState.CHARGING;
+        properties.setBatteryState(batteryState);
+        assertTrue("Setting battery state returned false.", testDevice.setPowerProperties(properties));
+        // Sleep required for proper UI refreshing
+        Thread.sleep(2000);
+        assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
 
-		// battery state discharging
-		batteryState = BatteryState.DISCHARGING;
-		properties.setBatteryState(batteryState);
-		assertTrue("Setting battery state returned false.", testDevice.setPowerProperties(properties));
-		// Sleep required for proper UI refreshing
-		Thread.sleep(2000);
-		assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
+        // battery state discharging
+        batteryState = BatteryState.DISCHARGING;
+        properties.setBatteryState(batteryState);
+        assertTrue("Setting battery state returned false.", testDevice.setPowerProperties(properties));
+        // Sleep required for proper UI refreshing
+        Thread.sleep(2000);
+        assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
 
-		// battery state not_charging
-		batteryState = BatteryState.NOT_CHARGING;
-		properties.setBatteryState(batteryState);
-		assertTrue("Setting battery state returned false.", testDevice.setPowerProperties(properties));
-		Thread.sleep(2000);
-		assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
+        // battery state not_charging
+        batteryState = BatteryState.NOT_CHARGING;
+        properties.setBatteryState(batteryState);
+        assertTrue("Setting battery state returned false.", testDevice.setPowerProperties(properties));
+        Thread.sleep(2000);
+        assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
 
-		// battery state full
-		batteryState = BatteryState.FULL;
-		properties.setBatteryState(batteryState);
-		assertTrue("Setting battery state returned false.", testDevice.setPowerProperties(properties));
-		// Sleep required for proper UI refreshing
-		Thread.sleep(2000);
-		assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
-	}
+        // battery state full
+        batteryState = BatteryState.FULL;
+        properties.setBatteryState(batteryState);
+        assertTrue("Setting battery state returned false.", testDevice.setPowerProperties(properties));
+        // Sleep required for proper UI refreshing
+        Thread.sleep(2000);
+        assertBatteryState(BATTERY_STATUS_MESSAGE, batteryState);
+    }
 
-	@Test
-	public void testSetPowerState() throws Exception
-	{
-		// set device power connection off
-		PowerProperties properties = new PowerProperties();
-		properties.setPowerSource(PowerSource.UNPLUGGED);
-		assertTrue("Setting power state returned false.", testDevice.setPowerProperties(properties));
-		Thread.sleep(1000);
-		assertNotPowerConnected("Power state not set to the expected value.");
-		assertEquals(	"Power state not set to the expected value",
-						testDevice.getPowerProperties().getPowerSource(),
-						PowerSource.UNPLUGGED);
+    @Test
+    public void testSetPowerState() throws Exception {
+        // set device power connection off
+        PowerProperties properties = new PowerProperties();
+        properties.setPowerSource(PowerSource.UNPLUGGED);
+        assertTrue("Setting power state returned false.", testDevice.setPowerProperties(properties));
+        Thread.sleep(1000);
+        assertNotPowerConnected("Power state not set to the expected value.");
+        assertEquals("Power state not set to the expected value",
+                     testDevice.getPowerProperties().getPowerSource(),
+                     PowerSource.UNPLUGGED);
 
-		// set device power connection on
-		properties.setPowerSource(PowerSource.PLUGGED_AC);
-		assertTrue("Setting power state returned false.", testDevice.setPowerProperties(properties));
-		Thread.sleep(1000);
-		assertPowerConnected("Power state not set to the expected value.");
-		assertEquals(	"Power state not set to the expected value.",
-						testDevice.getPowerProperties().getPowerSource(),
-						PowerSource.PLUGGED_AC);
-	}
+        // set device power connection on
+        properties.setPowerSource(PowerSource.PLUGGED_AC);
+        assertTrue("Setting power state returned false.", testDevice.setPowerProperties(properties));
+        Thread.sleep(1000);
+        assertPowerConnected("Power state not set to the expected value.");
+        assertEquals("Power state not set to the expected value.",
+                     testDevice.getPowerProperties().getPowerSource(),
+                     PowerSource.PLUGGED_AC);
+    }
 
-	@Test
-	public void testGetAndSetBatteryState() throws Exception
-	{
-		for (BatteryState batteryState : BatteryState.values())
-		{
-			PowerProperties properties = new PowerProperties();
-			properties.setBatteryState(batteryState);
-			assertTrue("Setting battery state returned false.", testDevice.setPowerProperties(properties));
-			Thread.sleep(2000);
-			assertEquals(	"The returned battery state value did not match the one thata was set.",
-							batteryState,
-							testDevice.getPowerProperties().getBatteryState());
-		}
-	}
+    @Test
+    public void testGetAndSetBatteryState() throws Exception {
+        for (BatteryState batteryState : BatteryState.values()) {
+            PowerProperties properties = new PowerProperties();
+            properties.setBatteryState(batteryState);
+            assertTrue("Setting battery state returned false.", testDevice.setPowerProperties(properties));
+            Thread.sleep(2000);
+            assertEquals("The returned battery state value did not match the one thata was set.",
+                         batteryState,
+                         testDevice.getPowerProperties().getBatteryState());
+        }
+    }
 }
