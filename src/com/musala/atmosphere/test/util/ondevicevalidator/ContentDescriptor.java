@@ -6,26 +6,37 @@ package com.musala.atmosphere.test.util.ondevicevalidator;
  * @author yordan.petrov
  * 
  */
-public enum ContentDescriptor
-{
-	BATTERY_LEVEL_BOX("BatteryLevelBox"), BATTERY_STATUS_BOX("BatteryStatusBox"), POWER_CONNECTED_FLAG(
-			"PowerConnectedFlag"), BATTERY_LOW_FLAG("BatteryLowFlag"), AIRPLANE_MODE_FLAG("AirplaneModeFlag"), WIFI_FLAG(
-			"WiFiFlag"), CONNECTION_TYPE_BOX("ConnectionTypeBox"), INPUT_TEXT_BOX("InputTextBox"), ORIENTATION_AZIMUTH_BOX(
-			"OrientationAzimuthBox"), ORIENTATION_PITCH_BOX("OrientationPitchBox"), ORIENTATION_ROLL_BOX(
-			"OrientationRollBox"), ACCELERATION_X_BOX("AccelerationXBox"), ACCELERATION_Y_BOX("AccelerationYBox"), ACCELERATION_Z_BOX(
-			"AccelerationZBox"), AUTO_ROTATION_BUTTON("AutoRotationFlag"), SCREEN_ORIENTATION_BOX(
-			"ScreenOrientationBox"), SMS_SENDER_PHONE_BOX("SmsSenderPhone"), SMS_TEXT_BOX("SmsText");
+public enum ContentDescriptor {
+    BATTERY_LEVEL_BOX("BatteryLevelBox"),
+    BATTERY_STATUS_BOX("BatteryStatusBox"),
+    POWER_CONNECTED_FLAG("PowerConnectedFlag"),
+    BATTERY_LOW_FLAG("BatteryLowFlag"),
+    AIRPLANE_MODE_FLAG("AirplaneModeFlag"),
+    WIFI_FLAG("WiFiFlag"),
+    CONNECTION_TYPE_BOX("ConnectionTypeBox"),
+    INPUT_TEXT_BOX("InputTextBox"),
+    ORIENTATION_AZIMUTH_BOX("OrientationAzimuthBox"),
+    ORIENTATION_PITCH_BOX("OrientationPitchBox"),
+    ORIENTATION_ROLL_BOX("OrientationRollBox"),
+    ACCELERATION_X_BOX("AccelerationXBox"),
+    ACCELERATION_Y_BOX("AccelerationYBox"),
+    ACCELERATION_Z_BOX("AccelerationZBox"),
+    MAGNETIC_FIELD_X_BOX("MagneticFieldXBox"),
+    MAGNETIC_FIELD_Y_BOX("MagneticFieldYBox"),
+    MAGNETIC_FIELD_Z_BOX("MagneticFieldZBox"),
+    AUTO_ROTATION_BUTTON("AutoRotationFlag"),
+    SCREEN_ORIENTATION_BOX("ScreenOrientationBox"),
+    SMS_SENDER_PHONE_BOX("SmsSenderPhone"),
+    SMS_TEXT_BOX("SmsText");
 
-	private String value;
+    private String value;
 
-	private ContentDescriptor(String value)
-	{
-		this.value = value;
-	}
+    private ContentDescriptor(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public String toString()
-	{
-		return value;
-	}
+    @Override
+    public String toString() {
+        return value;
+    }
 }
