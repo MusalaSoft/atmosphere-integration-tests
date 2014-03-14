@@ -531,7 +531,7 @@ public class OnDeviceValidatorAssert {
     public static void assertMagneticFieldX(String message, float expected) throws UiElementFetchingException {
         UiElement magneticFieldXBox = getElementByContentDescriptor(ContentDescriptor.MAGNETIC_FIELD_X_BOX.toString());
 
-        System.out.println(magneticFieldXBox.getElementSelector(false).getStringValue(CssAttribute.TEXT));
+        System.out.println(magneticFieldXBox.getElementSelector().getStringValue(CssAttribute.TEXT));
         assertText(message, magneticFieldXBox, String.valueOf(expected));
     }
 
@@ -641,7 +641,7 @@ public class OnDeviceValidatorAssert {
 
         List<UiElement> uiElements = getElementsByPackage(PHONE_PACKAGE_NAME);
         for (UiElement uiElement : uiElements) {
-            String elementText = uiElement.getElementSelector(false).getStringValue(CssAttribute.TEXT);
+            String elementText = uiElement.getElementSelector().getStringValue(CssAttribute.TEXT);
             if (phoneNumber.toString().equals(elementText)) {
                 hasPhoneNumberElement = true;
             } else if (INCOMING_CALL_TEXT.equals(elementText)) {
@@ -670,7 +670,7 @@ public class OnDeviceValidatorAssert {
 
         List<UiElement> uiElements = getElementsByPackage(PHONE_PACKAGE_NAME);
         for (UiElement uiElement : uiElements) {
-            String elementText = uiElement.getElementSelector(false).getStringValue(CssAttribute.TEXT);
+            String elementText = uiElement.getElementSelector().getStringValue(CssAttribute.TEXT);
             if (phoneNumber.toString().equals(elementText)) {
                 hasPhoneNumberElement = true;
             } else if (INCOMING_CALL_TEXT.equals(elementText)) {
@@ -704,7 +704,7 @@ public class OnDeviceValidatorAssert {
 
         List<UiElement> uiElements = getElementsByPackage(PHONE_PACKAGE_NAME);
         for (UiElement uiElement : uiElements) {
-            String elementText = uiElement.getElementSelector(false).getStringValue(CssAttribute.TEXT);
+            String elementText = uiElement.getElementSelector().getStringValue(CssAttribute.TEXT);
             if (phoneNumber.toString().equals(elementText)) {
                 hasPhoneNumberElement = true;
             } else if (ON_HOLD_TEXT.equals(elementText)) {
@@ -735,7 +735,7 @@ public class OnDeviceValidatorAssert {
             return;
         }
         for (UiElement uiElement : uiElements) {
-            String elementText = uiElement.getElementSelector(false).getStringValue(CssAttribute.TEXT);
+            String elementText = uiElement.getElementSelector().getStringValue(CssAttribute.TEXT);
             if (INCOMING_CALL_TEXT.equals(elementText)) {
                 hasIncomingCallElement = true;
             }

@@ -9,27 +9,23 @@ import com.musala.atmosphere.client.uiutils.UiElementSelector;
 
 /**
  * Base Matcher class used for checking if a given UI element is enabled.
- *
+ * 
  * @author yordan.petrov
- *
+ * 
  */
-public class EnabledMatcher extends BaseMatcher<UiElement>
-{
-	@Override
-	public boolean matches(Object obj)
-	{
-		if (obj instanceof UiElement)
-		{
-			UiElement uiElement = (UiElement) obj;
-			UiElementSelector uiElementSelector = uiElement.getElementSelector(false);
-			return uiElementSelector.getBooleanValue(CssAttribute.ENABLED);
-		}
-		return false;
-	}
+public class EnabledMatcher extends BaseMatcher<UiElement> {
+    @Override
+    public boolean matches(Object obj) {
+        if (obj instanceof UiElement) {
+            UiElement uiElement = (UiElement) obj;
+            UiElementSelector uiElementSelector = uiElement.getElementSelector();
+            return uiElementSelector.getBooleanValue(CssAttribute.ENABLED);
+        }
+        return false;
+    }
 
-	@Override
-	public void describeTo(Description description)
-	{
-		description.appendText("enabled");
-	}
+    @Override
+    public void describeTo(Description description) {
+        description.appendText("enabled");
+    }
 }
