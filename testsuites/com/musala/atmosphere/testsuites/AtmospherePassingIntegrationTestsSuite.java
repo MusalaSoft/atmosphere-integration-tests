@@ -2,7 +2,6 @@ package com.musala.atmosphere.testsuites;
 
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.musala.atmosphere.agent.devicewrapper.BatteryRelatedMethodsTest;
 import com.musala.atmosphere.agent.devicewrapper.GetScreenshotTest;
 import com.musala.atmosphere.agent.devicewrapper.GetUiXmlTest;
 import com.musala.atmosphere.agent.devicewrapper.ScreenOrientationTest;
@@ -18,11 +17,10 @@ import com.musala.atmosphere.client.device.StartActivityTest;
 import com.musala.atmosphere.client.device.TapTest;
 import com.musala.atmosphere.server.PoolEventHandlerTest;
 
-@SuiteClasses({ScreenOrientationTest.class, PoolEventHandlerTest.class, BatteryRelatedMethodsTest.class, TapTest.class,
-		LockUnlockTest.class, StartActivityTest.class, BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class,
-		DeviceInstallApkTest.class, GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class,
-		CallTest.class, GestureExecutionTest.class, TelephonyInformationTest.class})
+@SuiteClasses({ScreenOrientationTest.class, PoolEventHandlerTest.class, TapTest.class, LockUnlockTest.class,
+        StartActivityTest.class, BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class,
+        DeviceInstallApkTest.class, GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class,
+        CallTest.class, GestureExecutionTest.class, TelephonyInformationTest.class})
 // @SuiteClasses({TelephonyInformationTest.class})
-public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite
-{
+public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

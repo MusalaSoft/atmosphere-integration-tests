@@ -3,6 +3,7 @@ package com.musala.atmosphere.client.device;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertInputTextBoxIsFocused;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -20,40 +21,42 @@ import com.musala.atmosphere.commons.gesture.Timeline;
 
 /**
  * Modified by georgi.gaydarov, originally by
- *
+ * 
  * @author yordan.petrov
- *
+ * 
  */
-public class GestureExecutionTest extends BaseIntegrationTest
-{
-	private final static String WIDGET_MAIN_LAYOUT = "MainLinearLayout";
+public class GestureExecutionTest extends BaseIntegrationTest {
+    private final static String WIDGET_MAIN_LAYOUT = "MainLinearLayout";
 
-	private final static String INPUT_TEXT_BOX = "InputTextBox";
+    private final static String INPUT_TEXT_BOX = "InputTextBox";
 
-	@BeforeClass
-	public static void setUp()
-	{
-		initTestDevice(new DeviceParameters());
-		installValidatorApplication();
-	}
+    @BeforeClass
+    public static void setUp() {
+        initTestDevice(new DeviceParameters());
+        installValidatorApplication();
+    }
 
-	@Test
-	public void testTap() throws InterruptedException, ActivityStartingException, UiElementFetchingException
-	{
-		testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
-		Thread.sleep(1000);
-		// test tapping
-		UiElement inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
-		UiElementSelector selector = inputTextBox.getElementSelector();
-		Bounds boxBounds = selector.getBoundsValue(CssAttribute.BOUNDS);
-		int xCoord = boxBounds.getCenter().getX();
-		int yCoord = boxBounds.getCenter().getY();
-		Anchor tapPoint = new Anchor(xCoord, yCoord, 0);
-		Timeline tapTimeline = new Timeline();
-		tapTimeline.add(tapPoint);
-		Gesture tapGesture = new Gesture();
-		tapGesture.add(tapTimeline);
-		testDevice.executeGesture(tapGesture);
-		assertInputTextBoxIsFocused("Input text box not focused.");
-	}
+    @AfterClass
+    public static void tearDown() {
+        releaseDevice();
+    }
+
+    @Test
+    public void testTap() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
+        testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
+        Thread.sleep(1000);
+        // test tapping
+        UiElement inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
+        UiElementSelector selector = inputTextBox.getElementSelector();
+        Bounds boxBounds = selector.getBoundsValue(CssAttribute.BOUNDS);
+        int xCoord = boxBounds.getCenter().getX();
+        int yCoord = boxBounds.getCenter().getY();
+        Anchor tapPoint = new Anchor(xCoord, yCoord, 0);
+        Timeline tapTimeline = new Timeline();
+        tapTimeline.add(tapPoint);
+        Gesture tapGesture = new Gesture();
+        tapGesture.add(tapTimeline);
+        testDevice.executeGesture(tapGesture);
+        assertInputTextBoxIsFocused("Input text box not focused.");
+    }
 }

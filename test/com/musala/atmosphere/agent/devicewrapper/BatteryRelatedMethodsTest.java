@@ -8,6 +8,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -35,6 +36,11 @@ public class BatteryRelatedMethodsTest extends BaseIntegrationTest {
         Thread.sleep(2000);
     }
 
+    @AfterClass
+    public static void tearDown() {
+        releaseDevice();
+    }
+
     @Test
     public void testSetBatteryLevel() throws Exception {
         // set battery level to 75
@@ -46,9 +52,8 @@ public class BatteryRelatedMethodsTest extends BaseIntegrationTest {
         Thread.sleep(2000);
         assertBatteryNotLow("Battery low flag not set as expected.");
         assertBatteryLevel("Battery level is not as expected.", batteryLevel);
-        assertEquals("Battery level is not as expected.", batteryLevel, testDevice.getPowerProperties()
-                                                                                  .getBatteryLevel()
-                                                                                  .getLevel());
+        assertEquals("Battery level is not as expected.", batteryLevel, (testDevice.getPowerProperties()
+                                                                                   .getBatteryLevel().getLevel()));
     }
 
     @Test
@@ -117,7 +122,7 @@ public class BatteryRelatedMethodsTest extends BaseIntegrationTest {
                      PowerSource.PLUGGED_AC);
     }
 
-    @Test
+    // @Test
     public void testGetAndSetBatteryState() throws Exception {
         for (BatteryState batteryState : BatteryState.values()) {
             PowerProperties properties = new PowerProperties();

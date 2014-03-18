@@ -4,6 +4,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -33,6 +34,11 @@ public class TapTest extends BaseIntegrationTest {
         installValidatorApplication();
     }
 
+    @AfterClass
+    public static void tearDown() {
+        releaseDevice();
+    }
+
     @Test
     public void testTap() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
         testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
@@ -43,7 +49,7 @@ public class TapTest extends BaseIntegrationTest {
         assertInputTextBoxIsFocused("Input text box not focused.");
     }
 
-    // @Test
+    @Test
     public void testRelativeTap() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
         testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
         Thread.sleep(1000);

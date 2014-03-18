@@ -9,6 +9,7 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -18,32 +19,34 @@ import com.musala.atmosphere.commons.ScreenOrientation;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.util.Pair;
 
-public class GetScreenshotTest extends BaseIntegrationTest
-{
-	@BeforeClass
-	public static void setUp() throws Exception
-	{
-		initTestDevice(new DeviceParameters());
-		testDevice.setScreenOrientation(ScreenOrientation.PORTRAIT);
-	}
+public class GetScreenshotTest extends BaseIntegrationTest {
+    @BeforeClass
+    public static void setUp() throws Exception {
+        initTestDevice(new DeviceParameters());
+        testDevice.setScreenOrientation(ScreenOrientation.PORTRAIT);
+    }
 
-	@Test
-	public void testGetScreenshot() throws Exception
-	{
-		byte[] screenshot = testDevice.getScreenshot();
-		DeviceInformation deviceInformation = testDevice.getInformation();
-		Pair<Integer, Integer> screenResolution = deviceInformation.getResolution();
+    @AfterClass
+    public static void tearDown() {
+        releaseDevice();
+    }
 
-		InputStream imageInput = new ByteArrayInputStream(screenshot);
-		BufferedImage image = ImageIO.read(imageInput);
+    @Test
+    public void testGetScreenshot() throws Exception {
+        byte[] screenshot = testDevice.getScreenshot();
+        DeviceInformation deviceInformation = testDevice.getInformation();
+        Pair<Integer, Integer> screenResolution = deviceInformation.getResolution();
 
-		assertNotNull("Screenshot data is not a valid image.", image);
+        InputStream imageInput = new ByteArrayInputStream(screenshot);
+        BufferedImage image = ImageIO.read(imageInput);
 
-		assertEquals(	"Device screen resolution height did not match screenshot height.",
-						(int) screenResolution.getValue(),
-						image.getHeight());
-		assertEquals(	"Device screen resolution width did not match screenshot width.",
-						(int) screenResolution.getKey(),
-						image.getWidth());
-	}
+        assertNotNull("Screenshot data is not a valid image.", image);
+
+        assertEquals("Device screen resolution height did not match screenshot height.",
+                     (int) screenResolution.getValue(),
+                     image.getHeight());
+        assertEquals("Device screen resolution width did not match screenshot width.",
+                     (int) screenResolution.getKey(),
+                     image.getWidth());
+    }
 }

@@ -5,34 +5,37 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 
-public class DeviceGetScreenshotTest extends BaseIntegrationTest
-{
-	private static final String PATH_TO_SCREENSHOT = "./Screenshot.png";
+public class DeviceGetScreenshotTest extends BaseIntegrationTest {
+    private static final String PATH_TO_SCREENSHOT = "./Screenshot.png";
 
-	@Before
-	public void setUp()
-	{
-		initTestDevice(new DeviceParameters());
-	}
+    @Before
+    public void setUp() {
+        initTestDevice(new DeviceParameters());
+    }
 
-	@Test
-	public void getScreenShotTest()
-	{
-		// getting screenshot without dumping it to file
-		byte[] screenshot = testDevice.getScreenshot();
+    @AfterClass
+    public static void tearDown() {
+        releaseDevice();
+    }
 
-		assertNotNull("Getting screenshot returned 'null'", screenshot);
+    @Test
+    public void getScreenShotTest() {
+        // getting screenshot without dumping it to file
+        byte[] screenshot = testDevice.getScreenshot();
 
-		// getting screenshot with dumping it to file
-		assertTrue("Getting screenshot returned false.", testDevice.getScreenshot(PATH_TO_SCREENSHOT));
-		File dumpedScreenshot = new File(PATH_TO_SCREENSHOT);
+        assertNotNull("Getting screenshot returned 'null'", screenshot);
 
-		assertTrue("Getting screenshot failed!", dumpedScreenshot.exists());
-	}
+        // getting screenshot with dumping it to file
+        assertTrue("Getting screenshot returned false.", testDevice.getScreenshot(PATH_TO_SCREENSHOT));
+        File dumpedScreenshot = new File(PATH_TO_SCREENSHOT);
+
+        assertTrue("Getting screenshot failed!", dumpedScreenshot.exists());
+    }
 }

@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -16,7 +17,6 @@ import com.android.ddmlib.IDevice;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.agent.AgentManager;
 import com.musala.atmosphere.agent.util.FakeOnDeviceComponentAnswer;
-import com.musala.atmosphere.agent.util.FakeServiceAnswer;
 import com.musala.atmosphere.server.pool.PoolManager;
 
 /**
@@ -25,145 +25,143 @@ import com.musala.atmosphere.server.pool.PoolManager;
  * 
  */
 
-public class PoolEventHandlerTest extends BaseIntegrationTest
-{
-	private static Object deviceChangeListener;
+public class PoolEventHandlerTest extends BaseIntegrationTest {
+    private static Object deviceChangeListener;
 
-	private static Method deviceConnectedMethod;
+    private static Method deviceConnectedMethod;
 
-	private static PoolManager poolManager;
+    private static PoolManager poolManager;
 
-	private static Method deviceDisconnectedMethod;
+    private static Method deviceDisconnectedMethod;
 
-	@Before
-	public void setUp() throws Exception
-	{
-		AgentManager underlyingAgentManager = agentIntegrationEnvironment.getAgentManager();
+    @Before
+    public void setUp() throws Exception {
+        AgentManager underlyingAgentManager = agentIntegrationEnvironment.getAgentManager();
 
-		poolManager = PoolManager.getInstance();
+        poolManager = PoolManager.getInstance();
 
-		Field deviceChangeListenerField = AgentManager.class.getDeclaredField("currentDeviceChangeListener");
-		deviceChangeListenerField.setAccessible(true);
-		deviceChangeListener = deviceChangeListenerField.get(underlyingAgentManager);
-		deviceConnectedMethod = deviceChangeListener.getClass().getDeclaredMethod("deviceConnected", IDevice.class);
-		deviceConnectedMethod.setAccessible(true);
-		deviceDisconnectedMethod = deviceChangeListener.getClass().getDeclaredMethod(	"deviceDisconnected",
-																						IDevice.class);
-		deviceDisconnectedMethod.setAccessible(true);
-	}
+        Field deviceChangeListenerField = AgentManager.class.getDeclaredField("currentDeviceChangeListener");
+        deviceChangeListenerField.setAccessible(true);
+        deviceChangeListener = deviceChangeListenerField.get(underlyingAgentManager);
+        deviceConnectedMethod = deviceChangeListener.getClass().getDeclaredMethod("deviceConnected", IDevice.class);
+        deviceConnectedMethod.setAccessible(true);
+        deviceDisconnectedMethod = deviceChangeListener.getClass().getDeclaredMethod("deviceDisconnected",
+                                                                                     IDevice.class);
+        deviceDisconnectedMethod.setAccessible(true);
+    }
 
-	private static IDevice configureFakeDevice(String fakeDeviceSerialNumber) throws Exception
-	{
-		IDevice fakeDevice = mock(IDevice.class);
-		when(fakeDevice.getSerialNumber()).thenReturn(fakeDeviceSerialNumber);
+    @AfterClass
+    public static void tearDown() {
+        releaseDevice();
+    }
 
-		when(fakeDevice.getBatteryLevel()).thenReturn(50);
+    private static IDevice configureFakeDevice(String fakeDeviceSerialNumber) throws Exception {
+        IDevice fakeDevice = mock(IDevice.class);
+        when(fakeDevice.getSerialNumber()).thenReturn(fakeDeviceSerialNumber);
 
-		FakeOnDeviceComponentAnswer fakeOnDeviceComponentAnswer = new FakeOnDeviceComponentAnswer();
-		Mockito.doAnswer(fakeOnDeviceComponentAnswer).when(fakeDevice).createForward(anyInt(), anyInt());
+        when(fakeDevice.getBatteryLevel()).thenReturn(50);
 
-		return fakeDevice;
-	}
+        FakeOnDeviceComponentAnswer fakeOnDeviceComponentAnswer = new FakeOnDeviceComponentAnswer();
+        Mockito.doAnswer(fakeOnDeviceComponentAnswer).when(fakeDevice).createForward(anyInt(), anyInt());
 
-	@Test
-	public void testConnectOfflineDevice() throws Exception
-	{
-		final String fakeDeviceSerialNumber = "mockDevice1";
-		IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
+        return fakeDevice;
+    }
 
-		when(fakeDevice.isOnline()).thenReturn(false);
-		when(fakeDevice.isOffline()).thenReturn(true);
+    @Test
+    public void testConnectOfflineDevice() throws Exception {
+        final String fakeDeviceSerialNumber = "mockDevice1";
+        IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
 
-		int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
-		deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
-		// required for proper device registering
-		Thread.sleep(1500);
+        when(fakeDevice.isOnline()).thenReturn(false);
+        when(fakeDevice.isOffline()).thenReturn(true);
 
-		int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
-		assertEquals(	"Connecting an offline device resulted in device connect event.",
-						poolItemsBeforeAdd,
-						poolItemsAfterAdd);
+        int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
+        deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
+        // required for proper device registering
+        Thread.sleep(1500);
 
-		deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
-	}
+        int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
+        assertEquals("Connecting an offline device resulted in device connect event.",
+                     poolItemsBeforeAdd,
+                     poolItemsAfterAdd);
 
-	@Test
-	public void testConnectOnlineDevice() throws Exception
-	{
-		final String fakeDeviceSerialNumber = "mockDevice2";
-		IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
+        deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
+    }
 
-		when(fakeDevice.isOnline()).thenReturn(true);
-		when(fakeDevice.isOffline()).thenReturn(false);
+    @Test
+    public void testConnectOnlineDevice() throws Exception {
+        final String fakeDeviceSerialNumber = "mockDevice2";
+        IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
 
-		int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
-		deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
-		// required for proper device registering
-		Thread.sleep(1500);
+        when(fakeDevice.isOnline()).thenReturn(true);
+        when(fakeDevice.isOffline()).thenReturn(false);
 
-		int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
+        int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
+        deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
+        // required for proper device registering
+        Thread.sleep(1500);
 
-		assertEquals(	"Connecting an online device did not result in device connect event.",
-						poolItemsBeforeAdd + 1,
-						poolItemsAfterAdd);
+        int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
 
-		deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
-	}
+        assertEquals("Connecting an online device did not result in device connect event.",
+                     poolItemsBeforeAdd + 1,
+                     poolItemsAfterAdd);
 
-	@Test
-	public void testConnectAndDisconnectOnlineDevice() throws Exception
-	{
-		final String fakeDeviceSerialNumber = "mockDevice3";
-		IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
+        deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
+    }
 
-		FakeOnDeviceComponentAnswer fakeOnDeviceComponentAnswer = new FakeOnDeviceComponentAnswer();
-		Mockito.doAnswer(fakeOnDeviceComponentAnswer).when(fakeDevice).createForward(anyInt(), anyInt());
+    @Test
+    public void testConnectAndDisconnectOnlineDevice() throws Exception {
+        final String fakeDeviceSerialNumber = "mockDevice3";
+        IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
 
-		when(fakeDevice.isOnline()).thenReturn(true);
-		when(fakeDevice.isOffline()).thenReturn(false);
+        FakeOnDeviceComponentAnswer fakeOnDeviceComponentAnswer = new FakeOnDeviceComponentAnswer();
+        Mockito.doAnswer(fakeOnDeviceComponentAnswer).when(fakeDevice).createForward(anyInt(), anyInt());
 
-		int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
-		deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
-		// required for proper device registering
-		Thread.sleep(1500);
+        when(fakeDevice.isOnline()).thenReturn(true);
+        when(fakeDevice.isOffline()).thenReturn(false);
 
-		int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
-		assertEquals(	"Connecting an online device did not result in device connect event.",
-						poolItemsBeforeAdd + 1,
-						poolItemsAfterAdd);
+        int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
+        deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
+        // required for proper device registering
+        Thread.sleep(1500);
 
-		int poolItemsBeforeRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
-		deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
-		int poolItemsAfterRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
-		assertEquals(	"Disconnecting an online device did not result in device disconnect event.",
-						poolItemsBeforeRemove - 1,
-						poolItemsAfterRemove);
-	}
+        int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
+        assertEquals("Connecting an online device did not result in device connect event.",
+                     poolItemsBeforeAdd + 1,
+                     poolItemsAfterAdd);
 
-	@Test
-	public void testConnectAndDisconnectOfflineDevice() throws Exception
-	{
-		final String fakeDeviceSerialNumber = "mockDevice4";
-		IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
+        int poolItemsBeforeRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
+        deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
+        int poolItemsAfterRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
+        assertEquals("Disconnecting an online device did not result in device disconnect event.",
+                     poolItemsBeforeRemove - 1,
+                     poolItemsAfterRemove);
+    }
 
-		when(fakeDevice.isOnline()).thenReturn(false);
-		when(fakeDevice.isOffline()).thenReturn(true);
+    @Test
+    public void testConnectAndDisconnectOfflineDevice() throws Exception {
+        final String fakeDeviceSerialNumber = "mockDevice4";
+        IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
 
-		int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
-		deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
-		// required for proper device registering
-		Thread.sleep(1500);
+        when(fakeDevice.isOnline()).thenReturn(false);
+        when(fakeDevice.isOffline()).thenReturn(true);
 
-		int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
-		assertEquals(	"Connecting an offline device resulted in device connect event.",
-						poolItemsBeforeAdd,
-						poolItemsAfterAdd);
+        int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
+        deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
+        // required for proper device registering
+        Thread.sleep(1500);
 
-		int poolItemsBeforeRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
-		deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
-		int poolItemsAfterRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
-		assertEquals(	"Disconnecting an offline device resulted in device disconnect event.",
-						poolItemsBeforeRemove,
-						poolItemsAfterRemove);
-	}
+        int poolItemsAfterAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
+        assertEquals("Connecting an offline device resulted in device connect event.",
+                     poolItemsBeforeAdd,
+                     poolItemsAfterAdd);
+
+        int poolItemsBeforeRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
+        deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
+        int poolItemsAfterRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
+        assertEquals("Disconnecting an offline device resulted in device disconnect event.",
+                     poolItemsBeforeRemove,
+                     poolItemsAfterRemove);
+    }
 }

@@ -3,6 +3,7 @@ package com.musala.atmosphere.agent.devicewrapper;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -16,6 +17,11 @@ public class GetUiXmlTest extends BaseIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
         deviceWrapper = agentIntegrationEnvironment.getFirstAvailableDeviceWrapper();
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        releaseDevice();
     }
 
     @Test
