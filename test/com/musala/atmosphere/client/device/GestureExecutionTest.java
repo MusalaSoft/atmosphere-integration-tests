@@ -57,6 +57,7 @@ public class GestureExecutionTest extends BaseIntegrationTest {
         Gesture tapGesture = new Gesture();
         tapGesture.add(tapTimeline);
         testDevice.executeGesture(tapGesture);
+        Thread.sleep(1000);
         assertInputTextBoxIsFocused("Input text box not focused.");
     }
 }

@@ -42,7 +42,7 @@ public class TapTest extends BaseIntegrationTest {
     @Test
     public void testTap() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
         testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         // test tapping
         UiElement inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
         assertTrue("Tapping screen returned false.", inputTextBox.tap());
@@ -52,7 +52,7 @@ public class TapTest extends BaseIntegrationTest {
     @Test
     public void testRelativeTap() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
         testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         // test relative tapping
         UiElement widgetMainLayout = getElementByContentDescriptor(WIDGET_MAIN_LAYOUT);
         UiElementSelector widgetRelativeLayoutSelector = widgetMainLayout.getElementSelector();
@@ -65,7 +65,7 @@ public class TapTest extends BaseIntegrationTest {
         Point BatteryStatusRelativeUpperLeftCorner = widgetBoundsAttributeValue.getRelativePoint(batteryStatusBoxUpperLeftCorner);
 
         assertTrue("Tapping screen returned false.", widgetMainLayout.tap(BatteryStatusRelativeUpperLeftCorner));
-
+        Thread.sleep(1000);
         assertInputTextBoxIsFocused("Input text box not focused.");
     }
 }

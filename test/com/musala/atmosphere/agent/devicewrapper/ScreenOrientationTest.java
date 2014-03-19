@@ -14,6 +14,8 @@ import com.musala.atmosphere.commons.ScreenOrientation;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 
 public class ScreenOrientationTest extends BaseIntegrationTest {
+    private static final long OPERATION_TIMEOUT = 4000;
+
     @BeforeClass
     public static void setUp() throws Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
@@ -31,20 +33,22 @@ public class ScreenOrientationTest extends BaseIntegrationTest {
     @Test
     public void testSettingAutoRotationOff() throws Exception {
         assertTrue("Setting auto rotation returned false.", testDevice.setAutoRotation(false));
-        Thread.sleep(2000);
+        Thread.sleep(OPERATION_TIMEOUT);
         assertAutoRotationOff("Auto rotation is not off.");
     }
 
     @Test
     public void testSettingAutoRotationOn() throws Exception {
         assertTrue("Setting auto rotation returned false.", testDevice.setAutoRotation(true));
-        assertAutoRotationOn("Auto ratation is not on.");
+        Thread.sleep(OPERATION_TIMEOUT);
+        assertAutoRotationOn("Auto rotation is not on.");
     }
 
     @Test
     public void testSettingScreenOrientationPortrait() throws Exception {
         assertTrue("Setting screen orientation returned false.",
                    testDevice.setScreenOrientation(ScreenOrientation.PORTRAIT));
+        Thread.sleep(OPERATION_TIMEOUT);
         assertScreenOrientation("Screen rotation expected to be portrait", ScreenOrientation.PORTRAIT);
     }
 
@@ -52,6 +56,7 @@ public class ScreenOrientationTest extends BaseIntegrationTest {
     public void testSettingScreenOrientationUpsideDownPortrait() throws Exception {
         assertTrue("Setting screen orientation returned false.",
                    testDevice.setScreenOrientation(ScreenOrientation.UPSIDE_DOWN_PORTRAIT));
+        Thread.sleep(OPERATION_TIMEOUT);
         assertScreenOrientation("Screen rotation expected to be upside down portrait",
                                 ScreenOrientation.UPSIDE_DOWN_PORTRAIT);
     }
@@ -60,6 +65,7 @@ public class ScreenOrientationTest extends BaseIntegrationTest {
     public void testSettingScreenOrientationLandscape() throws Exception {
         assertTrue("Setting screen orientation returned false.",
                    testDevice.setScreenOrientation(ScreenOrientation.LANDSCAPE));
+        Thread.sleep(OPERATION_TIMEOUT);
         assertScreenOrientation("Screen rotation expected to be landscape", ScreenOrientation.LANDSCAPE);
     }
 
@@ -67,6 +73,7 @@ public class ScreenOrientationTest extends BaseIntegrationTest {
     public void testSettingScreenOrientationUpsideDown() throws Exception {
         assertTrue("Setting screen orientation returned false.",
                    testDevice.setScreenOrientation(ScreenOrientation.UPSIDE_DOWN_LANDSCAPE));
+        Thread.sleep(OPERATION_TIMEOUT);
         assertScreenOrientation("Screen rotation expected to be upside down landscape",
                                 ScreenOrientation.UPSIDE_DOWN_LANDSCAPE);
     }

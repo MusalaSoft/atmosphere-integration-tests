@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -20,8 +21,15 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 public class CallTest extends BaseIntegrationTest {
     private static final String SENDER_PHONE = "+012345";
 
+    private static final int RECEIVE_CALL_TIMEOUT = 3500;
+
+    /**
+     * The hold, cancel and accept phone call operations require much more time than receive to complete successfully.
+     */
+    private static final int OTHER_CALL_OPERATION_TIMEOUT = 10000;
+
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void classSetUp() throws Exception {
         DeviceParameters testDeviceParameters = new DeviceParameters();
         testDeviceParameters.setDeviceType(DeviceType.EMULATOR_ONLY);
         initTestDevice(testDeviceParameters);
@@ -33,17 +41,24 @@ public class CallTest extends BaseIntegrationTest {
         releaseDevice();
     }
 
+    @Before
+    public void setUp() throws InterruptedException {
+        testDevice.pressButton(HardwareButton.HOME);
+        Thread.sleep(1000);
+    }
+
     @After
     public void tearDown() throws Exception {
         testDevice.declineCall();
-        Thread.sleep(3000);
+        Thread.sleep(OTHER_CALL_OPERATION_TIMEOUT);
     }
 
     @Test
     public void testReceiveCall() throws Exception {
         PhoneNumber phoneNumber = new PhoneNumber(SENDER_PHONE);
         assertTrue("Receiving call returned false.", testDevice.receiveCall(phoneNumber));
-        Thread.sleep(3000);
+        Thread.sleep(RECEIVE_CALL_TIMEOUT);
+
         assertCallReceived("Phone call was not received.", phoneNumber);
     }
 
@@ -51,9 +66,11 @@ public class CallTest extends BaseIntegrationTest {
     public void testAcceptCall() throws Exception {
         PhoneNumber phoneNumber = new PhoneNumber(SENDER_PHONE);
         assertTrue("Receiving call returned false.", testDevice.receiveCall(phoneNumber));
-        Thread.sleep(3000);
+        Thread.sleep(RECEIVE_CALL_TIMEOUT);
+
         assertTrue("Accepting call returned false.", testDevice.acceptCall(phoneNumber));
-        Thread.sleep(3000);
+        Thread.sleep(OTHER_CALL_OPERATION_TIMEOUT);
+
         assertCallAccepted("Phone call was not accepted.", phoneNumber);
     }
 
@@ -61,9 +78,10 @@ public class CallTest extends BaseIntegrationTest {
     public void testHoldCall() throws Exception {
         PhoneNumber phoneNumber = new PhoneNumber(SENDER_PHONE);
         assertTrue("Receiving call returned false.", testDevice.receiveCall(phoneNumber));
-        Thread.sleep(3000);
+        Thread.sleep(RECEIVE_CALL_TIMEOUT);
+
         assertTrue("Holding call returned false.", testDevice.holdCall(phoneNumber));
-        Thread.sleep(3000);
+        Thread.sleep(OTHER_CALL_OPERATION_TIMEOUT);
         assertCallOnHold("Phone call was not put on hold.", phoneNumber);
     }
 
@@ -71,10 +89,12 @@ public class CallTest extends BaseIntegrationTest {
     public void testCancelCall() throws Exception {
         PhoneNumber phoneNumber = new PhoneNumber(SENDER_PHONE);
         assertTrue("Receiving call returned false.", testDevice.receiveCall(phoneNumber));
-        Thread.sleep(3000);
+        Thread.sleep(RECEIVE_CALL_TIMEOUT);
+
         assertCallReceived("Phone call was not received.", phoneNumber);
         assertTrue("Canceling call returned false.", testDevice.cancelCall(phoneNumber));
-        Thread.sleep(3000);
+        Thread.sleep(OTHER_CALL_OPERATION_TIMEOUT);
+
         assertCallCanceled("Phone call was not canceled.");
     }
 }
