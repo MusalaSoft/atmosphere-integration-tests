@@ -231,7 +231,7 @@ public class AgentIntegrationEnvironment {
      */
     public void close() throws IOException, DeviceNotFoundException, NotPossibleForDeviceException {
         for (String createdEmulatorSerialNumber : createdEmulatorsSerialNumbers) {
-            remoteAgentManager.eraseEmulator(createdEmulatorSerialNumber);
+            remoteAgentManager.closeAndEraseEmulator(createdEmulatorSerialNumber);
         }
 
         if (agentManager != null) {
