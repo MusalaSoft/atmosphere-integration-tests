@@ -9,7 +9,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.rmi.registry.Registry;
-import java.util.NoSuchElementException;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -28,6 +27,7 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.commons.sa.IAgentManager;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
 import com.musala.atmosphere.commons.util.Pair;
+import com.musala.atmosphere.server.pool.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.server.pool.PoolManager;
 
 /**
@@ -155,7 +155,7 @@ public class BuilderDeviceSelectionIntegrationTest {
                      realSerialNumber);
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingSerialNumber() {
         DeviceParameters parameters = new DeviceParameters();
 
@@ -207,7 +207,7 @@ public class BuilderDeviceSelectionIntegrationTest {
     }
 
     // FIXME If a test device with OS DeviceOs.JELLY_BEAN_4_1 is connected to the server this test will fail.
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingOperatingSystem() {
         DeviceParameters parameters = new DeviceParameters();
 
@@ -231,7 +231,7 @@ public class BuilderDeviceSelectionIntegrationTest {
         assertEquals("Device model does not match requested model.", wantedModel, realModel);
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingModel() {
         DeviceParameters parameters = new DeviceParameters();
 
@@ -255,7 +255,7 @@ public class BuilderDeviceSelectionIntegrationTest {
         assertEquals("Device RAM does not match requested RAM.", wantedRAM, realRAM);
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingRAM() {
         DeviceParameters parameters = new DeviceParameters();
 
@@ -281,7 +281,7 @@ public class BuilderDeviceSelectionIntegrationTest {
                      realResolutionWidth);
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingResolutionWidth() {
         DeviceParameters parameters = new DeviceParameters();
 
@@ -307,7 +307,7 @@ public class BuilderDeviceSelectionIntegrationTest {
                      realResolutionHeight);
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingResolutionHeight() {
         DeviceParameters parameters = new DeviceParameters();
 
@@ -331,7 +331,7 @@ public class BuilderDeviceSelectionIntegrationTest {
         assertEquals("Device DPI does not match requested DPI.", wantedDPI, realDPI);
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingDPI() {
 
         DeviceParameters parameters = new DeviceParameters();
