@@ -4,6 +4,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertI
 import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertIsFocused;
 import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertNotEnabled;
 import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertText;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -16,6 +17,7 @@ import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
+import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.ScreenOrientation;
 import com.musala.atmosphere.commons.SmsMessage;
 import com.musala.atmosphere.commons.beans.BatteryState;
@@ -742,5 +744,23 @@ public class OnDeviceValidatorAssert {
         }
 
         assertFalse(message, hasIncomingCallElement);
+    }
+
+    /**
+     * Asserts that the passed {@link UiElement} has received a double tap gesture. <b>Works correctly only if the
+     * element is a DoubleTapEditText view.</b>
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails
+     * @param element
+     *        - the {@link UiElement} to be checked
+     */
+    public static void assertIsDoubleTapped(String message, UiElement element) {
+        UiElementSelector selector = element.getElementSelector();
+
+        final String EXPTECTED_DOUBLE_TAP_TEXT = "Double tapped!";
+        String elementText = selector.getStringValue(CssAttribute.TEXT);
+
+        assertEquals(message, EXPTECTED_DOUBLE_TAP_TEXT, elementText);
     }
 }
