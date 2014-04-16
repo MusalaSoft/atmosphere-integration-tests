@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import com.android.ddmlib.IDevice;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.agent.AgentManager;
+import com.musala.atmosphere.agent.AndroidDebugBridgeManager;
 import com.musala.atmosphere.agent.util.FakeOnDeviceComponentAnswer;
 import com.musala.atmosphere.server.pool.PoolManager;
 
@@ -40,7 +41,7 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
 
         poolManager = PoolManager.getInstance();
 
-        Field deviceChangeListenerField = AgentManager.class.getDeclaredField("currentDeviceChangeListener");
+        Field deviceChangeListenerField = AndroidDebugBridgeManager.class.getDeclaredField("currentDeviceChangeListener");
         deviceChangeListenerField.setAccessible(true);
         deviceChangeListener = deviceChangeListenerField.get(underlyingAgentManager);
         deviceConnectedMethod = deviceChangeListener.getClass().getDeclaredMethod("deviceConnected", IDevice.class);

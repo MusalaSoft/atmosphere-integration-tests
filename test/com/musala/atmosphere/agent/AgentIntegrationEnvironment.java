@@ -16,6 +16,7 @@ import com.musala.atmosphere.commons.RoutingAction;
 import com.musala.atmosphere.commons.exceptions.CommandFailedException;
 import com.musala.atmosphere.commons.sa.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IAgentManager;
+import com.musala.atmosphere.commons.sa.IDeviceManager;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
 import com.musala.atmosphere.commons.sa.RmiStringConstants;
 import com.musala.atmosphere.commons.sa.exceptions.ADBridgeFailException;
@@ -34,9 +35,15 @@ import com.musala.atmosphere.commons.sa.exceptions.NotPossibleForDeviceException
 public class AgentIntegrationEnvironment {
     // TODO consider moving some of the methods implemented g=here to the agent.
 
+    private AndroidDebugBridgeManager androidDebugBridgeManager;
+
     private AgentManager agentManager;
 
     private IAgentManager remoteAgentManager;
+
+    private DeviceManager deviceManager;
+
+    private IDeviceManager remoteDeviceManager;
 
     private Registry remoteAgentRegistry;
 
@@ -52,10 +59,16 @@ public class AgentIntegrationEnvironment {
      * @throws NotBoundException
      */
     public AgentIntegrationEnvironment(int rmiPort) throws RemoteException, ADBridgeFailException, NotBoundException {
-        agentManager = new AgentManager(AgentPropertiesLoader.getADBPath(), rmiPort);
+        androidDebugBridgeManager = new AndroidDebugBridgeManager();
+        androidDebugBridgeManager.setAndroidDebugBridgePath(AgentPropertiesLoader.getADBPath());
+        androidDebugBridgeManager.startAndroidDebugBridge();
+
+        agentManager = new AgentManager(rmiPort);
+        deviceManager = new DeviceManager(rmiPort);
 
         remoteAgentRegistry = LocateRegistry.getRegistry("localhost", rmiPort);
         remoteAgentManager = (IAgentManager) remoteAgentRegistry.lookup(RmiStringConstants.AGENT_MANAGER.toString());
+        remoteDeviceManager = (IDeviceManager) remoteAgentRegistry.lookup(RmiStringConstants.DEVICE_MANAGER.toString());
     }
 
     /**
@@ -65,7 +78,7 @@ public class AgentIntegrationEnvironment {
      * @throws RemoteException
      */
     public boolean isAnyDevicePresent() throws RemoteException {
-        List<String> deviceWrappers = agentManager.getAllDeviceWrappers();
+        List<String> deviceWrappers = deviceManager.getAllDeviceWrappers();
         if (deviceWrappers.isEmpty()) {
             return false;
         } else {
@@ -82,7 +95,7 @@ public class AgentIntegrationEnvironment {
      * @throws CommandFailedException
      */
     public boolean isAnyEmulatorPresent() throws RemoteException, NotBoundException, CommandFailedException {
-        List<String> wrapperIdentifiers = agentManager.getAllDeviceWrappers();
+        List<String> wrapperIdentifiers = deviceManager.getAllDeviceWrappers();
 
         for (String wrapperId : wrapperIdentifiers) {
             IWrapDevice deviceWrapper = (IWrapDevice) remoteAgentRegistry.lookup(wrapperId);
@@ -106,7 +119,7 @@ public class AgentIntegrationEnvironment {
         throws RemoteException,
             NotBoundException,
             IllegalStateException {
-        List<String> wrapperIdentifiers = remoteAgentManager.getAllDeviceWrappers();
+        List<String> wrapperIdentifiers = remoteDeviceManager.getAllDeviceWrappers();
 
         if (wrapperIdentifiers.isEmpty()) {
             throw new IllegalStateException("No devices are present on the current agent. Consider creating and starting an emulator.");
@@ -127,7 +140,7 @@ public class AgentIntegrationEnvironment {
         throws RemoteException,
             NotBoundException,
             IllegalStateException {
-        List<String> wrapperIdentifiers = remoteAgentManager.getAllDeviceWrappers();
+        List<String> wrapperIdentifiers = remoteDeviceManager.getAllDeviceWrappers();
 
         for (String wrapperId : wrapperIdentifiers) {
             AbstractWrapDevice deviceWrapper = (AbstractWrapDevice) remoteAgentRegistry.lookup(wrapperId);
@@ -153,7 +166,7 @@ public class AgentIntegrationEnvironment {
         throws IOException,
             NotBoundException,
             TimeoutException {
-        List<String> wrappersBeforeEmulatorCreation = remoteAgentManager.getAllDeviceWrappers();
+        List<String> wrappersBeforeEmulatorCreation = remoteDeviceManager.getAllDeviceWrappers();
 
         remoteAgentManager.createAndStartEmulator(emulatorCreationParameters);
 
@@ -162,7 +175,7 @@ public class AgentIntegrationEnvironment {
         try {
             // FIXME This method should be moved in the EmulatorManager
             do {
-                LinkedList<String> currentWrappers = new LinkedList<String>(remoteAgentManager.getAllDeviceWrappers());
+                LinkedList<String> currentWrappers = new LinkedList<String>(remoteDeviceManager.getAllDeviceWrappers());
                 currentWrappers.removeAll(wrappersBeforeEmulatorCreation);
 
                 for (String currentWrapperId : currentWrappers) {
@@ -260,5 +273,13 @@ public class AgentIntegrationEnvironment {
      */
     public AgentManager getAgentManager() {
         return agentManager;
+    }
+
+    /**
+     * 
+     * @return current environment device manager
+     */
+    public DeviceManager getDeviceManager() {
+        return deviceManager;
     }
 }
