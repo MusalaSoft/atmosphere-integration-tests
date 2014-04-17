@@ -62,6 +62,16 @@ public class OnDeviceValidatorAssert {
 
     private final static int APP_STARTUP_WAIT_TIME = 2000;
 
+    private final static String EXPECTED_SWIPE_UP_TEXT = "Swiped up!";
+
+    private final static String EXPECTED_SWIPE_DOWN_TEXT = "Swiped down!";
+
+    private final static String EXPECTED_SWIPE_LEFT_TEXT = "Swiped left!";
+
+    private final static String EXPECTED_SWIPE_RIGHT_TEXT = "Swiped right!";
+
+    private final static String EXPECTED_DOUBLE_TAP_TEXT = "Double tapped!";
+
     private static Device device;
 
     /**
@@ -628,6 +638,74 @@ public class OnDeviceValidatorAssert {
     }
 
     /**
+     * Asserts that the text of {@link UiElement} is the same as the expected
+     * 
+     * @param message
+     *        - message to be displayed if the assertion fails
+     * @param expectedText
+     *        - the expected text of the element
+     */
+    public static void assertGestureReceived(String message, String expectedText) throws UiElementFetchingException {
+        UiElement gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
+
+        assertText(message, gestureValidator, expectedText);
+    }
+
+    /**
+     * Asserts that the text of {@link UiElement} which shows when you swipe up is the same as expected
+     * 
+     * @param message
+     *        - message to be displayed if the assertion fails
+     */
+    public static void assertSwipedUp(String message) throws UiElementFetchingException {
+
+        assertGestureReceived(message, EXPECTED_SWIPE_UP_TEXT);
+    }
+
+    /**
+     * Asserts that the text of {@link UiElement} which shows when you swipe down is the same as expected
+     * 
+     * @param message
+     *        - message to be displayed if the assertion fails
+     */
+    public static void assertSwipedDown(String message) throws UiElementFetchingException {
+
+        assertGestureReceived(message, EXPECTED_SWIPE_DOWN_TEXT);
+    }
+
+    /**
+     * Asserts that the text of {@link UiElement} which shows when you swipe left is the same as expected
+     * 
+     * @param message
+     *        - message to be displayed if the assertion fails
+     */
+    public static void assertSwipedLeft(String message) throws UiElementFetchingException {
+
+        assertGestureReceived(message, EXPECTED_SWIPE_LEFT_TEXT);
+    }
+
+    /**
+     * Asserts that the text of {@link UiElement} which shows when you swipe right is the same as expected
+     * 
+     * @param message
+     *        - message to be displayed if the assertion fails
+     */
+    public static void assertSwipedRight(String message) throws UiElementFetchingException {
+
+        assertGestureReceived(message, EXPECTED_SWIPE_RIGHT_TEXT);
+    }
+
+    /**
+     * Asserts that the text of {@link UiElement} which shows when you double tap is the same as expected
+     * 
+     * @param message
+     *        - message to be displayed if the assertion fails
+     */
+    public static void assertDoubleTapped(String message) throws UiElementFetchingException {
+        assertGestureReceived(message, EXPECTED_DOUBLE_TAP_TEXT);
+    }
+
+    /**
      * Asserts that a phone number is calling the device.
      * 
      * @param message
@@ -747,20 +825,20 @@ public class OnDeviceValidatorAssert {
     }
 
     /**
-     * Asserts that the passed {@link UiElement} has received a double tap gesture. <b>Works correctly only if the
-     * element is a DoubleTapEditText view.</b>
+     * Asserts that the text of the passed {@link UiElement} is the same as the expected. <b>Worsk correctly only for
+     * edit text views.</b>
      * 
      * @param message
-     *        - message to be displayed if assertion fails
+     *        - message to be displayed if the assertion fails
      * @param element
-     *        - the {@link UiElement} to be checked
+     *        - the element whose text will be checked
+     * @param expected
+     *        - the expected text of the element
      */
-    public static void assertIsDoubleTapped(String message, UiElement element) {
+    public static void assertElementText(String message, UiElement element, String expected) {
         UiElementSelector selector = element.getElementSelector();
-
-        final String EXPTECTED_DOUBLE_TAP_TEXT = "Double tapped!";
         String elementText = selector.getStringValue(CssAttribute.TEXT);
 
-        assertEquals(message, EXPTECTED_DOUBLE_TAP_TEXT, elementText);
+        assertEquals(message, expected, elementText);
     }
 }

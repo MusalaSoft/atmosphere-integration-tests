@@ -1,6 +1,6 @@
 package com.musala.atmosphere.client.device;
 
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertIsDoubleTapped;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertDoubleTapped;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 import static org.junit.Assert.assertTrue;
 
@@ -25,7 +25,7 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
  */
 public class DoubleTapTest extends BaseIntegrationTest {
 
-    private final static String DOUBLE_TAP_EDIT_TEXT = "DoubleTapValidator";
+    private final static String DOUBLE_TAP_EDIT_TEXT = "GestureValidator";
 
     private final static int APPLICATION_START_TIMEOUT = 1000;
 
@@ -57,7 +57,7 @@ public class DoubleTapTest extends BaseIntegrationTest {
 
         // assert that UI element has received a double tap gesture
         doubleTapValidator = getElementByContentDescriptor(DOUBLE_TAP_EDIT_TEXT);
-        assertIsDoubleTapped("The element did not recieve a double tap gesture.", doubleTapValidator);
+        assertDoubleTapped("The element did not recieve a double tap gesture.");
     }
 
     @Test
@@ -75,7 +75,7 @@ public class DoubleTapTest extends BaseIntegrationTest {
 
         // assert that UI element has received a double tap gesture
         doubleTapValidator = getElementByContentDescriptor(DOUBLE_TAP_EDIT_TEXT);
-        assertIsDoubleTapped("The element did not recieve a double tap gesture.", doubleTapValidator);
+        assertDoubleTapped("The element did not recieve a double tap gesture.");
     }
 
     @Test
@@ -96,6 +96,6 @@ public class DoubleTapTest extends BaseIntegrationTest {
 
         // assert that UI element has received a double tap gesture
         doubleTapValidator = getElementByContentDescriptor(DOUBLE_TAP_EDIT_TEXT);
-        assertIsDoubleTapped("The element did not recieve a double tap gesture.", doubleTapValidator);
+        assertDoubleTapped("The element did not recieve a double tap gesture.");
     }
 }

@@ -27,7 +27,8 @@ public enum ContentDescriptor {
     AUTO_ROTATION_BUTTON("AutoRotationFlag"),
     SCREEN_ORIENTATION_BOX("ScreenOrientationBox"),
     SMS_SENDER_PHONE_BOX("SmsSenderPhone"),
-    SMS_TEXT_BOX("SmsText");
+    SMS_TEXT_BOX("SmsText"),
+    GESTURE_VALIDATOR("GestureValidator");
 
     private String value;
 
