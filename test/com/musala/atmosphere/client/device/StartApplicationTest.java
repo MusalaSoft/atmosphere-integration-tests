@@ -11,14 +11,14 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 
 public class StartApplicationTest extends BaseIntegrationTest {
-
-    private static int START_APPLICATION_TIMEOUT = 1000;
+    private static final int APPLICATION_START_TIMEOUT = 5000;
 
     @BeforeClass
     public static void setUp() throws Exception {
         initTestDevice(new DeviceParameters());
         installValidatorApplication();
         testDevice.pressButton(HardwareButton.HOME);
+        Thread.sleep(2000);
     }
 
     @AfterClass
@@ -29,7 +29,7 @@ public class StartApplicationTest extends BaseIntegrationTest {
     @Test
     public void testStartApplication() throws Exception {
         boolean result = testDevice.startApplication(VALIDATOR_APP_PACKAGE);
-        Thread.sleep(START_APPLICATION_TIMEOUT);
+        Thread.sleep(APPLICATION_START_TIMEOUT);
 
         assertTrue("startApplication returned false.", result);
         assertValidatorIsStarted();

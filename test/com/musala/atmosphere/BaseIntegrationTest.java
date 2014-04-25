@@ -23,6 +23,17 @@ import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
  */
 public class BaseIntegrationTest {
 
+    @Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 0)
+    private static class GettingBuilderClass {
+        public GettingBuilderClass() {
+        }
+
+        public Builder getBuilder() {
+            Builder classDeviceBuilder = Builder.getInstance();
+            return classDeviceBuilder;
+        }
+    }
+
     protected final static int SERVER_MANAGER_RMI_PORT = 2099;
 
     protected final static String ONDEVICEVALIDATOR_FILE = "OnDeviceValidator.apk";
@@ -74,7 +85,7 @@ public class BaseIntegrationTest {
                 testDevice.setLocked(false);
                 Thread.sleep(UNLOCK_TIMEOUT);
             }
-            
+
             // Assert we start our test from the Home screen
             {
                 testDevice.pressButton(HardwareButton.HOME);
@@ -82,17 +93,6 @@ public class BaseIntegrationTest {
             }
         } catch (InterruptedException e) {
             LOGGER.error("Device preparation for integration test has been interrupted.", e);
-        }
-    }
-
-    @Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 0)
-    private static class GettingBuilderClass {
-        public GettingBuilderClass() {
-        }
-
-        public Builder getBuilder() {
-            Builder classDeviceBuilder = Builder.getInstance();
-            return classDeviceBuilder;
         }
     }
 
