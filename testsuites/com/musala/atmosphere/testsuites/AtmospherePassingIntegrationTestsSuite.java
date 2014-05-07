@@ -26,6 +26,6 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         DeviceInstallApkTest.class, GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class,
         GestureExecutionTest.class, TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class,
         PinchTest.class, SwipeTest.class, CallTest.class})
-// @SuiteClasses({PinchTest.class, SwipeTest.class, DoubleTapTest.class, StartApplicationTest.class})
+// @SuiteClasses({SwipeTest.class, DoubleTapTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

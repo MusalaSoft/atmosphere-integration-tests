@@ -7,12 +7,10 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 import com.musala.atmosphere.agent.devicewrapper.AbstractWrapDevice;
 import com.musala.atmosphere.agent.util.AgentPropertiesLoader;
 import com.musala.atmosphere.commons.DeviceInformation;
-import com.musala.atmosphere.commons.RoutingAction;
 import com.musala.atmosphere.commons.exceptions.CommandFailedException;
 import com.musala.atmosphere.commons.sa.DeviceParameters;
 import com.musala.atmosphere.commons.sa.IAgentManager;
@@ -22,6 +20,7 @@ import com.musala.atmosphere.commons.sa.RmiStringConstants;
 import com.musala.atmosphere.commons.sa.exceptions.ADBridgeFailException;
 import com.musala.atmosphere.commons.sa.exceptions.DeviceNotFoundException;
 import com.musala.atmosphere.commons.sa.exceptions.NotPossibleForDeviceException;
+import com.musala.atmosphere.commons.sa.exceptions.TimeoutReachedException;
 
 /**
  * Class for managing the testing environment. Creates an Agent on the current computer and gives the user the RMI stub
@@ -33,7 +32,7 @@ import com.musala.atmosphere.commons.sa.exceptions.NotPossibleForDeviceException
  * 
  */
 public class AgentIntegrationEnvironment {
-    // TODO consider moving some of the methods implemented g=here to the agent.
+    // TODO consider moving some of the methods implemented here to the agent.
 
     private AndroidDebugBridgeManager androidDebugBridgeManager;
 
@@ -95,17 +94,7 @@ public class AgentIntegrationEnvironment {
      * @throws CommandFailedException
      */
     public boolean isAnyEmulatorPresent() throws RemoteException, NotBoundException, CommandFailedException {
-        List<String> wrapperIdentifiers = deviceManager.getAllDeviceWrappers();
-
-        for (String wrapperId : wrapperIdentifiers) {
-            IWrapDevice deviceWrapper = (IWrapDevice) remoteAgentRegistry.lookup(wrapperId);
-            DeviceInformation deviceInformation = (DeviceInformation) deviceWrapper.route(RoutingAction.GET_DEVICE_INFORMATION);
-
-            if (deviceInformation.isEmulator()) {
-                return true;
-            }
-        }
-        return false;
+        return agentManager.isAnyEmulatorPresent();
     }
 
     /**
@@ -159,46 +148,24 @@ public class AgentIntegrationEnvironment {
      * @param emulatorCreationParameters
      *        parameters for the emulator that is to be created.
      * @return the device wrapper ({@link IWrapDevice} interface) for the newly created emulator.
+     * @throws RemoteException
      * @throws NotBoundException
      * @throws IOException
+     * @throws TimeoutReachedException
      */
-    public IWrapDevice startEmulator(DeviceParameters emulatorCreationParameters)
-        throws IOException,
-            NotBoundException,
-            TimeoutException {
-        List<String> wrappersBeforeEmulatorCreation = remoteDeviceManager.getAllDeviceWrappers();
-
-        remoteAgentManager.createAndStartEmulator(emulatorCreationParameters);
-
-        int timeout = AgentPropertiesLoader.getEmulatorCreationWaitTimeout();
-
+    public void startEmulator(DeviceParameters emulatorCreationParameters)
+        throws RemoteException,
+            IOException,
+            TimeoutReachedException {
+        String emulatorName = agentManager.createAndStartEmulator(emulatorCreationParameters);
         try {
-            // FIXME This method should be moved in the EmulatorManager
-            do {
-                LinkedList<String> currentWrappers = new LinkedList<String>(remoteDeviceManager.getAllDeviceWrappers());
-                currentWrappers.removeAll(wrappersBeforeEmulatorCreation);
-
-                for (String currentWrapperId : currentWrappers) {
-                    AbstractWrapDevice newDeviceWrapper = (AbstractWrapDevice) remoteAgentRegistry.lookup(currentWrapperId);
-                    DeviceInformation newDeviceInformation = newDeviceWrapper.getDeviceInformation();
-
-                    if (newDeviceInformation.isEmulator()) {
-                        // this must be our newly created emulator.
-                        String createdEmulatorSerialNumber = newDeviceInformation.getSerialNumber();
-                        createdEmulatorsSerialNumbers.add(createdEmulatorSerialNumber);
-
-                        return newDeviceWrapper;
-                    }
-                }
-
-                Thread.sleep(1000);
-                timeout -= 1000;
-            } while (timeout > 0);
-        } catch (InterruptedException e) {
-            // Sleep interupted. Doesn't reflect the logic.
+            agentManager.waitForEmulatorExists(emulatorName, 180000);
+            String serial = agentManager.getSerialNumberOfEmulator(emulatorName);
+            System.out.println(serial);
+            deviceManager.waitForDeviceExists(serial, 240000);
+        } catch (TimeoutReachedException | DeviceNotFoundException e) {
+            e.printStackTrace();
         }
-
-        throw new TimeoutException("Waiting for device to appear in the wrappers list timed out.");
     }
 
     /**

@@ -10,9 +10,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import com.musala.atmosphere.agent.AgentIntegrationEnvironment;
-import com.musala.atmosphere.agent.devicewrapper.AbstractWrapDevice;
 import com.musala.atmosphere.commons.sa.DeviceParameters;
-import com.musala.atmosphere.commons.sa.IWrapDevice;
+import com.musala.atmosphere.commons.sa.exceptions.TimeoutReachedException;
 import com.musala.atmosphere.commons.util.Pair;
 import com.musala.atmosphere.server.ServerIntegrationEnvironment;
 
@@ -51,10 +50,11 @@ public class AtmosphereIntegrationTestsSuite {
         String agentId = agentEnvironment.getUnderlyingAgentId();
         serverEnvironment.waitForAgentConnection(agentId);
 
+        Thread.sleep(10000);
+
         // Create default emulator if non exists
         if (!agentEnvironment.isAnyEmulatorPresent()) {
-            AbstractWrapDevice deviceWrapper = (AbstractWrapDevice) createDefaultEmulator();
-            agentEnvironment.waitForDeviceOsToStart(deviceWrapper);
+            createDefaultEmulator();
         }
     }
 
@@ -73,14 +73,17 @@ public class AtmosphereIntegrationTestsSuite {
         return serverEnvironment;
     }
 
-    private static IWrapDevice createDefaultEmulator() throws IOException, NotBoundException, TimeoutException {
+    private static void createDefaultEmulator()
+        throws IOException,
+            NotBoundException,
+            TimeoutException,
+            TimeoutReachedException {
         DeviceParameters emulatorCreationParameters = new DeviceParameters();
         emulatorCreationParameters.setDpi(EMULATOR_CREATION_DPI);
         emulatorCreationParameters.setRam(EMULATOR_CREATION_RAM);
         emulatorCreationParameters.setResolution(new Pair<Integer, Integer>(EMULATOR_CREATION_RESOLUTION_W,
                                                                             EMULATOR_CREATION_RESOLUTION_H));
-        IWrapDevice deviceWrapper = agentEnvironment.startEmulator(emulatorCreationParameters);
-        return deviceWrapper;
+        agentEnvironment.startEmulator(emulatorCreationParameters);
     }
 
 }
