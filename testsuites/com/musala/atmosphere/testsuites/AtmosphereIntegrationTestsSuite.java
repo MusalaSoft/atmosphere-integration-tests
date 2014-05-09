@@ -1,18 +1,11 @@
 package com.musala.atmosphere.testsuites;
 
-import java.io.IOException;
-import java.rmi.NotBoundException;
-import java.util.concurrent.TimeoutException;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import com.musala.atmosphere.agent.AgentIntegrationEnvironment;
-import com.musala.atmosphere.commons.sa.DeviceParameters;
-import com.musala.atmosphere.commons.sa.exceptions.TimeoutReachedException;
-import com.musala.atmosphere.commons.util.Pair;
+import com.musala.atmosphere.agent.Agent;
 import com.musala.atmosphere.server.ServerIntegrationEnvironment;
 
 /**
@@ -27,63 +20,36 @@ public class AtmosphereIntegrationTestsSuite {
 
     private final static int AGENTMANAGER_RMI_PORT = 2000;
 
-    private static AgentIntegrationEnvironment agentEnvironment;
+    private static Agent agent;
 
     private static ServerIntegrationEnvironment serverEnvironment;
-
-    private static final int EMULATOR_CREATION_DPI = 120;
-
-    private static final int EMULATOR_CREATION_RAM = 256;
-
-    private static final int EMULATOR_CREATION_RESOLUTION_H = 320;
-
-    private static final int EMULATOR_CREATION_RESOLUTION_W = 240;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
         // Start agent and server.
-        agentEnvironment = new AgentIntegrationEnvironment(AGENTMANAGER_RMI_PORT);
+        agent = new Agent(AGENTMANAGER_RMI_PORT);
         serverEnvironment = new ServerIntegrationEnvironment(SERVER_MANAGER_RMI_PORT);
 
         // Connect agent to the server
-        agentEnvironment.connectToLocalhostServer(SERVER_MANAGER_RMI_PORT);
-        String agentId = agentEnvironment.getUnderlyingAgentId();
+        agent.connectToServer("localhost", SERVER_MANAGER_RMI_PORT);
+        String agentId = agent.getId();
         serverEnvironment.waitForAgentConnection(agentId);
 
         Thread.sleep(10000);
-
-        // Create default emulator if non exists
-        if (!agentEnvironment.isAnyEmulatorPresent()) {
-            createDefaultEmulator();
-        }
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
         // Master tear down.
         serverEnvironment.close();
-        agentEnvironment.close();
-    }
-
-    public static AgentIntegrationEnvironment getAgentEnvironment() {
-        return agentEnvironment;
+        agent.stop();
     }
 
     public static ServerIntegrationEnvironment getServerEnvironment() {
         return serverEnvironment;
     }
 
-    private static void createDefaultEmulator()
-        throws IOException,
-            NotBoundException,
-            TimeoutException,
-            TimeoutReachedException {
-        DeviceParameters emulatorCreationParameters = new DeviceParameters();
-        emulatorCreationParameters.setDpi(EMULATOR_CREATION_DPI);
-        emulatorCreationParameters.setRam(EMULATOR_CREATION_RAM);
-        emulatorCreationParameters.setResolution(new Pair<Integer, Integer>(EMULATOR_CREATION_RESOLUTION_W,
-                                                                            EMULATOR_CREATION_RESOLUTION_H));
-        agentEnvironment.startEmulator(emulatorCreationParameters);
+    public static Agent getAgent() {
+        return agent;
     }
-
 }

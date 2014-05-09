@@ -6,16 +6,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.android.ddmlib.AndroidDebugBridge.IDeviceChangeListener;
 import com.android.ddmlib.IDevice;
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.agent.AgentManager;
 import com.musala.atmosphere.agent.AndroidDebugBridgeManager;
 import com.musala.atmosphere.agent.util.FakeOnDeviceComponentAnswer;
 import com.musala.atmosphere.server.pool.PoolManager;
@@ -27,28 +26,25 @@ import com.musala.atmosphere.server.pool.PoolManager;
  */
 
 public class PoolEventHandlerTest extends BaseIntegrationTest {
-    private static Object deviceChangeListener;
-
-    private static Method deviceConnectedMethod;
+    private static IDeviceChangeListener deviceChangeListener;
 
     private static PoolManager poolManager;
 
-    private static Method deviceDisconnectedMethod;
-
     @Before
     public void setUp() throws Exception {
-        AgentManager underlyingAgentManager = agentIntegrationEnvironment.getAgentManager();
-
         poolManager = PoolManager.getInstance();
 
-        Field deviceChangeListenerField = AndroidDebugBridgeManager.class.getDeclaredField("currentDeviceChangeListener");
-        deviceChangeListenerField.setAccessible(true);
-        deviceChangeListener = deviceChangeListenerField.get(underlyingAgentManager);
-        deviceConnectedMethod = deviceChangeListener.getClass().getDeclaredMethod("deviceConnected", IDevice.class);
-        deviceConnectedMethod.setAccessible(true);
-        deviceDisconnectedMethod = deviceChangeListener.getClass().getDeclaredMethod("deviceDisconnected",
-                                                                                     IDevice.class);
-        deviceDisconnectedMethod.setAccessible(true);
+        // Get AndroidDebugBridgeManager instance
+        Class<?> agentClass = agent.getClass();
+        Field androidDebugBridgeManagerField = agentClass.getDeclaredField("androidDebugBridgeManager");
+        androidDebugBridgeManagerField.setAccessible(true);
+        AndroidDebugBridgeManager androidDebugBridgeManager = (AndroidDebugBridgeManager) androidDebugBridgeManagerField.get(agent);
+
+        // Get the current device change listener
+        Class<?> adbManagerClass = androidDebugBridgeManager.getClass();
+        Field currentDeviceChangeListenerField = adbManagerClass.getDeclaredField("currentDeviceChangeListener");
+        currentDeviceChangeListenerField.setAccessible(true);
+        deviceChangeListener = (IDeviceChangeListener) currentDeviceChangeListenerField.get(androidDebugBridgeManager);
     }
 
     @AfterClass
@@ -77,7 +73,7 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
         when(fakeDevice.isOffline()).thenReturn(true);
 
         int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
-        deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
+        deviceChangeListener.deviceConnected(fakeDevice);
         // required for proper device registering
         Thread.sleep(1500);
 
@@ -86,7 +82,7 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
                      poolItemsBeforeAdd,
                      poolItemsAfterAdd);
 
-        deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
+        deviceChangeListener.deviceDisconnected(fakeDevice);
     }
 
     @Test
@@ -98,7 +94,7 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
         when(fakeDevice.isOffline()).thenReturn(false);
 
         int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
-        deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
+        deviceChangeListener.deviceConnected(fakeDevice);
         // required for proper device registering
         Thread.sleep(1500);
 
@@ -108,7 +104,7 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
                      poolItemsBeforeAdd + 1,
                      poolItemsAfterAdd);
 
-        deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
+        deviceChangeListener.deviceDisconnected(fakeDevice);
     }
 
     @Test
@@ -123,7 +119,7 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
         when(fakeDevice.isOffline()).thenReturn(false);
 
         int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
-        deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
+        deviceChangeListener.deviceConnected(fakeDevice);
         // required for proper device registering
         Thread.sleep(1500);
 
@@ -133,7 +129,7 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
                      poolItemsAfterAdd);
 
         int poolItemsBeforeRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
-        deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
+        deviceChangeListener.deviceDisconnected(fakeDevice);
         int poolItemsAfterRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
         assertEquals("Disconnecting an online device did not result in device disconnect event.",
                      poolItemsBeforeRemove - 1,
@@ -149,7 +145,7 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
         when(fakeDevice.isOffline()).thenReturn(true);
 
         int poolItemsBeforeAdd = poolManager.getAllUnderlyingDeviceProxyIds().size();
-        deviceConnectedMethod.invoke(deviceChangeListener, fakeDevice);
+        deviceChangeListener.deviceConnected(fakeDevice);
         // required for proper device registering
         Thread.sleep(1500);
 
@@ -159,7 +155,7 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
                      poolItemsAfterAdd);
 
         int poolItemsBeforeRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
-        deviceDisconnectedMethod.invoke(deviceChangeListener, fakeDevice);
+        deviceChangeListener.deviceDisconnected(fakeDevice);
         int poolItemsAfterRemove = poolManager.getAllUnderlyingDeviceProxyIds().size();
         assertEquals("Disconnecting an offline device resulted in device disconnect event.",
                      poolItemsBeforeRemove,

@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 
-import com.musala.atmosphere.agent.AgentIntegrationEnvironment;
+import com.musala.atmosphere.agent.Agent;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.device.HardwareButton;
@@ -48,7 +48,7 @@ public class BaseIntegrationTest {
 
     protected static Device testDevice;
 
-    protected static AgentIntegrationEnvironment agentIntegrationEnvironment = AtmosphereIntegrationTestsSuite.getAgentEnvironment();
+    protected static Agent agent = AtmosphereIntegrationTestsSuite.getAgent();
 
     protected static ServerIntegrationEnvironment serverIntegrationEnvironment = AtmosphereIntegrationTestsSuite.getServerEnvironment();
 

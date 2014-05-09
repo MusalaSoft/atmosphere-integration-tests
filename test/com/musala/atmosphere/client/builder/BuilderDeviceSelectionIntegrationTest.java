@@ -68,6 +68,7 @@ public class BuilderDeviceSelectionIntegrationTest {
         when(mockedAgentManager.getAgentId()).thenReturn(AGENT_ID);
 
         IDeviceManager mockedDeviceManager = mock(IDeviceManager.class);
+        when(mockedDeviceManager.getAgentId()).thenReturn(AGENT_ID);
 
         IWrapDevice mockedDeviceOne = mock(IWrapDevice.class);
         DeviceInformation mockedDeviceInfoOne = new DeviceInformation();

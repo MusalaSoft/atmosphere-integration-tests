@@ -4,13 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.util.HashMap;
@@ -25,10 +25,11 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import com.android.ddmlib.AndroidDebugBridge.IDeviceChangeListener;
 import com.android.ddmlib.IDevice;
 import com.android.ddmlib.InstallException;
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.agent.DeviceManager;
+import com.musala.atmosphere.agent.AndroidDebugBridgeManager;
 import com.musala.atmosphere.agent.DevicePropertyStringConstants;
 import com.musala.atmosphere.agent.util.FakeOnDeviceComponentAnswer;
 import com.musala.atmosphere.client.Builder;
@@ -52,6 +53,8 @@ public class DeviceInstallApkTest extends BaseIntegrationTest {
 
     private IDevice mockDevice;
 
+    private IDeviceChangeListener deviceChangeListener;
+
     @Server(ip = "localhost", port = SERVERMANAGER_RMI_PORT, connectionRetryLimit = 10)
     private class GettingDeviceSampleClass {
         public GettingDeviceSampleClass() {
@@ -66,9 +69,9 @@ public class DeviceInstallApkTest extends BaseIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
-        agentIntegrationEnvironment = AtmosphereIntegrationTestsSuite.getAgentEnvironment();
         serverIntegrationEnvironment = AtmosphereIntegrationTestsSuite.getServerEnvironment();
 
+        // Setup mock device
         mockDevice = mock(IDevice.class);
         when(mockDevice.getSerialNumber()).thenReturn(MOCK_SERIAL_NUMBER);
         when(mockDevice.isEmulator()).thenReturn(false);
@@ -83,27 +86,29 @@ public class DeviceInstallApkTest extends BaseIntegrationTest {
                                  Integer.toString(MOCK_DEVICE_DENSITY));
         when(mockDevice.getProperties()).thenReturn(mockDeviceProperties);
 
-        DeviceManager deviceManager = agentIntegrationEnvironment.getDeviceManager();
-        Method agentManagerRegisterNewDeviceMethod = DeviceManager.class.getDeclaredMethod("registerDevice",
-                                                                                           IDevice.class);
-        agentManagerRegisterNewDeviceMethod.setAccessible(true);
+        // Get AndroidDebugBridgeManager instance
+        Class<?> agentClass = agent.getClass();
+        Field androidDebugBridgeManagerField = agentClass.getDeclaredField("androidDebugBridgeManager");
+        androidDebugBridgeManagerField.setAccessible(true);
+        AndroidDebugBridgeManager androidDebugBridgeManager = (AndroidDebugBridgeManager) androidDebugBridgeManagerField.get(agent);
 
-        agentManagerRegisterNewDeviceMethod.invoke(deviceManager, mockDevice);
-        agentIntegrationEnvironment.connectToLocalhostServer(SERVERMANAGER_RMI_PORT);
+        // Get the current device change listener
+        Class<?> adbManagerClass = androidDebugBridgeManager.getClass();
+        Field currentDeviceChangeListenerField = adbManagerClass.getDeclaredField("currentDeviceChangeListener");
+        currentDeviceChangeListenerField.setAccessible(true);
+        deviceChangeListener = (IDeviceChangeListener) currentDeviceChangeListenerField.get(androidDebugBridgeManager);
 
-        String agentId = agentIntegrationEnvironment.getUnderlyingAgentId();
-        serverIntegrationEnvironment.waitForAgentConnection(agentId);
+        // Connect mocked device
+        deviceChangeListener.deviceConnected(mockDevice);
 
+        String agentId = agent.getId();
         serverIntegrationEnvironment.waitForDeviceToBeAvailable(MOCK_SERIAL_NUMBER, agentId);
     }
 
     @After
     public void tearDown() throws Exception {
-        DeviceManager deviceManager = agentIntegrationEnvironment.getDeviceManager();
-        Method agentManagerUnregisterDeviceMethod = DeviceManager.class.getDeclaredMethod("unregisterDevice",
-                                                                                          IDevice.class);
-        agentManagerUnregisterDeviceMethod.setAccessible(true);
-        agentManagerUnregisterDeviceMethod.invoke(deviceManager, mockDevice);
+        // Disconnect mocked device
+        deviceChangeListener.deviceDisconnected(mockDevice);
     }
 
     @Test
@@ -137,6 +142,7 @@ public class DeviceInstallApkTest extends BaseIntegrationTest {
         GettingDeviceSampleClass userTest = new GettingDeviceSampleClass();
         userTest.getDeviceAndInstallApk(parameters);
 
-        verify(mockDevice, times(1)).installPackage(anyString(), anyBoolean());
+        // This may change depending on the preconditions behavior
+        verify(mockDevice, atLeast(1)).installPackage(anyString(), anyBoolean());
     }
 }
