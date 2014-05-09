@@ -13,6 +13,7 @@ import com.musala.atmosphere.client.device.DeviceInstallApkTest;
 import com.musala.atmosphere.client.device.DoubleTapTest;
 import com.musala.atmosphere.client.device.GestureExecutionTest;
 import com.musala.atmosphere.client.device.LockUnlockTest;
+import com.musala.atmosphere.client.device.LongPressTest;
 import com.musala.atmosphere.client.device.PinchTest;
 import com.musala.atmosphere.client.device.ReceiveSmsTest;
 import com.musala.atmosphere.client.device.StartActivityTest;
@@ -25,7 +26,7 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         StartActivityTest.class, BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class,
         DeviceInstallApkTest.class, GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class,
         GestureExecutionTest.class, TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class,
-        PinchTest.class, SwipeTest.class, CallTest.class})
+        PinchTest.class, SwipeTest.class, CallTest.class, LongPressTest.class})
 // @SuiteClasses({SwipeTest.class, DoubleTapTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

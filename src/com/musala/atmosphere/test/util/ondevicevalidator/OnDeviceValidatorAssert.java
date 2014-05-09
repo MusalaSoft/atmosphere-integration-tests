@@ -78,9 +78,12 @@ public class OnDeviceValidatorAssert {
 
     private static final String EXPECTED_PINCH_OUT_TEXT = "Pinched out!";
 
+    private static final String EXPECTED_LONG_PRESS = "Long pressed!";
+
     private static Device device;
 
-    // TODO move methods concerning setting up the OnDeviceValidator application and starting its activities in an utility class
+    // TODO move methods concerning setting up the OnDeviceValidator application and starting its activities in an
+    // utility class
 
     /**
      * Asserts that the acceleration on the x axis of the test device has been set to the expected value.
@@ -425,6 +428,16 @@ public class OnDeviceValidatorAssert {
         UiElement inputTextBox = getElementByContentDescriptor(ContentDescriptor.INPUT_TEXT_BOX.toString());
 
         assertIsFocused(message, inputTextBox);
+    }
+
+    /**
+     * Asserts that the text of {@link UiElement} which shows when you long press is the same as expected
+     * 
+     * @param message
+     *        - message to be displayed if the assertion fails
+     */
+    public static void assertLongClicked(String message) throws UiElementFetchingException {
+        assertGestureReceived(message, EXPECTED_LONG_PRESS);
     }
 
     /**
