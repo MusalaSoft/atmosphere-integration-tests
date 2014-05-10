@@ -25,10 +25,9 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceOs;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.commons.sa.IAgentManager;
-import com.musala.atmosphere.commons.sa.IDeviceManager;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
+import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.commons.util.Pair;
-import com.musala.atmosphere.server.pool.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.server.pool.PoolManager;
 
 /**
@@ -66,9 +65,6 @@ public class BuilderDeviceSelectionIntegrationTest {
     public static void setUp() throws Exception {
         IAgentManager mockedAgentManager = mock(IAgentManager.class);
         when(mockedAgentManager.getAgentId()).thenReturn(AGENT_ID);
-
-        IDeviceManager mockedDeviceManager = mock(IDeviceManager.class);
-        when(mockedDeviceManager.getAgentId()).thenReturn(AGENT_ID);
 
         IWrapDevice mockedDeviceOne = mock(IWrapDevice.class);
         DeviceInformation mockedDeviceInfoOne = new DeviceInformation();
@@ -110,9 +106,9 @@ public class BuilderDeviceSelectionIntegrationTest {
 
         PoolManager poolManager = PoolManager.getInstance();
 
-        poolManager.addDevice(DEVICE1_SN, mockRegistry, mockedDeviceManager, SERVER_MANAGER_RMI_PORT);
-        poolManager.addDevice(DEVICE2_SN, mockRegistry, mockedDeviceManager, SERVER_MANAGER_RMI_PORT);
-        poolManager.addDevice(DEVICE3_SN, mockRegistry, mockedDeviceManager, SERVER_MANAGER_RMI_PORT);
+        poolManager.addDevice(DEVICE1_SN, mockRegistry, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
+        poolManager.addDevice(DEVICE2_SN, mockRegistry, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
+        poolManager.addDevice(DEVICE3_SN, mockRegistry, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
     }
 
     @Before
