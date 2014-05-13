@@ -741,6 +741,7 @@ public class OnDeviceValidatorAssert {
      */
     public static UiElement getElementByContentDescriptor(String contentDescriptor) throws UiElementFetchingException {
         Screen activeScreen = device.getActiveScreen();
+        activeScreen.updateScreen();
         final String query = String.format(CONTENT_DESCRIPTOR, contentDescriptor);
         return activeScreen.getElementByCSS(query);
     }

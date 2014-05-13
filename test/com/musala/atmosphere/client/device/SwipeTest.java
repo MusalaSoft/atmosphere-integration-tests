@@ -55,9 +55,6 @@ public class SwipeTest extends BaseIntegrationTest {
         // assert that the method indicates success
         assertTrue("Swipping returned false.", swipeResult);
 
-        // assert that UI element has received a double tap gesture
-        // FIXME is getting the element really needed?
-        swipeValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         assertSwipedUp("The element did not recieve a swipe gesture.");
     }
 
@@ -72,8 +69,6 @@ public class SwipeTest extends BaseIntegrationTest {
         // assert that the method indicated success
         assertTrue("Swipe returned false.", swipeResult);
 
-        // assert that UI element has received a swipe gesture
-        swipeValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         assertSwipedLeft("The element did not recieve a swipe left gesture.");
     }
 
@@ -88,8 +83,6 @@ public class SwipeTest extends BaseIntegrationTest {
         // assert that the method indicated success
         assertTrue("Swipe returned false.", swipeResult);
 
-        // assert that UI element has received a swipe gesture
-        swipeValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         assertSwipedRight("The element did not recieve a swipe right gesture.");
     }
 
@@ -104,8 +97,6 @@ public class SwipeTest extends BaseIntegrationTest {
         // assert that the method indicated success
         assertTrue("Swipe returned false.", swipeResult);
 
-        // assert that UI element has received a swipe gesture
-        swipeValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         assertSwipedDown("The element did not recieve a swipe down gesture.");
     }
 
@@ -120,8 +111,6 @@ public class SwipeTest extends BaseIntegrationTest {
         // assert that the method indicated success
         assertTrue("Swipe returned false.", swipeResult);
 
-        // assert that UI element has received a swipe gesture
-        swipeValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         assertSwipedUp("The element did not recieve a swipe up gesture.");
 
     }
