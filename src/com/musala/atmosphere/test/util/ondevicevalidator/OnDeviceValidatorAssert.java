@@ -8,6 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -706,6 +707,27 @@ public class OnDeviceValidatorAssert {
         UiElement wifiButtonFlag = getElementByContentDescriptor(ContentDescriptor.WIFI_FLAG.toString());
 
         assertIsEnabled(message, wifiButtonFlag);
+    }
+
+    /**
+     * Asserts that a given Ui element is not on screen.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @param selector
+     *        - the selector of the given Ui element.
+     * @throws UiElementFetchingException
+     */
+    public static void assertUIElementNotOnScreen(String message, UiElementSelector selector) {
+        Screen screen = device.getActiveScreen();
+        try {
+            screen.getElements(selector);
+            fail(message);
+        } catch (Exception e) {
+            if (!(e instanceof UiElementFetchingException)) {
+                fail(message);
+            }
+        }
     }
 
     /**
