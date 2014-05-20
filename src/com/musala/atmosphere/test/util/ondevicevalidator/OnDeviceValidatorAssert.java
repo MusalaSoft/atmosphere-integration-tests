@@ -37,9 +37,9 @@ public class OnDeviceValidatorAssert {
 
     private final static String CSS_PACKAGE = "[package=%s]";
 
-    private final static String PATH_TO_APK_DIR = "./";
+    private final static String PATH_TO_APK_DIR = "./ondeviceComponents";
 
-    private final static String NAME_OF_APK_FILE = "OnDeviceValidator.apk";
+    private final static String NAME_OF_APK_FILE = "OnDeviceValidator-release.apk";
 
     private final static String PATH_TO_APK = PATH_TO_APK_DIR + NAME_OF_APK_FILE;
 
@@ -63,7 +63,7 @@ public class OnDeviceValidatorAssert {
 
     private final static String END_CALL_BUTTON_DESCRIPTOR = "End";
 
-    private final static int APP_STARTUP_WAIT_TIME = 2000;
+    private final static int APP_STARTUP_WAIT_TIME = 4000;
 
     private final static String EXPECTED_SWIPE_UP_TEXT = "Swiped up!";
 
