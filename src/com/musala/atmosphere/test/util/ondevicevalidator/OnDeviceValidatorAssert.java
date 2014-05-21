@@ -779,7 +779,7 @@ public class OnDeviceValidatorAssert {
     public static List<UiElement> getElementsByPackage(String packageName) throws UiElementFetchingException {
         Screen activeScreen = device.getActiveScreen();
         final String query = String.format(CSS_PACKAGE, packageName);
-        return activeScreen.getElementsByCSS(query);
+        return activeScreen.getAllElementsByCSS(query);
     }
 
     /**
