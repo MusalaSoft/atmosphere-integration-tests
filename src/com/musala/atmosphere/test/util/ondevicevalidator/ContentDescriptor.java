@@ -28,7 +28,11 @@ public enum ContentDescriptor {
     SCREEN_ORIENTATION_BOX("ScreenOrientationBox"),
     SMS_SENDER_PHONE_BOX("SmsSenderPhone"),
     SMS_TEXT_BOX("SmsText"),
-    GESTURE_VALIDATOR("GestureValidator");
+    GESTURE_VALIDATOR("GestureValidator"),
+    SCROLL_VIEW_VALIDATOR("ScrollViewValidator"),
+    HORIZONTAL_SCROLL_VIEW_VALIDATOR("HorizontalScrollViewValidator"),
+    SCROLL_TO_BEGINNING_BUTTON("ScrollToBeginningButton"),
+    SCROLL_TO_END_BUTTON("ScrollToEndButton");
 
     private String value;
 

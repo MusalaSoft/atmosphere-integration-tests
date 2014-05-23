@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.Screen;
+import com.musala.atmosphere.client.ScrollableView;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
@@ -53,6 +54,10 @@ public class OnDeviceValidatorAssert {
 
     private final static String VALIDATOR_GESTURE_ACTIVITY = ".GestureActivity";
 
+    private final static String VALIDATOR_SCROLL_ACTIVITY = ".ScrollableViewActivity";
+
+    private final static String VALIDATOR_HORIZONTAL_SCROLL_ACTIVITY = ".HorizontalScrollableViewActivity";
+
     private final static String VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC = "ATMOSPHEREValidator";
 
     private final static String PHONE_PACKAGE_NAME = "com.android.phone";
@@ -81,9 +86,14 @@ public class OnDeviceValidatorAssert {
 
     private static final String EXPECTED_LONG_PRESS = "Long pressed!";
 
+    private static final String EXPECTED_SCROLL_TO_END = "Bottom";
+
+    private static final Object EXPECTED_SCROLL_TO_BEGINNING = "Top";
+
     private static Device device;
 
-    // TODO move methods concerning setting up the OnDeviceValidator application and starting its activities in an
+    // TODO move methods concerning setting up the OnDeviceValidator application
+    // and starting its activities in an
     // utility class
 
     /**
@@ -645,7 +655,6 @@ public class OnDeviceValidatorAssert {
      *        - message to be displayed if the assertion fails
      */
     public static void assertSwipedLeft(String message) throws UiElementFetchingException {
-
         assertGestureReceived(message, EXPECTED_SWIPE_LEFT_TEXT);
     }
 
@@ -677,7 +686,8 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertValidatorIsStarted() throws UiElementFetchingException {
-        // If the validator app activity is not started, this element fetching will fail.
+        // If the validator app activity is not started, this element fetching
+        // will fail.
         UiElement validationView = getElementByContentDescriptor(VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC);
         assertIsEnabled("ATMOSPHERE Validator has not beeen started.", validationView);
 
@@ -728,6 +738,76 @@ public class OnDeviceValidatorAssert {
                 fail(message);
             }
         }
+    }
+
+    /**
+     * Asserts that a given Ui element is on screen.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @param selector
+     *        - the selector of the given Ui element.
+     */
+    public static void assertUIElementOnScreen(String message, UiElementSelector selector) {
+        Screen screen = device.getActiveScreen();
+
+        try {
+            screen.getElement(selector);
+        } catch (UiElementFetchingException e) {
+            fail(message);
+        }
+    }
+
+    /**
+     * Asserts that the view is scrolled to end.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     */
+    public static void assertScrollToEnd(String message) {
+        UiElementSelector selector = new UiElementSelector();
+        selector.addSelectionAttribute(CssAttribute.TEXT, EXPECTED_SCROLL_TO_END);
+
+        assertUIElementOnScreen(message, selector);
+    }
+
+    /**
+     * Asserts that the view is scrolled to beginning.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     */
+    public static void assertScrollToBeginning(String message) {
+        UiElementSelector selector = new UiElementSelector();
+        selector.addSelectionAttribute(CssAttribute.TEXT, EXPECTED_SCROLL_TO_BEGINNING);
+
+        assertUIElementOnScreen(message, selector);
+    }
+
+    /**
+     * Asserts that the view is scrolled backwards.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     */
+    public static void assertScrollBackward(String message) {
+        UiElementSelector selector = new UiElementSelector();
+        selector.addSelectionAttribute(CssAttribute.TEXT, EXPECTED_SCROLL_TO_END);
+
+        assertUIElementNotOnScreen(message, selector);
+    }
+
+    /**
+     * Asserts that the view is scrolled forward.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     */
+    public static void assertScrollForward(String message) {
+        UiElementSelector selector = new UiElementSelector();
+        selector.addSelectionAttribute(CssAttribute.TEXT, EXPECTED_SCROLL_TO_BEGINNING);
+
+        assertUIElementNotOnScreen(message, selector);
     }
 
     /**
@@ -935,5 +1015,52 @@ public class OnDeviceValidatorAssert {
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_ORIENTATION_ACTIVITY);
+    }
+
+    /**
+     * Setups the OnDeviceValidator on the test device and starts its scroll activity.
+     * 
+     * @throws ActivityStartingException
+     * @throws InterruptedException
+     * @throws UiElementFetchingException
+     */
+    public static void setupAndStartScrollActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        setupOndeviceValidator();
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_SCROLL_ACTIVITY);
+    }
+
+    /**
+     * Setups the OnDeviceValidator on the test device and starts its horizontal scroll activity.
+     * 
+     * @throws ActivityStartingException
+     * @throws InterruptedException
+     * @throws UiElementFetchingException
+     */
+    public static void setupAndStartHorizontalScrollActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        setupOndeviceValidator();
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_HORIZONTAL_SCROLL_ACTIVITY);
+    }
+
+    /**
+     * Returns the requested ScrollableView.
+     * 
+     * @param contentDescription
+     *        - content description by which the ScrollableView is selected
+     * @return the requested ScrollableView
+     * @throws UiElementFetchingException
+     */
+    public static ScrollableView getScrollableView(String contentDescription) throws UiElementFetchingException {
+        Screen activeScreen = device.getActiveScreen();
+        UiElementSelector selector = new UiElementSelector();
+
+        selector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, contentDescription);
+
+        return activeScreen.getScrollableView(selector);
     }
 }

@@ -12,10 +12,12 @@ import com.musala.atmosphere.client.device.DeviceGetScreenshotTest;
 import com.musala.atmosphere.client.device.DeviceInstallApkTest;
 import com.musala.atmosphere.client.device.DoubleTapTest;
 import com.musala.atmosphere.client.device.GestureExecutionTest;
+import com.musala.atmosphere.client.device.HorizontalScrollTest;
 import com.musala.atmosphere.client.device.LockUnlockTest;
 import com.musala.atmosphere.client.device.LongPressTest;
 import com.musala.atmosphere.client.device.PinchTest;
 import com.musala.atmosphere.client.device.ReceiveSmsTest;
+import com.musala.atmosphere.client.device.ScrollTest;
 import com.musala.atmosphere.client.device.StartActivityTest;
 import com.musala.atmosphere.client.device.StartApplicationTest;
 import com.musala.atmosphere.client.device.SwipeTest;
@@ -27,7 +29,8 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         StartActivityTest.class, BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class,
         DeviceInstallApkTest.class, GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class,
         GestureExecutionTest.class, TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class,
-        PinchTest.class, SwipeTest.class, CallTest.class, LongPressTest.class, WaitForExistsTest.class})
-// @SuiteClasses({ScreenOrientationTest.class})
+        PinchTest.class, SwipeTest.class, CallTest.class, LongPressTest.class, WaitForExistsTest.class,
+        ScrollTest.class, HorizontalScrollTest.class})
+// @SuiteClasses({ScrollTest.class, HorizontalScrollTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
