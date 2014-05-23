@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import com.musala.atmosphere.agent.Agent;
-import com.musala.atmosphere.server.ServerIntegrationEnvironment;
+import com.musala.atmosphere.server.Server;
 
 /**
  * JUnit test suite with all running integration tests.
@@ -22,18 +22,19 @@ public class AtmosphereIntegrationTestsSuite {
 
     private static Agent agent;
 
-    private static ServerIntegrationEnvironment serverEnvironment;
+    private static Server server;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        // Start agent and server.
-        agent = new Agent(AGENTMANAGER_RMI_PORT);
-        serverEnvironment = new ServerIntegrationEnvironment(SERVER_MANAGER_RMI_PORT);
+        // Start and run server.
+        server = new Server(SERVER_MANAGER_RMI_PORT);
+        server.run();
 
-        // Connect agent to the server
+        // Start and connect agent to the server
+        agent = new Agent(AGENTMANAGER_RMI_PORT);
         agent.connectToServer("localhost", SERVER_MANAGER_RMI_PORT);
         String agentId = agent.getId();
-        serverEnvironment.waitForAgentConnection(agentId);
+        server.waitForGivenAgentToConnect(agentId);
 
         Thread.sleep(10000);
     }
@@ -41,15 +42,15 @@ public class AtmosphereIntegrationTestsSuite {
     @AfterClass
     public static void tearDownClass() throws Exception {
         // Master tear down.
-        serverEnvironment.close();
+        server.exit();
         agent.stop();
-    }
-
-    public static ServerIntegrationEnvironment getServerEnvironment() {
-        return serverEnvironment;
     }
 
     public static Agent getAgent() {
         return agent;
+    }
+
+    public static Server getServer() {
+        return server;
     }
 }

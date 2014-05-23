@@ -69,7 +69,7 @@ public class DeviceInstallApkTest extends BaseIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
-        serverIntegrationEnvironment = AtmosphereIntegrationTestsSuite.getServerEnvironment();
+        server = AtmosphereIntegrationTestsSuite.getServer();
 
         // Setup mock device
         mockDevice = mock(IDevice.class);
@@ -102,7 +102,7 @@ public class DeviceInstallApkTest extends BaseIntegrationTest {
         deviceChangeListener.deviceConnected(mockDevice);
 
         String agentId = agent.getId();
-        serverIntegrationEnvironment.waitForDeviceToBeAvailable(MOCK_SERIAL_NUMBER, agentId);
+        server.waitForDeviceToBeAvailable(MOCK_SERIAL_NUMBER, agentId);
     }
 
     @After

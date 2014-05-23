@@ -37,7 +37,7 @@ public class OnDeviceValidatorAssert {
 
     private final static String CSS_PACKAGE = "[package=%s]";
 
-    private final static String PATH_TO_APK_DIR = "./ondeviceComponents";
+    private final static String PATH_TO_APK_DIR = "./ondeviceComponents/";
 
     private final static String NAME_OF_APK_FILE = "OnDeviceValidator-release.apk";
 

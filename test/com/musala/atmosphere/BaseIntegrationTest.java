@@ -10,9 +10,8 @@ import com.musala.atmosphere.agent.Agent;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.device.HardwareButton;
-import com.musala.atmosphere.client.util.Server;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
-import com.musala.atmosphere.server.ServerIntegrationEnvironment;
+import com.musala.atmosphere.server.Server;
 import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
 /**
@@ -23,7 +22,7 @@ import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
  */
 public class BaseIntegrationTest {
 
-    @Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 0)
+    @com.musala.atmosphere.client.util.Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 0)
     private static class GettingBuilderClass {
         public GettingBuilderClass() {
         }
@@ -50,7 +49,7 @@ public class BaseIntegrationTest {
 
     protected static Agent agent = AtmosphereIntegrationTestsSuite.getAgent();
 
-    protected static ServerIntegrationEnvironment serverIntegrationEnvironment = AtmosphereIntegrationTestsSuite.getServerEnvironment();
+    protected static Server server = AtmosphereIntegrationTestsSuite.getServer();
 
     private final static Logger LOGGER = Logger.getLogger(BaseIntegrationTest.class);
 
