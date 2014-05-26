@@ -98,7 +98,7 @@ public class BaseIntegrationTest {
     protected static void installValidatorApplication() {
         assertNotNull("There is no allocated test device.", testDevice);
 
-        testDevice.installAPK(PATH_TO_APK);
+        testDevice.installAPK(PATH_TO_APK, true);
         setTestDevice(testDevice);
     }
 
