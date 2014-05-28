@@ -21,7 +21,7 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 
 public class WaitForExistsTest extends BaseIntegrationTest {
 
-    private static final Long ELEMENT_WAIT_TIMEOUT = 10000l;
+    private static final Integer ELEMENT_WAIT_TIMEOUT = 10000;
 
     private static final String GESTURE_ACTIVITY_BUTTON_DESCRIPTOR = "GestureActivityButton";
 
