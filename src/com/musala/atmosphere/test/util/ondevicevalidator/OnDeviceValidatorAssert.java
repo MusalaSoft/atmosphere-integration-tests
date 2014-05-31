@@ -829,6 +829,7 @@ public class OnDeviceValidatorAssert {
      */
     public static UiElement getElementByClass(String cssClass) throws UiElementFetchingException {
         Screen activeScreen = device.getActiveScreen();
+        activeScreen.updateScreen();
         final String query = String.format(CSS_CLASS, cssClass);
         return activeScreen.getElementByCSS(query);
     }
@@ -858,6 +859,7 @@ public class OnDeviceValidatorAssert {
      */
     public static List<UiElement> getElementsByPackage(String packageName) throws UiElementFetchingException {
         Screen activeScreen = device.getActiveScreen();
+        activeScreen.updateScreen();
         final String query = String.format(CSS_PACKAGE, packageName);
         return activeScreen.getAllElementsByCSS(query);
     }
@@ -1057,6 +1059,7 @@ public class OnDeviceValidatorAssert {
      */
     public static ScrollableView getScrollableView(String contentDescription) throws UiElementFetchingException {
         Screen activeScreen = device.getActiveScreen();
+        activeScreen.updateScreen();
         UiElementSelector selector = new UiElementSelector();
 
         selector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, contentDescription);
