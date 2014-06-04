@@ -23,6 +23,7 @@ import com.musala.atmosphere.client.device.StartApplicationTest;
 import com.musala.atmosphere.client.device.SwipeTest;
 import com.musala.atmosphere.client.device.TapTest;
 import com.musala.atmosphere.client.device.WaitForExistsTest;
+import com.musala.atmosphere.client.device.WaitForWindowUpdateTest;
 import com.musala.atmosphere.server.PoolEventHandlerTest;
 
 @SuiteClasses({ScreenOrientationTest.class, PoolEventHandlerTest.class, TapTest.class, LockUnlockTest.class,
@@ -30,7 +31,7 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         DeviceInstallApkTest.class, GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class,
         GestureExecutionTest.class, TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class,
         PinchTest.class, SwipeTest.class, CallTest.class, LongPressTest.class, WaitForExistsTest.class,
-        ScrollTest.class, HorizontalScrollTest.class})
-// @SuiteClasses({ScrollTest.class, HorizontalScrollTest.class})
+        ScrollTest.class, HorizontalScrollTest.class, WaitForWindowUpdateTest.class})
+// @SuiteClasses({CallTest.class, SwipeTest.class, WaitForExistsTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

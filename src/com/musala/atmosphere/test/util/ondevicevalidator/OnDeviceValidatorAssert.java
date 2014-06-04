@@ -54,6 +54,8 @@ public class OnDeviceValidatorAssert {
 
     private final static String VALIDATOR_GESTURE_ACTIVITY = ".GestureActivity";
 
+    private final static String VALIDATOR_WAIT_TEST_ACTIVITY = ".WaitTestActivity";
+
     private final static String VALIDATOR_SCROLL_ACTIVITY = ".ScrollableViewActivity";
 
     private final static String VALIDATOR_HORIZONTAL_SCROLL_ACTIVITY = ".HorizontalScrollableViewActivity";
@@ -920,6 +922,21 @@ public class OnDeviceValidatorAssert {
     }
 
     /**
+     * Setups the OnDeviceValidator on the test device and starts its wait test activity.
+     * 
+     * @throws UiElementFetchingException
+     * @throws InterruptedException
+     * @throws ActivityStartingException
+     */
+    public static void setupAndStartWaitTestActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        setupOndeviceValidator();
+        startWaitTestActivity();
+    }
+
+    /**
      * Setups the OnDeviceValidator on the test device and starts its orientation activity.
      * 
      * @throws ActivityStartingException
@@ -953,6 +970,20 @@ public class OnDeviceValidatorAssert {
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_ACCELERATION_ACTIVITY);
+    }
+
+    /**
+     * Starts OnDeviceValidator's wait test activity.
+     * 
+     * @throws ActivityStartingException
+     * @throws InterruptedException
+     * @throws UiElementFetchingException
+     */
+    public static void startWaitTestActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_WAIT_TEST_ACTIVITY);
     }
 
     /**

@@ -35,9 +35,9 @@ public class BaseIntegrationTest {
 
     protected final static int SERVER_MANAGER_RMI_PORT = 2099;
 
-    protected final static String ONDEVICEVALIDATOR_FILE = "OnDeviceValidator.apk";
+    protected final static String ONDEVICEVALIDATOR_FILE = "OnDeviceValidator-release.apk";
 
-    protected final static String PATH_TO_APK_DIR = "./";
+    protected final static String PATH_TO_APK_DIR = "./ondeviceComponents/";
 
     final static String PATH_TO_APK = PATH_TO_APK_DIR + ONDEVICEVALIDATOR_FILE;
 

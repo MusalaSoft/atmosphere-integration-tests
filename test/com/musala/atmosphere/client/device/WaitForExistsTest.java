@@ -2,7 +2,7 @@ package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertUIElementNotOnScreen;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartMainActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartWaitTestActivity;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -23,8 +23,6 @@ public class WaitForExistsTest extends BaseIntegrationTest {
 
     private static final Integer ELEMENT_WAIT_TIMEOUT = 10000;
 
-    private static final String GESTURE_ACTIVITY_BUTTON_DESCRIPTOR = "GestureActivityButton";
-
     private static final String UNEXISTING_BUTTON_DESCRIPTOR = "UnexistingButton";
 
     private static final String CHANGING_TEXT_BUTTON_DESCRIPTOR = "ChangingTextButton";
@@ -36,7 +34,7 @@ public class WaitForExistsTest extends BaseIntegrationTest {
         initTestDevice(new DeviceParameters());
         setTestDevice(testDevice);
 
-        setupAndStartMainActivity();
+        setupAndStartWaitTestActivity();
     }
 
     @AfterClass
@@ -51,11 +49,10 @@ public class WaitForExistsTest extends BaseIntegrationTest {
             UiElementFetchingException {
 
         UiElementSelector selector = new UiElementSelector();
-        selector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, GESTURE_ACTIVITY_BUTTON_DESCRIPTOR);
+        selector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, CHANGING_TEXT_BUTTON_DESCRIPTOR);
         Screen activeScreen = testDevice.getActiveScreen();
         boolean result = activeScreen.waitForElementExists(selector, ELEMENT_WAIT_TIMEOUT);
         assertTrue("Wait for element exists returned false.", result);
-
     }
 
     @Test
@@ -70,7 +67,6 @@ public class WaitForExistsTest extends BaseIntegrationTest {
         boolean result = activeScreen.waitForElementExists(selector, ELEMENT_WAIT_TIMEOUT);
 
         assertFalse("Wait for element exists returned true.", result);
-
     }
 
     @Test
