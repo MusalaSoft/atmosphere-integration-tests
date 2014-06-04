@@ -158,6 +158,7 @@ public class BuilderDeviceSelectionIntegrationTest {
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingSerialNumber() {
         DeviceParameters parameters = new DeviceParameters();
+        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
         parameters.setSerialNumber("nonexisting_serial_number");
 
@@ -210,6 +211,7 @@ public class BuilderDeviceSelectionIntegrationTest {
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingOperatingSystem() {
         DeviceParameters parameters = new DeviceParameters();
+        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
         parameters.setOs(DeviceOs.JELLY_BEAN_4_1);
 
@@ -234,6 +236,7 @@ public class BuilderDeviceSelectionIntegrationTest {
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingModel() {
         DeviceParameters parameters = new DeviceParameters();
+        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
         parameters.setModel("nonexisting_model");
 
@@ -258,6 +261,7 @@ public class BuilderDeviceSelectionIntegrationTest {
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingRAM() {
         DeviceParameters parameters = new DeviceParameters();
+        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
         parameters.setRam(999);
 
@@ -284,6 +288,7 @@ public class BuilderDeviceSelectionIntegrationTest {
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingResolutionWidth() {
         DeviceParameters parameters = new DeviceParameters();
+        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
         parameters.setResolutionWidth(999);
 
@@ -310,6 +315,7 @@ public class BuilderDeviceSelectionIntegrationTest {
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingResolutionHeight() {
         DeviceParameters parameters = new DeviceParameters();
+        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
         parameters.setResolutionHeight(999);
 
@@ -333,8 +339,8 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingDPI() {
-
         DeviceParameters parameters = new DeviceParameters();
+        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
         parameters.setDpi(999);
 

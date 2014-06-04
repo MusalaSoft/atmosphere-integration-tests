@@ -14,13 +14,13 @@ import com.musala.atmosphere.commons.beans.BatteryLevel;
 import com.musala.atmosphere.commons.beans.BatteryState;
 import com.musala.atmosphere.commons.beans.PowerSource;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
-import com.musala.atmosphere.commons.sa.DeviceParameters;
+import com.musala.atmosphere.commons.sa.EmulatorParameters;
 import com.musala.atmosphere.commons.util.Pair;
 
 public class EmulatorConsoleTest extends BaseIntegrationTest {
     private static final int EMULATOR_CREATION_DPI = 120;
 
-    private static final int EMULATOR_CREATION_RAM = 256;
+    private static final long EMULATOR_CREATION_RAM = 256;
 
     private static final int EMULATOR_CREATION_RESOLUTION_H = 240;
 
@@ -34,7 +34,7 @@ public class EmulatorConsoleTest extends BaseIntegrationTest {
         AgentManager agentManager = (AgentManager) agentManagerField.get(agent);
 
         if (!agentManager.isAnyEmulatorPresent()) {
-            DeviceParameters emulatorCreationParameters = new DeviceParameters();
+            EmulatorParameters emulatorCreationParameters = new EmulatorParameters();
             emulatorCreationParameters.setDpi(EMULATOR_CREATION_DPI);
             emulatorCreationParameters.setRam(EMULATOR_CREATION_RAM);
             emulatorCreationParameters.setResolution(new Pair<Integer, Integer>(EMULATOR_CREATION_RESOLUTION_H,

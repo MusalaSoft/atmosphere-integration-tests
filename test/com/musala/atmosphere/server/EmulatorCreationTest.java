@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
+import com.musala.atmosphere.commons.sa.EmulatorParameters;
 import com.musala.atmosphere.commons.util.Pair;
 import com.musala.atmosphere.server.pool.PoolManager;
 
@@ -16,11 +17,11 @@ public class EmulatorCreationTest extends BaseIntegrationTest {
     // max timeout in seconds for waiting for a newly created emulator to be registered on the Agent
     private static final int MAX_TIMEOUT = 240;
 
-    private com.musala.atmosphere.commons.sa.DeviceParameters getEmulatorDeviceParameters() {
-        com.musala.atmosphere.commons.sa.DeviceParameters params = new com.musala.atmosphere.commons.sa.DeviceParameters();
+    private EmulatorParameters getEmulatorDeviceParameters() {
+        EmulatorParameters params = new EmulatorParameters();
         params.setDpi(120);
         params.setApiLevel(17);
-        params.setRam(256);
+        params.setRam(256l);
         Pair<Integer, Integer> resolution = new Pair<>(320, 240);
         params.setResolution(resolution);
         return params;

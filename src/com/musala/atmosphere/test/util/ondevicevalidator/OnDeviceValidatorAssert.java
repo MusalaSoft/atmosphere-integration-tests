@@ -1050,6 +1050,20 @@ public class OnDeviceValidatorAssert {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_ORIENTATION_ACTIVITY);
     }
 
+    public static void startScrollActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_SCROLL_ACTIVITY);
+    }
+
+    public static void startHorizontalScrollActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_HORIZONTAL_SCROLL_ACTIVITY);
+    }
+
     /**
      * Setups the OnDeviceValidator on the test device and starts its scroll activity.
      * 
