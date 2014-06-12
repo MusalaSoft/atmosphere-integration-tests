@@ -2,6 +2,7 @@ package com.musala.atmosphere.testsuites;
 
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.musala.atmosphere.agent.devicewrapper.EmulatorCameraTest;
 import com.musala.atmosphere.agent.devicewrapper.GetScreenshotTest;
 import com.musala.atmosphere.agent.devicewrapper.GetUiXmlTest;
 import com.musala.atmosphere.agent.devicewrapper.ScreenOrientationTest;
@@ -31,7 +32,7 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         DeviceInstallApkTest.class, GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class,
         GestureExecutionTest.class, TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class,
         PinchTest.class, SwipeTest.class, CallTest.class, LongPressTest.class, WaitForExistsTest.class,
-        ScrollTest.class, HorizontalScrollTest.class, WaitForWindowUpdateTest.class})
-// @SuiteClasses({CallTest.class, SwipeTest.class, WaitForExistsTest.class})
+        ScrollTest.class, HorizontalScrollTest.class, WaitForWindowUpdateTest.class, EmulatorCameraTest.class})
+// @SuiteClasses({EmulatorCameraTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

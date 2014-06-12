@@ -346,6 +346,32 @@ public class OnDeviceValidatorAssert {
     }
 
     /**
+     * Asserts that there is a physical camera on the tested device.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @throws UiElementFetchingException
+     */
+    public static void assertCameraPresent(String message) throws UiElementFetchingException {
+        UiElement cameraNumberTextBox = getElementByContentDescriptor(ContentDescriptor.CAMERA_NUMBER_TEXT_BOX.toString());
+        Integer cameraNumber = Integer.parseInt(cameraNumberTextBox.getText());
+        assertTrue(message, (cameraNumber > 0));
+    }
+
+    /**
+     * Asserts that there is no physical camera on the tested device.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @throws UiElementFetchingException
+     */
+    public static void assertCameraNotPresent(String message) throws UiElementFetchingException {
+        UiElement cameraNumberTextBox = getElementByContentDescriptor(ContentDescriptor.CAMERA_NUMBER_TEXT_BOX.toString());
+        Integer cameraNumber = Integer.parseInt(cameraNumberTextBox.getText());
+        assertFalse(message, (cameraNumber > 0));
+    }
+
+    /**
      * Asserts that the connection type of the test device has been set to the expected value.
      * 
      * @param message

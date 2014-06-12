@@ -32,7 +32,8 @@ public enum ContentDescriptor {
     SCROLL_VIEW_VALIDATOR("ScrollViewValidator"),
     HORIZONTAL_SCROLL_VIEW_VALIDATOR("HorizontalScrollViewValidator"),
     SCROLL_TO_BEGINNING_BUTTON("ScrollToBeginningButton"),
-    SCROLL_TO_END_BUTTON("ScrollToEndButton");
+    SCROLL_TO_END_BUTTON("ScrollToEndButton"),
+    CAMERA_NUMBER_TEXT_BOX("DeviceCameraNumber");
 
     private String value;
 
