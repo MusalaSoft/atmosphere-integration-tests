@@ -49,7 +49,7 @@ public class WaitUntilGoneTest extends BaseIntegrationTest {
 
         UiElementSelector selector = new UiElementSelector();
         selector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
-                                       ContentDescriptor.CHANGING_TEXT_BUTTON_DESCRIPTOR);
+                                       ContentDescriptor.CHANGING_TEXT_BUTTON_DESCRIPTOR.toString());
         Screen activeScreen = testDevice.getActiveScreen();
         boolean result = activeScreen.waitUntilElementGone(selector, ELEMENT_WAIT_TIMEOUT);
         assertFalse("Wait until element gone returned true.", result);
@@ -77,7 +77,7 @@ public class WaitUntilGoneTest extends BaseIntegrationTest {
 
         UiElementSelector selector = new UiElementSelector();
         selector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
-                                       ContentDescriptor.CHANGING_TEXT_BUTTON_DESCRIPTOR);
+                                       ContentDescriptor.CHANGING_TEXT_BUTTON_DESCRIPTOR.toString());
 
         assertUIElementOnScreen("Validation element does not exists on the screen at the beginning of the test.",
                                 selector);
