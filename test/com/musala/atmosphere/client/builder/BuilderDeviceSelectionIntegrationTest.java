@@ -52,6 +52,8 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     private final static String DEVICE3_MODEL = "awesomemockdevice3";
 
+    private static DeviceInformation mockedDeviceInfoOne = null;
+
     private Builder builder;
 
     @Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 10)
@@ -67,7 +69,7 @@ public class BuilderDeviceSelectionIntegrationTest {
         when(mockedAgentManager.getAgentId()).thenReturn(AGENT_ID);
 
         IWrapDevice mockedDeviceOne = mock(IWrapDevice.class);
-        DeviceInformation mockedDeviceInfoOne = new DeviceInformation();
+        mockedDeviceInfoOne = new DeviceInformation();
         mockedDeviceInfoOne.setSerialNumber(DEVICE1_SN);
         mockedDeviceInfoOne.setModel(DEVICE1_MODEL);
         mockedDeviceInfoOne.setOs("4.2.1");
@@ -343,6 +345,35 @@ public class BuilderDeviceSelectionIntegrationTest {
         parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
         parameters.setDpi(999);
+
+        builder.getDevice(parameters);
+    }
+
+    @Test
+    public void testGetDeviceByParametersCreatedFromMockedDeviceInfoOne() {
+
+        DeviceParameters parameters = new DeviceParameters(mockedDeviceInfoOne);
+
+        Device receivedDevice = builder.getDevice(parameters);
+
+        DeviceInformation information = receivedDevice.getInformation();
+
+        assertEquals("Device information does not match the initial information", information, mockedDeviceInfoOne);
+    }
+
+    @Test(expected = NoAvailableDeviceFoundException.class)
+    public void testGetDeviceByParametersCreatedFromChangedMockedDeviceInfoOne() {
+        DeviceInformation changedMockedDeviceInfoOne = null;
+        changedMockedDeviceInfoOne = new DeviceInformation();
+        changedMockedDeviceInfoOne.setSerialNumber(DEVICE1_SN);
+        changedMockedDeviceInfoOne.setModel(DEVICE1_MODEL);
+        changedMockedDeviceInfoOne.setOs("4.2.1");
+        changedMockedDeviceInfoOne.setEmulator(false);
+        changedMockedDeviceInfoOne.setRam(514);
+        changedMockedDeviceInfoOne.setResolution(new Pair<>(801, 601));
+        changedMockedDeviceInfoOne.setDpi(121);
+
+        DeviceParameters parameters = new DeviceParameters(changedMockedDeviceInfoOne);
 
         builder.getDevice(parameters);
     }
