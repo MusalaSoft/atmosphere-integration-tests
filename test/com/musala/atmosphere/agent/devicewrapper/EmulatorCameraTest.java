@@ -7,6 +7,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assume.assumeThat;
 
+import org.junit.After;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
@@ -39,7 +40,7 @@ public class EmulatorCameraTest extends BaseIntegrationTest {
     public void deviceCameraTest() throws Exception {
 
         DeviceParameters deviceParameters = new DeviceParameters();
-        deviceParameters.setDeviceType(DeviceType.DEVICE_PREFERRED); // these tests will work for emulators only
+        deviceParameters.setDeviceType(DeviceType.DEVICE_PREFERRED); // these tests will prefer real devices
 
         initTestDevice(deviceParameters);
         setTestDevice(testDevice);
@@ -50,5 +51,10 @@ public class EmulatorCameraTest extends BaseIntegrationTest {
 
         final String ERROR_MESSAGE = "Device does not have hardware camera!";
         assertCameraPresent(ERROR_MESSAGE);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        releaseDevice();
     }
 }
