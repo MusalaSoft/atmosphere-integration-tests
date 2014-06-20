@@ -92,6 +92,8 @@ public class OnDeviceValidatorAssert {
 
     private static final Object EXPECTED_SCROLL_TO_BEGINNING = "Top";
 
+    private static final String START_SERVICE_ACTIVITY = ".StartServiceActivity";
+
     private static Device device;
 
     // TODO move methods concerning setting up the OnDeviceValidator application
@@ -1118,6 +1120,21 @@ public class OnDeviceValidatorAssert {
             UiElementFetchingException {
         setupOndeviceValidator();
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_HORIZONTAL_SCROLL_ACTIVITY);
+    }
+
+    /**
+     * Setups and starts the Activity that starts a simple service
+     * 
+     * @throws InterruptedException
+     * @throws ActivityStartingException
+     * @throws UiElementFetchingException
+     */
+    public static void setupAndStartServiceActivity()
+        throws InterruptedException,
+            ActivityStartingException,
+            UiElementFetchingException {
+        setupOndeviceValidator();
+        startActivity(VALIDATOR_APP_PACKAGE, START_SERVICE_ACTIVITY);
     }
 
     /**
