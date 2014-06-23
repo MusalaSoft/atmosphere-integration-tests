@@ -1,10 +1,11 @@
 package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartWaitTestActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startWaitTestActivity;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -38,12 +39,17 @@ public class WaitForWindowUpdateTest extends BaseIntegrationTest {
         releaseDevice();
     }
 
+    @After
+    public void stopValidator() {
+        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+    }
+
     @Test
     public void testWaitForWindowUpdateAnyPackage()
         throws ActivityStartingException,
             InterruptedException,
             UiElementFetchingException {
-        setupAndStartWaitTestActivity();
+        startWaitTestActivity();
 
         UiElementSelector activitySwitcherSelector = new UiElementSelector();
         activitySwitcherSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
@@ -62,7 +68,7 @@ public class WaitForWindowUpdateTest extends BaseIntegrationTest {
         throws ActivityStartingException,
             InterruptedException,
             UiElementFetchingException {
-        setupAndStartWaitTestActivity();
+        startWaitTestActivity();
 
         UiElementSelector activitySwitcherSelector = new UiElementSelector();
         activitySwitcherSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
@@ -90,7 +96,7 @@ public class WaitForWindowUpdateTest extends BaseIntegrationTest {
         throws ActivityStartingException,
             InterruptedException,
             UiElementFetchingException {
-        setupAndStartWaitTestActivity();
+        startWaitTestActivity();
 
         UiElementSelector activitySwitcherSelector = new UiElementSelector();
         activitySwitcherSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,

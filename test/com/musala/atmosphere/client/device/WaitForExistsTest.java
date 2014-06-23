@@ -2,7 +2,7 @@ package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertUIElementNotOnScreen;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartWaitTestActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startWaitTestActivity;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -34,11 +34,12 @@ public class WaitForExistsTest extends BaseIntegrationTest {
         initTestDevice(new DeviceParameters());
         setTestDevice(testDevice);
 
-        setupAndStartWaitTestActivity();
+        startWaitTestActivity();
     }
 
     @AfterClass
     public static void tearDown() throws UiElementFetchingException {
+        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }
 

@@ -3,7 +3,7 @@ package com.musala.atmosphere.client.device;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertDoubleTapped;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartGestureActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startGestureActivity;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
@@ -33,11 +33,12 @@ public class DoubleTapTest extends BaseIntegrationTest {
         initTestDevice(new DeviceParameters());
         setTestDevice(testDevice);
 
-        setupAndStartGestureActivity();
+        startGestureActivity();
     }
 
     @AfterClass
     public static void tearDown() throws UiElementFetchingException {
+        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }
 

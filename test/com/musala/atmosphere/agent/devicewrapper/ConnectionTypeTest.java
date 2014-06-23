@@ -2,9 +2,10 @@ package com.musala.atmosphere.agent.devicewrapper;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartMainActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
 import static junit.framework.Assert.assertEquals;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -23,7 +24,13 @@ public class ConnectionTypeTest extends BaseIntegrationTest {
 
         setTestDevice(testDevice);
 
-        setupAndStartMainActivity();
+        startMainActivity();
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        releaseDevice();
     }
 
     @Test

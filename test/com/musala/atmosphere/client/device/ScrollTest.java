@@ -7,7 +7,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getScrollableView;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartScrollActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startScrollActivity;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
@@ -30,11 +30,12 @@ public class ScrollTest extends BaseIntegrationTest {
         initTestDevice(new DeviceParameters());
         setTestDevice(testDevice);
 
-        setupAndStartScrollActivity();
+        startScrollActivity();
     }
 
     @AfterClass
     public static void tearDown() throws UiElementFetchingException {
+        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }
 

@@ -5,9 +5,10 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertAccelerationZ;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartAccelerationActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startAccelerationActivity;
 import static org.junit.Assert.assertEquals;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -21,7 +22,6 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 public class DeviceAcceleratoinTest extends BaseIntegrationTest {
-
     // FIXME: Dirty fix - waits until the device screen rotation is over. It should be fixed!!!
     private final static int TIME_TO_WAIT_FOR_ROTATION = 10000; // in ms
 
@@ -33,7 +33,13 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest {
 
         setTestDevice(testDevice);
 
-        setupAndStartAccelerationActivity();
+        startAccelerationActivity();
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        releaseDevice();
     }
 
     @Test

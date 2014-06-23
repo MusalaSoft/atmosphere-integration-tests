@@ -4,9 +4,10 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertOrientationPitch;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertOrientationRoll;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartOrientationActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startOrientationActivity;
 import static org.junit.Assert.assertNotNull;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -30,7 +31,13 @@ public class DeviceOrientationTest extends BaseIntegrationTest {
         emulatorTestDevice.setDeviceType(DeviceType.EMULATOR_ONLY);
         initTestDevice(emulatorTestDevice);
         setTestDevice(testDevice);
-        setupAndStartOrientationActivity();
+        startOrientationActivity();
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        releaseDevice();
     }
 
     // @Test

@@ -1,6 +1,7 @@
 package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertValidatorIsStarted;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
@@ -17,13 +18,14 @@ public class StartApplicationTest extends BaseIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
         initTestDevice(new DeviceParameters());
-        installValidatorApplication();
+        setTestDevice(testDevice);
         testDevice.pressButton(HardwareButton.HOME);
         Thread.sleep(2000);
     }
 
     @AfterClass
     public static void tearDown() {
+        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }
 

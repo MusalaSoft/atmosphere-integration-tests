@@ -3,7 +3,7 @@ package com.musala.atmosphere.agent.devicewrapper;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertCameraNotPresent;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertCameraPresent;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartMainActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assume.assumeThat;
 
@@ -24,7 +24,7 @@ public class EmulatorCameraTest extends BaseIntegrationTest {
 
         initTestDevice(deviceParameters);
         setTestDevice(testDevice);
-        setupAndStartMainActivity();
+        startMainActivity();
 
         // Note: this should be false, because we can't change camera settings of AVD when creating it through command
         // line as intended in ATMOSPHERE.
@@ -44,7 +44,7 @@ public class EmulatorCameraTest extends BaseIntegrationTest {
 
         initTestDevice(deviceParameters);
         setTestDevice(testDevice);
-        setupAndStartMainActivity();
+        startMainActivity();
 
         boolean expectedCamera = testDevice.getInformation().hasCamera();
         assumeThat(expectedCamera, is(true));
@@ -55,6 +55,7 @@ public class EmulatorCameraTest extends BaseIntegrationTest {
 
     @After
     public void tearDown() throws Exception {
+        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }
 }

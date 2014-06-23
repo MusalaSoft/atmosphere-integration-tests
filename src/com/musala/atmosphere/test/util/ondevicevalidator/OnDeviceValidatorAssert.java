@@ -94,7 +94,7 @@ public class OnDeviceValidatorAssert {
 
     private static final Object EXPECTED_SCROLL_TO_BEGINNING = "Top";
 
-    private static final String START_SERVICE_ACTIVITY = ".StartServiceActivity";
+    private static final String VALIDATOR_SERVICE_ACTIVITY = ".StartServiceActivity";
 
     private static Device device;
 
@@ -1117,6 +1117,13 @@ public class OnDeviceValidatorAssert {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_MAGNETIC_FIELD_ACTIVITY);
     }
 
+    public static void startServiceActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_SERVICE_ACTIVITY);
+    }
+
     /**
      * Setups the OnDeviceValidator on the test device and starts its scroll activity.
      * 
@@ -1159,7 +1166,7 @@ public class OnDeviceValidatorAssert {
             ActivityStartingException,
             UiElementFetchingException {
         setupOndeviceValidator();
-        startActivity(VALIDATOR_APP_PACKAGE, START_SERVICE_ACTIVITY);
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_SERVICE_ACTIVITY);
     }
 
     /**

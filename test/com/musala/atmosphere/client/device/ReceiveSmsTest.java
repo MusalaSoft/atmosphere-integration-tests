@@ -3,7 +3,7 @@ package com.musala.atmosphere.client.device;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertReceivedSms;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertValidatorIsStarted;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartMainActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
@@ -29,13 +29,14 @@ public class ReceiveSmsTest extends BaseIntegrationTest {
 
         setTestDevice(testDevice);
 
-        setupAndStartMainActivity();
+        startMainActivity();
 
         assertValidatorIsStarted();
     }
 
     @AfterClass
     public static void tearDown() {
+        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }
 

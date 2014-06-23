@@ -2,7 +2,7 @@ package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertValidatorIsStarted;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartMainActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -30,6 +30,7 @@ public class LockUnlockTest extends BaseIntegrationTest {
 
     @AfterClass
     public static void tearDown() {
+        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }
 
@@ -40,7 +41,7 @@ public class LockUnlockTest extends BaseIntegrationTest {
         assertFalse("Device shouldn't be locked after .unlock().", testDevice.isLocked());
         assertTrue("Device should be awake after .unlock().", testDevice.isAwake());
 
-        setupAndStartMainActivity();
+        startMainActivity();
 
         assertValidatorIsStarted();
 

@@ -3,9 +3,10 @@ package com.musala.atmosphere.client.device;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertInputTextBoxIsFocused;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartMainActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -41,9 +42,14 @@ public class TapTest extends BaseIntegrationTest {
         releaseDevice();
     }
 
+    @After
+    public void stopValidator() {
+        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+    }
+
     @Test
     public void testTap() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
-        setupAndStartMainActivity();
+        startMainActivity();
 
         UiElement inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
         assertTrue("Tapping screen returned false.", inputTextBox.tap());
@@ -52,7 +58,7 @@ public class TapTest extends BaseIntegrationTest {
 
     @Test
     public void testRelativeTap() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
-        setupAndStartMainActivity();
+        startMainActivity();
 
         UiElement widgetMainLayout = getElementByContentDescriptor(WIDGET_MAIN_LAYOUT);
         UiElementSelector widgetRelativeLayoutSelector = widgetMainLayout.getElementSelector();
