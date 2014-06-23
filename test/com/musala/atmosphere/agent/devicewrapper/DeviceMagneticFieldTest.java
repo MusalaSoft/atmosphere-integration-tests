@@ -3,6 +3,8 @@ package com.musala.atmosphere.agent.devicewrapper;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertMagneticFieldX;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertMagneticFieldY;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertMagneticFieldZ;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartMagneticFieldActivity;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,7 +16,6 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 
 public class DeviceMagneticFieldTest extends BaseIntegrationTest {
-    private final static String VALIDATOR_APP_MAGNETIC_FIELD_ACTIVITY = ".MagneticFieldActivity";
 
     // FIXME: Dirty fix - waits until the device screen rotation is over. It should be fixed!!!
     private final static int TIME_TO_WAIT_FOR_ROTATION = 10000; // in ms
@@ -24,9 +25,10 @@ public class DeviceMagneticFieldTest extends BaseIntegrationTest {
         DeviceParameters emulatorTestDevice = new DeviceParameters();
         emulatorTestDevice.setDeviceType(DeviceType.EMULATOR_ONLY);
         initTestDevice(emulatorTestDevice);
-        installValidatorApplication();
-        testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_MAGNETIC_FIELD_ACTIVITY, true);
-        Thread.sleep(1000);
+
+        setTestDevice(testDevice);
+
+        setupAndStartMagneticFieldActivity();
     }
 
     @Test

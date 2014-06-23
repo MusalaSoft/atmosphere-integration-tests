@@ -15,7 +15,6 @@ public class TelephonyInformationTest extends BaseIntegrationTest {
     public static void setUp() throws Exception {
         initTestDevice(new DeviceParameters());
         setTestDevice(testDevice);
-        Thread.sleep(1000);
     }
 
     @AfterClass

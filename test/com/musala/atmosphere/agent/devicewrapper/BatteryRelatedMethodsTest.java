@@ -5,6 +5,8 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertBatteryState;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertNotPowerConnected;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertPowerConnected;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartMainActivity;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -30,10 +32,10 @@ public class BatteryRelatedMethodsTest extends BaseIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
         initTestDevice(new DeviceParameters());
-        installValidatorApplication();
 
-        testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
-        Thread.sleep(2000);
+        setTestDevice(testDevice);
+
+        setupAndStartMainActivity();
     }
 
     @AfterClass

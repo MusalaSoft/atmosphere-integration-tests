@@ -2,6 +2,8 @@ package com.musala.atmosphere.agent.devicewrapper;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertInAirplaneMode;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertNotInAirplaneMode;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartMainActivity;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
@@ -16,9 +18,10 @@ public class AirplaneModeTest extends BaseIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
         initTestDevice(new DeviceParameters());
-        installValidatorApplication();
-        testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY, true);
-        Thread.sleep(1000);
+
+        setTestDevice(testDevice);
+
+        setupAndStartMainActivity();
     }
 
     @Test

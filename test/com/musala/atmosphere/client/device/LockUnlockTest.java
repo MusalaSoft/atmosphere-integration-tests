@@ -1,6 +1,8 @@
 package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertValidatorIsStarted;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartMainActivity;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -19,14 +21,11 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
  * 
  */
 public class LockUnlockTest extends BaseIntegrationTest {
-    private final static String VALIDATOR_APP_PACKAGE = "com.musala.atmosphere.ondevice.validator";
-
-    private final static String VALIDATOR_APP_ACTIVITY = ".MainActivity";
-
     @BeforeClass
     public static void setUp() throws Exception {
         initTestDevice(new DeviceParameters());
-        installValidatorApplication();
+
+        setTestDevice(testDevice);
     }
 
     @AfterClass
@@ -37,19 +36,15 @@ public class LockUnlockTest extends BaseIntegrationTest {
     @Test
     public void testUnlockLockDevice() throws Exception {
         assertTrue("Unlocking the device returned false.", testDevice.setLocked(false));
-        // testDevice.pressButton(HardwareButton.HOME);
-        Thread.sleep(2000);
 
         assertFalse("Device shouldn't be locked after .unlock().", testDevice.isLocked());
         assertTrue("Device should be awake after .unlock().", testDevice.isAwake());
 
-        testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
-        Thread.sleep(1000);
+        setupAndStartMainActivity();
 
         assertValidatorIsStarted();
 
         assertTrue("Locking the device returned false.", testDevice.setLocked(true));
-        Thread.sleep(1500);
         try {
             assertValidatorIsStarted();
             fail("The validation element should not be available when the device is locked.");

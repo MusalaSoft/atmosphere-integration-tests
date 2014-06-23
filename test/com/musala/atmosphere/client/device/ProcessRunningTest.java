@@ -20,7 +20,6 @@ public class ProcessRunningTest extends BaseIntegrationTest {
     public static void setUp() throws Exception {
         initTestDevice(new DeviceParameters());
         setTestDevice(testDevice);
-
         setupAndStartMainActivity();
     }
 

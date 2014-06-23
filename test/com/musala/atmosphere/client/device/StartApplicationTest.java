@@ -8,6 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
+import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 
 public class StartApplicationTest extends BaseIntegrationTest {
@@ -29,7 +30,9 @@ public class StartApplicationTest extends BaseIntegrationTest {
     @Test
     public void testStartApplication() throws Exception {
         boolean result = testDevice.startApplication(VALIDATOR_APP_PACKAGE);
-        Thread.sleep(APPLICATION_START_TIMEOUT);
+
+        Screen activeScreen = testDevice.getActiveScreen();
+        activeScreen.waitForWindowUpdate(VALIDATOR_APP_PACKAGE, APPLICATION_START_TIMEOUT);
 
         assertTrue("startApplication returned false.", result);
         assertValidatorIsStarted();

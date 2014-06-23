@@ -2,6 +2,8 @@ package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertInputTextBoxIsFocused;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartMainActivity;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
@@ -31,7 +33,7 @@ public class TapTest extends BaseIntegrationTest {
     @BeforeClass
     public static void setUp() {
         initTestDevice(new DeviceParameters());
-        installValidatorApplication();
+        setTestDevice(testDevice);
     }
 
     @AfterClass
@@ -41,9 +43,8 @@ public class TapTest extends BaseIntegrationTest {
 
     @Test
     public void testTap() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
-        testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
-        Thread.sleep(3000);
-        // test tapping
+        setupAndStartMainActivity();
+
         UiElement inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
         assertTrue("Tapping screen returned false.", inputTextBox.tap());
         assertInputTextBoxIsFocused("Input text box not focused.");
@@ -51,9 +52,8 @@ public class TapTest extends BaseIntegrationTest {
 
     @Test
     public void testRelativeTap() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
-        testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
-        Thread.sleep(3000);
-        // test relative tapping
+        setupAndStartMainActivity();
+
         UiElement widgetMainLayout = getElementByContentDescriptor(WIDGET_MAIN_LAYOUT);
         UiElementSelector widgetRelativeLayoutSelector = widgetMainLayout.getElementSelector();
         UiElement batteryStatusBox = getElementByContentDescriptor(INPUT_TEXT_BOX);

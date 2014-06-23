@@ -2,6 +2,8 @@ package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertInputTextBoxIsFocused;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartMainActivity;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -26,14 +28,15 @@ import com.musala.atmosphere.commons.gesture.Timeline;
  * 
  */
 public class GestureExecutionTest extends BaseIntegrationTest {
-    private final static String WIDGET_MAIN_LAYOUT = "MainLinearLayout";
-
     private final static String INPUT_TEXT_BOX = "InputTextBox";
 
     @BeforeClass
-    public static void setUp() {
+    public static void setUp() throws ActivityStartingException, InterruptedException, UiElementFetchingException {
         initTestDevice(new DeviceParameters());
-        installValidatorApplication();
+
+        setTestDevice(testDevice);
+
+        setupAndStartMainActivity();
     }
 
     @AfterClass
@@ -43,9 +46,6 @@ public class GestureExecutionTest extends BaseIntegrationTest {
 
     @Test
     public void testTap() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
-        testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
-        Thread.sleep(1000);
-        // test tapping
         UiElement inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
         UiElementSelector selector = inputTextBox.getElementSelector();
         Bounds boxBounds = selector.getBoundsValue(CssAttribute.BOUNDS);

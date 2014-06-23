@@ -58,6 +58,8 @@ public class OnDeviceValidatorAssert {
 
     private final static String VALIDATOR_SCROLL_ACTIVITY = ".ScrollableViewActivity";
 
+    private final static String VALIDATOR_MAGNETIC_FIELD_ACTIVITY = ".MagneticFieldActivity";
+
     private final static String VALIDATOR_HORIZONTAL_SCROLL_ACTIVITY = ".HorizontalScrollableViewActivity";
 
     private final static String VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC = "ATMOSPHEREValidator";
@@ -980,6 +982,21 @@ public class OnDeviceValidatorAssert {
     }
 
     /**
+     * Setups the OnDeviceValidator on the test device and starts its magnetic field activity.
+     * 
+     * @throws ActivityStartingException
+     * @throws InterruptedException
+     * @throws UiElementFetchingException
+     */
+    public static void setupAndStartMagneticFieldActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        setupOndeviceValidator();
+        startMagneticFieldActivity();
+    }
+
+    /**
      * Installs the OnDeviceValidator on the test device.
      */
     public static void setupOndeviceValidator() {
@@ -1031,7 +1048,8 @@ public class OnDeviceValidatorAssert {
             UiElementFetchingException {
         device.setLocked(false);
         device.startActivity(appPackage, appActivity);
-        Thread.sleep(APP_STARTUP_WAIT_TIME);
+        Screen deviceActiveScreen = device.getActiveScreen();
+        deviceActiveScreen.waitForWindowUpdate(appPackage, APP_STARTUP_WAIT_TIME);
 
         assertValidatorIsStarted();
     }
@@ -1090,6 +1108,13 @@ public class OnDeviceValidatorAssert {
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_HORIZONTAL_SCROLL_ACTIVITY);
+    }
+
+    public static void startMagneticFieldActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_MAGNETIC_FIELD_ACTIVITY);
     }
 
     /**

@@ -2,6 +2,8 @@ package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertReceivedSms;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertValidatorIsStarted;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartMainActivity;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
@@ -24,9 +26,11 @@ public class ReceiveSmsTest extends BaseIntegrationTest {
         DeviceParameters testDeviceParameters = new DeviceParameters();
         testDeviceParameters.setDeviceType(DeviceType.EMULATOR_ONLY);
         initTestDevice(testDeviceParameters);
-        installValidatorApplication();
-        testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
-        Thread.sleep(3000);
+
+        setTestDevice(testDevice);
+
+        setupAndStartMainActivity();
+
         assertValidatorIsStarted();
     }
 

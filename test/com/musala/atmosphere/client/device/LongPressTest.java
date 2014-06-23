@@ -2,6 +2,8 @@ package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertLongClicked;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setupAndStartGestureActivity;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -17,15 +19,16 @@ import com.musala.atmosphere.client.geometry.Point;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
-import com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert;
 
 public class LongPressTest extends BaseIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
         initTestDevice(new DeviceParameters());
-        installValidatorApplication();
-        OnDeviceValidatorAssert.startGestureActivity();
+
+        setTestDevice(testDevice);
+
+        setupAndStartGestureActivity();
     }
 
     @Test
