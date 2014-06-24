@@ -23,6 +23,7 @@ import com.musala.atmosphere.client.device.ReceiveSmsTest;
 import com.musala.atmosphere.client.device.ScrollTest;
 import com.musala.atmosphere.client.device.StartActivityTest;
 import com.musala.atmosphere.client.device.StartApplicationTest;
+import com.musala.atmosphere.client.device.StopBackgroundProcessTest;
 import com.musala.atmosphere.client.device.SwipeTest;
 import com.musala.atmosphere.client.device.TapTest;
 import com.musala.atmosphere.client.device.WaitForExistsTest;
@@ -36,7 +37,7 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         GestureExecutionTest.class, TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class,
         PinchTest.class, SwipeTest.class, CallTest.class, LongPressTest.class, WaitForExistsTest.class,
         ScrollTest.class, HorizontalScrollTest.class, WaitForWindowUpdateTest.class, EmulatorCameraTest.class,
-        WaitUntilGoneTest.class, ProcessRunningTest.class, ForceStopProcessTest.class})
-// @SuiteClasses({StopBackgroundProcessTest.class})
+        WaitUntilGoneTest.class, ProcessRunningTest.class, ForceStopProcessTest.class, StopBackgroundProcessTest.class})
+// @SuiteClasses({StopBackgroundProcessTest.class, ForceStopProcessTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
