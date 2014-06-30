@@ -18,139 +18,128 @@ import com.musala.atmosphere.client.geometry.Bounds;
  * @author yordan.petrov
  * 
  */
-public class UIAssert
-{
-	/**
-	 * Asserts that a given UI element is focused.
-	 * 
-	 * @param message
-	 *        - message to be displayed if assertion fails.
-	 * @param uiElement
-	 *        - the UI element used in the assertion.
-	 */
-	public static void assertIsFocused(String message, UiElement uiElement)
-	{
-		assertThat(message, uiElement, is(focused()));
-	}
+public class UIAssert {
+    /**
+     * Asserts that a given UI element is focused.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @param uiElement
+     *        - the UI element used in the assertion.
+     */
+    public static void assertIsFocused(String message, UiElement uiElement) {
+        assertThat(message, uiElement, is(focused()));
+    }
 
-	/**
-	 * Asserts that a given UI element is not focused.
-	 * 
-	 * @param message
-	 *        - message to be displayed if assertion fails.
-	 * @param uiElement
-	 *        - the UI element used in the assertion.
-	 */
-	public static void assertNotFocused(String message, UiElement uiElement)
-	{
-		assertThat(message, uiElement, not(focused()));
-	}
+    /**
+     * Asserts that a given UI element is not focused.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @param uiElement
+     *        - the UI element used in the assertion.
+     */
+    public static void assertNotFocused(String message, UiElement uiElement) {
+        assertThat(message, uiElement, not(focused()));
+    }
 
-	/**
-	 * Asserts that a given UI element is checked.
-	 * 
-	 * @param message
-	 *        - message to be displayed if assertion fails.
-	 * @param uiElement
-	 *        - the UI element used in the assertion.
-	 */
-	public static void assertIsChecked(String message, UiElement uiElement)
-	{
-		assertThat(message, uiElement, is(checked()));
-	}
+    /**
+     * Asserts that a given UI element is checked.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @param uiElement
+     *        - the UI element used in the assertion.
+     */
+    public static void assertIsChecked(String message, UiElement uiElement) {
+        assertThat(message, uiElement, is(checked()));
+    }
 
-	/**
-	 * Asserts that a given UI element is not checked.
-	 * 
-	 * @param message
-	 *        - message to be displayed if assertion fails.
-	 * @param uiElement
-	 *        - the UI element used in the assertion.
-	 */
-	public static void assertNotChecked(String message, UiElement uiElement)
-	{
-		assertThat(message, uiElement, not(checked()));
-	}
+    /**
+     * Asserts that a given UI element is not checked.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @param uiElement
+     *        - the UI element used in the assertion.
+     */
+    public static void assertNotChecked(String message, UiElement uiElement) {
+        assertThat(message, uiElement, not(checked()));
+    }
 
-	/**
-	 * Asserts that a given UI element is enabled.
-	 * 
-	 * @param message
-	 *        - message to be displayed if assertion fails.
-	 * @param uiElement
-	 *        - the UI element used in the assertion.
-	 */
-	public static void assertIsEnabled(String message, UiElement uiElement)
-	{
-		assertThat(message, uiElement, is(enabled()));
-	}
+    /**
+     * Asserts that a given UI element is enabled.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @param uiElement
+     *        - the UI element used in the assertion.
+     */
+    public static void assertIsEnabled(String message, UiElement uiElement) {
+        assertThat(message, uiElement, is(enabled()));
+    }
 
-	/**
-	 * Asserts that a given UI element is not enabled.
-	 * 
-	 * @param message
-	 *        - message to be displayed if assertion fails.
-	 * @param uiElement
-	 *        - the UI element used in the assertion.
-	 */
-	public static void assertNotEnabled(String message, UiElement uiElement)
-	{
-		assertThat(message, uiElement, not(enabled()));
-	}
+    /**
+     * Asserts that a given UI element is not enabled.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @param uiElement
+     *        - the UI element used in the assertion.
+     */
+    public static void assertNotEnabled(String message, UiElement uiElement) {
+        assertThat(message, uiElement, not(enabled()));
+    }
 
-	/**
-	 * Asserts that a given UI element is selected.
-	 * 
-	 * @param message
-	 *        - message to be displayed if assertion fails.
-	 * @param uiElement
-	 *        - the UI element used in the assertion.
-	 */
-	public static void assertIsSelected(String message, UiElement uiElement)
-	{
-		assertThat(message, uiElement, is(focused()));
-	}
+    /**
+     * Asserts that a given UI element is selected.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @param uiElement
+     *        - the UI element used in the assertion.
+     */
+    public static void assertIsSelected(String message, UiElement uiElement) {
+        assertThat(message, uiElement, is(focused()));
+    }
 
-	/**
-	 * Asserts that a given UI element is not selected.
-	 * 
-	 * @param message
-	 *        - message to be displayed if assertion fails.
-	 * @param uiElement
-	 *        - the UI element used in the assertion.
-	 */
-	public static void assertNotSelected(String message, UiElement uiElement)
-	{
-		assertThat(message, uiElement, not(focused()));
-	}
+    /**
+     * Asserts that a given UI element is not selected.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @param uiElement
+     *        - the UI element used in the assertion.
+     */
+    public static void assertNotSelected(String message, UiElement uiElement) {
+        assertThat(message, uiElement, not(focused()));
+    }
 
-	/**
-	 * Asserts that a given UI element has the expected text.
-	 * 
-	 * @param message
-	 *        - message to be displayed if assertion fails.
-	 * @param uiElement
-	 *        - the UI element used in the assertion.
-	 * @param expected
-	 *        - the expected text.
-	 */
-	public static void assertText(String message, UiElement uiElement, String expected)
-	{
-		assertThat(message, uiElement, hasText(expected));
-	}
+    /**
+     * Asserts that a given UI element has the expected text.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @param uiElement
+     *        - the UI element used in the assertion.
+     * @param expected
+     *        - the expected text.
+     */
+    public static void assertText(String message, UiElement uiElement, String expected) {
+        assertThat(message, uiElement, hasText(expected));
+    }
 
-	/**
-	 * Asserts that a given UI element has the expected bounds.
-	 * 
-	 * @param message
-	 *        - message to be displayed if assertion fails.
-	 * @param uiElement
-	 *        - the UI element used in the assertion.
-	 * @param expected
-	 *        - expected bounds.
-	 */
-	public static void assertBounds(String message, UiElement uiElement, Bounds expected)
-	{
-		assertThat(message, uiElement, hasBounds(expected));
-	}
+    /**
+     * Asserts that a given UI element has the expected bounds.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @param uiElement
+     *        - the UI element used in the assertion.
+     * @param expected
+     *        - expected bounds.
+     */
+    public static void assertBounds(String message, UiElement uiElement, Bounds expected) {
+        assertThat(message, uiElement, hasBounds(expected));
+    }
 }

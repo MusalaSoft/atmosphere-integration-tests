@@ -14,54 +14,49 @@ import com.musala.atmosphere.commons.beans.MobileDataState;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 
-public class NetworkConnectionTest
-{
+public class NetworkConnectionTest {
 
-	private static Device testDevice;
+    private static Device testDevice;
 
-	private static Builder builder;
+    private static Builder builder;
 
-	@BeforeClass
-	public static void setUp()
-	{
-		builder = Builder.getInstance();
-	}
+    @BeforeClass
+    public static void setUp() {
+        builder = Builder.getInstance();
+    }
 
-	@After
-	public void tearDown()
-	{
-		builder.releaseDevice(testDevice);
-	}
+    @After
+    public void tearDown() {
+        builder.releaseDevice(testDevice);
+    }
 
-	/**
-	 * Works only for emulators!
-	 */
-	@Test
-	public void getAndSetMobileDataStateOnEmulators()
-	{
-		DeviceParameters deviceParameters = new DeviceParameters();
-		deviceParameters.setDeviceType(DeviceType.EMULATOR_ONLY);
-		testDevice = builder.getDevice(deviceParameters);
-		assertNotNull("No emulator found.", testDevice);
+    /**
+     * Works only for emulators!
+     */
+    @Test
+    public void getAndSetMobileDataStateOnEmulators() {
+        DeviceParameters deviceParameters = new DeviceParameters();
+        deviceParameters.setDeviceType(DeviceType.EMULATOR_ONLY);
+        testDevice = builder.getDevice(deviceParameters);
+        assertNotNull("No emulator found.", testDevice);
 
-		MobileDataState expectedState = MobileDataState.UNREGISTERED;
-		testDevice.setMobileDataState(expectedState);
-		MobileDataState actualState = testDevice.getMobileDataState();
-		assertEquals("Mobile data states didn't match.", expectedState, actualState);
-	}
+        MobileDataState expectedState = MobileDataState.UNREGISTERED;
+        testDevice.setMobileDataState(expectedState);
+        MobileDataState actualState = testDevice.getMobileDataState();
+        assertEquals("Mobile data states didn't match.", expectedState, actualState);
+    }
 
-	/**
-	 * Works only for real devices!
-	 */
-	@Test
-	public void getConnectionTypeOnRealDevicesTest()
-	{
-		DeviceParameters deviceParameters = new DeviceParameters();
-		deviceParameters.setDeviceType(DeviceType.DEVICE_ONLY);
-		testDevice = builder.getDevice(deviceParameters);
-		assertNotNull("No real device found.", testDevice);
+    /**
+     * Works only for real devices!
+     */
+    @Test
+    public void getConnectionTypeOnRealDevicesTest() {
+        DeviceParameters deviceParameters = new DeviceParameters();
+        deviceParameters.setDeviceType(DeviceType.DEVICE_ONLY);
+        testDevice = builder.getDevice(deviceParameters);
+        assertNotNull("No real device found.", testDevice);
 
-		ConnectionType connectionType = testDevice.getConnectionType();
-		assertEquals("Connection type is not the same.", ConnectionType.WIFI, connectionType);
-	}
+        ConnectionType connectionType = testDevice.getConnectionType();
+        assertEquals("Connection type is not the same.", ConnectionType.WIFI, connectionType);
+    }
 }
