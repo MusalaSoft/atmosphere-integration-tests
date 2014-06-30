@@ -1,18 +1,17 @@
 package com.musala.atmosphere.client.device;
 
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertValidatorIsNotStarted;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertValidatorIsStarted;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 
 /**
@@ -46,12 +45,8 @@ public class LockUnlockTest extends BaseIntegrationTest {
         assertValidatorIsStarted();
 
         assertTrue("Locking the device returned false.", testDevice.setLocked(true));
-        try {
-            assertValidatorIsStarted();
-            fail("The validation element should not be available when the device is locked.");
-        } catch (UiElementFetchingException e) {
-            // this should be thrown.
-        }
+
+        assertValidatorIsNotStarted("The validation element should not be available when the device is locked.");
 
         assertTrue("Device should be locked after .lock().", testDevice.isLocked());
         assertFalse("Device shouldn't be awake after .lock().", testDevice.isAwake());

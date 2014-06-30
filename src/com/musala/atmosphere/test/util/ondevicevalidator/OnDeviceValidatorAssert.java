@@ -1,12 +1,6 @@
 package com.musala.atmosphere.test.util.ondevicevalidator;
 
-import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertIsEnabled;
-import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertIsFocused;
-import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertNotEnabled;
-import static com.musala.atmosphere.test.util.ondevicevalidator.UIAssert.assertText;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -64,6 +58,10 @@ public class OnDeviceValidatorAssert {
 
     private final static String VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC = "ATMOSPHEREValidator";
 
+    private final static String VALIDATOR_IS_NOT_STARTED_MESSAGE = "ATMOSPHERE Validator has not beeen started.";
+
+    private static final String VALIDATOR_SERVICE_ACTIVITY = ".StartServiceActivity";
+
     private final static String PHONE_PACKAGE_NAME = "com.android.phone";
 
     private final static String INCOMING_CALL_TEXT = "Incoming call";
@@ -71,6 +69,8 @@ public class OnDeviceValidatorAssert {
     private final static String ON_HOLD_TEXT = "On hold";
 
     private final static String END_CALL_BUTTON_DESCRIPTOR = "End";
+
+    private final static int ASSERT_TIMEOUT = 3000;
 
     private final static int APP_STARTUP_WAIT_TIME = 4000;
 
@@ -94,9 +94,11 @@ public class OnDeviceValidatorAssert {
 
     private static final Object EXPECTED_SCROLL_TO_BEGINNING = "Top";
 
-    private static final String VALIDATOR_SERVICE_ACTIVITY = ".StartServiceActivity";
+    private static final String START_SERVICE_ACTIVITY = ".StartServiceActivity";
 
     private static Device device;
+
+    private static Screen screen;
 
     // TODO move methods concerning setting up the OnDeviceValidator application
     // and starting its activities in an
@@ -112,9 +114,10 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertAccelerationX(String message, float expected) throws UiElementFetchingException {
-        UiElement accelerationXBox = getElementByContentDescriptor(ContentDescriptor.ACCELERATION_X_BOX.toString());
+        UiElementSelector accelerationXSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.ACCELERATION_X_BOX,
+                                                                                           String.valueOf(expected));
 
-        assertText(message, accelerationXBox, String.valueOf(expected));
+        assertElementExists(message, accelerationXSelector);
     }
 
     /**
@@ -127,9 +130,10 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertAccelerationY(String message, float expected) throws UiElementFetchingException {
-        UiElement accelerationYBox = getElementByContentDescriptor(ContentDescriptor.ACCELERATION_Y_BOX.toString());
+        UiElementSelector accelerationYSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.ACCELERATION_Y_BOX,
+                                                                                           String.valueOf(expected));
 
-        assertText(message, accelerationYBox, String.valueOf(expected));
+        assertElementExists(message, accelerationYSelector);
     }
 
     /**
@@ -142,9 +146,10 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertAccelerationZ(String message, float expected) throws UiElementFetchingException {
-        UiElement accelerationZBox = getElementByContentDescriptor(ContentDescriptor.ACCELERATION_Z_BOX.toString());
+        UiElementSelector accelerationZBoxSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.ACCELERATION_Z_BOX,
+                                                                                              String.valueOf(expected));
 
-        assertText(message, accelerationZBox, String.valueOf(expected));
+        assertElementExists(message, accelerationZBoxSelector);
     }
 
     /**
@@ -155,9 +160,12 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertAutoRotationOff(String message) throws UiElementFetchingException {
-        UiElement autoRotationFlag = getElementByContentDescriptor(ContentDescriptor.AUTO_ROTATION_BUTTON.toString());
+        UiElementSelector autoRotationOffSelector = new UiElementSelector();
+        autoRotationOffSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                      ContentDescriptor.AUTO_ROTATION_BUTTON.toString());
+        autoRotationOffSelector.addSelectionAttribute(CssAttribute.ENABLED, false);
 
-        assertNotEnabled(message, autoRotationFlag);
+        assertElementExists(message, autoRotationOffSelector);
     }
 
     /**
@@ -168,9 +176,13 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertAutoRotationOn(String message) throws UiElementFetchingException {
-        UiElement autoRotationFlag = getElementByContentDescriptor(ContentDescriptor.AUTO_ROTATION_BUTTON.toString());
+        UiElementSelector autoRotationOnSelector = new UiElementSelector();
 
-        assertIsEnabled(message, autoRotationFlag);
+        autoRotationOnSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                     ContentDescriptor.AUTO_ROTATION_BUTTON.toString());
+        autoRotationOnSelector.addSelectionAttribute(CssAttribute.ENABLED, true);
+
+        assertElementExists(message, autoRotationOnSelector);
     }
 
     /**
@@ -183,9 +195,10 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertBatteryLevel(String message, int expectedBatteryLevel) throws UiElementFetchingException {
-        UiElement batteryLevelBox = getElementByContentDescriptor(ContentDescriptor.BATTERY_LEVEL_BOX.toString());
+        UiElementSelector batteryLevelSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.BATTERY_LEVEL_BOX,
+                                                                                          String.valueOf(expectedBatteryLevel));
 
-        assertText(message, batteryLevelBox, String.valueOf(expectedBatteryLevel));
+        assertElementExists(message, batteryLevelSelector);
     }
 
     /**
@@ -196,9 +209,13 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertBatteryLow(String message) throws UiElementFetchingException {
-        UiElement batteryLowFlag = getElementByContentDescriptor(ContentDescriptor.BATTERY_LOW_FLAG.toString());
+        UiElementSelector batteryLowSelector = new UiElementSelector();
 
-        assertIsEnabled(message, batteryLowFlag);
+        batteryLowSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                 ContentDescriptor.BATTERY_LOW_FLAG.toString());
+        batteryLowSelector.addSelectionAttribute(CssAttribute.ENABLED, true);
+
+        assertElementExists(message, batteryLowSelector);
     }
 
     /**
@@ -209,9 +226,13 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertBatteryNotLow(String message) throws UiElementFetchingException {
-        UiElement batteryLowFlag = getElementByContentDescriptor(ContentDescriptor.BATTERY_LOW_FLAG.toString());
+        UiElementSelector batteryNotLowSelector = new UiElementSelector();
 
-        assertNotEnabled(message, batteryLowFlag);
+        batteryNotLowSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                    ContentDescriptor.BATTERY_LOW_FLAG.toString());
+        batteryNotLowSelector.addSelectionAttribute(CssAttribute.ENABLED, false);
+
+        assertElementExists(message, batteryNotLowSelector);
     }
 
     /**
@@ -225,9 +246,10 @@ public class OnDeviceValidatorAssert {
      */
     public static void assertBatteryState(String message, BatteryState expectedBatteryState)
         throws UiElementFetchingException {
-        UiElement batteryStateBox = getElementByContentDescriptor(ContentDescriptor.BATTERY_STATUS_BOX.toString());
+        UiElementSelector batteryStateSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.BATTERY_STATUS_BOX,
+                                                                                          String.valueOf(expectedBatteryState));
 
-        assertText(message, batteryStateBox, expectedBatteryState.toString());
+        assertElementExists(message, batteryStateSelector);
     }
 
     /**
@@ -241,28 +263,17 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertCallAccepted(String message, PhoneNumber phoneNumber) throws UiElementFetchingException {
-        boolean hasIncomingCallElement = false;
-        boolean hasOnHoldElement = false;
-        boolean hasPhoneNumberElement = false;
+        UiElementSelector incomingCallElementSelector = createSelectorByPhonePackage(INCOMING_CALL_TEXT);
+        UiElementSelector onHoldElementSelector = createSelectorByPhonePackage(ON_HOLD_TEXT);
+        UiElementSelector phoneNumberElementSelector = createSelectorByPhonePackage(String.valueOf(phoneNumber));
+        UiElementSelector endCallButtonSelector = new UiElementSelector();
 
-        List<UiElement> uiElements = getElementsByPackage(PHONE_PACKAGE_NAME);
-        for (UiElement uiElement : uiElements) {
-            String elementText = uiElement.getElementSelector().getStringValue(CssAttribute.TEXT);
-            if (phoneNumber.toString().equals(elementText)) {
-                hasPhoneNumberElement = true;
-            } else if (INCOMING_CALL_TEXT.equals(elementText)) {
-                hasIncomingCallElement = true;
-            } else if (ON_HOLD_TEXT.equals(elementText)) {
-                hasOnHoldElement = true;
-            }
-        }
+        endCallButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, END_CALL_BUTTON_DESCRIPTOR);
 
-        UiElement endCallButton = getElementByContentDescriptor(END_CALL_BUTTON_DESCRIPTOR);
-
-        assertNotNull(message, endCallButton);
-        assertFalse(message, hasIncomingCallElement);
-        assertFalse(message, hasOnHoldElement);
-        assertTrue(message, hasPhoneNumberElement);
+        assertElementExists(message, endCallButtonSelector);
+        assertElementGone(message, incomingCallElementSelector);
+        assertElementGone(message, onHoldElementSelector);
+        assertElementExists(message, phoneNumberElementSelector);
     }
 
     /**
@@ -274,23 +285,9 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertCallCanceled(String message) throws UiElementFetchingException {
-        boolean hasIncomingCallElement = false;
+        UiElementSelector incomingCallElementSelector = createSelectorByPhonePackage(INCOMING_CALL_TEXT);
 
-        List<UiElement> uiElements = null;
-
-        try {
-            uiElements = getElementsByPackage(PHONE_PACKAGE_NAME);
-        } catch (UiElementFetchingException e) {
-            return;
-        }
-        for (UiElement uiElement : uiElements) {
-            String elementText = uiElement.getElementSelector().getStringValue(CssAttribute.TEXT);
-            if (INCOMING_CALL_TEXT.equals(elementText)) {
-                hasIncomingCallElement = true;
-            }
-        }
-
-        assertFalse(message, hasIncomingCallElement);
+        assertElementGone(message, incomingCallElementSelector);
     }
 
     /**
@@ -304,21 +301,11 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertCallOnHold(String message, PhoneNumber phoneNumber) throws UiElementFetchingException {
-        boolean hasOnHoldElement = false;
-        boolean hasPhoneNumberElement = false;
+        UiElementSelector onHoldElementSelector = createSelectorByPhonePackage(ON_HOLD_TEXT);
+        UiElementSelector phoneNumberElementSelector = createSelectorByPhonePackage(String.valueOf(phoneNumber));
 
-        List<UiElement> uiElements = getElementsByPackage(PHONE_PACKAGE_NAME);
-        for (UiElement uiElement : uiElements) {
-            String elementText = uiElement.getElementSelector().getStringValue(CssAttribute.TEXT);
-            if (phoneNumber.toString().equals(elementText)) {
-                hasPhoneNumberElement = true;
-            } else if (ON_HOLD_TEXT.equals(elementText)) {
-                hasOnHoldElement = true;
-            }
-        }
-
-        assertTrue(message, hasOnHoldElement);
-        assertTrue(message, hasPhoneNumberElement);
+        assertElementExists(message, onHoldElementSelector);
+        assertElementExists(message, phoneNumberElementSelector);
     }
 
     /**
@@ -332,21 +319,11 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertCallReceived(String message, PhoneNumber phoneNumber) throws UiElementFetchingException {
-        boolean hasIncomingCallElement = false;
-        boolean hasPhoneNumberElement = false;
+        UiElementSelector phoneNumberElementSelector = createSelectorByPhonePackage(String.valueOf(phoneNumber));
+        UiElementSelector incomingCallElementSelector = createSelectorByPhonePackage(INCOMING_CALL_TEXT);
 
-        List<UiElement> uiElements = getElementsByPackage(PHONE_PACKAGE_NAME);
-        for (UiElement uiElement : uiElements) {
-            String elementText = uiElement.getElementSelector().getStringValue(CssAttribute.TEXT);
-            if (phoneNumber.toString().equals(elementText)) {
-                hasPhoneNumberElement = true;
-            } else if (INCOMING_CALL_TEXT.equals(elementText)) {
-                hasIncomingCallElement = true;
-            }
-        }
-
-        assertTrue(message, hasIncomingCallElement);
-        assertTrue(message, hasPhoneNumberElement);
+        assertElementExists(message, incomingCallElementSelector);
+        assertElementExists(message, phoneNumberElementSelector);
     }
 
     /**
@@ -357,9 +334,10 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertCameraPresent(String message) throws UiElementFetchingException {
-        UiElement cameraNumberTextBox = getElementByContentDescriptor(ContentDescriptor.CAMERA_NUMBER_TEXT_BOX.toString());
-        Integer cameraNumber = Integer.parseInt(cameraNumberTextBox.getText());
-        assertTrue(message, (cameraNumber > 0));
+        UiElementSelector cameraNumberTextSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.CAMERA_NUMBER_TEXT_BOX,
+                                                                                              String.valueOf(0));
+
+        assertElementGone(message, cameraNumberTextSelector);
     }
 
     /**
@@ -370,9 +348,10 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertCameraNotPresent(String message) throws UiElementFetchingException {
-        UiElement cameraNumberTextBox = getElementByContentDescriptor(ContentDescriptor.CAMERA_NUMBER_TEXT_BOX.toString());
-        Integer cameraNumber = Integer.parseInt(cameraNumberTextBox.getText());
-        assertFalse(message, (cameraNumber > 0));
+        UiElementSelector cameraNumberTextSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.CAMERA_NUMBER_TEXT_BOX,
+                                                                                              String.valueOf(0));
+
+        assertElementExists(message, cameraNumberTextSelector);
     }
 
     /**
@@ -385,9 +364,10 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertConnectionType(String message, int expected) throws UiElementFetchingException {
-        UiElement connectionTypeBox = getElementByContentDescriptor(ContentDescriptor.CONNECTION_TYPE_BOX.toString());
+        UiElementSelector connectionTypeSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.CONNECTION_TYPE_BOX,
+                                                                                            String.valueOf(expected));
 
-        assertText(message, connectionTypeBox, String.valueOf(expected));
+        assertElementExists(message, connectionTypeSelector);
     }
 
     /**
@@ -427,9 +407,10 @@ public class OnDeviceValidatorAssert {
      *        - the expected text of the element
      */
     public static void assertGestureReceived(String message, String expectedText) throws UiElementFetchingException {
-        UiElement gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
+        UiElementSelector gestureReceivedSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR,
+                                                                                             expectedText);
 
-        assertText(message, gestureValidator, expectedText);
+        assertElementExists(message, gestureReceivedSelector);
     }
 
     /**
@@ -440,9 +421,13 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertInAirplaneMode(String message) throws UiElementFetchingException {
-        UiElement airplaneModeFlag = getElementByContentDescriptor(ContentDescriptor.AIRPLANE_MODE_FLAG.toString());
+        UiElementSelector airplaneModeSelector = new UiElementSelector();
 
-        assertIsEnabled(message, airplaneModeFlag);
+        airplaneModeSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                   ContentDescriptor.AIRPLANE_MODE_FLAG.toString());
+        airplaneModeSelector.addSelectionAttribute(CssAttribute.ENABLED, true);
+
+        assertElementExists(message, airplaneModeSelector);
     }
 
     /**
@@ -455,9 +440,10 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertInputText(String message, String expected) throws UiElementFetchingException {
-        UiElement inputTextBox = getElementByContentDescriptor(ContentDescriptor.INPUT_TEXT_BOX.toString());
+        UiElementSelector inputTextSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.INPUT_TEXT_BOX,
+                                                                                       expected);
 
-        assertText(message, inputTextBox, expected);
+        assertElementExists(message, inputTextSelector);
     }
 
     /**
@@ -468,9 +454,13 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertInputTextBoxIsFocused(String message) throws UiElementFetchingException {
-        UiElement inputTextBox = getElementByContentDescriptor(ContentDescriptor.INPUT_TEXT_BOX.toString());
+        UiElementSelector inputTextSelector = new UiElementSelector();
 
-        assertIsFocused(message, inputTextBox);
+        inputTextSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                ContentDescriptor.INPUT_TEXT_BOX.toString());
+        inputTextSelector.addSelectionAttribute(CssAttribute.FOCUSED, true);
+
+        assertElementExists(message, inputTextSelector);
     }
 
     /**
@@ -493,10 +483,10 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertMagneticFieldX(String message, float expected) throws UiElementFetchingException {
-        UiElement magneticFieldXBox = getElementByContentDescriptor(ContentDescriptor.MAGNETIC_FIELD_X_BOX.toString());
+        UiElementSelector magneticFieldXSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.MAGNETIC_FIELD_X_BOX,
+                                                                                            String.valueOf(expected));
 
-        System.out.println(magneticFieldXBox.getElementSelector().getStringValue(CssAttribute.TEXT));
-        assertText(message, magneticFieldXBox, String.valueOf(expected));
+        assertElementExists(message, magneticFieldXSelector);
     }
 
     /**
@@ -509,9 +499,10 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertMagneticFieldY(String message, float expected) throws UiElementFetchingException {
-        UiElement magneticFieldYBox = getElementByContentDescriptor(ContentDescriptor.MAGNETIC_FIELD_Y_BOX.toString());
+        UiElementSelector magneticFieldYSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.MAGNETIC_FIELD_Y_BOX,
+                                                                                            String.valueOf(expected));
 
-        assertText(message, magneticFieldYBox, String.valueOf(expected));
+        assertElementExists(message, magneticFieldYSelector);
     }
 
     /**
@@ -524,9 +515,10 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertMagneticFieldZ(String message, float expected) throws UiElementFetchingException {
-        UiElement magneticFieldZBox = getElementByContentDescriptor(ContentDescriptor.MAGNETIC_FIELD_Z_BOX.toString());
+        UiElementSelector magneticFieldZSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.MAGNETIC_FIELD_Z_BOX,
+                                                                                            String.valueOf(expected));
 
-        assertText(message, magneticFieldZBox, String.valueOf(expected));
+        assertElementExists(message, magneticFieldZSelector);
     }
 
     /**
@@ -537,9 +529,13 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertNotInAirplaneMode(String message) throws UiElementFetchingException {
-        UiElement airplaneModeFlag = getElementByContentDescriptor(ContentDescriptor.AIRPLANE_MODE_FLAG.toString());
+        UiElementSelector airplaneModeSelector = new UiElementSelector();
 
-        assertNotEnabled(message, airplaneModeFlag);
+        airplaneModeSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                   ContentDescriptor.AIRPLANE_MODE_FLAG.toString());
+        airplaneModeSelector.addSelectionAttribute(CssAttribute.ENABLED, false);
+
+        assertElementExists(message, airplaneModeSelector);
     }
 
     /**
@@ -550,9 +546,13 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertNotPowerConnected(String message) throws UiElementFetchingException {
-        UiElement powerConnectedFlag = getElementByContentDescriptor(ContentDescriptor.POWER_CONNECTED_FLAG.toString());
+        UiElementSelector powerConnectedSelector = new UiElementSelector();
 
-        assertNotEnabled(message, powerConnectedFlag);
+        powerConnectedSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                     ContentDescriptor.POWER_CONNECTED_FLAG.toString());
+        powerConnectedSelector.addSelectionAttribute(CssAttribute.ENABLED, false);
+
+        assertElementExists(message, powerConnectedSelector);
     }
 
     /**
@@ -565,9 +565,10 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertOrientationAzimuth(String message, float expected) throws UiElementFetchingException {
-        UiElement orientationAzimuthBox = getElementByContentDescriptor(ContentDescriptor.ORIENTATION_AZIMUTH_BOX.toString());
+        UiElementSelector orientationAzimuthSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.ORIENTATION_AZIMUTH_BOX,
+                                                                                                String.valueOf(expected));
 
-        assertText(message, orientationAzimuthBox, String.valueOf(expected));
+        assertElementExists(message, orientationAzimuthSelector);
     }
 
     /**
@@ -580,9 +581,10 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertOrientationPitch(String message, float expected) throws UiElementFetchingException {
-        UiElement orientationPitchBox = getElementByContentDescriptor(ContentDescriptor.ORIENTATION_PITCH_BOX.toString());
+        UiElementSelector orientationPitchSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.ORIENTATION_PITCH_BOX,
+                                                                                              String.valueOf(expected));
 
-        assertText(message, orientationPitchBox, String.valueOf(expected));
+        assertElementExists(message, orientationPitchSelector);
     }
 
     /**
@@ -595,9 +597,10 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertOrientationRoll(String message, float expected) throws UiElementFetchingException {
-        UiElement orientationRollBox = getElementByContentDescriptor(ContentDescriptor.ORIENTATION_ROLL_BOX.toString());
+        UiElementSelector orientationRollSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.ORIENTATION_ROLL_BOX,
+                                                                                             String.valueOf(expected));
 
-        assertText(message, orientationRollBox, String.valueOf(expected));
+        assertElementExists(message, orientationRollSelector);
     }
 
     /**
@@ -630,9 +633,13 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertPowerConnected(String message) throws UiElementFetchingException {
-        UiElement powerConnectedFlag = getElementByContentDescriptor(ContentDescriptor.POWER_CONNECTED_FLAG.toString());
+        UiElementSelector powerConnectedSelector = new UiElementSelector();
 
-        assertIsEnabled(message, powerConnectedFlag);
+        powerConnectedSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                     ContentDescriptor.POWER_CONNECTED_FLAG.toString());
+        powerConnectedSelector.addSelectionAttribute(CssAttribute.ENABLED, true);
+
+        assertElementExists(message, powerConnectedSelector);
     }
 
     /**
@@ -646,11 +653,14 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertReceivedSms(String message, SmsMessage smsMessage) throws UiElementFetchingException {
-        UiElement senderPhoneBox = getElementByContentDescriptor(ContentDescriptor.SMS_SENDER_PHONE_BOX.toString());
-        UiElement smsTextBox = getElementByContentDescriptor(ContentDescriptor.SMS_TEXT_BOX.toString());
+        UiElementSelector senderPhoneSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.SMS_SENDER_PHONE_BOX,
+                                                                                         smsMessage.getPhoneNumber()
+                                                                                                   .toString());
+        UiElementSelector smsTextSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.SMS_TEXT_BOX,
+                                                                                     smsMessage.getText());
 
-        assertText(message, senderPhoneBox, smsMessage.getPhoneNumber().toString());
-        assertText(message, smsTextBox, smsMessage.getText());
+        assertElementExists(message, senderPhoneSelector);
+        assertElementExists(message, smsTextSelector);
     }
 
     /**
@@ -664,9 +674,10 @@ public class OnDeviceValidatorAssert {
      */
     public static void assertScreenOrientation(String message, ScreenOrientation expected)
         throws UiElementFetchingException {
-        UiElement screenOrientationBox = getElementByContentDescriptor(ContentDescriptor.SCREEN_ORIENTATION_BOX.toString());
+        UiElementSelector screenOrientationSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.SCREEN_ORIENTATION_BOX,
+                                                                                               String.valueOf(expected.getOrientationNumber()));
 
-        assertText(message, screenOrientationBox, String.valueOf(expected.getOrientationNumber()));
+        assertElementExists(message, screenOrientationSelector);
     }
 
     /**
@@ -720,9 +731,25 @@ public class OnDeviceValidatorAssert {
     public static void assertValidatorIsStarted() throws UiElementFetchingException {
         // If the validator app activity is not started, this element fetching
         // will fail.
-        UiElement validationView = getElementByContentDescriptor(VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC);
-        assertIsEnabled("ATMOSPHERE Validator has not beeen started.", validationView);
+        UiElementSelector validationViewSelector = new UiElementSelector();
 
+        validationViewSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                     VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC);
+        validationViewSelector.addSelectionAttribute(CssAttribute.ENABLED, true);
+
+        assertElementExists(VALIDATOR_IS_NOT_STARTED_MESSAGE, validationViewSelector);
+    }
+
+    public static void assertValidatorIsNotStarted(String message) throws UiElementFetchingException {
+        // If the validator app activity is not started, this element fetching
+        // will fail.
+        UiElementSelector validationViewSelector = new UiElementSelector();
+
+        validationViewSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                     VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC);
+        validationViewSelector.addSelectionAttribute(CssAttribute.ENABLED, true);
+
+        assertElementGone(message, validationViewSelector);
     }
 
     /**
@@ -733,9 +760,14 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertWiFiIsOff(String message) throws UiElementFetchingException {
-        UiElement wifiButtonFlag = getElementByContentDescriptor(ContentDescriptor.WIFI_FLAG.toString());
+        UiElementSelector wifiButtonSelector = new UiElementSelector();
 
-        assertNotEnabled(message, wifiButtonFlag);
+        wifiButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                 ContentDescriptor.WIFI_FLAG.toString());
+
+        wifiButtonSelector.addSelectionAttribute(CssAttribute.ENABLED, false);
+
+        assertElementExists(message, wifiButtonSelector);
     }
 
     /**
@@ -746,22 +778,26 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertWiFiIsOn(String message) throws UiElementFetchingException {
-        UiElement wifiButtonFlag = getElementByContentDescriptor(ContentDescriptor.WIFI_FLAG.toString());
+        UiElementSelector wifiButtonSelector = new UiElementSelector();
 
-        assertIsEnabled(message, wifiButtonFlag);
+        wifiButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                 ContentDescriptor.WIFI_FLAG.toString());
+
+        wifiButtonSelector.addSelectionAttribute(CssAttribute.ENABLED, true);
+
+        assertElementExists(message, wifiButtonSelector);
     }
 
     /**
-     * Asserts that a given Ui element is not on screen.
+     * Asserts that a given UI element is not on screen.
      * 
      * @param message
      *        - message to be displayed if assertion fails.
      * @param selector
-     *        - the selector of the given Ui element.
+     *        - the selector of the given UI element.
      * @throws UiElementFetchingException
      */
     public static void assertUIElementNotOnScreen(String message, UiElementSelector selector) {
-        Screen screen = device.getActiveScreen();
         try {
             screen.getElements(selector);
             fail(message);
@@ -773,21 +809,15 @@ public class OnDeviceValidatorAssert {
     }
 
     /**
-     * Asserts that a given Ui element is on screen.
+     * Asserts that a given UI element is on screen.
      * 
      * @param message
      *        - message to be displayed if assertion fails.
      * @param selector
-     *        - the selector of the given Ui element.
+     *        - the selector of the given UI element.
      */
     public static void assertUIElementOnScreen(String message, UiElementSelector selector) {
-        Screen screen = device.getActiveScreen();
-
-        try {
-            screen.getElement(selector);
-        } catch (UiElementFetchingException e) {
-            fail(message);
-        }
+        assertElementExists(message, selector);
     }
 
     /**
@@ -797,10 +827,10 @@ public class OnDeviceValidatorAssert {
      *        - message to be displayed if assertion fails.
      */
     public static void assertScrollToEnd(String message) {
-        UiElementSelector selector = new UiElementSelector();
-        selector.addSelectionAttribute(CssAttribute.TEXT, EXPECTED_SCROLL_TO_END);
+        UiElementSelector scrollToEndSelector = new UiElementSelector();
+        scrollToEndSelector.addSelectionAttribute(CssAttribute.TEXT, EXPECTED_SCROLL_TO_END);
 
-        assertUIElementOnScreen(message, selector);
+        assertElementExists(message, scrollToEndSelector);
     }
 
     /**
@@ -810,10 +840,10 @@ public class OnDeviceValidatorAssert {
      *        - message to be displayed if assertion fails.
      */
     public static void assertScrollToBeginning(String message) {
-        UiElementSelector selector = new UiElementSelector();
-        selector.addSelectionAttribute(CssAttribute.TEXT, EXPECTED_SCROLL_TO_BEGINNING);
+        UiElementSelector scrollToBeginningSelector = new UiElementSelector();
+        scrollToBeginningSelector.addSelectionAttribute(CssAttribute.TEXT, EXPECTED_SCROLL_TO_BEGINNING);
 
-        assertUIElementOnScreen(message, selector);
+        assertElementExists(message, scrollToBeginningSelector);
     }
 
     /**
@@ -823,10 +853,11 @@ public class OnDeviceValidatorAssert {
      *        - message to be displayed if assertion fails.
      */
     public static void assertScrollBackward(String message) {
-        UiElementSelector selector = new UiElementSelector();
-        selector.addSelectionAttribute(CssAttribute.TEXT, EXPECTED_SCROLL_TO_END);
+        UiElementSelector scrollBackwardSelector = new UiElementSelector();
 
-        assertUIElementNotOnScreen(message, selector);
+        scrollBackwardSelector.addSelectionAttribute(CssAttribute.TEXT, EXPECTED_SCROLL_TO_END);
+
+        assertElementGone(message, scrollBackwardSelector);
     }
 
     /**
@@ -836,10 +867,69 @@ public class OnDeviceValidatorAssert {
      *        - message to be displayed if assertion fails.
      */
     public static void assertScrollForward(String message) {
-        UiElementSelector selector = new UiElementSelector();
-        selector.addSelectionAttribute(CssAttribute.TEXT, EXPECTED_SCROLL_TO_BEGINNING);
+        UiElementSelector scrollForwardSelector = new UiElementSelector();
+        scrollForwardSelector.addSelectionAttribute(CssAttribute.TEXT, EXPECTED_SCROLL_TO_BEGINNING);
 
-        assertUIElementNotOnScreen(message, selector);
+        assertElementGone(message, scrollForwardSelector);
+    }
+
+    /**
+     * Asserts that element with given selector exist on the screen.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @param selector
+     *        - the selector of the given UI element.
+     */
+    public static void assertElementExists(String message, UiElementSelector selector) {
+        assertTrue(message, screen.waitForElementExists(selector, ASSERT_TIMEOUT));
+    }
+
+    /**
+     * Asserts that element with given selector doesn't exist on the screen.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @param selector
+     *        - the selector of the given UI element.
+     */
+    public static void assertElementGone(String message, UiElementSelector selector) {
+        assertTrue(message, screen.waitUntilElementGone(selector, ASSERT_TIMEOUT));
+    }
+
+    /**
+     * Creates selector by given text and content descriptor.
+     * 
+     * @param contentDescriptor
+     *        - content descriptor.
+     * @param text
+     *        - text.
+     * @return - selector with the given attributes.
+     */
+    public static UiElementSelector createSelectorByTextAndContentDescriptor(ContentDescriptor contentDescriptor,
+                                                                             String text) {
+        UiElementSelector textSelector = new UiElementSelector();
+
+        textSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, contentDescriptor.toString());
+        textSelector.addSelectionAttribute(CssAttribute.TEXT, text);
+
+        return textSelector;
+    }
+
+    /**
+     * Creates selector using given text and package name.
+     * 
+     * @param text
+     *        - text.
+     * @return - selector with the given attributes.
+     */
+    public static UiElementSelector createSelectorByPhonePackage(String text) {
+        UiElementSelector selector = new UiElementSelector();
+
+        selector.addSelectionAttribute(CssAttribute.PACKAGE_NAME, PHONE_PACKAGE_NAME);
+        selector.addSelectionAttribute(CssAttribute.TEXT, text);
+
+        return selector;
     }
 
     /**
@@ -904,6 +994,7 @@ public class OnDeviceValidatorAssert {
      */
     public static void setTestDevice(Device device) {
         OnDeviceValidatorAssert.device = device;
+        OnDeviceValidatorAssert.screen = device.getActiveScreen();
     }
 
     /**
@@ -1031,6 +1122,13 @@ public class OnDeviceValidatorAssert {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_WAIT_TEST_ACTIVITY);
     }
 
+    public static void startServiceActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_SERVICE_ACTIVITY);
+    }
+
     /**
      * Starts an activity on the test device by given application package and activity name.
      * 
@@ -1048,8 +1146,7 @@ public class OnDeviceValidatorAssert {
             UiElementFetchingException {
         device.setLocked(false);
         device.startActivity(appPackage, appActivity);
-        Screen deviceActiveScreen = device.getActiveScreen();
-        deviceActiveScreen.waitForWindowUpdate(appPackage, APP_STARTUP_WAIT_TIME);
+        screen.waitForWindowUpdate(appPackage, APP_STARTUP_WAIT_TIME);
 
         assertValidatorIsStarted();
     }
@@ -1117,13 +1214,6 @@ public class OnDeviceValidatorAssert {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_MAGNETIC_FIELD_ACTIVITY);
     }
 
-    public static void startServiceActivity()
-        throws ActivityStartingException,
-            InterruptedException,
-            UiElementFetchingException {
-        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_SERVICE_ACTIVITY);
-    }
-
     /**
      * Setups the OnDeviceValidator on the test device and starts its scroll activity.
      * 
@@ -1166,7 +1256,7 @@ public class OnDeviceValidatorAssert {
             ActivityStartingException,
             UiElementFetchingException {
         setupOndeviceValidator();
-        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_SERVICE_ACTIVITY);
+        startActivity(VALIDATOR_APP_PACKAGE, START_SERVICE_ACTIVITY);
     }
 
     /**
