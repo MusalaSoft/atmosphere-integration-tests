@@ -8,12 +8,15 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startAccelerationActivity;
 import static org.junit.Assert.assertEquals;
 
+import javax.xml.xpath.XPathExpressionException;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
+import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.commons.beans.DeviceAcceleration;
@@ -43,7 +46,11 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testDeviceRandomAccelerationSetting() throws UiElementFetchingException, InterruptedException {
+    public void testDeviceRandomAccelerationSetting()
+        throws UiElementFetchingException,
+            InterruptedException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         // set "random" acceleration
         final float accelerationX = 3.087f;
         final float accelerationY = -1.130f;
@@ -59,7 +66,11 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testDeviceLandscapeAccelerationSetting() throws UiElementFetchingException, InterruptedException {
+    public void testDeviceLandscapeAccelerationSetting()
+        throws UiElementFetchingException,
+            InterruptedException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         // set landscape acceleration
         DeviceAcceleration landscapeAcceleration = DeviceAcceleration.getLandscape();
         testDevice.setAcceleration(landscapeAcceleration);
@@ -74,7 +85,11 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest {
                             landscapeAcceleration.getAccelerationZ());
     }
 
-    public void testDeviceReverseLandscapeAccelerationSetting() throws UiElementFetchingException, InterruptedException {
+    public void testDeviceReverseLandscapeAccelerationSetting()
+        throws UiElementFetchingException,
+            InterruptedException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         // set landscape acceleration
         DeviceAcceleration reverseLandscapeAcceleration = DeviceAcceleration.getReverseLandscape();
         testDevice.setAcceleration(reverseLandscapeAcceleration);
@@ -90,7 +105,11 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testDevicePortraitAccelerationSetting() throws UiElementFetchingException, InterruptedException {
+    public void testDevicePortraitAccelerationSetting()
+        throws UiElementFetchingException,
+            InterruptedException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         // set portrait acceleration
         DeviceAcceleration portraitAcceleration = DeviceAcceleration.getPortrait();
         testDevice.setAcceleration(portraitAcceleration);
@@ -106,7 +125,11 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testDeviceReversePortraitAccelerationSetting() throws UiElementFetchingException, InterruptedException {
+    public void testDeviceReversePortraitAccelerationSetting()
+        throws UiElementFetchingException,
+            InterruptedException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         // set portrait acceleration
         DeviceAcceleration reversePortraitAcceleration = DeviceAcceleration.getReversePortrait();
         testDevice.setAcceleration(reversePortraitAcceleration);
@@ -122,7 +145,11 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testDeviceLieDownAccelerationSetting() throws UiElementFetchingException, InterruptedException {
+    public void testDeviceLieDownAccelerationSetting()
+        throws UiElementFetchingException,
+            InterruptedException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         // set portrait acceleration
         DeviceAcceleration lieDownAcceleration = DeviceAcceleration.getLieDown();
         testDevice.setAcceleration(lieDownAcceleration);
@@ -138,7 +165,11 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testDeviceReverseLieDownAccelerationSetting() throws UiElementFetchingException, InterruptedException {
+    public void testDeviceReverseLieDownAccelerationSetting()
+        throws UiElementFetchingException,
+            InterruptedException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         // set portrait acceleration
         DeviceAcceleration reverseLieDownAcceleration = DeviceAcceleration.getReverseLieDown();
         testDevice.setAcceleration(reverseLieDownAcceleration);
@@ -171,7 +202,10 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest {
                      String.valueOf(deviceAcceleration.getAccelerationZ()));
     }
 
-    private String getElementText(ContentDescriptor contentDescriptor) throws UiElementFetchingException {
+    private String getElementText(ContentDescriptor contentDescriptor)
+        throws UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         UiElement elementByContentDescriptor = getElementByContentDescriptor(contentDescriptor.toString());
         return elementByContentDescriptor.getElementSelector().getStringValue(CssAttribute.TEXT);
     }

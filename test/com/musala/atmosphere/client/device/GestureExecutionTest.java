@@ -5,6 +5,8 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
 
+import javax.xml.xpath.XPathExpressionException;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,6 +14,7 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
+import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.geometry.Bounds;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
@@ -31,7 +34,12 @@ public class GestureExecutionTest extends BaseIntegrationTest {
     private final static String INPUT_TEXT_BOX = "InputTextBox";
 
     @BeforeClass
-    public static void setUp() throws ActivityStartingException, InterruptedException, UiElementFetchingException {
+    public static void setUp()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         initTestDevice(new DeviceParameters());
 
         setTestDevice(testDevice);
@@ -46,7 +54,12 @@ public class GestureExecutionTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testTap() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
+    public void testTap()
+        throws InterruptedException,
+            ActivityStartingException,
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         UiElement inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
         UiElementSelector selector = inputTextBox.getElementSelector();
         Bounds boxBounds = selector.getBoundsValue(CssAttribute.BOUNDS);

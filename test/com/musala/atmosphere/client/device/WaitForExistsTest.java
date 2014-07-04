@@ -6,6 +6,8 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import javax.xml.xpath.XPathExpressionException;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,6 +16,7 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
+import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.client.uiutils.UiElementSelector;
@@ -30,7 +33,12 @@ public class WaitForExistsTest extends BaseIntegrationTest {
     private static final String CHANGING_TEXT_BUTTON_CHANGED_TEXT = "Changed text button";
 
     @BeforeClass
-    public static void setUp() throws UiElementFetchingException, InterruptedException, ActivityStartingException {
+    public static void setUp()
+        throws UiElementFetchingException,
+            InterruptedException,
+            ActivityStartingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         initTestDevice(new DeviceParameters());
         setTestDevice(testDevice);
 
@@ -74,7 +82,9 @@ public class WaitForExistsTest extends BaseIntegrationTest {
     public void waitForAppearingElement()
         throws InterruptedException,
             ActivityStartingException,
-            UiElementFetchingException {
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
 
         UiElementSelector selector = new UiElementSelector();
         selector.addSelectionAttribute(CssAttribute.TEXT, CHANGING_TEXT_BUTTON_CHANGED_TEXT);

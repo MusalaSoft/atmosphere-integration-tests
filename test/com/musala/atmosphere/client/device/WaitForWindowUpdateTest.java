@@ -5,6 +5,8 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import javax.xml.xpath.XPathExpressionException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -14,6 +16,7 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
+import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.client.uiutils.UiElementSelector;
@@ -48,7 +51,9 @@ public class WaitForWindowUpdateTest extends BaseIntegrationTest {
     public void testWaitForWindowUpdateAnyPackage()
         throws ActivityStartingException,
             InterruptedException,
-            UiElementFetchingException {
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         startWaitTestActivity();
 
         UiElementSelector activitySwitcherSelector = new UiElementSelector();
@@ -67,7 +72,9 @@ public class WaitForWindowUpdateTest extends BaseIntegrationTest {
     public void testWaitForWindowUpdateValidator()
         throws ActivityStartingException,
             InterruptedException,
-            UiElementFetchingException {
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         startWaitTestActivity();
 
         UiElementSelector activitySwitcherSelector = new UiElementSelector();
@@ -95,7 +102,9 @@ public class WaitForWindowUpdateTest extends BaseIntegrationTest {
     public void testWaitForWindowUpdateWrongPackage()
         throws ActivityStartingException,
             InterruptedException,
-            UiElementFetchingException {
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         startWaitTestActivity();
 
         UiElementSelector activitySwitcherSelector = new UiElementSelector();

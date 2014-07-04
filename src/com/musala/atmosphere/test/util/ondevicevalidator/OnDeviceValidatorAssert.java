@@ -6,11 +6,14 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
+import javax.xml.xpath.XPathExpressionException;
+
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.ScrollableView;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
+import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.client.uiutils.UiElementSelector;
@@ -948,8 +951,13 @@ public class OnDeviceValidatorAssert {
      *        - CSS class to search for.
      * @return - UI element with the given class.
      * @throws UiElementFetchingException
+     * @throws InvalidCssQueryException
+     * @throws XPathExpressionException
      */
-    public static UiElement getElementByClass(String cssClass) throws UiElementFetchingException {
+    public static UiElement getElementByClass(String cssClass)
+        throws UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         Screen activeScreen = device.getActiveScreen();
         activeScreen.updateScreen();
         final String query = String.format(CSS_CLASS, cssClass);
@@ -963,8 +971,13 @@ public class OnDeviceValidatorAssert {
      *        - content descriptor to search for.
      * @return - UI element with the given content descriptor.
      * @throws UiElementFetchingException
+     * @throws InvalidCssQueryException
+     * @throws XPathExpressionException
      */
-    public static UiElement getElementByContentDescriptor(String contentDescriptor) throws UiElementFetchingException {
+    public static UiElement getElementByContentDescriptor(String contentDescriptor)
+        throws UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         Screen activeScreen = device.getActiveScreen();
         activeScreen.updateScreen();
         final String query = String.format(CONTENT_DESCRIPTOR, contentDescriptor);
@@ -978,8 +991,13 @@ public class OnDeviceValidatorAssert {
      *        - package name to search for.
      * @return - UI element list with the given package.
      * @throws UiElementFetchingException
+     * @throws InvalidCssQueryException
+     * @throws XPathExpressionException
      */
-    public static List<UiElement> getElementsByPackage(String packageName) throws UiElementFetchingException {
+    public static List<UiElement> getElementsByPackage(String packageName)
+        throws UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         Screen activeScreen = device.getActiveScreen();
         activeScreen.updateScreen();
         final String query = String.format(CSS_PACKAGE, packageName);
@@ -1266,8 +1284,13 @@ public class OnDeviceValidatorAssert {
      *        - content description by which the ScrollableView is selected
      * @return the requested ScrollableView
      * @throws UiElementFetchingException
+     * @throws InvalidCssQueryException
+     * @throws XPathExpressionException
      */
-    public static ScrollableView getScrollableView(String contentDescription) throws UiElementFetchingException {
+    public static ScrollableView getScrollableView(String contentDescription)
+        throws UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         Screen activeScreen = device.getActiveScreen();
         activeScreen.updateScreen();
         UiElementSelector selector = new UiElementSelector();

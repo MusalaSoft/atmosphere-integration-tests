@@ -6,6 +6,8 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
 import static org.junit.Assert.assertTrue;
 
+import javax.xml.xpath.XPathExpressionException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -14,6 +16,7 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
+import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.geometry.Bounds;
 import com.musala.atmosphere.client.geometry.Point;
@@ -48,7 +51,12 @@ public class TapTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testTap() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
+    public void testTap()
+        throws InterruptedException,
+            ActivityStartingException,
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         startMainActivity();
 
         UiElement inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
@@ -57,7 +65,12 @@ public class TapTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testRelativeTap() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
+    public void testRelativeTap()
+        throws InterruptedException,
+            ActivityStartingException,
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         startMainActivity();
 
         UiElement widgetMainLayout = getElementByContentDescriptor(WIDGET_MAIN_LAYOUT);

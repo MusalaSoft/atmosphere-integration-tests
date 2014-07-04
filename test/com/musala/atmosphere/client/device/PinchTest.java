@@ -7,6 +7,8 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startGestureActivity;
 import static org.junit.Assert.assertTrue;
 
+import javax.xml.xpath.XPathExpressionException;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,6 +16,7 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
+import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.geometry.Bounds;
 import com.musala.atmosphere.client.geometry.Point;
@@ -33,7 +36,12 @@ public class PinchTest extends BaseIntegrationTest {
     // FIXME element becomes invalid every time the focus changes in all tests
 
     @BeforeClass
-    public static void setUp() throws InterruptedException, UiElementFetchingException, ActivityStartingException {
+    public static void setUp()
+        throws InterruptedException,
+            UiElementFetchingException,
+            ActivityStartingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         initTestDevice(new DeviceParameters());
         setTestDevice(testDevice);
 
@@ -47,7 +55,11 @@ public class PinchTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testDevicePinchIn() throws InterruptedException, UiElementFetchingException {
+    public void testDevicePinchIn()
+        throws InterruptedException,
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         UiElement gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         gestureValidator.clearText();
 
@@ -78,7 +90,11 @@ public class PinchTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testDevicePinchOut() throws InterruptedException, UiElementFetchingException {
+    public void testDevicePinchOut()
+        throws InterruptedException,
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         UiElement gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         gestureValidator.clearText();
 
@@ -109,7 +125,12 @@ public class PinchTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testPinchIn() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
+    public void testPinchIn()
+        throws InterruptedException,
+            ActivityStartingException,
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         UiElement gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         gestureValidator.clearText();
 
@@ -124,7 +145,12 @@ public class PinchTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testPinchOut() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
+    public void testPinchOut()
+        throws InterruptedException,
+            ActivityStartingException,
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         UiElement gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         gestureValidator.clearText();
 

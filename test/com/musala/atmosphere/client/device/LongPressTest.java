@@ -7,12 +7,15 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import javax.xml.xpath.XPathExpressionException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
+import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.geometry.Bounds;
 import com.musala.atmosphere.client.geometry.Point;
@@ -32,7 +35,10 @@ public class LongPressTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testValidLongPress() throws UiElementFetchingException {
+    public void testValidLongPress()
+        throws UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         UiElement longPressTextField = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         boolean longPressResult = longPressTextField.longPress();
         assertTrue("Long press returned true.", longPressResult);
@@ -40,7 +46,10 @@ public class LongPressTest extends BaseIntegrationTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testFailedLongPress() throws UiElementFetchingException {
+    public void testFailedLongPress()
+        throws UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
 
         UiElement longPressTextField = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
 

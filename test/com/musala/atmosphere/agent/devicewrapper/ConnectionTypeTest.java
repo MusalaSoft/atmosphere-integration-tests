@@ -5,12 +5,15 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
 import static junit.framework.Assert.assertEquals;
 
+import javax.xml.xpath.XPathExpressionException;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
+import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.commons.ConnectionType;
@@ -34,7 +37,10 @@ public class ConnectionTypeTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testGetConnectionType() throws UiElementFetchingException {
+    public void testGetConnectionType()
+        throws UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         ConnectionType connectionType = testDevice.getConnectionType();
         UiElement connectionTypeBox = getElementByContentDescriptor(ContentDescriptor.CONNECTION_TYPE_BOX.toString());
         String connectionTypeBoxText = connectionTypeBox.getElementSelector().getStringValue(CssAttribute.TEXT);

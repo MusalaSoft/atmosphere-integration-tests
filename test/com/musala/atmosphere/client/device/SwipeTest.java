@@ -9,6 +9,8 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startGestureActivity;
 import static org.junit.Assert.assertTrue;
 
+import javax.xml.xpath.XPathExpressionException;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,6 +18,7 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
+import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.geometry.Bounds;
 import com.musala.atmosphere.client.geometry.Point;
@@ -28,7 +31,12 @@ import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 public class SwipeTest extends BaseIntegrationTest {
 
     @BeforeClass
-    public static void setUp() throws UiElementFetchingException, InterruptedException, ActivityStartingException {
+    public static void setUp()
+        throws UiElementFetchingException,
+            InterruptedException,
+            ActivityStartingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         initTestDevice(new DeviceParameters());
         setTestDevice(testDevice);
 
@@ -42,7 +50,12 @@ public class SwipeTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testDeviceSwipe() throws InterruptedException, ActivityStartingException, UiElementFetchingException {
+    public void testDeviceSwipe()
+        throws InterruptedException,
+            ActivityStartingException,
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         UiElement swipeValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         swipeValidator.clearText();
         UiElementSelector swipeValidatorSelector = swipeValidator.getElementSelector();
@@ -60,7 +73,11 @@ public class SwipeTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testDeviceSwipeLeft() throws InterruptedException, UiElementFetchingException {
+    public void testDeviceSwipeLeft()
+        throws InterruptedException,
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         // FIXME element becomes invalid every time the focus changes
         UiElement swipeValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         swipeValidator.clearText();
@@ -74,7 +91,11 @@ public class SwipeTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testDeviceSwipeRight() throws InterruptedException, UiElementFetchingException {
+    public void testDeviceSwipeRight()
+        throws InterruptedException,
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         // FIXME element becomes invalid every time the focus changes
         UiElement swipeValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         swipeValidator.clearText();
@@ -88,7 +109,11 @@ public class SwipeTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testSwipeDown() throws InterruptedException, UiElementFetchingException {
+    public void testSwipeDown()
+        throws InterruptedException,
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         // FIXME element becomes invalid every time the focus changes
         UiElement swipeValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         swipeValidator.clearText();
@@ -102,7 +127,11 @@ public class SwipeTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testSwipeUp() throws InterruptedException, UiElementFetchingException {
+    public void testSwipeUp()
+        throws InterruptedException,
+            UiElementFetchingException,
+            XPathExpressionException,
+            InvalidCssQueryException {
         // FIXME element becomes invalid every time the focus changes
         UiElement swipeValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         swipeValidator.clearText();
