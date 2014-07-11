@@ -59,6 +59,8 @@ public class OnDeviceValidatorAssert {
 
     private final static String VALIDATOR_HORIZONTAL_SCROLL_ACTIVITY = ".HorizontalScrollableViewActivity";
 
+    private final static String VALIDATOR_PICKER_ACTIVITY = ".PickerViewActivity";
+
     private final static String VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC = "ATMOSPHEREValidator";
 
     private final static String VALIDATOR_IS_NOT_STARTED_MESSAGE = "ATMOSPHERE Validator has not beeen started.";
@@ -1298,5 +1300,19 @@ public class OnDeviceValidatorAssert {
         selector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, contentDescription);
 
         return activeScreen.getScrollableView(selector);
+    }
+
+    /**
+     * Starts picker view activity.
+     * 
+     * @throws ActivityStartingException
+     * @throws InterruptedException
+     * @throws UiElementFetchingException
+     */
+    public static void startPickerActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_PICKER_ACTIVITY);
     }
 }

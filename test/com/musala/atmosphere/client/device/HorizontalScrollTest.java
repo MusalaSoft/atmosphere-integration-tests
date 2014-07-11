@@ -34,7 +34,7 @@ import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 public class HorizontalScrollTest extends BaseIntegrationTest {
     private static final String SCROLL_TO_TEXT = "Scroll here";
 
-    private static final String TEXT_TO_TAP = "Earth";
+    private static final String TEXT_TO_TAP = "Venus";
 
     private static final Integer MAX_SWIPES = 30;
 
