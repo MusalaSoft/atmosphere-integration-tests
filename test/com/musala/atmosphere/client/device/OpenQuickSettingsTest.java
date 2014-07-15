@@ -1,8 +1,8 @@
 package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeNotNull;
 
 import javax.xml.xpath.XPathExpressionException;
 
@@ -17,17 +17,21 @@ import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 
 public class OpenQuickSettingsTest extends BaseIntegrationTest {
-
-    private static final int OPEN_QUICK_SETTINGS_TIMEOUT = 5000;
 
     private static final String QUICK_SETTINGS_RESOURCE_ID = "com.android.systemui:id/quick_settings_container";
 
     @BeforeClass
     public static void setUp() {
-        initTestDevice(new DeviceParameters());
-        setTestDevice(testDevice);
+        DeviceParameters deviceParameters = new DeviceParameters();
+        deviceParameters.setDeviceType(DeviceType.DEVICE_ONLY);
+        try {
+            initTestDevice(deviceParameters);
+        } catch (NoAvailableDeviceFoundException e) {
+        }
     }
 
     @AfterClass
@@ -41,6 +45,8 @@ public class OpenQuickSettingsTest extends BaseIntegrationTest {
             UiElementFetchingException,
             InvalidCssQueryException {
         UiElementSelector quickSettingsSelector = new UiElementSelector();
+        assumeNotNull(testDevice);
+        setTestDevice(testDevice);
         quickSettingsSelector.addSelectionAttribute(CssAttribute.RESOURCE_ID, QUICK_SETTINGS_RESOURCE_ID);
         Screen deviceActiveScreen = testDevice.getActiveScreen();
         try {
@@ -50,10 +56,12 @@ public class OpenQuickSettingsTest extends BaseIntegrationTest {
 
             testDevice.openQuickSettings();
 
-            deviceActiveScreen.updateScreen();
-            Boolean result = deviceActiveScreen.waitForElementExists(quickSettingsSelector, OPEN_QUICK_SETTINGS_TIMEOUT);
-
-            assertTrue("The quick settings were not opened.", result);
+            try {
+                deviceActiveScreen.updateScreen();
+                deviceActiveScreen.getElement(quickSettingsSelector);
+            } catch (UiElementFetchingException exception) {
+                fail("The quick settings were not opened.");
+            }
         }
     }
 }

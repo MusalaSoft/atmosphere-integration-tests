@@ -1,7 +1,6 @@
 package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import javax.xml.xpath.XPathExpressionException;
@@ -19,8 +18,6 @@ import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 
 public class OpenNotificationTest extends BaseIntegrationTest {
-
-    private static final int OPEN_NOTIFICATION_BAR_TIMEOUT = 5000;
 
     private static final String NOTIFICATION_BAR_RESOURCE_ID = "com.android.systemui:id/notification_panel";
 
@@ -50,11 +47,12 @@ public class OpenNotificationTest extends BaseIntegrationTest {
 
             testDevice.openNotificationBar();
 
-            deviceActiveScreen.updateScreen();
-            Boolean result = deviceActiveScreen.waitForElementExists(notificationBarSelector,
-                                                                     OPEN_NOTIFICATION_BAR_TIMEOUT);
-
-            assertTrue("The notification bar was not opened.", result);
+            try {
+                deviceActiveScreen.updateScreen();
+                deviceActiveScreen.getElement(notificationBarSelector);
+            } catch (UiElementFetchingException exception) {
+                fail("The notification bar was not opened.");
+            }
         }
     }
 }
