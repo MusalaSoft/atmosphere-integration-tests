@@ -12,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -49,6 +50,12 @@ public class SwipeTest extends BaseIntegrationTest {
         releaseDevice();
     }
 
+    @Before
+    public void setUpTest() throws XPathExpressionException, UiElementFetchingException, InvalidCssQueryException {
+        UiElement clearTextButton = getElementByContentDescriptor(ContentDescriptor.CLEAR_TEXT_BUTTON.toString());
+        clearTextButton.tap();
+    }
+
     @Test
     public void testDeviceSwipe()
         throws InterruptedException,
@@ -57,7 +64,6 @@ public class SwipeTest extends BaseIntegrationTest {
             XPathExpressionException,
             InvalidCssQueryException {
         UiElement swipeValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
-        swipeValidator.clearText();
         UiElementSelector swipeValidatorSelector = swipeValidator.getElementSelector();
         Bounds elementBounds = swipeValidatorSelector.getBoundsValue(CssAttribute.BOUNDS);
         Point centerPoint = elementBounds.getCenter();
@@ -80,7 +86,6 @@ public class SwipeTest extends BaseIntegrationTest {
             InvalidCssQueryException {
         // FIXME element becomes invalid every time the focus changes
         UiElement swipeValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
-        swipeValidator.clearText();
         SwipeDirection directionLeft = SwipeDirection.LEFT;
         boolean swipeResult = swipeValidator.swipe(directionLeft);
 
@@ -98,7 +103,6 @@ public class SwipeTest extends BaseIntegrationTest {
             InvalidCssQueryException {
         // FIXME element becomes invalid every time the focus changes
         UiElement swipeValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
-        swipeValidator.clearText();
         SwipeDirection directionRight = SwipeDirection.RIGHT;
         boolean swipeResult = swipeValidator.swipe(directionRight);
 
@@ -116,7 +120,6 @@ public class SwipeTest extends BaseIntegrationTest {
             InvalidCssQueryException {
         // FIXME element becomes invalid every time the focus changes
         UiElement swipeValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
-        swipeValidator.clearText();
         SwipeDirection directionDown = SwipeDirection.DOWN;
         boolean swipeResult = swipeValidator.swipe(directionDown);
 
@@ -134,7 +137,6 @@ public class SwipeTest extends BaseIntegrationTest {
             InvalidCssQueryException {
         // FIXME element becomes invalid every time the focus changes
         UiElement swipeValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
-        swipeValidator.clearText();
         SwipeDirection directionUp = SwipeDirection.UP;
         boolean swipeResult = swipeValidator.swipe(directionUp);
 

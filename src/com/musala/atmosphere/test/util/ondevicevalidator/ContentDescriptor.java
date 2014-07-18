@@ -35,6 +35,8 @@ public enum ContentDescriptor {
     SCROLL_TO_END_BUTTON("ScrollToEndButton"),
     CHANGING_TEXT_BUTTON_DESCRIPTOR("ChangingTextButton"),
     CAMERA_NUMBER_TEXT_BOX("DeviceCameraNumber"),
+    CLEAR_TEXT_BOX("ClearTextTestBox"),
+    CLEAR_TEXT_BUTTON("ClearTextButton"),
     TIME_PICKER("TimePickerButton"),
     TIME_PICKER_24_HOURS_FORMAT("TimePicker24HoursFormatButton");
 

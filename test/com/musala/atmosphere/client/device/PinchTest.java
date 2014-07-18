@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -54,6 +55,12 @@ public class PinchTest extends BaseIntegrationTest {
         releaseDevice();
     }
 
+    @Before
+    public void setUpTest() throws XPathExpressionException, UiElementFetchingException, InvalidCssQueryException {
+        UiElement clearTextButton = getElementByContentDescriptor(ContentDescriptor.CLEAR_TEXT_BUTTON.toString());
+        clearTextButton.tap();
+    }
+
     @Test
     public void testDevicePinchIn()
         throws InterruptedException,
@@ -61,7 +68,6 @@ public class PinchTest extends BaseIntegrationTest {
             XPathExpressionException,
             InvalidCssQueryException {
         UiElement gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
-        gestureValidator.clearText();
 
         // getting the point at the center of the element
         gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
@@ -96,7 +102,6 @@ public class PinchTest extends BaseIntegrationTest {
             XPathExpressionException,
             InvalidCssQueryException {
         UiElement gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
-        gestureValidator.clearText();
 
         // getting the point at the center of the element
         gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
@@ -132,7 +137,6 @@ public class PinchTest extends BaseIntegrationTest {
             XPathExpressionException,
             InvalidCssQueryException {
         UiElement gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
-        gestureValidator.clearText();
 
         gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         boolean pinchInResult = gestureValidator.pinchIn();
@@ -152,7 +156,6 @@ public class PinchTest extends BaseIntegrationTest {
             XPathExpressionException,
             InvalidCssQueryException {
         UiElement gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
-        gestureValidator.clearText();
 
         gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         boolean pinchOutResult = gestureValidator.pinchOut();

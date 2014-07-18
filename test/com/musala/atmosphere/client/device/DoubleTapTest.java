@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -50,6 +51,12 @@ public class DoubleTapTest extends BaseIntegrationTest {
         releaseDevice();
     }
 
+    @Before
+    public void setUpTest() throws XPathExpressionException, UiElementFetchingException, InvalidCssQueryException {
+        UiElement clearTextButton = getElementByContentDescriptor(ContentDescriptor.CLEAR_TEXT_BUTTON.toString());
+        clearTextButton.tap();
+    }
+
     @Test
     public void testDeviceDoubleTap()
         throws InterruptedException,
@@ -57,7 +64,6 @@ public class DoubleTapTest extends BaseIntegrationTest {
             XPathExpressionException,
             InvalidCssQueryException {
         UiElement doubleTapValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
-        doubleTapValidator.clearText();
 
         // getting the point at the center of the element
         doubleTapValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
@@ -84,7 +90,6 @@ public class DoubleTapTest extends BaseIntegrationTest {
             InvalidCssQueryException {
         // FIXME element becomes invalid every time the focus changes
         UiElement doubleTapValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
-        doubleTapValidator.clearText();
 
         doubleTapValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         boolean tapResult = doubleTapValidator.doubleTap();
@@ -104,7 +109,6 @@ public class DoubleTapTest extends BaseIntegrationTest {
             XPathExpressionException,
             InvalidCssQueryException {
         UiElement doubleTapValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
-        doubleTapValidator.clearText();
 
         // the tap point is relative to the element's coordinates
         doubleTapValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());

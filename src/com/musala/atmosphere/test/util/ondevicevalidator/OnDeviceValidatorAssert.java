@@ -879,6 +879,19 @@ public class OnDeviceValidatorAssert {
     }
 
     /**
+     * Asserts that text field is cleared.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     */
+    public static void assertTextIsCleared(String message) {
+        UiElementSelector textFieldSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.CLEAR_TEXT_BOX,
+                                                                                       "");
+
+        assertElementExists(message, textFieldSelector);
+    }
+
+    /**
      * Asserts that element with given selector exist on the screen.
      * 
      * @param message

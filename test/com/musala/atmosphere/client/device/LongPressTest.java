@@ -34,6 +34,12 @@ public class LongPressTest extends BaseIntegrationTest {
         startGestureActivity();
     }
 
+    @Before
+    public void setUpTest() throws XPathExpressionException, UiElementFetchingException, InvalidCssQueryException {
+        UiElement clearTextButton = getElementByContentDescriptor(ContentDescriptor.CLEAR_TEXT_BUTTON.toString());
+        clearTextButton.tap();
+    }
+
     @Test
     public void testValidLongPress()
         throws UiElementFetchingException,
