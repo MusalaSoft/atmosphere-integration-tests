@@ -31,6 +31,7 @@ import com.musala.atmosphere.client.device.TimePickerInteractionTest;
 import com.musala.atmosphere.client.device.WaitForExistsTest;
 import com.musala.atmosphere.client.device.WaitForWindowUpdateTest;
 import com.musala.atmosphere.client.device.WaitUntilGoneTest;
+import com.musala.atmosphere.client.screen.GetElementWhenPresentTest;
 import com.musala.atmosphere.server.PoolEventHandlerTest;
 
 @SuiteClasses({ScreenOrientationTest.class, PoolEventHandlerTest.class, TapTest.class, LockUnlockTest.class,
@@ -40,7 +41,7 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         PinchTest.class, SwipeTest.class, CallTest.class, LongPressTest.class, WaitForExistsTest.class,
         ScrollTest.class, HorizontalScrollTest.class, WaitForWindowUpdateTest.class, EmulatorCameraTest.class,
         WaitUntilGoneTest.class, ProcessRunningTest.class, ForceStopProcessTest.class, StopBackgroundProcessTest.class,
-        ScreenOffTimeoutTest.class, TimePickerInteractionTest.class})
-// @SuiteClasses({TimePickerInteractionTest.class})
+        ScreenOffTimeoutTest.class, TimePickerInteractionTest.class, GetElementWhenPresentTest.class})
+// @SuiteClasses({GetElementWhenPresentTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
