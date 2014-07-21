@@ -47,7 +47,7 @@ public class InputTextTest extends BaseIntegrationTest {
     }
 
     @After
-    public static void stopActivity() {
+    public void stopActivity() {
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
     }
 
