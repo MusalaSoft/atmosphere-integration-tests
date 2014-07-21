@@ -4,7 +4,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -55,7 +55,7 @@ public class SetIMEAsDefaultTest extends BaseIntegrationTest {
         UiElement inputTextBoxAfterInput = getElementByContentDescriptor(TEXT_BOX_CONTENT_DESCRIPTOR);
         String resultFromInput = inputTextBoxAfterInput.getText();
 
-        assertNotEquals("There should be no text in the field.", INPUT_STRING, resultFromInput);
+        assertFalse("There should be no text in the field.", INPUT_STRING.equals(resultFromInput));
 
         screen.updateScreen();
 
