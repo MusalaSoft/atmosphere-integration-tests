@@ -11,6 +11,8 @@ import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.device.HardwareButton;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.server.Server;
 import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
@@ -70,7 +72,22 @@ public class BaseIntegrationTest {
                 deviceBuilder.releaseDevice(testDevice);
             }
 
-            testDevice = deviceBuilder.getDevice(parameters);
+            // TODO: Remove this logic when DeviceType.DevicePrefered is working correctly.
+            DeviceType deviceType = parameters.getDeviceType();
+
+            if (deviceType == DeviceType.DEVICE_PREFERRED) {
+                parameters.setDeviceType(DeviceType.DEVICE_ONLY);
+
+                try {
+                    testDevice = deviceBuilder.getDevice(parameters);
+                } catch (NoAvailableDeviceFoundException e) {
+                    parameters.setDeviceType(null);
+                    testDevice = deviceBuilder.getDevice(parameters);
+                }
+            } else {
+                testDevice = deviceBuilder.getDevice(parameters);
+            }
+
             assertNotNull("Could not get a device.", testDevice);
 
             // Assert our device is awake
