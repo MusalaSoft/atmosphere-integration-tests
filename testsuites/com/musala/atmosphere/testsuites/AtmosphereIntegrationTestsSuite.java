@@ -10,6 +10,7 @@ import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.server.Server;
 import com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert;
 
@@ -74,7 +75,14 @@ public class AtmosphereIntegrationTestsSuite {
         DeviceParameters realDeviceParameters = new DeviceParameters();
         realDeviceParameters.setDeviceType(DeviceType.DEVICE_PREFERRED);
 
-        device = deviceBuilder.getDevice(realDeviceParameters);
+        // TODO: Remove this workaround when DeviceType.DevicePrefered selection is implemented.
+        try {
+            realDeviceParameters.setDeviceType(DeviceType.DEVICE_ONLY);
+            device = deviceBuilder.getDevice(realDeviceParameters);
+        } catch (NoAvailableDeviceFoundException e) {
+            realDeviceParameters.setDeviceType(null);
+            device = deviceBuilder.getDevice(realDeviceParameters);
+        }
 
         OnDeviceValidatorAssert.setTestDevice(device);
         OnDeviceValidatorAssert.setupOndeviceValidator();
