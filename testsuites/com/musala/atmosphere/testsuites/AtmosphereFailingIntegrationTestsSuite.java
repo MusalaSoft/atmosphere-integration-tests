@@ -21,6 +21,6 @@ import com.musala.atmosphere.server.EmulatorCreationTest;
 @RunWith(Suite.class)
 @SuiteClasses({DeviceAcceleratoinTest.class, BatteryRelatedMethodsTest.class, DeviceOrientationTest.class,
         BuilderIntegrationTest.class, EmulatorConsoleTest.class, EmulatorCreationTest.class,
-        NetworkConnectionTest.class, BatteryRelatedMethodsTest.class})
+        NetworkConnectionTest.class})
 public class AtmosphereFailingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

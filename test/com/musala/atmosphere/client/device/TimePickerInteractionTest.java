@@ -17,6 +17,7 @@ import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.TimePicker;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 public class TimePickerInteractionTest extends BaseIntegrationTest {
@@ -28,7 +29,9 @@ public class TimePickerInteractionTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        initTestDevice(new DeviceParameters());
+        DeviceParameters testDeviceParams = new DeviceParameters();
+        testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
+        initTestDevice(testDeviceParams);
         setTestDevice(testDevice);
         startPickerActivity();
     }

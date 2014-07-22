@@ -14,6 +14,7 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 
 /**
  * 
@@ -30,7 +31,9 @@ public class SetIMEAsDefaultTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        initTestDevice(new DeviceParameters());
+        DeviceParameters testDeviceParams = new DeviceParameters();
+        testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
+        initTestDevice(testDeviceParams);
         setTestDevice(testDevice);
         startMainActivity();
     }

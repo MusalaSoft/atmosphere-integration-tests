@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 
 public class ProcessRunningTest extends BaseIntegrationTest {
 
@@ -18,7 +19,9 @@ public class ProcessRunningTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        initTestDevice(new DeviceParameters());
+        DeviceParameters testDeviceParams = new DeviceParameters();
+        testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
+        initTestDevice(testDeviceParams);
         setTestDevice(testDevice);
         startMainActivity();
     }

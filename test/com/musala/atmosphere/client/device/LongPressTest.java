@@ -21,13 +21,16 @@ import com.musala.atmosphere.client.geometry.Bounds;
 import com.musala.atmosphere.client.geometry.Point;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 public class LongPressTest extends BaseIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
-        initTestDevice(new DeviceParameters());
+        DeviceParameters testDeviceParams = new DeviceParameters();
+        testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
+        initTestDevice(testDeviceParams);
 
         setTestDevice(testDevice);
 

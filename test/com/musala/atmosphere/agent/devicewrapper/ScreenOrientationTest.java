@@ -14,6 +14,7 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.ScreenOrientation;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 
 public class ScreenOrientationTest extends BaseIntegrationTest {
     private static final long OPERATION_TIMEOUT = 4000;
@@ -21,6 +22,7 @@ public class ScreenOrientationTest extends BaseIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
+        testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
         initTestDevice(testDeviceParams);
 
         setTestDevice(testDevice);

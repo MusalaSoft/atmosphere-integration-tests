@@ -9,6 +9,7 @@ import com.musala.atmosphere.agent.Agent;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.server.Server;
 import com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert;
 
@@ -60,7 +61,20 @@ public class AtmosphereIntegrationTestsSuite {
         GettingBuilderClass builderGet = new GettingBuilderClass();
         Builder deviceBuilder = builderGet.getBuilder();
 
+        DeviceParameters emulatorDeviceParameters = new DeviceParameters();
+        emulatorDeviceParameters.setDeviceType(DeviceType.EMULATOR_ONLY);
+
         Device device = deviceBuilder.getDevice(new DeviceParameters());
+
+        OnDeviceValidatorAssert.setTestDevice(device);
+        OnDeviceValidatorAssert.setupOndeviceValidator();
+
+        deviceBuilder.releaseAllDevices();
+
+        DeviceParameters realDeviceParameters = new DeviceParameters();
+        realDeviceParameters.setDeviceType(DeviceType.DEVICE_PREFERRED);
+
+        device = deviceBuilder.getDevice(new DeviceParameters());
 
         OnDeviceValidatorAssert.setTestDevice(device);
         OnDeviceValidatorAssert.setupOndeviceValidator();

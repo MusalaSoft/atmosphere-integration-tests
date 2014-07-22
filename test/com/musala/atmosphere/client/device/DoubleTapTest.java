@@ -23,6 +23,7 @@ import com.musala.atmosphere.client.geometry.Point;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
@@ -39,7 +40,9 @@ public class DoubleTapTest extends BaseIntegrationTest {
             ActivityStartingException,
             XPathExpressionException,
             InvalidCssQueryException {
-        initTestDevice(new DeviceParameters());
+        DeviceParameters testDeviceParams = new DeviceParameters();
+        testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
+        initTestDevice(testDeviceParams);
         setTestDevice(testDevice);
 
         startGestureActivity();

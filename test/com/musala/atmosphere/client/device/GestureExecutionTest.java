@@ -20,6 +20,7 @@ import com.musala.atmosphere.client.geometry.Bounds;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.commons.gesture.Anchor;
 import com.musala.atmosphere.commons.gesture.Gesture;
 import com.musala.atmosphere.commons.gesture.Timeline;
@@ -40,7 +41,9 @@ public class GestureExecutionTest extends BaseIntegrationTest {
             UiElementFetchingException,
             XPathExpressionException,
             InvalidCssQueryException {
-        initTestDevice(new DeviceParameters());
+        DeviceParameters testDeviceParams = new DeviceParameters();
+        testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
+        initTestDevice(testDeviceParams);
 
         setTestDevice(testDevice);
 

@@ -17,12 +17,16 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.DeviceInformation;
 import com.musala.atmosphere.commons.ScreenOrientation;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.commons.util.Pair;
 
 public class GetScreenshotTest extends BaseIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
-        initTestDevice(new DeviceParameters());
+        DeviceParameters testDeviceParams = new DeviceParameters();
+        testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
+        initTestDevice(testDeviceParams);
+
         testDevice.setScreenOrientation(ScreenOrientation.PORTRAIT);
     }
 
