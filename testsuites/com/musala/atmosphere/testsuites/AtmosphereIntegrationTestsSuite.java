@@ -64,7 +64,7 @@ public class AtmosphereIntegrationTestsSuite {
         DeviceParameters emulatorDeviceParameters = new DeviceParameters();
         emulatorDeviceParameters.setDeviceType(DeviceType.EMULATOR_ONLY);
 
-        Device device = deviceBuilder.getDevice(new DeviceParameters());
+        Device device = deviceBuilder.getDevice(emulatorDeviceParameters);
 
         OnDeviceValidatorAssert.setTestDevice(device);
         OnDeviceValidatorAssert.setupOndeviceValidator();
@@ -74,7 +74,7 @@ public class AtmosphereIntegrationTestsSuite {
         DeviceParameters realDeviceParameters = new DeviceParameters();
         realDeviceParameters.setDeviceType(DeviceType.DEVICE_PREFERRED);
 
-        device = deviceBuilder.getDevice(new DeviceParameters());
+        device = deviceBuilder.getDevice(realDeviceParameters);
 
         OnDeviceValidatorAssert.setTestDevice(device);
         OnDeviceValidatorAssert.setupOndeviceValidator();
