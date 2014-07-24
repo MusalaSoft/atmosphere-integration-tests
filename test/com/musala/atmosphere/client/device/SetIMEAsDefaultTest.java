@@ -15,6 +15,7 @@ import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
  * 
@@ -23,11 +24,13 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
  */
 public class SetIMEAsDefaultTest extends BaseIntegrationTest {
 
-    private final static String TEXT_BOX_CONTENT_DESCRIPTOR = "InputTextBox";
+    private final static String TEXT_BOX_CONTENT_DESCRIPTOR = ContentDescriptor.INPUT_TEXT_BOX.toString();
 
     private final static String INPUT_STRING = "Letters";
 
-    private final static String DEFAULT_KEYBOARD_ID = "com.android.inputmethod.latin/.LatinIME";
+    private final static String DEFAULT_KEYBOARD_ID = "com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME";
+    
+    private final static String ATMOSPHERE_IME_PACKAGE = "com.musala.atmosphere.ime";
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -51,6 +54,10 @@ public class SetIMEAsDefaultTest extends BaseIntegrationTest {
         UiElement inputTextBox = getElementByContentDescriptor(TEXT_BOX_CONTENT_DESCRIPTOR);
 
         testDevice.setDefaultIME(DEFAULT_KEYBOARD_ID);
+        
+        // To ensure the broadcast receiver of the ATMOSPHERE IME has fully stopped.
+        testDevice.forceStopProcess(ATMOSPHERE_IME_PACKAGE);
+        
         inputTextBox.inputText(INPUT_STRING);
 
         screen.updateScreen();

@@ -35,7 +35,7 @@ import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 public class ScrollTest extends BaseIntegrationTest {
     private static final String SCROLL_TO_TEXT = "Scroll here";
 
-    private static final String TEXT_TO_TAP = "Neptune";
+    private static final String TEXT_TO_TAP = "Neptune0";
 
     private static final Integer MAX_SWIPES = 50;
 
@@ -69,10 +69,10 @@ public class ScrollTest extends BaseIntegrationTest {
 
         assertScrollToBeginning("Failure detected, could not scroll to beginning.");
 
-        Boolean scrollTest = scrollableView.scrollToEnd(5);
+        Boolean hasScrolled = scrollableView.scrollToEnd(5);
         String failureMessage = "Failure detected, scroll to end returned false.";
 
-        assertTrue(failureMessage, scrollTest);
+        assertTrue(failureMessage, hasScrolled);
         assertScrollToEnd(failureMessage);
     }
 
@@ -88,11 +88,11 @@ public class ScrollTest extends BaseIntegrationTest {
 
         assertScrollToEnd("Failure detected, could not scroll to end.");
 
-        Boolean scrollTest = scrollableView.scrollToBeginning(5);
+        Boolean hasScrolled = scrollableView.scrollToBeginning(5);
 
         String failureMessage = "Failure detected, scroll to beginning returned false.";
 
-        assertTrue(failureMessage, scrollTest);
+        assertTrue(failureMessage, hasScrolled);
         assertScrollToBeginning(failureMessage);
     }
 
@@ -108,11 +108,11 @@ public class ScrollTest extends BaseIntegrationTest {
 
         assertScrollToEnd("Failure detected, could not scroll to end.");
 
-        Boolean scrollTest = scrollableView.scrollBackward();
+        Boolean hasScrolled = scrollableView.scrollBackward();
 
         String failureMessage = "Failure detected, scroll backward returned false.";
 
-        assertTrue(failureMessage, scrollTest);
+        assertTrue(failureMessage, hasScrolled);
         assertScrollBackward(failureMessage);
     }
 
@@ -127,11 +127,11 @@ public class ScrollTest extends BaseIntegrationTest {
 
         assertScrollToBeginning("Failure detected, could not scroll to beginning.");
 
-        Boolean scrollTest = scrollableView.scrollForward();
+        Boolean hasScrolled = scrollableView.scrollForward();
 
         String failureMessage = "Failure detected, scroll forward returned false.";
 
-        assertTrue(failureMessage, scrollTest);
+        assertTrue(failureMessage, hasScrolled);
         assertScrollForward(failureMessage);
     }
 
@@ -151,9 +151,9 @@ public class ScrollTest extends BaseIntegrationTest {
         innerViewSelector.addSelectionAttribute(CssAttribute.TEXT, SCROLL_TO_TEXT);
 
         assertUIElementNotOnScreen("Element is already visible", innerViewSelector);
-        Boolean scrollTest = scrollableView.scrollToElementBySelector(MAX_SWIPES, innerViewSelector);
+        Boolean hasScrolled = scrollableView.scrollToElementBySelector(MAX_SWIPES, innerViewSelector);
 
-        assertTrue("Tap element to selector with scrolling returned false.", scrollTest);
+        assertTrue("Tap element to selector with scrolling returned false.", hasScrolled);
         assertUIElementOnScreen("The UiElement is not on screen", innerViewSelector);
     }
 
@@ -173,9 +173,9 @@ public class ScrollTest extends BaseIntegrationTest {
         innerViewSelector.addSelectionAttribute(CssAttribute.TEXT, SCROLL_TO_TEXT);
 
         assertUIElementNotOnScreen("Element is already visible", innerViewSelector);
-        Boolean scrollTest = scrollableView.tapElementBySelectorWithScrolling(MAX_SWIPES, innerViewSelector);
+        Boolean hasTapped = scrollableView.tapElementBySelectorWithScrolling(MAX_SWIPES, innerViewSelector);
 
-        assertTrue("Tap element to selector with scrolling returned false.", scrollTest);
+        assertTrue("Tap element to selector with scrolling returned false.", hasTapped);
         assertUIElementOnScreen("The UiElement is not on screen", innerViewSelector);
     }
 
@@ -195,15 +195,17 @@ public class ScrollTest extends BaseIntegrationTest {
         innerViewSelector.addSelectionAttribute(CssAttribute.TEXT, TEXT_TO_TAP);
 
         assertUIElementOnScreen("Element is not visible", innerViewSelector);
-        Boolean scrollTest = scrollableView.tapElementBySelectorWithoutScrolling(innerViewSelector);
 
-        assertTrue("Tap element by selector without scrolling returned false.", scrollTest);
+        Boolean hasTapped = scrollableView.tapElementBySelectorWithoutScrolling(innerViewSelector);
+
+        assertTrue("Tap element by selector without scrolling returned false.", hasTapped);
 
         innerViewSelector = new UiElementSelector();
         innerViewSelector.addSelectionAttribute(CssAttribute.TEXT, SCROLL_TO_TEXT);
         assertUIElementNotOnScreen("Element is visible", innerViewSelector);
-        scrollTest = scrollableView.tapElementBySelectorWithoutScrolling(innerViewSelector);
 
-        assertFalse("Tap element by selector without scrolling returned true.", scrollTest);
+        hasTapped = scrollableView.tapElementBySelectorWithoutScrolling(innerViewSelector);
+
+        assertFalse("Tap element by selector without scrolling returned true.", hasTapped);
     }
 }
