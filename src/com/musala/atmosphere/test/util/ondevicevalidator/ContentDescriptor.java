@@ -39,7 +39,8 @@ public enum ContentDescriptor {
     CLEAR_TEXT_BUTTON("ClearTextButton"),
     TIME_PICKER("TimePickerButton"),
     TIME_PICKER_24_HOURS_FORMAT("TimePicker24HoursFormatButton"),
-    SEND_NOTIFICATION_BUTTON("Send notification");
+    SEND_NOTIFICATION_BUTTON("Send notification"),
+    DATE_PICKER("SelectDateButton");
 
     private String value;
 

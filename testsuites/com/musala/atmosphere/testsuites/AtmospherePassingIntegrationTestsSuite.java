@@ -9,6 +9,7 @@ import com.musala.atmosphere.agent.devicewrapper.ScreenOrientationTest;
 import com.musala.atmosphere.agent.devicewrapper.TelephonyInformationTest;
 import com.musala.atmosphere.client.builder.BuilderDeviceSelectionIntegrationTest;
 import com.musala.atmosphere.client.device.CallTest;
+import com.musala.atmosphere.client.device.DatePickerInteractionTest;
 import com.musala.atmosphere.client.device.DeviceGetScreenshotTest;
 import com.musala.atmosphere.client.device.DeviceInstallApkTest;
 import com.musala.atmosphere.client.device.DoubleTapTest;
@@ -48,7 +49,7 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         WaitUntilGoneTest.class, ProcessRunningTest.class, ForceStopProcessTest.class, StopBackgroundProcessTest.class,
         ScreenOffTimeoutTest.class, TimePickerInteractionTest.class, GetElementWhenPresentTest.class,
         SetIMEAsDefaultTest.class, OpenNotificationTest.class, OpenQuickSettingsTest.class, NotificationBarTest.class,
-        NotificationInteractionTest.class})
-// @SuiteClasses({NotificationBarTest.class, NotificationInteractionTest.class})
+        NotificationInteractionTest.class, DatePickerInteractionTest.class})
+// @SuiteClasses({DatePickerInteractionTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
