@@ -34,6 +34,7 @@ import com.musala.atmosphere.client.device.StopBackgroundProcessTest;
 import com.musala.atmosphere.client.device.SwipeTest;
 import com.musala.atmosphere.client.device.TapTest;
 import com.musala.atmosphere.client.device.TimePickerInteractionTest;
+import com.musala.atmosphere.client.device.UninstallApplicationTest;
 import com.musala.atmosphere.client.device.WaitForExistsTest;
 import com.musala.atmosphere.client.device.WaitForWindowUpdateTest;
 import com.musala.atmosphere.client.device.WaitUntilGoneTest;
@@ -49,7 +50,7 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         WaitUntilGoneTest.class, ProcessRunningTest.class, ForceStopProcessTest.class, StopBackgroundProcessTest.class,
         ScreenOffTimeoutTest.class, TimePickerInteractionTest.class, GetElementWhenPresentTest.class,
         SetIMEAsDefaultTest.class, OpenNotificationTest.class, OpenQuickSettingsTest.class, NotificationBarTest.class,
-        NotificationInteractionTest.class, DatePickerInteractionTest.class})
-// @SuiteClasses({DatePickerInteractionTest.class})
+        NotificationInteractionTest.class, DatePickerInteractionTest.class, UninstallApplicationTest.class})
+// @SuiteClasses({UninstallApplicationTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
