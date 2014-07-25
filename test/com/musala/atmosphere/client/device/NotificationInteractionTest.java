@@ -26,7 +26,7 @@ import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 public class NotificationInteractionTest extends BaseIntegrationTest {
 
-    private static final String NOTIFICATION_RESOURCE_ID = "android:id/status_bar_latest_event_content";
+    private static final String NOTIFICATION_TITLE_TEXT = "Notification Title";
 
     private static final String NOTIFICATION_BUTTON_TEXT = "Open";
 
@@ -74,7 +74,7 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
         notificationBar.open();
 
         UiElementSelector notificationSelector = new UiElementSelector();
-        notificationSelector.addSelectionAttribute(CssAttribute.RESOURCE_ID, NOTIFICATION_RESOURCE_ID);
+        notificationSelector.addSelectionAttribute(CssAttribute.TEXT, NOTIFICATION_TITLE_TEXT);
         UiElement notification = notificationBar.getNotificationBySelector(notificationSelector);
 
         UiElementSelector notificationOpenButtonSelector = new UiElementSelector();
@@ -86,7 +86,7 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
         // test activity is on the screen to assert that the button was tapped successfully
         UiElementSelector changingTextButtonSelector = new UiElementSelector();
         changingTextButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
-                                                             ContentDescriptor.CHANGING_TEXT_BUTTON_DESCRIPTOR.toString());
+                                                         ContentDescriptor.CHANGING_TEXT_BUTTON_DESCRIPTOR.toString());
 
         assertUIElementOnScreen("The button in the notification was not successfully tapped on.",
                                 changingTextButtonSelector);
