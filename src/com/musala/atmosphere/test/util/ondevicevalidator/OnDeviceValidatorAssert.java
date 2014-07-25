@@ -61,6 +61,8 @@ public class OnDeviceValidatorAssert {
 
     private final static String VALIDATOR_PICKER_ACTIVITY = ".PickerViewActivity";
 
+    private final static String VALIDATOR_NOTIFICATION_TEST_ACTIVITY = ".NotificationTestActivity";
+
     private final static String VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC = "ATMOSPHEREValidator";
 
     private final static String VALIDATOR_IS_NOT_STARTED_MESSAGE = "ATMOSPHERE Validator has not beeen started.";
@@ -1327,5 +1329,22 @@ public class OnDeviceValidatorAssert {
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_PICKER_ACTIVITY);
+    }
+
+    /**
+     * Starts the notification test activity.
+     * 
+     * @throws ActivityStartingException
+     *         - if the activity was not started successfully
+     * @throws InterruptedException
+     *         - if the starting of the activity was interrupted
+     * @throws UiElementFetchingException
+     *         - if the UI element could not be found
+     */
+    public static void startNotificationTestActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_NOTIFICATION_TEST_ACTIVITY);
     }
 }

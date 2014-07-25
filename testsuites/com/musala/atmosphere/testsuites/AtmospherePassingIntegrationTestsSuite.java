@@ -17,6 +17,9 @@ import com.musala.atmosphere.client.device.GestureExecutionTest;
 import com.musala.atmosphere.client.device.HorizontalScrollTest;
 import com.musala.atmosphere.client.device.LockUnlockTest;
 import com.musala.atmosphere.client.device.LongPressTest;
+import com.musala.atmosphere.client.device.NotificationInteractionTest;
+import com.musala.atmosphere.client.device.OpenNotificationTest;
+import com.musala.atmosphere.client.device.OpenQuickSettingsTest;
 import com.musala.atmosphere.client.device.PinchTest;
 import com.musala.atmosphere.client.device.ProcessRunningTest;
 import com.musala.atmosphere.client.device.ReceiveSmsTest;
@@ -42,7 +45,9 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         PinchTest.class, SwipeTest.class, CallTest.class, LongPressTest.class, WaitForExistsTest.class,
         ScrollTest.class, HorizontalScrollTest.class, WaitForWindowUpdateTest.class, EmulatorCameraTest.class,
         WaitUntilGoneTest.class, ProcessRunningTest.class, ForceStopProcessTest.class, StopBackgroundProcessTest.class,
-        ScreenOffTimeoutTest.class, TimePickerInteractionTest.class, GetElementWhenPresentTest.class, SetIMEAsDefaultTest.class})
-//@SuiteClasses({SetIMEAsDefaultTest.class})
+        ScreenOffTimeoutTest.class, TimePickerInteractionTest.class, GetElementWhenPresentTest.class,
+        SetIMEAsDefaultTest.class, OpenNotificationTest.class, OpenQuickSettingsTest.class,
+        NotificationInteractionTest.class})
+// @SuiteClasses({NotificationInteractionTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
