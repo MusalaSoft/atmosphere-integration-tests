@@ -51,6 +51,6 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         ScreenOffTimeoutTest.class, TimePickerInteractionTest.class, GetElementWhenPresentTest.class,
         SetIMEAsDefaultTest.class, OpenNotificationTest.class, OpenQuickSettingsTest.class, NotificationBarTest.class,
         NotificationInteractionTest.class, DatePickerInteractionTest.class, UninstallApplicationTest.class})
-// @SuiteClasses({UninstallApplicationTest.class})
+// @SuiteClasses({BuilderDeviceSelectionIntegrationTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

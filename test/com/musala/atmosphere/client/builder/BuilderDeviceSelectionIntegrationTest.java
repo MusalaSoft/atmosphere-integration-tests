@@ -77,6 +77,7 @@ public class BuilderDeviceSelectionIntegrationTest {
         mockedDeviceInfoOne.setRam(511);
         mockedDeviceInfoOne.setResolution(new Pair<>(801, 601));
         mockedDeviceInfoOne.setDpi(121);
+        mockedDeviceInfoOne.setApiLevel(19);
         when(mockedDeviceOne.route(eq(RoutingAction.GET_DEVICE_INFORMATION))).thenReturn(mockedDeviceInfoOne);
 
         IWrapDevice mockedDeviceTwo = mock(IWrapDevice.class);
@@ -374,6 +375,32 @@ public class BuilderDeviceSelectionIntegrationTest {
         changedMockedDeviceInfoOne.setDpi(121);
 
         DeviceParameters parameters = new DeviceParameters(changedMockedDeviceInfoOne);
+
+        builder.getDevice(parameters);
+    }
+
+    @Test
+    public void testGetDeviceByApi() {
+
+        DeviceParameters parameters = new DeviceParameters();
+
+        int wantedApiVersion = 19;
+        parameters.setApiLevel(wantedApiVersion);
+
+        Device receivedDevice = builder.getDevice(parameters);
+
+        DeviceInformation information = receivedDevice.getInformation();
+        int realApiVersion = information.getApiLevel();
+
+        assertEquals("Device Api version does not match the requested one.", wantedApiVersion, realApiVersion);
+    }
+
+    @Test(expected = NoAvailableDeviceFoundException.class)
+    public void testGetDeviceByInvalidApiVersion() {
+        DeviceParameters parameters = new DeviceParameters();
+        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
+
+        parameters.setApiLevel(666);
 
         builder.getDevice(parameters);
     }
