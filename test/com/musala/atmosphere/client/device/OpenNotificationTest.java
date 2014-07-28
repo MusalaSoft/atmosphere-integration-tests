@@ -2,6 +2,7 @@ package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeNotNull;
 
 import javax.xml.xpath.XPathExpressionException;
 
@@ -17,6 +18,7 @@ import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 
 public class OpenNotificationTest extends BaseIntegrationTest {
 
@@ -25,10 +27,13 @@ public class OpenNotificationTest extends BaseIntegrationTest {
     @BeforeClass
     public static void setUp() {
         DeviceParameters testDeviceParams = new DeviceParameters();
-        testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
+        testDeviceParams.setDeviceType(DeviceType.DEVICE_ONLY);
+        testDeviceParams.setApiLevel(19);
 
-        initTestDevice(testDeviceParams);
-        setTestDevice(testDevice);
+        try {
+            initTestDevice(testDeviceParams);
+        } catch (NoAvailableDeviceFoundException e) {
+        }
     }
 
     @AfterClass
@@ -41,9 +46,15 @@ public class OpenNotificationTest extends BaseIntegrationTest {
         throws XPathExpressionException,
             UiElementFetchingException,
             InvalidCssQueryException {
+        assumeNotNull(testDevice);
+
+        setTestDevice(testDevice);
+
         UiElementSelector notificationBarSelector = new UiElementSelector();
         notificationBarSelector.addSelectionAttribute(CssAttribute.RESOURCE_ID, NOTIFICATION_BAR_RESOURCE_ID);
+
         Screen deviceActiveScreen = testDevice.getActiveScreen();
+
         try {
             deviceActiveScreen.getElement(notificationBarSelector);
             fail("The notification bar was already opened");

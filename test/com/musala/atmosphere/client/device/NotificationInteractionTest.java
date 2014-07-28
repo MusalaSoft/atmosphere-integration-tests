@@ -3,6 +3,7 @@ package com.musala.atmosphere.client.device;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertUIElementOnScreen;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startNotificationTestActivity;
+import static org.junit.Assume.assumeNotNull;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -22,6 +23,7 @@ import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 public class NotificationInteractionTest extends BaseIntegrationTest {
@@ -40,28 +42,34 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
             XPathExpressionException,
             InvalidCssQueryException {
         DeviceParameters testDeviceParams = new DeviceParameters();
-        testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
+        testDeviceParams.setDeviceType(DeviceType.DEVICE_ONLY);
+        testDeviceParams.setApiLevel(19);
 
-        initTestDevice(testDeviceParams);
-        setTestDevice(testDevice);
+        try {
+            initTestDevice(testDeviceParams);
+            setTestDevice(testDevice);
 
-        notificationBar = new NotificationBar(testDevice);
-        notificationBar.clearAllNotifications();
+            notificationBar = new NotificationBar(testDevice);
+            notificationBar.clearAllNotifications();
 
-        startNotificationTestActivity();
+            startNotificationTestActivity();
 
-        UiElementSelector sendNotificationButtonSelector = new UiElementSelector();
-        sendNotificationButtonSelector.addSelectionAttribute(CssAttribute.TEXT,
-                                                             ContentDescriptor.SEND_NOTIFICATION_BUTTON.toString());
+            UiElementSelector sendNotificationButtonSelector = new UiElementSelector();
+            sendNotificationButtonSelector.addSelectionAttribute(CssAttribute.TEXT,
+                                                                 ContentDescriptor.SEND_NOTIFICATION_BUTTON.toString());
 
-        Screen deviceActiveScreen = testDevice.getActiveScreen();
-        UiElement sendNotificationButton = deviceActiveScreen.getElement(sendNotificationButtonSelector);
-        sendNotificationButton.tap();
+            Screen deviceActiveScreen = testDevice.getActiveScreen();
+            UiElement sendNotificationButton = deviceActiveScreen.getElement(sendNotificationButtonSelector);
+            sendNotificationButton.tap();
+        } catch (NoAvailableDeviceFoundException e) {
+        }
     }
 
     @AfterClass
     public static void tearDown() {
-        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        if (testDevice != null) {
+            testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        }
         releaseDevice();
     }
 
@@ -71,6 +79,8 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
             InvalidCssQueryException,
             UiElementFetchingException,
             ParserConfigurationException {
+        assumeNotNull(testDevice);
+
         notificationBar.open();
 
         UiElementSelector notificationSelector = new UiElementSelector();

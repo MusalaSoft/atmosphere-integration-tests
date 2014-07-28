@@ -28,6 +28,8 @@ public class OpenQuickSettingsTest extends BaseIntegrationTest {
     public static void setUp() {
         DeviceParameters deviceParameters = new DeviceParameters();
         deviceParameters.setDeviceType(DeviceType.DEVICE_ONLY);
+        deviceParameters.setApiLevel(19);
+
         try {
             initTestDevice(deviceParameters);
         } catch (NoAvailableDeviceFoundException e) {
@@ -44,11 +46,15 @@ public class OpenQuickSettingsTest extends BaseIntegrationTest {
         throws XPathExpressionException,
             UiElementFetchingException,
             InvalidCssQueryException {
-        UiElementSelector quickSettingsSelector = new UiElementSelector();
         assumeNotNull(testDevice);
+        System.out.println("maika ti");
         setTestDevice(testDevice);
+
+        UiElementSelector quickSettingsSelector = new UiElementSelector();
         quickSettingsSelector.addSelectionAttribute(CssAttribute.RESOURCE_ID, QUICK_SETTINGS_RESOURCE_ID);
+
         Screen deviceActiveScreen = testDevice.getActiveScreen();
+
         try {
             deviceActiveScreen.getElement(quickSettingsSelector);
             fail("The quick settings were already opened.");
