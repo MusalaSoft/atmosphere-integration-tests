@@ -33,6 +33,8 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
     private static final String NOTIFICATION_BUTTON_TEXT = "Open";
 
     private static NotificationBar notificationBar = null;
+    
+    private static Screen deviceActiveScreen = null;
 
     @BeforeClass
     public static void setUp()
@@ -58,7 +60,7 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
             sendNotificationButtonSelector.addSelectionAttribute(CssAttribute.TEXT,
                                                                  ContentDescriptor.SEND_NOTIFICATION_BUTTON.toString());
 
-            Screen deviceActiveScreen = testDevice.getActiveScreen();
+            deviceActiveScreen = testDevice.getActiveScreen();
             UiElement sendNotificationButton = deviceActiveScreen.getElement(sendNotificationButtonSelector);
             sendNotificationButton.tap();
         } catch (NoAvailableDeviceFoundException e) {
@@ -86,10 +88,13 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
         UiElementSelector notificationSelector = new UiElementSelector();
         notificationSelector.addSelectionAttribute(CssAttribute.TEXT, NOTIFICATION_TITLE_TEXT);
         UiElement notification = notificationBar.getNotificationBySelector(notificationSelector);
-
+        
+        notification.pinchOut();
+        notification = notificationBar.getNotificationBySelector(notificationSelector);
+        
         UiElementSelector notificationOpenButtonSelector = new UiElementSelector();
         notificationOpenButtonSelector.addSelectionAttribute(CssAttribute.TEXT, NOTIFICATION_BUTTON_TEXT);
-
+        
         notification.tapOnChildElement(notificationOpenButtonSelector);
 
         // The tapping on the button opens the wait test activity and then the test checks if a button from the wait
