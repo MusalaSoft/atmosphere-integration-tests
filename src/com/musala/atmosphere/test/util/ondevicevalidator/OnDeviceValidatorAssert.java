@@ -1123,10 +1123,10 @@ public class OnDeviceValidatorAssert {
     }
 
     /**
-     * Installs the OnDeviceValidator on the test device.
+     * Reinstalls the OnDeviceValidator on the test device.
      */
     public static void setupOndeviceValidator() {
-        device.installAPK(PATH_TO_APK, true);
+        device.reinstallApplication(VALIDATOR_APP_PACKAGE, PATH_TO_APK);
     }
 
     /**

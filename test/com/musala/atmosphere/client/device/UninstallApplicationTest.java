@@ -9,16 +9,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
-import com.musala.atmosphere.client.uiutils.CssAttribute;
-import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 
 public class UninstallApplicationTest extends BaseIntegrationTest {
-
-    private static final String ATMOSPHERE_VALIDATOR_BAR_TEXT = "Atmosphere Validator";
+    private static final String RANDOM_APP_PACKAGE = "com.musala.atmosphere.random";
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -27,8 +23,6 @@ public class UninstallApplicationTest extends BaseIntegrationTest {
 
         initTestDevice(testDeviceParams);
         setTestDevice(testDevice);
-
-        testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
     }
 
     @AfterClass
@@ -38,17 +32,18 @@ public class UninstallApplicationTest extends BaseIntegrationTest {
     }
 
     @Test(expected = ActivityStartingException.class)
-    public void testUninstallApplication() throws Exception {
+    public void testUninstallExistingApplication() throws Exception {
         Boolean result = testDevice.uninstallApplication(VALIDATOR_APP_PACKAGE);
 
-        assertTrue("uninstallApplication returned false.", result);
-
-        UiElementSelector validatorBarSelector = new UiElementSelector();
-        validatorBarSelector.addSelectionAttribute(CssAttribute.TEXT, ATMOSPHERE_VALIDATOR_BAR_TEXT);
-
-        Screen deviceActiveScreen = testDevice.getActiveScreen();
-        deviceActiveScreen.waitUntilElementGone(validatorBarSelector, 10000);
+        assertTrue("The uninstallation of the validator was not successful.", result);
 
         testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
+    }
+
+    @Test
+    public void testUninstallUnexistingApplication() {
+        Boolean result = testDevice.uninstallApplication(RANDOM_APP_PACKAGE);
+
+        assertTrue("The uninstallation of the unexisting application was not successful.", result);
     }
 }
