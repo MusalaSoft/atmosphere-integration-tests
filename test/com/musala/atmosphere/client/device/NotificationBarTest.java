@@ -36,7 +36,9 @@ public class NotificationBarTest extends BaseIntegrationTest {
 
     private static final String NOTIFICATION_TITLE_TEXT_XPATH_QUERY = "//*[@text='Notification Title']";
 
-    private static final String UNEXISTING_NOTIFICATION_SELECTOR = "unexisting notification";
+    private static final String EXISTING_NOTIFICATION_CSS_QUERY = "[text=Notification Title]";
+
+    private static final String UNEXISTING_NOTIFICATION_SELECTOR_TEXT = "unexisting notification";
 
     @BeforeClass
     public static void setUp()
@@ -77,19 +79,48 @@ public class NotificationBarTest extends BaseIntegrationTest {
         releaseDevice();
     }
 
+    public void verifyNotification(UiElement notification) throws Exception {
+        List<UiElement> notificationElements = notification.getChildren(NOTIFICATION_TITLE_TEXT_XPATH_QUERY);
+
+        assertNotNull("The method did not return the right notification.", notificationElements);
+    }
+
     @Test
-    public void testGetExistingNotification()
-        throws XPathExpressionException,
-            InvalidCssQueryException,
-            UiElementFetchingException,
-            ParserConfigurationException {
+    public void testGetExistingNotificationByText() throws Exception {
         assumeNotNull(testDevice);
 
         UiElement notification = notificationBar.getNotificationByText(NOTIFICATION_TITLE_TEXT);
 
-        List<UiElement> notificationElements = notification.getChildren(NOTIFICATION_TITLE_TEXT_XPATH_QUERY);
+        verifyNotification(notification);
+    }
 
-        assertNotNull("The method did not return the right notification", notificationElements);
+    @Test
+    public void testGetExistingNotificationBySelector() throws Exception {
+        assumeNotNull(testDevice);
+
+        UiElementSelector notificationSelector = new UiElementSelector();
+        notificationSelector.addSelectionAttribute(CssAttribute.TEXT, NOTIFICATION_TITLE_TEXT);
+        UiElement notification = notificationBar.getNotificationBySelector(notificationSelector);
+
+        verifyNotification(notification);
+    }
+
+    @Test
+    public void testGetExistingNotificationByXPathQuery() throws Exception {
+        assumeNotNull(testDevice);
+
+        UiElement notification = notificationBar.getNotificationByXPath(NOTIFICATION_TITLE_TEXT_XPATH_QUERY);
+
+        verifyNotification(notification);
+    }
+
+    @Test
+    public void testGetExistingNotificationByCssQuery() throws Exception {
+        assumeNotNull(testDevice);
+
+        UiElement notification = notificationBar.getNotificationByCssQuery(EXISTING_NOTIFICATION_CSS_QUERY);
+
+        verifyNotification(notification);
     }
 
     @Test(expected = UiElementFetchingException.class)
@@ -100,6 +131,6 @@ public class NotificationBarTest extends BaseIntegrationTest {
             ParserConfigurationException {
         assumeNotNull(testDevice);
 
-        notificationBar.getNotificationByText(UNEXISTING_NOTIFICATION_SELECTOR);
+        notificationBar.getNotificationByText(UNEXISTING_NOTIFICATION_SELECTOR_TEXT);
     }
 }
