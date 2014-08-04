@@ -21,6 +21,7 @@ import com.musala.atmosphere.commons.ScreenOrientation;
 import com.musala.atmosphere.commons.SmsMessage;
 import com.musala.atmosphere.commons.beans.BatteryState;
 import com.musala.atmosphere.commons.beans.PhoneNumber;
+import com.musala.atmosphere.commons.util.GeoLocation;
 
 /**
  * Class containing assertions and other useful methods implementing logic for the OnDeviceValidator.
@@ -63,6 +64,8 @@ public class OnDeviceValidatorAssert {
 
     private final static String VALIDATOR_NOTIFICATION_TEST_ACTIVITY = ".NotificationTestActivity";
 
+    private final static String VALIDATOR_LOCATION_ACTIVITY = ".LocationActivity";
+
     private final static String VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC = "ATMOSPHEREValidator";
 
     private final static String VALIDATOR_IS_NOT_STARTED_MESSAGE = "ATMOSPHERE Validator has not beeen started.";
@@ -102,6 +105,8 @@ public class OnDeviceValidatorAssert {
     private static final Object EXPECTED_SCROLL_TO_BEGINNING = "Top";
 
     private static final String START_SERVICE_ACTIVITY = ".StartServiceActivity";
+
+    private static final String LOCATION_FORMAT = "%f, %f, %f";
 
     private static Device device;
 
@@ -918,6 +923,30 @@ public class OnDeviceValidatorAssert {
     }
 
     /**
+     * Asserts that the given location was mocked in the GPS location provider.
+     * 
+     * @param message
+     *        - message to be displayed if the assertion fails
+     * @param location
+     *        - the expected mock location
+     */
+    public static void assertLocation(String message, GeoLocation location) {
+        String expectedLocation = String.format(LOCATION_FORMAT,
+                                                location.getLatitude(),
+                                                location.getLongitude(),
+                                                location.getAltitude());
+
+        UiElementSelector locationSelector = new UiElementSelector();
+        locationSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                               ContentDescriptor.GPS_LOCATION.toString());
+        locationSelector.addSelectionAttribute(CssAttribute.TEXT, expectedLocation);
+
+        Screen deviceActiveScreen = device.getActiveScreen();
+        boolean isLocationMocked = deviceActiveScreen.waitForElementExists(locationSelector, ASSERT_TIMEOUT);
+        assertTrue(message, isLocationMocked);
+    }
+
+    /**
      * Creates selector by given text and content descriptor.
      * 
      * @param contentDescriptor
@@ -1141,6 +1170,20 @@ public class OnDeviceValidatorAssert {
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_ACCELERATION_ACTIVITY);
+    }
+
+    /**
+     * Starts OnDeviceValidator's location test activity.
+     * 
+     * @throws UiElementFetchingException
+     * @throws InterruptedException
+     * @throws ActivityStartingException
+     */
+    public static void startLocationActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_LOCATION_ACTIVITY);
     }
 
     /**
