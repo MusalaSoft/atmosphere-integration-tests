@@ -25,7 +25,6 @@ import com.musala.atmosphere.client.device.OpenQuickSettingsTest;
 import com.musala.atmosphere.client.device.PinchTest;
 import com.musala.atmosphere.client.device.ProcessRunningTest;
 import com.musala.atmosphere.client.device.ReceiveSmsTest;
-import com.musala.atmosphere.client.device.ReinstallApplicationTest;
 import com.musala.atmosphere.client.device.ScreenOffTimeoutTest;
 import com.musala.atmosphere.client.device.ScrollTest;
 import com.musala.atmosphere.client.device.SetIMEAsDefaultTest;
@@ -41,18 +40,19 @@ import com.musala.atmosphere.client.device.WaitForWindowUpdateTest;
 import com.musala.atmosphere.client.device.WaitUntilGoneTest;
 import com.musala.atmosphere.client.screen.GetElementWhenPresentTest;
 import com.musala.atmosphere.server.PoolEventHandlerTest;
+import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
 
 @SuiteClasses({ScreenOrientationTest.class, PoolEventHandlerTest.class, TapTest.class, LockUnlockTest.class,
         StartActivityTest.class, BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class,
         DeviceInstallApkTest.class, GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class,
         GestureExecutionTest.class, TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class,
-        PinchTest.class, SwipeTest.class, CallTest.class, LongPressTest.class, WaitForExistsTest.class,
-        ScrollTest.class, HorizontalScrollTest.class, WaitForWindowUpdateTest.class, EmulatorCameraTest.class,
-        WaitUntilGoneTest.class, ProcessRunningTest.class, ForceStopProcessTest.class, StopBackgroundProcessTest.class,
-        ScreenOffTimeoutTest.class, TimePickerInteractionTest.class, GetElementWhenPresentTest.class,
-        SetIMEAsDefaultTest.class, OpenNotificationTest.class, OpenQuickSettingsTest.class, NotificationBarTest.class,
-        NotificationInteractionTest.class, DatePickerInteractionTest.class, UninstallApplicationTest.class,
-        ReinstallApplicationTest.class})
-// @SuiteClasses({ReinstallApplicationTest.class})
+        PinchTest.class, AtmosphereServiceConnectionTest.class, SwipeTest.class, CallTest.class, LongPressTest.class,
+        WaitForExistsTest.class, ScrollTest.class, HorizontalScrollTest.class, WaitForWindowUpdateTest.class,
+        EmulatorCameraTest.class, WaitUntilGoneTest.class, ProcessRunningTest.class, ForceStopProcessTest.class,
+        StopBackgroundProcessTest.class, ScreenOffTimeoutTest.class, TimePickerInteractionTest.class,
+        GetElementWhenPresentTest.class, SetIMEAsDefaultTest.class, OpenNotificationTest.class,
+        OpenQuickSettingsTest.class, NotificationBarTest.class, NotificationInteractionTest.class,
+        DatePickerInteractionTest.class, UninstallApplicationTest.class})
+// @SuiteClasses({AtmosphereServiceConnectionTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
