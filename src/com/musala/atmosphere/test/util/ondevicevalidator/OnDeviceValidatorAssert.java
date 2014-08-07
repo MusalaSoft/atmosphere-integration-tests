@@ -64,6 +64,8 @@ public class OnDeviceValidatorAssert {
 
     private final static String VALIDATOR_NOTIFICATION_TEST_ACTIVITY = ".NotificationTestActivity";
 
+    private final static String VALIDATOR_PROXIMITY_ACTIVITY = ".ProximityActivity";
+
     private final static String VALIDATOR_LOCATION_ACTIVITY = ".LocationActivity";
 
     private final static String VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC = "ATMOSPHEREValidator";
@@ -390,6 +392,21 @@ public class OnDeviceValidatorAssert {
      */
     public static void assertDoubleTapped(String message) throws UiElementFetchingException {
         assertGestureReceived(message, EXPECTED_DOUBLE_TAP_TEXT);
+    }
+
+    /**
+     * Asserts that proximity value of a device corresponds to the given selector string.
+     * 
+     * @param proximityTextSelector
+     *        - a text selector for the attribute field containing the proximity value
+     */
+    public static void assertDeviceProximity(String message, String proximityTextSelector) {
+        UiElementSelector deviceProximitySelector = new UiElementSelector();
+        deviceProximitySelector.addSelectionAttribute(CssAttribute.TEXT, proximityTextSelector);
+        deviceProximitySelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                      ContentDescriptor.PROXIMITY_FIELD_BOX.toString());
+
+        assertUIElementOnScreen(message, deviceProximitySelector);
     }
 
     /**
@@ -1389,5 +1406,22 @@ public class OnDeviceValidatorAssert {
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_NOTIFICATION_TEST_ACTIVITY);
+    }
+
+    /**
+     * Starts the proximity activity.
+     * 
+     * @throws ActivityStartingException
+     *         - if the activity was not started successfully
+     * @throws InterruptedException
+     *         - if the start of the activity was interrupted
+     * @throws UiElementFetchingException
+     *         - if the UI element could not be found
+     */
+    public static void startProximityActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_PROXIMITY_ACTIVITY);
     }
 }

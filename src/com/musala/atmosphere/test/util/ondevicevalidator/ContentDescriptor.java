@@ -24,6 +24,7 @@ public enum ContentDescriptor {
     MAGNETIC_FIELD_X_BOX("MagneticFieldXBox"),
     MAGNETIC_FIELD_Y_BOX("MagneticFieldYBox"),
     MAGNETIC_FIELD_Z_BOX("MagneticFieldZBox"),
+    PROXIMITY_FIELD_BOX("ProximityBox"),
     AUTO_ROTATION_BUTTON("AutoRotationFlag"),
     SCREEN_ORIENTATION_BOX("ScreenOrientationBox"),
     SMS_SENDER_PHONE_BOX("SmsSenderPhone"),

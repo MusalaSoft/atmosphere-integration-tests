@@ -2,6 +2,7 @@ package com.musala.atmosphere.testsuites;
 
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.musala.atmosphere.agent.devicewrapper.DeviceProximityTest;
 import com.musala.atmosphere.agent.devicewrapper.EmulatorCameraTest;
 import com.musala.atmosphere.agent.devicewrapper.GetScreenshotTest;
 import com.musala.atmosphere.agent.devicewrapper.GetUiXmlTest;
@@ -52,7 +53,7 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
         StopBackgroundProcessTest.class, ScreenOffTimeoutTest.class, TimePickerInteractionTest.class,
         GetElementWhenPresentTest.class, SetIMEAsDefaultTest.class, OpenNotificationTest.class,
         OpenQuickSettingsTest.class, NotificationBarTest.class, NotificationInteractionTest.class,
-        DatePickerInteractionTest.class, UninstallApplicationTest.class})
-// @SuiteClasses({AtmosphereServiceConnectionTest.class})
+        DatePickerInteractionTest.class, UninstallApplicationTest.class, DeviceProximityTest.class})
+//@SuiteClasses({AtmosphereServiceConnectionTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
