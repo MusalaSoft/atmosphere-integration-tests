@@ -1,6 +1,7 @@
 package com.musala.atmosphere.agent.devicewrapper;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertDeviceProximity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertGetProximityValue;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startProximityActivity;
 
@@ -51,5 +52,18 @@ public class DeviceProximityTest extends BaseIntegrationTest {
         String proximityFarValueText = String.valueOf(DeviceProximity.BINARY_FAR_VALUE);
 
         assertDeviceProximity("The device proximity was not set correctly.", proximityFarValueText);
+    }
+
+    @Test
+    public void testGetProximity() {
+        testDevice.setProximity(DeviceProximity.BINARY_FAR_VALUE);
+
+        assertGetProximityValue("The value returned by the get proximity method did not match the expected value.",
+                                DeviceProximity.BINARY_FAR_VALUE);
+
+        testDevice.setProximity(DeviceProximity.BINARY_NEAR_VALUE);
+
+        assertGetProximityValue("The value returned by the get proximity method did not match the expected value.",
+                                DeviceProximity.BINARY_NEAR_VALUE);
     }
 }

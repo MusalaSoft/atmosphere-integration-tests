@@ -397,6 +397,8 @@ public class OnDeviceValidatorAssert {
     /**
      * Asserts that proximity value of a device corresponds to the given selector string.
      * 
+     * @param message
+     *        - message to be displayed if the assertion fails
      * @param proximityTextSelector
      *        - a text selector for the attribute field containing the proximity value
      */
@@ -407,6 +409,22 @@ public class OnDeviceValidatorAssert {
                                                       ContentDescriptor.PROXIMITY_FIELD_BOX.toString());
 
         assertUIElementOnScreen(message, deviceProximitySelector);
+    }
+
+    /**
+     * Asserts that the proximity value returned by the getDeviceProximity method is equal to the expected value.
+     * 
+     * @param message
+     *        - message to be displayed if the assertion fails
+     * @param expectedProximityValue
+     *        - a float representing the expected value of the proximity
+     */
+    public static void assertGetProximityValue(String message, float expectedProximityValue) {
+        float deviceProximity = device.getDeviceProximity();
+
+        // compare is used because assertEquals for two double instances with a string message is deprecated for some
+        // reason, compare returns 0 as an integer if the floats are equal
+        assertEquals(message, Float.compare(deviceProximity, expectedProximityValue), 0);
     }
 
     /**
