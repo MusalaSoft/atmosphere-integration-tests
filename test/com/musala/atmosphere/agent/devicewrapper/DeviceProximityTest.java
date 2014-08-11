@@ -19,6 +19,8 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
  */
 public class DeviceProximityTest extends BaseIntegrationTest {
 
+    private static final int SETTING_PROXIMITY_TIMEOUT = 1000;
+
     @BeforeClass
     public static void setUp() throws Exception {
         DeviceParameters emulatorTestDevice = new DeviceParameters();
@@ -55,13 +57,17 @@ public class DeviceProximityTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testGetProximity() {
+    public void testGetProximity() throws InterruptedException {
         testDevice.setProximity(DeviceProximity.BINARY_FAR_VALUE);
+
+        Thread.sleep(SETTING_PROXIMITY_TIMEOUT);
 
         assertGetProximityValue("The value returned by the get proximity method did not match the expected value.",
                                 DeviceProximity.BINARY_FAR_VALUE);
 
         testDevice.setProximity(DeviceProximity.BINARY_NEAR_VALUE);
+
+        Thread.sleep(SETTING_PROXIMITY_TIMEOUT);
 
         assertGetProximityValue("The value returned by the get proximity method did not match the expected value.",
                                 DeviceProximity.BINARY_NEAR_VALUE);
