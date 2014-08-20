@@ -3,6 +3,7 @@ package com.musala.atmosphere.client.device;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeNotNull;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 
 /**
  * 
@@ -22,8 +24,14 @@ public class SetKeyguardTest extends BaseIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
-        testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
-        initTestDevice(testDeviceParams);
+        testDeviceParams.setDeviceType(DeviceType.DEVICE_ONLY);
+        try {
+            initTestDevice(testDeviceParams);
+        } catch (NoAvailableDeviceFoundException e) {
+        }
+
+        assumeNotNull(testDevice);
+
         setTestDevice(testDevice);
     }
 

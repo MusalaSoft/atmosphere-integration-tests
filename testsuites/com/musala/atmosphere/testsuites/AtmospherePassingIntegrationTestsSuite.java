@@ -58,10 +58,7 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
         GetElementWhenPresentTest.class, SetIMEAsDefaultTest.class, OpenNotificationTest.class,
         OpenQuickSettingsTest.class, NotificationBarTest.class, NotificationInteractionTest.class,
         DatePickerInteractionTest.class, UninstallApplicationTest.class, DeviceProximityTest.class,
-        WaitForTaskUpdateTest.class, BringTaskToFrontTest.class, GetRunningTaskIdsTest.class})
-// @SuiteClasses({
-// LockUnlockTest.class, WaitForTaskUpdateTest.class, BringTaskToFrontTest.class,
-// GetRunningTaskIdsTest.class,
-// SetKeyguardTest.class})
+        WaitForTaskUpdateTest.class, BringTaskToFrontTest.class, GetRunningTaskIdsTest.class, SetKeyguardTest.class})
+// @SuiteClasses({SetKeyguardTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
