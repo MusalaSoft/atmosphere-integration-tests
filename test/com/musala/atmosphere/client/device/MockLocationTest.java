@@ -6,6 +6,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -30,16 +31,27 @@ public class MockLocationTest extends BaseIntegrationTest {
 
     private static final double MONITORED_PROVIDER_DEFAULT_LONGITUDE = 0;
 
-    private static final double TEST_LATITUDE = -43.12;
+    private static final double MONITORED_PROVIDER_DEFAULT_ALTITUDE = 0;
 
-    private static final double TEST_LONGITUDE = 123.32;
+    private static final double SAN_FRANCISCO_LATITUDE = 37.767403;
+
+    private static final double SAN_FRANCISCO_LONGITUDE = -122.429189;
+
+    private static final double SAN_FRANCISCO_ALTITUDE = 1;
 
     private static final String FAILURE_INDICATED_ERROR_MESSAGE = "Mocking location provider indicated failure.";
 
     private static final String LOCATION_MOCK_UNSUCCESSFUL = "Location was not successfully mocked.";
 
+    private static GeoLocation defaultMonitoredProviderLocation;
+
     @BeforeClass
     public static void setUp() throws ActivityStartingException, InterruptedException, UiElementFetchingException {
+        defaultMonitoredProviderLocation = new GeoLocation(MONITORED_PROVIDER_DEFAULT_LATITUDE,
+                                                           MONITORED_PROVIDER_DEFAULT_LONGITUDE,
+                                                           MONITORED_PROVIDER_NAME);
+        defaultMonitoredProviderLocation.setAltitude(MONITORED_PROVIDER_DEFAULT_ALTITUDE);
+
         DeviceParameters testDeviceParameters = new DeviceParameters();
         testDeviceParameters.setDeviceType(DeviceType.DEVICE_PREFERRED);
         initTestDevice(testDeviceParameters);
@@ -54,41 +66,42 @@ public class MockLocationTest extends BaseIntegrationTest {
         releaseDevice();
     }
 
+    @Before
+    public void setUpTest() {
+        // set the monitored provider to its default location for the test
+        boolean isMockSuccessful = testDevice.mockLocation(defaultMonitoredProviderLocation);
+        assertTrue("Setting the monitored provider to its default location indicated failure.", isMockSuccessful);
+    }
+
     @Test
     public void testMockLocationMonitoredProvider() {
-        GeoLocation mockLocation = new GeoLocation(MONITORED_PROVIDER_DEFAULT_LATITUDE,
-                                                   MONITORED_PROVIDER_DEFAULT_LONGITUDE,
-                                                   MONITORED_PROVIDER_NAME);
-        assertTrue(FAILURE_INDICATED_ERROR_MESSAGE, testDevice.mockLocation(mockLocation));
-        assertLocation(LOCATION_MOCK_UNSUCCESSFUL, mockLocation);
+        assertLocation(LOCATION_MOCK_UNSUCCESSFUL, defaultMonitoredProviderLocation);
     }
 
     @Test
     public void testMockLocationNotMonitoredProvider() {
-        // set the monitored provider's location, so we know its different from the one we set in the non-monitored one
-        GeoLocation monitoredProviderLocation = new GeoLocation(MONITORED_PROVIDER_DEFAULT_LATITUDE,
-                                                                MONITORED_PROVIDER_DEFAULT_LONGITUDE,
-                                                                MONITORED_PROVIDER_NAME);
-        assertTrue(FAILURE_INDICATED_ERROR_MESSAGE, testDevice.mockLocation(monitoredProviderLocation));
-
-        GeoLocation nonMonitoredProviderLocation = new GeoLocation(TEST_LATITUDE,
-                                                                   TEST_LONGITUDE,
+        GeoLocation nonMonitoredProviderLocation = new GeoLocation(SAN_FRANCISCO_LATITUDE,
+                                                                   SAN_FRANCISCO_LONGITUDE,
                                                                    NOT_MONITORED_PROVIDER_NAME);
-        assertTrue(FAILURE_INDICATED_ERROR_MESSAGE, testDevice.mockLocation(nonMonitoredProviderLocation));
+        nonMonitoredProviderLocation.setAltitude(SAN_FRANCISCO_ALTITUDE);
+
+        boolean isMockSuccessful = testDevice.mockLocation(nonMonitoredProviderLocation);
+        assertTrue(FAILURE_INDICATED_ERROR_MESSAGE, isMockSuccessful);
         assertLocation("Location changed from the monitored provider, when mocking another provider.",
-                       monitoredProviderLocation);
+                       defaultMonitoredProviderLocation);
     }
 
     @Test
-    public void testMockSameProviderSeveralTimes() {
-        GeoLocation initialMockLocation = new GeoLocation(MONITORED_PROVIDER_DEFAULT_LATITUDE,
-                                                          MONITORED_PROVIDER_DEFAULT_LONGITUDE,
-                                                          MONITORED_PROVIDER_NAME);
-        assertTrue(FAILURE_INDICATED_ERROR_MESSAGE, testDevice.mockLocation(initialMockLocation));
-        assertLocation(LOCATION_MOCK_UNSUCCESSFUL, initialMockLocation);
+    public void testMockLocationSameProviderSeveralTimes() {
+        assertLocation(LOCATION_MOCK_UNSUCCESSFUL, defaultMonitoredProviderLocation);
 
-        GeoLocation secondMockLocation = new GeoLocation(TEST_LATITUDE, TEST_LONGITUDE, MONITORED_PROVIDER_NAME);
-        assertTrue(FAILURE_INDICATED_ERROR_MESSAGE, testDevice.mockLocation(secondMockLocation));
+        GeoLocation secondMockLocation = new GeoLocation(SAN_FRANCISCO_LATITUDE,
+                                                         SAN_FRANCISCO_LONGITUDE,
+                                                         MONITORED_PROVIDER_NAME);
+        secondMockLocation.setAltitude(SAN_FRANCISCO_ALTITUDE);
+
+        boolean isMockSuccessful = testDevice.mockLocation(secondMockLocation);
+        assertTrue(FAILURE_INDICATED_ERROR_MESSAGE, isMockSuccessful);
         assertLocation(LOCATION_MOCK_UNSUCCESSFUL, secondMockLocation);
     }
 }

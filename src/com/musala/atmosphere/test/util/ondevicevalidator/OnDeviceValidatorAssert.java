@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 import javax.xml.xpath.XPathExpressionException;
 
@@ -108,7 +110,9 @@ public class OnDeviceValidatorAssert {
 
     private static final String START_SERVICE_ACTIVITY = ".StartServiceActivity";
 
-    private static final String LOCATION_FORMAT = "%f, %f, %f";
+    private static final Locale COMMA_DECIMAL_SEPARATOR_LOCALE = Locale.FRANCE;
+
+    private static final String LOCATION_FORMAT = "%s, %s, %s";
 
     private static Device device;
 
@@ -787,6 +791,14 @@ public class OnDeviceValidatorAssert {
         assertElementExists(VALIDATOR_IS_NOT_STARTED_MESSAGE, validationViewSelector);
     }
 
+    /**
+     * Asserts that the OnDeviceValidator application is not started.
+     * 
+     * @param message
+     *        - the message to be displayed in case the assertion fails
+     * @throws UiElementFetchingException
+     *         - thrown if the validation element of the OnDeviceValidator application cannot be fetched
+     */
     public static void assertValidatorIsNotStarted(String message) throws UiElementFetchingException {
         // If the validator app activity is not started, this element fetching
         // will fail.
@@ -966,19 +978,44 @@ public class OnDeviceValidatorAssert {
      *        - the expected mock location
      */
     public static void assertLocation(String message, GeoLocation location) {
-        String expectedLocation = String.format(LOCATION_FORMAT,
-                                                location.getLatitude(),
-                                                location.getLongitude(),
-                                                location.getAltitude());
+        Screen deviceActiveScreen = device.getActiveScreen();
+        UiElementSelector locationMonitorSelector = getLocationMonitorElementSelector(location);
+        boolean isLocationMocked = deviceActiveScreen.waitForElementExists(locationMonitorSelector, ASSERT_TIMEOUT);
+        assertTrue(message, isLocationMocked);
+    }
+
+    /**
+     * Gets a selector for the UI element monitoring the location in the validator application. The passed location is
+     * parsed to its expected text representation and added as a selection attribute.
+     * 
+     * @param mockedLocation
+     *        - the expected location on the location monitor element
+     * @return a selector that matches the location monitor element displaying the passed location
+     */
+    public static UiElementSelector getLocationMonitorElementSelector(GeoLocation mockedLocation) {
+        String latitudeString = formatNumberWithLocale(mockedLocation.getLatitude());
+        String longitudeString = formatNumberWithLocale(mockedLocation.getLongitude());
+        String altitudeString = formatNumberWithLocale(mockedLocation.getAltitude());
+        String expectedLocation = String.format(LOCATION_FORMAT, latitudeString, longitudeString, altitudeString);
 
         UiElementSelector locationSelector = new UiElementSelector();
         locationSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
                                                ContentDescriptor.GPS_LOCATION.toString());
         locationSelector.addSelectionAttribute(CssAttribute.TEXT, expectedLocation);
+        return locationSelector;
+    }
 
-        Screen deviceActiveScreen = device.getActiveScreen();
-        boolean isLocationMocked = deviceActiveScreen.waitForElementExists(locationSelector, ASSERT_TIMEOUT);
-        assertTrue(message, isLocationMocked);
+    /**
+     * Formats the passed <code>double</code> with the locale set in
+     * {@link OnDeviceValidatorAssert#COMMA_DECIMAL_SEPARATOR_LOCALE}.
+     * 
+     * @param number
+     *        - the number to be formated
+     * @return the {@link String} representation of the passed number in the specified locale
+     */
+    private static String formatNumberWithLocale(double number) {
+        NumberFormat localeFormat = NumberFormat.getInstance(COMMA_DECIMAL_SEPARATOR_LOCALE);
+        return localeFormat.format(number);
     }
 
     /**
