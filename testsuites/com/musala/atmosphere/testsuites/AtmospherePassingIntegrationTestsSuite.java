@@ -32,6 +32,7 @@ import com.musala.atmosphere.client.device.ReceiveSmsTest;
 import com.musala.atmosphere.client.device.ScreenOffTimeoutTest;
 import com.musala.atmosphere.client.device.ScrollTest;
 import com.musala.atmosphere.client.device.SetIMEAsDefaultTest;
+import com.musala.atmosphere.client.device.SetKeyguardTest;
 import com.musala.atmosphere.client.device.StartActivityTest;
 import com.musala.atmosphere.client.device.StartApplicationTest;
 import com.musala.atmosphere.client.device.StopBackgroundProcessTest;
@@ -58,7 +59,7 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
         GetElementWhenPresentTest.class, SetIMEAsDefaultTest.class, OpenNotificationTest.class,
         OpenQuickSettingsTest.class, NotificationBarTest.class, NotificationInteractionTest.class,
         DatePickerInteractionTest.class, UninstallApplicationTest.class, DeviceProximityTest.class,
-        WaitForTaskUpdateTest.class, BringTaskToFrontTest.class, GetRunningTaskIdsTest.class, MockLocationTest.class})
+        WaitForTaskUpdateTest.class, BringTaskToFrontTest.class, GetRunningTaskIdsTest.class, SetKeyguardTest.class, MockLocationTest.class})
 // @SuiteClasses({SetKeyguardTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

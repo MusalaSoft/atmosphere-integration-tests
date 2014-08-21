@@ -21,7 +21,7 @@ import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundExcepti
  */
 public class SetKeyguardTest extends BaseIntegrationTest {
 
-    private static final int WAIT_FOR_LOCK_TIMEOUT = 1000;
+    private static final int WAIT_FOR_LOCK_TIMEOUT = 2000;
 
     @BeforeClass
     public static void setUp() throws Exception {
