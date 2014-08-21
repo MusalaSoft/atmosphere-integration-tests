@@ -21,6 +21,8 @@ import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundExcepti
  */
 public class SetKeyguardTest extends BaseIntegrationTest {
 
+    private static final int WAIT_FOR_LOCK_TIMEOUT = 1000;
+
     @BeforeClass
     public static void setUp() throws Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
@@ -31,7 +33,6 @@ public class SetKeyguardTest extends BaseIntegrationTest {
         }
 
         assumeNotNull(testDevice);
-
         setTestDevice(testDevice);
     }
 
@@ -47,6 +48,7 @@ public class SetKeyguardTest extends BaseIntegrationTest {
         assertFalse("The keyguard is present when it should be removed.", testDevice.isLocked());
         testDevice.setKeyguard(true);
         testDevice.setLocked(true);
-        assertTrue("The Keyguard is not present when is re enabled.", testDevice.isLocked());
+        Thread.sleep(WAIT_FOR_LOCK_TIMEOUT);
+        assertTrue("The Keyguard is not present when is re-enabled.", testDevice.isLocked());
     }
 }
