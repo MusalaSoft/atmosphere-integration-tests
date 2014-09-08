@@ -42,7 +42,8 @@ public enum ContentDescriptor {
     TIME_PICKER_24_HOURS_FORMAT("TimePicker24HoursFormatButton"),
     SEND_NOTIFICATION_BUTTON("Send notification"),
     DATE_PICKER("SelectDateButton"),
-    GPS_LOCATION("GpsLocation");
+    GPS_LOCATION("GpsLocation"),
+    PROVIDER_DISCONNECT_MONITOR("TestProviderDisconnectMonitor");
 
     private String value;
 

@@ -14,6 +14,7 @@ import com.musala.atmosphere.client.device.CallTest;
 import com.musala.atmosphere.client.device.DatePickerInteractionTest;
 import com.musala.atmosphere.client.device.DeviceGetScreenshotTest;
 import com.musala.atmosphere.client.device.DeviceInstallApkTest;
+import com.musala.atmosphere.client.device.DisableMockLocationTest;
 import com.musala.atmosphere.client.device.DoubleTapTest;
 import com.musala.atmosphere.client.device.ForceStopProcessTest;
 import com.musala.atmosphere.client.device.GestureExecutionTest;
@@ -59,7 +60,8 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
         GetElementWhenPresentTest.class, SetIMEAsDefaultTest.class, OpenNotificationTest.class,
         OpenQuickSettingsTest.class, NotificationBarTest.class, NotificationInteractionTest.class,
         DatePickerInteractionTest.class, UninstallApplicationTest.class, DeviceProximityTest.class,
-        WaitForTaskUpdateTest.class, BringTaskToFrontTest.class, GetRunningTaskIdsTest.class, SetKeyguardTest.class, MockLocationTest.class})
-// @SuiteClasses({SetKeyguardTest.class})
+        WaitForTaskUpdateTest.class, BringTaskToFrontTest.class, GetRunningTaskIdsTest.class, SetKeyguardTest.class,
+        MockLocationTest.class, DisableMockLocationTest.class})
+// @SuiteClasses({DisableMockLocationTest.class, MockLocationTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

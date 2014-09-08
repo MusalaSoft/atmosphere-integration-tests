@@ -86,7 +86,7 @@ public class OnDeviceValidatorAssert {
 
     private final static int ASSERT_TIMEOUT = 3000;
 
-    private final static int APP_STARTUP_WAIT_TIME = 4000;
+    private final static int APP_STARTUP_WAIT_TIME = 15000;
 
     private final static String EXPECTED_SWIPE_UP_TEXT = "Swiped up!";
 
@@ -787,8 +787,7 @@ public class OnDeviceValidatorAssert {
         validationViewSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
                                                      VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC);
         validationViewSelector.addSelectionAttribute(CssAttribute.ENABLED, true);
-
-        assertElementExists(VALIDATOR_IS_NOT_STARTED_MESSAGE, validationViewSelector);
+        assertElementExists(VALIDATOR_IS_NOT_STARTED_MESSAGE, validationViewSelector, APP_STARTUP_WAIT_TIME);
     }
 
     /**
@@ -946,12 +945,27 @@ public class OnDeviceValidatorAssert {
     }
 
     /**
-     * Asserts that element with given selector exist on the screen.
+     * Asserts that element with given selector exist on the screen, by first waiting for it with a given timeout.
      * 
      * @param message
-     *        - message to be displayed if assertion fails.
+     *        - message to be displayed if assertion fails
      * @param selector
-     *        - the selector of the given UI element.
+     *        - the selector of the given UI element
+     * @param timeout
+     *        - the time to wait for the element to appear
+     */
+    public static void assertElementExists(String message, UiElementSelector selector, int timeout) {
+        assertTrue(message, screen.waitForElementExists(selector, timeout));
+    }
+
+    /**
+     * Asserts that element with given selector exist on the screen, by first waiting for it with a
+     * {@link OnDeviceValidatorAssert#ASSERT_TIMEOUT default timeout}.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails
+     * @param selector
+     *        - the selector of the given UI element
      */
     public static void assertElementExists(String message, UiElementSelector selector) {
         assertTrue(message, screen.waitForElementExists(selector, ASSERT_TIMEOUT));
@@ -1296,7 +1310,6 @@ public class OnDeviceValidatorAssert {
             UiElementFetchingException {
         device.setLocked(false);
         device.startActivity(appPackage, appActivity);
-        screen.waitForWindowUpdate(appPackage, APP_STARTUP_WAIT_TIME);
 
         assertValidatorIsStarted();
     }
