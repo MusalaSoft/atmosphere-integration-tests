@@ -109,9 +109,9 @@ public class BuilderDeviceSelectionIntegrationTest {
 
         PoolManager poolManager = PoolManager.getInstance();
 
-        poolManager.addDevice(DEVICE1_SN, mockRegistry, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
-        poolManager.addDevice(DEVICE2_SN, mockRegistry, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
-        poolManager.addDevice(DEVICE3_SN, mockRegistry, mockedAgentManager, SERVER_MANAGER_RMI_PORT);
+        poolManager.addDevice(DEVICE1_SN, mockRegistry, mockedAgentManager);
+        poolManager.addDevice(DEVICE2_SN, mockRegistry, mockedAgentManager);
+        poolManager.addDevice(DEVICE3_SN, mockRegistry, mockedAgentManager);
     }
 
     @Before
