@@ -46,14 +46,13 @@ import com.musala.atmosphere.client.device.WaitForTaskUpdateTest;
 import com.musala.atmosphere.client.device.WaitForWindowUpdateTest;
 import com.musala.atmosphere.client.device.WaitUntilGoneTest;
 import com.musala.atmosphere.client.screen.GetElementWhenPresentTest;
-import com.musala.atmosphere.server.PoolEventHandlerTest;
 import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
 
-@SuiteClasses({ScreenOrientationTest.class, PoolEventHandlerTest.class, TapTest.class, LockUnlockTest.class,
-        StartActivityTest.class, BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class,
-        DeviceInstallApkTest.class, GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class,
-        GestureExecutionTest.class, TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class,
-        PinchTest.class, AtmosphereServiceConnectionTest.class, SwipeTest.class, CallTest.class, LongPressTest.class,
+@SuiteClasses({ScreenOrientationTest.class, TapTest.class, LockUnlockTest.class, StartActivityTest.class,
+        BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class, DeviceInstallApkTest.class,
+        GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class, GestureExecutionTest.class,
+        TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class, PinchTest.class,
+        AtmosphereServiceConnectionTest.class, SwipeTest.class, CallTest.class, LongPressTest.class,
         WaitForExistsTest.class, ScrollTest.class, HorizontalScrollTest.class, WaitForWindowUpdateTest.class,
         EmulatorCameraTest.class, WaitUntilGoneTest.class, ProcessRunningTest.class, ForceStopProcessTest.class,
         StopBackgroundProcessTest.class, ScreenOffTimeoutTest.class, TimePickerInteractionTest.class,
@@ -62,6 +61,7 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
         DatePickerInteractionTest.class, UninstallApplicationTest.class, DeviceProximityTest.class,
         WaitForTaskUpdateTest.class, BringTaskToFrontTest.class, GetRunningTaskIdsTest.class, SetKeyguardTest.class,
         MockLocationTest.class, DisableMockLocationTest.class})
-// @SuiteClasses({DisableMockLocationTest.class, MockLocationTest.class})
+// @SuiteClasses({PoolEventHandlerTest.class})
+// @SuiteClasses({DoubleTapTest.class, LongPressTest.class, PinchTest.class, SwipeTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

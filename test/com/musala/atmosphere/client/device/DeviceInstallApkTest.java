@@ -100,9 +100,6 @@ public class DeviceInstallApkTest extends BaseIntegrationTest {
 
         // Connect mocked device
         deviceChangeListener.deviceConnected(mockDevice);
-
-        String agentId = agent.getId();
-        server.waitForDeviceToBeAvailable(MOCK_SERIAL_NUMBER, agentId);
     }
 
     @After

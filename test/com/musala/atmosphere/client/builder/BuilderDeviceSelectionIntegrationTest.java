@@ -8,6 +8,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.lang.reflect.Method;
 import java.rmi.registry.Registry;
 
 import org.junit.After;
@@ -127,9 +128,13 @@ public class BuilderDeviceSelectionIntegrationTest {
     @AfterClass
     public static void tearDown() throws Exception {
         PoolManager poolManager = PoolManager.getInstance();
-        poolManager.removeDevice(DEVICE1_SN, AGENT_ID);
-        poolManager.removeDevice(DEVICE2_SN, AGENT_ID);
-        poolManager.removeDevice(DEVICE3_SN, AGENT_ID);
+        Class<?> pmc = Class.forName("com.musala.atmosphere.server.pool.PoolManager");
+        Method deviceIdBuild = pmc.getDeclaredMethod("buildDeviceIdentifier", String.class, String.class);
+        deviceIdBuild.setAccessible(true);
+
+        poolManager.removeDevice((String) deviceIdBuild.invoke(null, AGENT_ID, DEVICE1_SN));
+        poolManager.removeDevice((String) deviceIdBuild.invoke(null, AGENT_ID, DEVICE2_SN));
+        poolManager.removeDevice((String) deviceIdBuild.invoke(null, AGENT_ID, DEVICE3_SN));
     }
 
     @Test

@@ -70,7 +70,7 @@ public class AtmosphereIntegrationTestsSuite {
         OnDeviceValidatorAssert.setTestDevice(device);
         OnDeviceValidatorAssert.setupOndeviceValidator();
 
-        deviceBuilder.releaseAllDevices();
+        // deviceBuilder.releaseAllDevices();
 
         DeviceParameters realDeviceParameters = new DeviceParameters();
         realDeviceParameters.setDeviceType(DeviceType.DEVICE_PREFERRED);
