@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -19,6 +20,7 @@ import com.musala.atmosphere.agent.AndroidDebugBridgeManager;
 import com.musala.atmosphere.agent.util.FakeOnDeviceComponentAnswer;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceAllocationInformation;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.server.pool.PoolManager;
 
 /**
@@ -28,7 +30,10 @@ import com.musala.atmosphere.server.pool.PoolManager;
  */
 
 public class PoolEventHandlerTest extends BaseIntegrationTest {
-    /* FIXME : after finishing the logic with the publishing and unpublishing devices, fix this test */
+    private static final long TIMEOUT_AFTER_DEVICE_CONNECT = 2000;
+
+    private static final long TIMEOUT_AFTER_DEVICE_DISCONNECT = 2000;
+
     private static IDeviceChangeListener deviceChangeListener;
 
     private static PoolManager poolManager;
@@ -67,7 +72,7 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
         return fakeDevice;
     }
 
-    // @Test(expected = NoAvailableDeviceFoundException.class)
+    @Test(expected = NoAvailableDeviceFoundException.class)
     public void testConnectOfflineDevice() throws Exception {
         final String fakeDeviceSerialNumber = "mockDevice1";
         IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
@@ -76,10 +81,13 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
         when(fakeDevice.isOffline()).thenReturn(true);
 
         deviceChangeListener.deviceConnected(fakeDevice);
-        // required for proper device registering
-        Thread.sleep(1500);
 
-        poolManager.allocateDevice(new DeviceParameters());
+        Thread.sleep(TIMEOUT_AFTER_DEVICE_CONNECT);
+
+        DeviceParameters deviceParameters = new DeviceParameters();
+        deviceParameters.setSerialNumber(fakeDeviceSerialNumber);
+
+        poolManager.allocateDevice(deviceParameters);
 
         deviceChangeListener.deviceDisconnected(fakeDevice);
     }
@@ -93,21 +101,28 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
         when(fakeDevice.isOffline()).thenReturn(false);
 
         deviceChangeListener.deviceConnected(fakeDevice);
-        // required for proper device registering
-        Thread.sleep(1500);
 
-        DeviceAllocationInformation deviceAllocationInformation = poolManager.allocateDevice(new DeviceParameters());
+        Thread.sleep(TIMEOUT_AFTER_DEVICE_CONNECT);
 
-        String deviceIdd = agent.getId() + "_" + fakeDeviceSerialNumber;
-        String deviceId = deviceAllocationInformation.getDeviceId();
-        System.out.println(deviceIdd);
-        System.out.println(deviceId);
-        assertEquals("Connecting an offline device resulted in device connect event.", deviceIdd, deviceId);
+        DeviceParameters deviceParameters = new DeviceParameters();
+        deviceParameters.setSerialNumber(fakeDeviceSerialNumber);
+
+        DeviceAllocationInformation deviceAllocationInformation = poolManager.allocateDevice(deviceParameters);
+        String connectedDeviceId = deviceAllocationInformation.getDeviceId();
+
+        String agentId = agent.getId();
+
+        Class<?> pmc = PoolManager.class;
+        Method getId = pmc.getDeclaredMethod("buildDeviceIdentifier", String.class, String.class);
+        getId.setAccessible(true);
+        String fakeDeviceId = (String) getId.invoke(null, agentId, fakeDeviceSerialNumber);
+
+        assertEquals("Failed to connect an online device.", fakeDeviceId, connectedDeviceId);
 
         deviceChangeListener.deviceDisconnected(fakeDevice);
     }
 
-    // @Test(expected = NoAvailableDeviceFoundException.class)
+    @Test(expected = NoAvailableDeviceFoundException.class)
     public void testDisconnectOnlineDevice() throws Exception {
         final String fakeDeviceSerialNumber = "mockDevice3";
         IDevice fakeDevice = configureFakeDevice(fakeDeviceSerialNumber);
@@ -119,11 +134,16 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
         when(fakeDevice.isOffline()).thenReturn(false);
 
         deviceChangeListener.deviceConnected(fakeDevice);
-        // required for proper device registering
-        Thread.sleep(1500);
+
+        Thread.sleep(TIMEOUT_AFTER_DEVICE_CONNECT);
+
+        DeviceParameters deviceParameters = new DeviceParameters();
+        deviceParameters.setSerialNumber(fakeDeviceSerialNumber);
 
         deviceChangeListener.deviceDisconnected(fakeDevice);
 
-        poolManager.allocateDevice(new DeviceParameters());
+        Thread.sleep(TIMEOUT_AFTER_DEVICE_DISCONNECT);
+
+        poolManager.allocateDevice(deviceParameters);
     }
 }

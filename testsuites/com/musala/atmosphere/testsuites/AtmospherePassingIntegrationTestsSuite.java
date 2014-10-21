@@ -46,6 +46,7 @@ import com.musala.atmosphere.client.device.WaitForTaskUpdateTest;
 import com.musala.atmosphere.client.device.WaitForWindowUpdateTest;
 import com.musala.atmosphere.client.device.WaitUntilGoneTest;
 import com.musala.atmosphere.client.screen.GetElementWhenPresentTest;
+import com.musala.atmosphere.server.PoolEventHandlerTest;
 import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
 
 @SuiteClasses({ScreenOrientationTest.class, TapTest.class, LockUnlockTest.class, StartActivityTest.class,
@@ -60,8 +61,7 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
         OpenQuickSettingsTest.class, NotificationBarTest.class, NotificationInteractionTest.class,
         DatePickerInteractionTest.class, UninstallApplicationTest.class, DeviceProximityTest.class,
         WaitForTaskUpdateTest.class, BringTaskToFrontTest.class, GetRunningTaskIdsTest.class, SetKeyguardTest.class,
-        MockLocationTest.class, DisableMockLocationTest.class})
+        MockLocationTest.class, DisableMockLocationTest.class, PoolEventHandlerTest.class})
 // @SuiteClasses({PoolEventHandlerTest.class})
-// @SuiteClasses({DoubleTapTest.class, LongPressTest.class, PinchTest.class, SwipeTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
