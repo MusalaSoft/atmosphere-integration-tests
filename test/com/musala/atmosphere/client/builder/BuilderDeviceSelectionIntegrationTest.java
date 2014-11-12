@@ -41,15 +41,15 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     private final static String AGENT_ID = "mockagent";
 
-    private final static String DEVICE1_SN = "mockdevice1";
+    private final static String DEVICE1_SERIAL_NUMBER = "mockdevice1";
 
     private final static String DEVICE1_MODEL = "awesomemockdevice1";
 
-    private final static String DEVICE2_SN = "mockdevice2";
+    private final static String DEVICE2_SERIAL_NUMBER = "mockdevice2";
 
     private final static String DEVICE2_MODEL = "awesomemockdevice2";
 
-    private final static String DEVICE3_SN = "mockdevice3";
+    private final static String DEVICE3_SERIAL_NUMBER = "mockdevice3";
 
     private final static String DEVICE3_MODEL = "awesomemockdevice3";
 
@@ -71,7 +71,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
         IWrapDevice mockedDeviceOne = mock(IWrapDevice.class);
         mockedDeviceInfoOne = new DeviceInformation();
-        mockedDeviceInfoOne.setSerialNumber(DEVICE1_SN);
+        mockedDeviceInfoOne.setSerialNumber(DEVICE1_SERIAL_NUMBER);
         mockedDeviceInfoOne.setModel(DEVICE1_MODEL);
         mockedDeviceInfoOne.setOs("4.2.1");
         mockedDeviceInfoOne.setEmulator(true);
@@ -83,7 +83,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
         IWrapDevice mockedDeviceTwo = mock(IWrapDevice.class);
         DeviceInformation mockedDeviceInfoTwo = new DeviceInformation();
-        mockedDeviceInfoTwo.setSerialNumber(DEVICE2_SN);
+        mockedDeviceInfoTwo.setSerialNumber(DEVICE2_SERIAL_NUMBER);
         mockedDeviceInfoTwo.setModel(DEVICE2_MODEL);
         mockedDeviceInfoTwo.setOs("4.2.2");
         mockedDeviceInfoTwo.setEmulator(true);
@@ -94,7 +94,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
         IWrapDevice mockedDeviceThree = mock(IWrapDevice.class);
         DeviceInformation mockedDeviceInfoThree = new DeviceInformation();
-        mockedDeviceInfoThree.setSerialNumber(DEVICE3_SN);
+        mockedDeviceInfoThree.setSerialNumber(DEVICE3_SERIAL_NUMBER);
         mockedDeviceInfoThree.setModel(DEVICE3_MODEL);
         mockedDeviceInfoThree.setOs("4.2.3");
         mockedDeviceInfoThree.setEmulator(false);
@@ -104,15 +104,15 @@ public class BuilderDeviceSelectionIntegrationTest {
         when(mockedDeviceThree.route(eq(RoutingAction.GET_DEVICE_INFORMATION))).thenReturn(mockedDeviceInfoThree);
 
         Registry mockRegistry = mock(Registry.class);
-        when(mockRegistry.lookup(DEVICE1_SN)).thenReturn(mockedDeviceOne);
-        when(mockRegistry.lookup(DEVICE2_SN)).thenReturn(mockedDeviceTwo);
-        when(mockRegistry.lookup(DEVICE3_SN)).thenReturn(mockedDeviceThree);
+        when(mockRegistry.lookup(DEVICE1_SERIAL_NUMBER)).thenReturn(mockedDeviceOne);
+        when(mockRegistry.lookup(DEVICE2_SERIAL_NUMBER)).thenReturn(mockedDeviceTwo);
+        when(mockRegistry.lookup(DEVICE3_SERIAL_NUMBER)).thenReturn(mockedDeviceThree);
 
         PoolManager poolManager = PoolManager.getInstance();
 
-        poolManager.addDevice(DEVICE1_SN, mockRegistry, mockedAgentManager);
-        poolManager.addDevice(DEVICE2_SN, mockRegistry, mockedAgentManager);
-        poolManager.addDevice(DEVICE3_SN, mockRegistry, mockedAgentManager);
+        poolManager.addDevice(DEVICE1_SERIAL_NUMBER, mockRegistry, AGENT_ID);
+        poolManager.addDevice(DEVICE2_SERIAL_NUMBER, mockRegistry, AGENT_ID);
+        poolManager.addDevice(DEVICE3_SERIAL_NUMBER, mockRegistry, AGENT_ID);
     }
 
     @Before
@@ -132,9 +132,9 @@ public class BuilderDeviceSelectionIntegrationTest {
         Method deviceIdBuild = pmc.getDeclaredMethod("buildDeviceIdentifier", String.class, String.class);
         deviceIdBuild.setAccessible(true);
 
-        poolManager.removeDevice((String) deviceIdBuild.invoke(null, AGENT_ID, DEVICE1_SN));
-        poolManager.removeDevice((String) deviceIdBuild.invoke(null, AGENT_ID, DEVICE2_SN));
-        poolManager.removeDevice((String) deviceIdBuild.invoke(null, AGENT_ID, DEVICE3_SN));
+        poolManager.removeDevice((String) deviceIdBuild.invoke(null, AGENT_ID, DEVICE1_SERIAL_NUMBER));
+        poolManager.removeDevice((String) deviceIdBuild.invoke(null, AGENT_ID, DEVICE2_SERIAL_NUMBER));
+        poolManager.removeDevice((String) deviceIdBuild.invoke(null, AGENT_ID, DEVICE3_SERIAL_NUMBER));
     }
 
     @Test
@@ -150,7 +150,7 @@ public class BuilderDeviceSelectionIntegrationTest {
     public void testGetDeviceBySerialNumber() {
         DeviceParameters parameters = new DeviceParameters();
 
-        String wantedSerialNumber = DEVICE1_SN;
+        String wantedSerialNumber = DEVICE1_SERIAL_NUMBER;
         parameters.setSerialNumber(wantedSerialNumber);
 
         Device receivedDevice = builder.getDevice(parameters);
@@ -371,7 +371,7 @@ public class BuilderDeviceSelectionIntegrationTest {
     public void testGetDeviceByParametersCreatedFromChangedMockedDeviceInfoOne() {
         DeviceInformation changedMockedDeviceInfoOne = null;
         changedMockedDeviceInfoOne = new DeviceInformation();
-        changedMockedDeviceInfoOne.setSerialNumber(DEVICE1_SN);
+        changedMockedDeviceInfoOne.setSerialNumber(DEVICE1_SERIAL_NUMBER);
         changedMockedDeviceInfoOne.setModel(DEVICE1_MODEL);
         changedMockedDeviceInfoOne.setOs("4.2.1");
         changedMockedDeviceInfoOne.setEmulator(false);
