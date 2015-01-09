@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeNotNull;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -29,6 +30,8 @@ import com.musala.atmosphere.commons.sa.IAgentManager;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
 import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.commons.util.Pair;
+import com.musala.atmosphere.server.data.dao.db.ormlite.AgentDao;
+import com.musala.atmosphere.server.data.provider.ormlite.DataSourceProvider;
 import com.musala.atmosphere.server.pool.PoolManager;
 
 /**
@@ -53,11 +56,15 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     private final static String DEVICE3_MODEL = "awesomemockdevice3";
 
-    private static DeviceInformation mockedDeviceInfoOne = null;
+    private final static String TEST_IP_ADDRESS = "localhost";
+
+    private static DeviceInformation mockedDeviceOneInformation;
+
+    private static AgentDao agentDao;
 
     private Builder builder;
 
-    @Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 10)
+    @Server(ip = TEST_IP_ADDRESS, port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 10)
     static class GettingDeviceSampleClass {
         public static Builder getBuilderInstance() {
             return Builder.getInstance();
@@ -69,39 +76,46 @@ public class BuilderDeviceSelectionIntegrationTest {
         IAgentManager mockedAgentManager = mock(IAgentManager.class);
         when(mockedAgentManager.getAgentId()).thenReturn(AGENT_ID);
 
+        DataSourceProvider dataSourceProvider = new DataSourceProvider();
+        agentDao = dataSourceProvider.getAgentDao();
+
+        if (agentDao != null) {
+            agentDao.add(AGENT_ID, TEST_IP_ADDRESS, SERVER_MANAGER_RMI_PORT);
+        }
+
         IWrapDevice mockedDeviceOne = mock(IWrapDevice.class);
-        mockedDeviceInfoOne = new DeviceInformation();
-        mockedDeviceInfoOne.setSerialNumber(DEVICE1_SERIAL_NUMBER);
-        mockedDeviceInfoOne.setModel(DEVICE1_MODEL);
-        mockedDeviceInfoOne.setOs("4.2.1");
-        mockedDeviceInfoOne.setEmulator(true);
-        mockedDeviceInfoOne.setRam(511);
-        mockedDeviceInfoOne.setResolution(new Pair<>(801, 601));
-        mockedDeviceInfoOne.setDpi(121);
-        mockedDeviceInfoOne.setApiLevel(19);
-        when(mockedDeviceOne.route(eq(RoutingAction.GET_DEVICE_INFORMATION))).thenReturn(mockedDeviceInfoOne);
+        mockedDeviceOneInformation = new DeviceInformation();
+        mockedDeviceOneInformation.setSerialNumber(DEVICE1_SERIAL_NUMBER);
+        mockedDeviceOneInformation.setModel(DEVICE1_MODEL);
+        mockedDeviceOneInformation.setOs("4.2.1");
+        mockedDeviceOneInformation.setEmulator(true);
+        mockedDeviceOneInformation.setRam(511);
+        mockedDeviceOneInformation.setResolution(new Pair<>(801, 601));
+        mockedDeviceOneInformation.setDpi(121);
+        mockedDeviceOneInformation.setApiLevel(19);
+        when(mockedDeviceOne.route(eq(RoutingAction.GET_DEVICE_INFORMATION))).thenReturn(mockedDeviceOneInformation);
 
         IWrapDevice mockedDeviceTwo = mock(IWrapDevice.class);
-        DeviceInformation mockedDeviceInfoTwo = new DeviceInformation();
-        mockedDeviceInfoTwo.setSerialNumber(DEVICE2_SERIAL_NUMBER);
-        mockedDeviceInfoTwo.setModel(DEVICE2_MODEL);
-        mockedDeviceInfoTwo.setOs("4.2.2");
-        mockedDeviceInfoTwo.setEmulator(true);
-        mockedDeviceInfoTwo.setRam(512);
-        mockedDeviceInfoTwo.setResolution(new Pair<>(802, 602));
-        mockedDeviceInfoTwo.setDpi(122);
-        when(mockedDeviceTwo.route(eq(RoutingAction.GET_DEVICE_INFORMATION))).thenReturn(mockedDeviceInfoTwo);
+        DeviceInformation mockedDeviceTwoInformation = new DeviceInformation();
+        mockedDeviceTwoInformation.setSerialNumber(DEVICE2_SERIAL_NUMBER);
+        mockedDeviceTwoInformation.setModel(DEVICE2_MODEL);
+        mockedDeviceTwoInformation.setOs("4.2.2");
+        mockedDeviceTwoInformation.setEmulator(true);
+        mockedDeviceTwoInformation.setRam(512);
+        mockedDeviceTwoInformation.setResolution(new Pair<>(802, 602));
+        mockedDeviceTwoInformation.setDpi(122);
+        when(mockedDeviceTwo.route(eq(RoutingAction.GET_DEVICE_INFORMATION))).thenReturn(mockedDeviceTwoInformation);
 
         IWrapDevice mockedDeviceThree = mock(IWrapDevice.class);
-        DeviceInformation mockedDeviceInfoThree = new DeviceInformation();
-        mockedDeviceInfoThree.setSerialNumber(DEVICE3_SERIAL_NUMBER);
-        mockedDeviceInfoThree.setModel(DEVICE3_MODEL);
-        mockedDeviceInfoThree.setOs("4.2.3");
-        mockedDeviceInfoThree.setEmulator(false);
-        mockedDeviceInfoThree.setRam(513);
-        mockedDeviceInfoThree.setResolution(new Pair<>(803, 603));
-        mockedDeviceInfoThree.setDpi(123);
-        when(mockedDeviceThree.route(eq(RoutingAction.GET_DEVICE_INFORMATION))).thenReturn(mockedDeviceInfoThree);
+        DeviceInformation mockedDeviceThreeInformation = new DeviceInformation();
+        mockedDeviceThreeInformation.setSerialNumber(DEVICE3_SERIAL_NUMBER);
+        mockedDeviceThreeInformation.setModel(DEVICE3_MODEL);
+        mockedDeviceThreeInformation.setOs("4.2.3");
+        mockedDeviceThreeInformation.setEmulator(false);
+        mockedDeviceThreeInformation.setRam(513);
+        mockedDeviceThreeInformation.setResolution(new Pair<>(803, 603));
+        mockedDeviceThreeInformation.setDpi(123);
+        when(mockedDeviceThree.route(eq(RoutingAction.GET_DEVICE_INFORMATION))).thenReturn(mockedDeviceThreeInformation);
 
         Registry mockRegistry = mock(Registry.class);
         when(mockRegistry.lookup(DEVICE1_SERIAL_NUMBER)).thenReturn(mockedDeviceOne);
@@ -110,9 +124,11 @@ public class BuilderDeviceSelectionIntegrationTest {
 
         PoolManager poolManager = PoolManager.getInstance();
 
-        poolManager.addDevice(DEVICE1_SERIAL_NUMBER, mockRegistry, AGENT_ID);
-        poolManager.addDevice(DEVICE2_SERIAL_NUMBER, mockRegistry, AGENT_ID);
-        poolManager.addDevice(DEVICE3_SERIAL_NUMBER, mockRegistry, AGENT_ID);
+        if (agentDao != null) {
+            poolManager.addDevice(DEVICE1_SERIAL_NUMBER, mockRegistry, AGENT_ID);
+            poolManager.addDevice(DEVICE2_SERIAL_NUMBER, mockRegistry, AGENT_ID);
+            poolManager.addDevice(DEVICE3_SERIAL_NUMBER, mockRegistry, AGENT_ID);
+        }
     }
 
     @Before
@@ -128,17 +144,24 @@ public class BuilderDeviceSelectionIntegrationTest {
     @AfterClass
     public static void tearDown() throws Exception {
         PoolManager poolManager = PoolManager.getInstance();
-        Class<?> pmc = Class.forName("com.musala.atmosphere.server.pool.PoolManager");
-        Method deviceIdBuild = pmc.getDeclaredMethod("buildDeviceIdentifier", String.class, String.class);
+        Class<?> packageManagerClass = PoolManager.class;
+        Method deviceIdBuild = packageManagerClass.getDeclaredMethod("buildDeviceIdentifier",
+                                                                     String.class,
+                                                                     String.class);
         deviceIdBuild.setAccessible(true);
 
         poolManager.removeDevice((String) deviceIdBuild.invoke(null, AGENT_ID, DEVICE1_SERIAL_NUMBER));
         poolManager.removeDevice((String) deviceIdBuild.invoke(null, AGENT_ID, DEVICE2_SERIAL_NUMBER));
         poolManager.removeDevice((String) deviceIdBuild.invoke(null, AGENT_ID, DEVICE3_SERIAL_NUMBER));
+
+        if (agentDao != null) {
+            agentDao.remove(AGENT_ID);
+        }
     }
 
     @Test
     public void testGetDeviceByNoPrefference() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
 
         Device receivedDevice = builder.getDevice(parameters);
@@ -148,6 +171,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetDeviceBySerialNumber() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
 
         String wantedSerialNumber = DEVICE1_SERIAL_NUMBER;
@@ -165,6 +189,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingSerialNumber() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
         parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
@@ -175,6 +200,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetEmulatorDevice() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
 
         parameters.setDeviceType(DeviceType.EMULATOR_ONLY);
@@ -188,6 +214,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetRealDevice() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
 
         parameters.setDeviceType(DeviceType.DEVICE_ONLY);
@@ -202,6 +229,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetDeviceByOperatingSystem() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
 
         DeviceOs wantedOS = DeviceOs.JELLY_BEAN_MR1_4_2_2;
@@ -218,6 +246,7 @@ public class BuilderDeviceSelectionIntegrationTest {
     // FIXME If a test device with OS DeviceOs.JELLY_BEAN_4_1 is connected to the server this test will fail.
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingOperatingSystem() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
         parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
@@ -228,6 +257,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetDeviceByModel() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
 
         String wantedModel = DEVICE2_MODEL;
@@ -243,6 +273,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingModel() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
         parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
@@ -253,6 +284,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetDeviceByRAM() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
 
         int wantedRAM = 513;
@@ -268,6 +300,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingRAM() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
         parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
@@ -278,6 +311,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetDeviceByResolutionWidth() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
 
         int wantedResolutionWidth = 601;
@@ -295,6 +329,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingResolutionWidth() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
         parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
@@ -305,6 +340,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetDeviceByResolutionHeight() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
 
         int wantedResolutionHeight = 801;
@@ -322,6 +358,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingResolutionHeight() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
         parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
@@ -332,6 +369,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetDeviceByDPI() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
 
         int wantedDPI = 122;
@@ -347,6 +385,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingDPI() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
         parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
@@ -357,18 +396,21 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetDeviceByParametersCreatedFromMockedDeviceInfoOne() {
-
-        DeviceParameters parameters = new DeviceParameters(mockedDeviceInfoOne);
+        assumeNotNull(agentDao);
+        DeviceParameters parameters = new DeviceParameters(mockedDeviceOneInformation);
 
         Device receivedDevice = builder.getDevice(parameters);
 
         DeviceInformation information = receivedDevice.getInformation();
 
-        assertEquals("Device information does not match the initial information", information, mockedDeviceInfoOne);
+        assertEquals("Device information does not match the initial information",
+                     information,
+                     mockedDeviceOneInformation);
     }
 
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByParametersCreatedFromChangedMockedDeviceInfoOne() {
+        assumeNotNull(agentDao);
         DeviceInformation changedMockedDeviceInfoOne = null;
         changedMockedDeviceInfoOne = new DeviceInformation();
         changedMockedDeviceInfoOne.setSerialNumber(DEVICE1_SERIAL_NUMBER);
@@ -386,7 +428,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetDeviceByApi() {
-
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
 
         int wantedApiVersion = 19;
@@ -402,6 +444,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByInvalidApiVersion() {
+        assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
         parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
