@@ -791,6 +791,25 @@ public class OnDeviceValidatorAssert {
     }
 
     /**
+     * Asserts the OnDeviceValidator has been started.
+     * 
+     * @param message
+     *        - message that will be shown if the assert fails
+     * @throws UiElementFetchingException
+     *         if getting the UiElement fails.
+     */
+    public static void assertValidatorIsStarted(String message) throws UiElementFetchingException {
+        // If the validator app activity is not started, this element fetching
+        // will fail.
+        UiElementSelector validationViewSelector = new UiElementSelector();
+
+        validationViewSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                     VALIDATOR_APP_CONTROL_ELEMENT_CONTENTDESC);
+        validationViewSelector.addSelectionAttribute(CssAttribute.ENABLED, true);
+        assertElementExists(message, validationViewSelector, APP_STARTUP_WAIT_TIME);
+    }
+
+    /**
      * Asserts that the OnDeviceValidator application is not started.
      * 
      * @param message
