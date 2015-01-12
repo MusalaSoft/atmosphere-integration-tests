@@ -9,25 +9,29 @@ import static org.junit.Assert.assertTrue;
 
 import javax.xml.xpath.XPathExpressionException;
 
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
+import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.geometry.Bounds;
 import com.musala.atmosphere.client.geometry.Point;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
+import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 public class LongPressTest extends BaseIntegrationTest {
+    private static final int LONG_PRESS_TIMEOUT = 2000;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
         initTestDevice(testDeviceParams);
@@ -39,7 +43,12 @@ public class LongPressTest extends BaseIntegrationTest {
 
     @Before
     public void setUpTest() throws XPathExpressionException, UiElementFetchingException, InvalidCssQueryException {
-        UiElement clearTextButton = getElementByContentDescriptor(ContentDescriptor.CLEAR_TEXT_BUTTON.toString());
+        UiElementSelector clearTextButtonSelector = new UiElementSelector();
+        clearTextButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                      ContentDescriptor.CLEAR_TEXT_BUTTON.toString());
+        Screen deviceScreen = testDevice.getActiveScreen();
+        UiElement clearTextButton = deviceScreen.getElementWhenPresent(clearTextButtonSelector);
+
         clearTextButton.tap();
     }
 
@@ -50,8 +59,8 @@ public class LongPressTest extends BaseIntegrationTest {
             InvalidCssQueryException {
         UiElement longPressTextField = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         boolean longPressResult = longPressTextField.longPress();
-        assertTrue("Long press returned true.", longPressResult);
-        assertLongClicked("Text box for gesture verification not long pressed.");
+        assertTrue("Long press indicated failure.", longPressResult);
+        assertLongClicked("Text box for gesture verification did not receive a long press gesture.");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -71,13 +80,12 @@ public class LongPressTest extends BaseIntegrationTest {
         Point outerPoint = new Point(x + offset, y + offset);
 
         // long press
-        final int timeout = 2000; // 2s
-        boolean longPressResult = longPressTextField.longPress(outerPoint, timeout);
+        boolean longPressResult = longPressTextField.longPress(outerPoint, LONG_PRESS_TIMEOUT);
         assertFalse("Text box for gesture verification was long pressed.", longPressResult);
     }
 
-    @After
-    public void tearDown() {
+    @AfterClass
+    public static void tearDown() {
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }
