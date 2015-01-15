@@ -40,7 +40,8 @@ public class GestureExecutionTest extends BaseIntegrationTest {
             InterruptedException,
             UiElementFetchingException,
             XPathExpressionException,
-            InvalidCssQueryException {
+            InvalidCssQueryException,
+            Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
         initTestDevice(testDeviceParams);
@@ -51,7 +52,7 @@ public class GestureExecutionTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }

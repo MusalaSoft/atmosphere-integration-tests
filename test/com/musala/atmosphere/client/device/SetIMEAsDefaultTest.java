@@ -29,7 +29,7 @@ public class SetIMEAsDefaultTest extends BaseIntegrationTest {
     private final static String INPUT_STRING = "Letters";
 
     private final static String DEFAULT_KEYBOARD_ID = "com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME";
-    
+
     private final static String ATMOSPHERE_IME_PACKAGE = "com.musala.atmosphere.ime";
 
     @BeforeClass
@@ -42,7 +42,7 @@ public class SetIMEAsDefaultTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }
@@ -54,10 +54,10 @@ public class SetIMEAsDefaultTest extends BaseIntegrationTest {
         UiElement inputTextBox = getElementByContentDescriptor(TEXT_BOX_CONTENT_DESCRIPTOR);
 
         testDevice.setDefaultIME(DEFAULT_KEYBOARD_ID);
-        
+
         // To ensure the broadcast receiver of the ATMOSPHERE IME has fully stopped.
         testDevice.forceStopProcess(ATMOSPHERE_IME_PACKAGE);
-        
+
         inputTextBox.inputText(INPUT_STRING);
 
         screen.updateScreen();

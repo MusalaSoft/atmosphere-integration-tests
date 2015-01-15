@@ -36,6 +36,7 @@ public class DoubleTapTest extends BaseIntegrationTest {
     @BeforeClass
     public static void setUp()
         throws InterruptedException,
+            Exception,
             UiElementFetchingException,
             ActivityStartingException,
             XPathExpressionException,
@@ -49,7 +50,7 @@ public class DoubleTapTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() throws UiElementFetchingException {
+    public static void tearDown() throws UiElementFetchingException, Exception {
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }

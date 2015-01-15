@@ -25,7 +25,7 @@ public class OpenNotificationTest extends BaseIntegrationTest {
     private static final String NOTIFICATION_BAR_RESOURCE_ID = "com.android.systemui:id/notification_panel";
 
     @BeforeClass
-    public static void setUp() {
+    public static void setUp() throws Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_ONLY);
         testDeviceParams.setApiLevel(19);
@@ -37,7 +37,7 @@ public class OpenNotificationTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         releaseDevice();
     }
 

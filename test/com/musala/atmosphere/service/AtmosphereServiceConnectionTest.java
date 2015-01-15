@@ -24,7 +24,7 @@ public class AtmosphereServiceConnectionTest extends BaseIntegrationTest {
     private UiElement stopServiceButton;
 
     @BeforeClass
-    public static void masterSetUp() {
+    public static void masterSetUp() throws Exception {
         DeviceParameters deviceParameters = new DeviceParameters();
         deviceParameters.setDeviceType(DeviceType.DEVICE_PREFERRED);
         initTestDevice(deviceParameters);

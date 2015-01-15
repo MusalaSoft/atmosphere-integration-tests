@@ -33,7 +33,7 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
     private static final String NOTIFICATION_BUTTON_TEXT = "Open";
 
     private static NotificationBar notificationBar = null;
-    
+
     private static Screen deviceActiveScreen = null;
 
     @BeforeClass
@@ -42,7 +42,8 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
             InterruptedException,
             ActivityStartingException,
             XPathExpressionException,
-            InvalidCssQueryException {
+            InvalidCssQueryException,
+            Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_ONLY);
         testDeviceParams.setApiLevel(19);
@@ -68,7 +69,7 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         if (testDevice != null) {
             testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         }
@@ -88,13 +89,13 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
         UiElementSelector notificationSelector = new UiElementSelector();
         notificationSelector.addSelectionAttribute(CssAttribute.TEXT, NOTIFICATION_TITLE_TEXT);
         UiElement notification = notificationBar.getNotificationBySelector(notificationSelector);
-        
+
         notification.pinchOut();
         notification = notificationBar.getNotificationBySelector(notificationSelector);
-        
+
         UiElementSelector notificationOpenButtonSelector = new UiElementSelector();
         notificationOpenButtonSelector.addSelectionAttribute(CssAttribute.TEXT, NOTIFICATION_BUTTON_TEXT);
-        
+
         notification.tapOnChildElement(notificationOpenButtonSelector);
 
         // The tapping on the button opens the wait test activity and then the test checks if a button from the wait

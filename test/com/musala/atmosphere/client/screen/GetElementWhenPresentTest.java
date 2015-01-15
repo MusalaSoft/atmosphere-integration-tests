@@ -46,7 +46,11 @@ public class GetElementWhenPresentTest extends BaseIntegrationTest {
     private static Screen deviceScreen;
 
     @BeforeClass
-    public static void setUp() throws ActivityStartingException, InterruptedException, UiElementFetchingException {
+    public static void setUp()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException,
+            Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
         initTestDevice(testDeviceParams);
@@ -56,7 +60,7 @@ public class GetElementWhenPresentTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         releaseDevice();
     }
 

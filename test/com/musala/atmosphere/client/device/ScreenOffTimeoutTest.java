@@ -24,7 +24,7 @@ public class ScreenOffTimeoutTest extends BaseIntegrationTest {
     private long defaultTimeOut;
 
     @After
-    public void tearDown() {
+    public void tearDown() throws Exception {
         if (testDevice != null) {
             testDevice.setScreenOffTimeout(defaultTimeOut);
             testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);

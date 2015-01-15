@@ -46,7 +46,8 @@ public class NotificationBarTest extends BaseIntegrationTest {
             UiElementFetchingException,
             InvalidCssQueryException,
             ActivityStartingException,
-            InterruptedException {
+            InterruptedException,
+            Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_ONLY);
         testDeviceParams.setApiLevel(19);
@@ -72,7 +73,7 @@ public class NotificationBarTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         if (testDevice != null) {
             testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         }

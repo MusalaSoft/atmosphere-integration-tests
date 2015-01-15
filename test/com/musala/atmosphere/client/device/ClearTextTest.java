@@ -27,13 +27,13 @@ public class ClearTextTest extends BaseIntegrationTest {
     public static final String FAIL_MESSAGE = "The text has not been cleared.";
 
     @BeforeClass
-    public static void setUp() {
+    public static void setUp() throws Exception {
         initTestDevice(new DeviceParameters());
         setTestDevice(testDevice);
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         releaseDevice();
     }
 

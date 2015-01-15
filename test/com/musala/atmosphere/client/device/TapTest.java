@@ -36,7 +36,7 @@ public class TapTest extends BaseIntegrationTest {
     private final static String INPUT_TEXT_BOX = "InputTextBox";
 
     @BeforeClass
-    public static void setUp() {
+    public static void setUp() throws Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
         initTestDevice(testDeviceParams);
@@ -44,7 +44,7 @@ public class TapTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         releaseDevice();
     }
 

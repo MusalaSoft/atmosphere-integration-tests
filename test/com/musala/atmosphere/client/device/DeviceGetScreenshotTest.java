@@ -17,14 +17,14 @@ public class DeviceGetScreenshotTest extends BaseIntegrationTest {
     private static final String PATH_TO_SCREENSHOT = "./Screenshot.png";
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
         initTestDevice(testDeviceParams);
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         releaseDevice();
     }
 

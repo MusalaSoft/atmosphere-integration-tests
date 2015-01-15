@@ -37,7 +37,7 @@ public class CallTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void classTearDown() {
+    public static void classTearDown() throws Exception {
         testDevice.declineCall();
         releaseDevice();
     }

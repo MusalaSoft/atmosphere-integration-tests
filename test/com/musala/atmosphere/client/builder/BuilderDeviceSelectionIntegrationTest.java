@@ -26,6 +26,7 @@ import com.musala.atmosphere.commons.RoutingAction;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceOs;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.cs.exception.DeviceNotFoundException;
 import com.musala.atmosphere.commons.sa.IAgentManager;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
 import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
@@ -137,7 +138,7 @@ public class BuilderDeviceSelectionIntegrationTest {
     }
 
     @After
-    public void tearDownAfterEachTest() {
+    public void tearDownAfterEachTest() throws DeviceNotFoundException {
         builder.releaseAllDevices();
     }
 

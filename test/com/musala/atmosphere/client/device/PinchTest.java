@@ -43,7 +43,8 @@ public class PinchTest extends BaseIntegrationTest {
             UiElementFetchingException,
             ActivityStartingException,
             XPathExpressionException,
-            InvalidCssQueryException {
+            InvalidCssQueryException,
+            Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
         initTestDevice(testDeviceParams);
@@ -53,7 +54,7 @@ public class PinchTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() throws UiElementFetchingException {
+    public static void tearDown() throws UiElementFetchingException, Exception {
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }

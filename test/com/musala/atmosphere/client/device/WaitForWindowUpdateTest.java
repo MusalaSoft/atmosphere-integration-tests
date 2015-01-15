@@ -33,7 +33,11 @@ public class WaitForWindowUpdateTest extends BaseIntegrationTest {
     private static final String UNEXISTING_PACKAGE = "com.made.up";
 
     @BeforeClass
-    public static void setUp() throws ActivityStartingException, InterruptedException, UiElementFetchingException {
+    public static void setUp()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException,
+            Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
         initTestDevice(testDeviceParams);
@@ -41,7 +45,11 @@ public class WaitForWindowUpdateTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() throws ActivityStartingException, InterruptedException, UiElementFetchingException {
+    public static void tearDown()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException,
+            Exception {
         releaseDevice();
     }
 

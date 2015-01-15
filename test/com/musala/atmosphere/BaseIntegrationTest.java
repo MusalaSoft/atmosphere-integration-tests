@@ -12,6 +12,7 @@ import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.device.HardwareButton;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.cs.exception.DeviceNotFoundException;
 import com.musala.atmosphere.server.Server;
 import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
@@ -63,7 +64,7 @@ public class BaseIntegrationTest {
 
     private static final long HOME_TIMEOUT = 500;
 
-    protected static void initTestDevice(DeviceParameters parameters) {
+    protected static void initTestDevice(DeviceParameters parameters) throws DeviceNotFoundException {
         try {
             GettingBuilderClass builderGet = new GettingBuilderClass();
             Builder deviceBuilder = builderGet.getBuilder();
@@ -108,7 +109,7 @@ public class BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void releaseDevice() {
+    public static void releaseDevice() throws DeviceNotFoundException {
         GettingBuilderClass builderGet = new GettingBuilderClass();
         Builder deviceBuilder = builderGet.getBuilder();
 

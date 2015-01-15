@@ -45,7 +45,7 @@ public class HorizontalScrollTest extends BaseIntegrationTest {
             InterruptedException,
             ActivityStartingException,
             XPathExpressionException,
-            InvalidCssQueryException {
+            InvalidCssQueryException, Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
         initTestDevice(testDeviceParams);
@@ -55,7 +55,7 @@ public class HorizontalScrollTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() throws UiElementFetchingException {
+    public static void tearDown() throws UiElementFetchingException, Exception {
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }

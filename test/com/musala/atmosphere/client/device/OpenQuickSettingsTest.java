@@ -25,7 +25,7 @@ public class OpenQuickSettingsTest extends BaseIntegrationTest {
     private static final String QUICK_SETTINGS_RESOURCE_ID = "com.android.systemui:id/quick_settings_container";
 
     @BeforeClass
-    public static void setUp() {
+    public static void setUp() throws Exception {
         DeviceParameters deviceParameters = new DeviceParameters();
         deviceParameters.setDeviceType(DeviceType.DEVICE_ONLY);
         deviceParameters.setApiLevel(19);
@@ -37,7 +37,7 @@ public class OpenQuickSettingsTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         releaseDevice();
     }
 

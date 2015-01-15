@@ -46,7 +46,11 @@ public class MockLocationTest extends BaseIntegrationTest {
     private static GeoLocation defaultMonitoredProviderLocation;
 
     @BeforeClass
-    public static void setUp() throws ActivityStartingException, InterruptedException, UiElementFetchingException {
+    public static void setUp()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException,
+            Exception {
         defaultMonitoredProviderLocation = new GeoLocation(MONITORED_PROVIDER_DEFAULT_LATITUDE,
                                                            MONITORED_PROVIDER_DEFAULT_LONGITUDE,
                                                            MONITORED_PROVIDER_NAME);
@@ -61,7 +65,7 @@ public class MockLocationTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }

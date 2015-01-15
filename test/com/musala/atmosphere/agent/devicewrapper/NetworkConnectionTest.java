@@ -13,6 +13,7 @@ import com.musala.atmosphere.commons.ConnectionType;
 import com.musala.atmosphere.commons.beans.MobileDataState;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.cs.exception.DeviceNotFoundException;
 
 public class NetworkConnectionTest {
 
@@ -26,7 +27,7 @@ public class NetworkConnectionTest {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws DeviceNotFoundException {
         builder.releaseDevice(testDevice);
     }
 
