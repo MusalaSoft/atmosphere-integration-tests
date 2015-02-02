@@ -20,7 +20,6 @@ import com.musala.atmosphere.client.device.ForceStopProcessTest;
 import com.musala.atmosphere.client.device.GestureExecutionTest;
 import com.musala.atmosphere.client.device.GetRunningTaskIdsTest;
 import com.musala.atmosphere.client.device.HorizontalScrollTest;
-import com.musala.atmosphere.client.device.LockUnlockTest;
 import com.musala.atmosphere.client.device.LongPressTest;
 import com.musala.atmosphere.client.device.MockLocationTest;
 import com.musala.atmosphere.client.device.NotificationBarTest;
@@ -49,7 +48,7 @@ import com.musala.atmosphere.client.screen.GetElementWhenPresentTest;
 import com.musala.atmosphere.server.PoolEventHandlerTest;
 import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
 
-@SuiteClasses({ScreenOrientationTest.class, TapTest.class, LockUnlockTest.class, StartActivityTest.class,
+@SuiteClasses({ScreenOrientationTest.class, TapTest.class, StartActivityTest.class,
         BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class, DeviceInstallApkTest.class,
         GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class, GestureExecutionTest.class,
         TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class, PinchTest.class,
@@ -62,6 +61,6 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
         DatePickerInteractionTest.class, UninstallApplicationTest.class, DeviceProximityTest.class,
         WaitForTaskUpdateTest.class, BringTaskToFrontTest.class, GetRunningTaskIdsTest.class, SetKeyguardTest.class,
         MockLocationTest.class, DisableMockLocationTest.class, PoolEventHandlerTest.class})
-// @SuiteClasses({PoolEventHandlerTest.class})
+// @SuiteClasses({DatePickerInteractionTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
