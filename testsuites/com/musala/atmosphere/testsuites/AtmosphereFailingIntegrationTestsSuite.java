@@ -10,7 +10,14 @@ import com.musala.atmosphere.agent.devicewrapper.DeviceOrientationTest;
 import com.musala.atmosphere.agent.devicewrapper.EmulatorConsoleTest;
 import com.musala.atmosphere.agent.devicewrapper.NetworkConnectionTest;
 import com.musala.atmosphere.client.builder.BuilderIntegrationTest;
+import com.musala.atmosphere.client.device.DatePickerInteractionTest;
+import com.musala.atmosphere.client.device.DisableMockLocationTest;
+import com.musala.atmosphere.client.device.GetRunningTaskIdsTest;
+import com.musala.atmosphere.client.device.ScreenOffTimeoutTest;
 import com.musala.atmosphere.client.device.SetKeyguardTest;
+import com.musala.atmosphere.client.device.SwipeTest;
+import com.musala.atmosphere.client.device.TimePickerInteractionTest;
+import com.musala.atmosphere.client.device.WaitForTaskUpdateTest;
 import com.musala.atmosphere.server.EmulatorCreationTest;
 
 /**
@@ -22,6 +29,8 @@ import com.musala.atmosphere.server.EmulatorCreationTest;
 @RunWith(Suite.class)
 @SuiteClasses({DeviceAcceleratoinTest.class, BatteryRelatedMethodsTest.class, DeviceOrientationTest.class,
         BuilderIntegrationTest.class, EmulatorConsoleTest.class, EmulatorCreationTest.class,
-        NetworkConnectionTest.class})
+        NetworkConnectionTest.class, DisableMockLocationTest.class, SetKeyguardTest.class, GetRunningTaskIdsTest.class,
+        WaitForTaskUpdateTest.class, DatePickerInteractionTest.class, TimePickerInteractionTest.class, SwipeTest.class,
+        ScreenOffTimeoutTest.class,})
 public class AtmosphereFailingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

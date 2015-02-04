@@ -52,15 +52,13 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
         BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class, DeviceInstallApkTest.class,
         GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class, GestureExecutionTest.class,
         TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class, PinchTest.class,
-        AtmosphereServiceConnectionTest.class, SwipeTest.class, CallTest.class, LongPressTest.class,
-        WaitForExistsTest.class, ScrollTest.class, HorizontalScrollTest.class, WaitForWindowUpdateTest.class,
-        EmulatorCameraTest.class, WaitUntilGoneTest.class, ProcessRunningTest.class, ForceStopProcessTest.class,
-        StopBackgroundProcessTest.class, ScreenOffTimeoutTest.class, TimePickerInteractionTest.class,
+        AtmosphereServiceConnectionTest.class, CallTest.class, LongPressTest.class, WaitForExistsTest.class,
+        ScrollTest.class, HorizontalScrollTest.class, WaitForWindowUpdateTest.class, EmulatorCameraTest.class,
+        WaitUntilGoneTest.class, ProcessRunningTest.class, ForceStopProcessTest.class, StopBackgroundProcessTest.class,
         GetElementWhenPresentTest.class, SetIMEAsDefaultTest.class, OpenNotificationTest.class,
         OpenQuickSettingsTest.class, NotificationBarTest.class, NotificationInteractionTest.class,
-        DatePickerInteractionTest.class, UninstallApplicationTest.class, DeviceProximityTest.class,
-        WaitForTaskUpdateTest.class, BringTaskToFrontTest.class, GetRunningTaskIdsTest.class, SetKeyguardTest.class,
-        MockLocationTest.class, DisableMockLocationTest.class, PoolEventHandlerTest.class})
+        UninstallApplicationTest.class, DeviceProximityTest.class, BringTaskToFrontTest.class, MockLocationTest.class,
+        PoolEventHandlerTest.class})
 // @SuiteClasses({DatePickerInteractionTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
