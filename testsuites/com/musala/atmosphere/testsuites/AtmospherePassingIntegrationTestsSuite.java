@@ -11,6 +11,7 @@ import com.musala.atmosphere.agent.devicewrapper.TelephonyInformationTest;
 import com.musala.atmosphere.client.builder.BuilderDeviceSelectionIntegrationTest;
 import com.musala.atmosphere.client.device.BringTaskToFrontTest;
 import com.musala.atmosphere.client.device.CallTest;
+import com.musala.atmosphere.client.device.ClearTextTest;
 import com.musala.atmosphere.client.device.DatePickerInteractionTest;
 import com.musala.atmosphere.client.device.DeviceGetScreenshotTest;
 import com.musala.atmosphere.client.device.DeviceInstallApkTest;
@@ -20,6 +21,7 @@ import com.musala.atmosphere.client.device.ForceStopProcessTest;
 import com.musala.atmosphere.client.device.GestureExecutionTest;
 import com.musala.atmosphere.client.device.GetRunningTaskIdsTest;
 import com.musala.atmosphere.client.device.HorizontalScrollTest;
+import com.musala.atmosphere.client.device.InputTextTest;
 import com.musala.atmosphere.client.device.LongPressTest;
 import com.musala.atmosphere.client.device.MockLocationTest;
 import com.musala.atmosphere.client.device.NotificationBarTest;
@@ -58,7 +60,7 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
         GetElementWhenPresentTest.class, SetIMEAsDefaultTest.class, OpenNotificationTest.class,
         OpenQuickSettingsTest.class, NotificationBarTest.class, NotificationInteractionTest.class,
         UninstallApplicationTest.class, DeviceProximityTest.class, BringTaskToFrontTest.class, MockLocationTest.class,
-        PoolEventHandlerTest.class})
+        PoolEventHandlerTest.class, InputTextTest.class, ClearTextTest.class})
 // @SuiteClasses({DatePickerInteractionTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
