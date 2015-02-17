@@ -43,7 +43,9 @@ public enum ContentDescriptor {
     SEND_NOTIFICATION_BUTTON("Send notification"),
     DATE_PICKER("SelectDateButton"),
     GPS_LOCATION("GpsLocation"),
-    PROVIDER_DISCONNECT_MONITOR("TestProviderDisconnectMonitor");
+    PROVIDER_DISCONNECT_MONITOR("TestProviderDisconnectMonitor"),
+    COPY_TEXT_BOX("CopyTextBox"),
+    PASTE_TEXT_BOX("PasteTextBox");
 
     private String value;
 

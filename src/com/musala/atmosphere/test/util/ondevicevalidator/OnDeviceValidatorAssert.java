@@ -62,6 +62,8 @@ public class OnDeviceValidatorAssert {
 
     private final static String VALIDATOR_HORIZONTAL_SCROLL_ACTIVITY = ".HorizontalScrollableViewActivity";
 
+    private final static String VALIDATOR_PASTE_TEST_ACTIVITY = ".PasteTestActivity";
+
     private final static String VALIDATOR_PICKER_ACTIVITY = ".PickerViewActivity";
 
     private final static String VALIDATOR_NOTIFICATION_TEST_ACTIVITY = ".NotificationTestActivity";
@@ -432,7 +434,7 @@ public class OnDeviceValidatorAssert {
     }
 
     /**
-     * Asserts that the text of the passed {@link UiElement} is the same as the expected. <b>Worsk correctly only for
+     * Asserts that the text of the passed {@link UiElement} is the same as the expected. <b>Works correctly only for
      * edit text views.</b>
      * 
      * @param message
@@ -1394,6 +1396,20 @@ public class OnDeviceValidatorAssert {
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_MAGNETIC_FIELD_ACTIVITY);
+    }
+
+    /**
+     * Starts OnDeviceValidator's paste activity.
+     * 
+     * @throws ActivityStartingException
+     * @throws InterruptedException
+     * @throws UiElementFetchingException
+     */
+    public static void startPasteTestActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_PASTE_TEST_ACTIVITY);
     }
 
     /**
