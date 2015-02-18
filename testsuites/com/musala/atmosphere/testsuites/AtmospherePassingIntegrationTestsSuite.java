@@ -56,6 +56,7 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
         UninstallApplicationTest.class, DeviceProximityTest.class, BringTaskToFrontTest.class, MockLocationTest.class,
         PoolEventHandlerTest.class, InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class,
         PasteTextTest.class})
-// @SuiteClasses({PasteTextTest.class})
+// @SuiteClasses({SetIMEAsDefaultTest.class, InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class,
+// PasteTextTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

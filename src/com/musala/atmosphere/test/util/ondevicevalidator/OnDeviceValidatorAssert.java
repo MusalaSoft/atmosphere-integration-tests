@@ -62,7 +62,7 @@ public class OnDeviceValidatorAssert {
 
     private final static String VALIDATOR_HORIZONTAL_SCROLL_ACTIVITY = ".HorizontalScrollableViewActivity";
 
-    private final static String VALIDATOR_PASTE_TEST_ACTIVITY = ".PasteTestActivity";
+    private final static String VALIDATOR_IME_TEST_ACTIVITY = ".ImeTestActivity";
 
     private final static String VALIDATOR_PICKER_ACTIVITY = ".PickerViewActivity";
 
@@ -493,7 +493,7 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void assertInputText(String message, String expected) throws UiElementFetchingException {
-        UiElementSelector inputTextSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.INPUT_TEXT_BOX,
+        UiElementSelector inputTextSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX,
                                                                                        expected);
 
         assertElementExists(message, inputTextSelector);
@@ -958,9 +958,8 @@ public class OnDeviceValidatorAssert {
      * @param message
      *        - message to be displayed if assertion fails.
      */
-    public static void assertTextIsCleared(String message) {
-        UiElementSelector textFieldSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.CLEAR_TEXT_BOX,
-                                                                                       "");
+    public static void assertTextIsCleared(String message, ContentDescriptor contentDescriptor) {
+        UiElementSelector textFieldSelector = createSelectorByTextAndContentDescriptor(contentDescriptor, "");
 
         assertElementExists(message, textFieldSelector);
     }
@@ -1399,17 +1398,17 @@ public class OnDeviceValidatorAssert {
     }
 
     /**
-     * Starts OnDeviceValidator's paste activity.
+     * Starts OnDeviceValidator's IME activity.
      * 
      * @throws ActivityStartingException
      * @throws InterruptedException
      * @throws UiElementFetchingException
      */
-    public static void startPasteTestActivity()
+    public static void startImeTestActivity()
         throws ActivityStartingException,
             InterruptedException,
             UiElementFetchingException {
-        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_PASTE_TEST_ACTIVITY);
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_IME_TEST_ACTIVITY);
     }
 
     /**

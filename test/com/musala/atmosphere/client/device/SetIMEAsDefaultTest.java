@@ -2,7 +2,7 @@ package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startImeTestActivity;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -23,9 +23,6 @@ import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
  * 
  */
 public class SetIMEAsDefaultTest extends BaseIntegrationTest {
-
-    private final static String TEXT_BOX_CONTENT_DESCRIPTOR = ContentDescriptor.INPUT_TEXT_BOX.toString();
-
     private final static String INPUT_STRING = "Letters";
 
     private final static String DEFAULT_KEYBOARD_ID = "com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME";
@@ -38,7 +35,7 @@ public class SetIMEAsDefaultTest extends BaseIntegrationTest {
         testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
         initTestDevice(testDeviceParams);
         setTestDevice(testDevice);
-        startMainActivity();
+        startImeTestActivity();
     }
 
     @AfterClass
@@ -51,7 +48,7 @@ public class SetIMEAsDefaultTest extends BaseIntegrationTest {
     public void testSettingDefaultKeyboards() throws Exception {
         Screen screen = testDevice.getActiveScreen();
 
-        UiElement inputTextBox = getElementByContentDescriptor(TEXT_BOX_CONTENT_DESCRIPTOR);
+        UiElement inputTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
 
         testDevice.setDefaultIME(DEFAULT_KEYBOARD_ID);
 
@@ -62,20 +59,20 @@ public class SetIMEAsDefaultTest extends BaseIntegrationTest {
 
         screen.updateScreen();
 
-        UiElement inputTextBoxAfterInput = getElementByContentDescriptor(TEXT_BOX_CONTENT_DESCRIPTOR);
+        UiElement inputTextBoxAfterInput = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
         String resultFromInput = inputTextBoxAfterInput.getText();
 
         assertFalse("There should be no text in the field.", INPUT_STRING.equals(resultFromInput));
 
         screen.updateScreen();
 
-        UiElement inputTextBoxAtmosphereIME = getElementByContentDescriptor(TEXT_BOX_CONTENT_DESCRIPTOR);
+        UiElement inputTextBoxAtmosphereIME = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
 
         testDevice.setAtmosphereIME();
         inputTextBoxAtmosphereIME.inputText(INPUT_STRING);
 
         screen.updateScreen();
-        UiElement inputTextBoxAtmosphereIMEAfterInput = getElementByContentDescriptor(TEXT_BOX_CONTENT_DESCRIPTOR);
+        UiElement inputTextBoxAtmosphereIMEAfterInput = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
         String resultWithAtmosphereIME = inputTextBoxAtmosphereIMEAfterInput.getText();
 
         assertEquals("The entered text is not as expected.", INPUT_STRING, resultWithAtmosphereIME);

@@ -3,8 +3,7 @@ package com.musala.atmosphere.client.device;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertElementText;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-
-import javax.xml.xpath.XPathExpressionException;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startImeTestActivity;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -13,9 +12,8 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
-import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
  * 
@@ -23,17 +21,16 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
  * 
  */
 public class SelectAllTextTest extends BaseIntegrationTest {
-    private final static String INPUT_TEXT_BOX_CONTENT_DESCRIPTOR = "InputTextBox";
+    private final static String TEXT_TO_INPUT_FOR_VERIFICATION = "success";
 
-    private final static String TEXT_TO_INPUT_FIRST = "Select All Text";
-
-    private final static String TEXT_TO_INPUT_SECOND = "success";
+    private final static long TIMEOUT_BETWEEN_OPERATIONS = 2000;
 
     @BeforeClass
     public static void setUp() throws Exception {
         initTestDevice(new DeviceParameters());
         setTestDevice(testDevice);
-        testDevice.startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APP_ACTIVITY);
+
+        startImeTestActivity();
     }
 
     @AfterClass
@@ -43,28 +40,23 @@ public class SelectAllTextTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testSelectAllText()
-        throws XPathExpressionException,
-            UiElementFetchingException,
-            InvalidCssQueryException,
-            InterruptedException {
+    public void testSelectAllText() throws Exception {
         Screen screen = testDevice.getActiveScreen();
 
-        UiElement inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX_CONTENT_DESCRIPTOR);
-        inputTextBox.inputText(TEXT_TO_INPUT_FIRST);
+        UiElement selectTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
+
+        selectTextBox.selectAllText();
+
+        Thread.sleep(TIMEOUT_BETWEEN_OPERATIONS);
+
+        selectTextBox.inputText(TEXT_TO_INPUT_FOR_VERIFICATION);
 
         screen.updateScreen();
 
-        inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX_CONTENT_DESCRIPTOR);
-        inputTextBox.selectAllText();
-        inputTextBox.inputText(TEXT_TO_INPUT_SECOND);
-
-        screen.updateScreen();
-
-        inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX_CONTENT_DESCRIPTOR);
+        selectTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
 
         assertElementText("Select all text failed! The text field content does not match the expected one.",
-                          inputTextBox,
-                          TEXT_TO_INPUT_SECOND);
+                          selectTextBox,
+                          TEXT_TO_INPUT_FOR_VERIFICATION);
     }
 }

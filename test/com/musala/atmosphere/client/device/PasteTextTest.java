@@ -3,7 +3,7 @@ package com.musala.atmosphere.client.device;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertElementText;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startPasteTestActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startImeTestActivity;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -34,7 +34,7 @@ public class PasteTextTest extends BaseIntegrationTest {
         initTestDevice(new DeviceParameters());
         setTestDevice(testDevice);
 
-        startPasteTestActivity();
+        startImeTestActivity();
     }
 
     @AfterClass
@@ -44,10 +44,10 @@ public class PasteTextTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void pasteTextTest() throws Exception {
+    public void testPasteText() throws Exception {
         Screen screen = testDevice.getActiveScreen();
 
-        UiElement copyTextBox = getElementByContentDescriptor(ContentDescriptor.COPY_TEXT_BOX.toString());
+        UiElement copyTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
         copyTextBox.longPress();
 
         screen.updateScreen();
@@ -65,12 +65,12 @@ public class PasteTextTest extends BaseIntegrationTest {
         UiElement copyButton = screen.getElement(copyButtonSelector);
         copyButton.tap();
 
-        UiElement pasteTextBox = getElementByContentDescriptor(ContentDescriptor.PASTE_TEXT_BOX.toString());
+        UiElement pasteTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
         pasteTextBox.pasteText();
 
         screen.updateScreen();
 
-        pasteTextBox = getElementByContentDescriptor(ContentDescriptor.PASTE_TEXT_BOX.toString());
+        pasteTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
 
         assertElementText("Paste text failed! The text field content does not match the expected one.",
                           pasteTextBox,

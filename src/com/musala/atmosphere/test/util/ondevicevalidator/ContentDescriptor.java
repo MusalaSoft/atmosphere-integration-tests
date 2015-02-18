@@ -44,8 +44,9 @@ public enum ContentDescriptor {
     DATE_PICKER("SelectDateButton"),
     GPS_LOCATION("GpsLocation"),
     PROVIDER_DISCONNECT_MONITOR("TestProviderDisconnectMonitor"),
-    COPY_TEXT_BOX("CopyTextBox"),
-    PASTE_TEXT_BOX("PasteTextBox");
+    CONTENT_TEXT_BOX("ContentTextBox"),
+    EMPTY_TEXT_BOX("EmptyTextBox"),
+    EMPTY_FIRST_LINE_TEXT_BOX("EmptyFirstLineTextBox");
 
     private String value;
 

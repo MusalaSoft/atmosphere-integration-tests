@@ -3,22 +3,24 @@ package com.musala.atmosphere.client.device;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertInputText;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startImeTestActivity;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
  * @author valyo.yolovski
  */
 public class InputTextTest extends BaseIntegrationTest {
-    private final static String INPUT_TEXT_BOX = "InputTextBox";
+    private static final long INPUT_INTERVAL = 500;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -26,24 +28,14 @@ public class InputTextTest extends BaseIntegrationTest {
         setTestDevice(testDevice);
     }
 
-    @Test
-    public void inputTextTestOne() throws Exception {
-        startMainActivity();
-        String textToInput = "Hi! Кирилица. €%@$§№%()456*/0,.";
-        UiElement inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
-        inputTextBox.inputText(textToInput);
-        assertInputText("Inputting text failed.", textToInput);
+    @Before
+    public void setUpTest() throws Exception {
+        startImeTestActivity();
     }
 
-    @Test
-    public void inputTextTestTwo() throws Exception {
-        testDevice.pressButton(HardwareButton.HOME);
-        startMainActivity();
-        String textToInput = "Letters."; // Text to input.
-        int inputInterval = 500;// Time interval between the input of each letter in ms.
-        UiElement inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
-        inputTextBox.inputText(textToInput, inputInterval);
-        assertInputText("Inputting text failed.", textToInput);
+    @AfterClass
+    public static void tearDown() throws Exception {
+        releaseDevice();
     }
 
     @After
@@ -51,8 +43,23 @@ public class InputTextTest extends BaseIntegrationTest {
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
     }
 
-    @AfterClass
-    public static void tearDown() throws Exception {
-        releaseDevice();
+    @Test
+    public void testInputTextCyrillic() throws Exception {
+        String textToInput = "Hi! Кирилица. €%@$§№%()456*/0,.";
+
+        UiElement inputTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
+        inputTextBox.inputText(textToInput);
+
+        assertInputText("Inputting text failed.", textToInput);
+    }
+
+    @Test
+    public void testInputTextLatin() throws Exception {
+        String textToInput = "Letters.";
+
+        UiElement inputTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
+        inputTextBox.inputText(textToInput, INPUT_INTERVAL);
+
+        assertInputText("Inputting text failed.", textToInput);
     }
 }
