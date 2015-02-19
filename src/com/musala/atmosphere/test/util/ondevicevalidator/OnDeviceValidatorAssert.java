@@ -510,7 +510,7 @@ public class OnDeviceValidatorAssert {
         UiElementSelector inputTextSelector = new UiElementSelector();
 
         inputTextSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
-                                                ContentDescriptor.INPUT_TEXT_BOX.toString());
+                                                ContentDescriptor.EMPTY_TEXT_BOX.toString());
         inputTextSelector.addSelectionAttribute(CssAttribute.FOCUSED, true);
 
         assertElementExists(message, inputTextSelector);

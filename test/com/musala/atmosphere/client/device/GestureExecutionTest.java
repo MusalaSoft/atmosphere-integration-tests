@@ -3,9 +3,7 @@ package com.musala.atmosphere.client.device;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertInputTextBoxIsFocused;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
-
-import javax.xml.xpath.XPathExpressionException;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startImeTestActivity;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -13,9 +11,6 @@ import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.exceptions.ActivityStartingException;
-import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
-import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.geometry.Bounds;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.client.uiutils.UiElementSelector;
@@ -24,6 +19,7 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.commons.gesture.Anchor;
 import com.musala.atmosphere.commons.gesture.Gesture;
 import com.musala.atmosphere.commons.gesture.Timeline;
+import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
  * Modified by georgi.gaydarov, originally by
@@ -32,23 +28,17 @@ import com.musala.atmosphere.commons.gesture.Timeline;
  * 
  */
 public class GestureExecutionTest extends BaseIntegrationTest {
-    private final static String INPUT_TEXT_BOX = "InputTextBox";
+    private static final long TIMEOUT = 1000;
 
     @BeforeClass
-    public static void setUp()
-        throws ActivityStartingException,
-            InterruptedException,
-            UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException,
-            Exception {
+    public static void setUp() throws Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
         initTestDevice(testDeviceParams);
 
         setTestDevice(testDevice);
 
-        startMainActivity();
+        startImeTestActivity();
     }
 
     @AfterClass
@@ -58,24 +48,26 @@ public class GestureExecutionTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testTap()
-        throws InterruptedException,
-            ActivityStartingException,
-            UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
-        UiElement inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
+    public void testTap() throws Exception {
+        UiElement inputTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
         UiElementSelector selector = inputTextBox.getElementSelector();
+
         Bounds boxBounds = selector.getBoundsValue(CssAttribute.BOUNDS);
         int xCoord = boxBounds.getCenter().getX();
         int yCoord = boxBounds.getCenter().getY();
+
         Anchor tapPoint = new Anchor(xCoord, yCoord, 0);
+
         Timeline tapTimeline = new Timeline();
         tapTimeline.add(tapPoint);
+
         Gesture tapGesture = new Gesture();
         tapGesture.add(tapTimeline);
+
         testDevice.executeGesture(tapGesture);
-        Thread.sleep(1000);
+
+        Thread.sleep(TIMEOUT);
+
         assertInputTextBoxIsFocused("Input text box not focused.");
     }
 }

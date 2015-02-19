@@ -3,27 +3,24 @@ package com.musala.atmosphere.client.device;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertInputTextBoxIsFocused;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startImeTestActivity;
 import static org.junit.Assert.assertTrue;
-
-import javax.xml.xpath.XPathExpressionException;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.exceptions.ActivityStartingException;
-import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
-import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.geometry.Bounds;
 import com.musala.atmosphere.client.geometry.Point;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
  * 
@@ -31,16 +28,26 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
  * 
  */
 public class TapTest extends BaseIntegrationTest {
-    private final static String WIDGET_MAIN_LAYOUT = "MainLinearLayout";
+    private final static String IME_RELATIVE_LAYOUT_CONTENT_DESCRIPTOR = "ImeRelativeLayout";
 
-    private final static String INPUT_TEXT_BOX = "InputTextBox";
+    private final static String TAPPING_SCREEN_FAILED_MESSAGE = "Tapping screen returned false.";
+
+    private final static String FOCUSING_ELEMENT_FAILED_MESSAGE = "Element is not focused.";
+
+    private final static long TIMEOUT = 1000;
 
     @BeforeClass
     public static void setUp() throws Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
         initTestDevice(testDeviceParams);
+
         setTestDevice(testDevice);
+    }
+
+    @Before
+    public void setUpTest() throws Exception {
+        startImeTestActivity();
     }
 
     @AfterClass
@@ -49,45 +56,37 @@ public class TapTest extends BaseIntegrationTest {
     }
 
     @After
-    public void stopValidator() {
+    public void tearDownTest() {
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
     }
 
     @Test
-    public void testTap()
-        throws InterruptedException,
-            ActivityStartingException,
-            UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
-        startMainActivity();
+    public void testTap() throws Exception {
+        UiElement inputTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
 
-        UiElement inputTextBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
-        assertTrue("Tapping screen returned false.", inputTextBox.tap());
-        assertInputTextBoxIsFocused("Input text box not focused.");
+        assertTrue(TAPPING_SCREEN_FAILED_MESSAGE, inputTextBox.tap());
+
+        assertInputTextBoxIsFocused(FOCUSING_ELEMENT_FAILED_MESSAGE);
     }
 
     @Test
-    public void testRelativeTap()
-        throws InterruptedException,
-            ActivityStartingException,
-            UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
-        startMainActivity();
+    public void testRelativeTap() throws Exception {
+        UiElement imeRelativeLayout = getElementByContentDescriptor(IME_RELATIVE_LAYOUT_CONTENT_DESCRIPTOR);
+        UiElementSelector imeRelativeLayoutSelector = imeRelativeLayout.getElementSelector();
 
-        UiElement widgetMainLayout = getElementByContentDescriptor(WIDGET_MAIN_LAYOUT);
-        UiElementSelector widgetRelativeLayoutSelector = widgetMainLayout.getElementSelector();
-        UiElement batteryStatusBox = getElementByContentDescriptor(INPUT_TEXT_BOX);
-        UiElementSelector batteryStatusBoxSelector = batteryStatusBox.getElementSelector();
+        UiElement emptyTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
+        UiElementSelector emptyTextBoxSelector = emptyTextBox.getElementSelector();
 
-        Bounds batteryBoundsAttributeValue = batteryStatusBoxSelector.getBoundsValue(CssAttribute.BOUNDS);
-        Point batteryStatusBoxUpperLeftCorner = batteryBoundsAttributeValue.getUpperLeftCorner();
-        Bounds widgetBoundsAttributeValue = widgetRelativeLayoutSelector.getBoundsValue(CssAttribute.BOUNDS);
-        Point BatteryStatusRelativeUpperLeftCorner = widgetBoundsAttributeValue.getRelativePoint(batteryStatusBoxUpperLeftCorner);
+        Bounds emptyTextBoxBoundsAttributeValue = emptyTextBoxSelector.getBoundsValue(CssAttribute.BOUNDS);
+        Point emptyTextBoxUpperLeftCorner = emptyTextBoxBoundsAttributeValue.getUpperLeftCorner();
 
-        assertTrue("Tapping screen returned false.", widgetMainLayout.tap(BatteryStatusRelativeUpperLeftCorner));
-        Thread.sleep(1000);
-        assertInputTextBoxIsFocused("Input text box not focused.");
+        Bounds imeRelativeLayoutBoundsAttributeValue = imeRelativeLayoutSelector.getBoundsValue(CssAttribute.BOUNDS);
+        Point imeRelativeLayoutUpperLeftCorner = imeRelativeLayoutBoundsAttributeValue.getRelativePoint(emptyTextBoxUpperLeftCorner);
+
+        assertTrue(TAPPING_SCREEN_FAILED_MESSAGE, imeRelativeLayout.tap(imeRelativeLayoutUpperLeftCorner));
+
+        Thread.sleep(TIMEOUT);
+
+        assertInputTextBoxIsFocused(FOCUSING_ELEMENT_FAILED_MESSAGE);
     }
 }
