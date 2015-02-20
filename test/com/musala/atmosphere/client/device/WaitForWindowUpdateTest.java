@@ -101,11 +101,12 @@ public class WaitForWindowUpdateTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testWaitForWindowUpdateNoUpdate() throws InterruptedException {
-        testDevice.pressButton(HardwareButton.HOME);
+    public void testWaitForWindowUpdateNoUpdate() throws Exception {
+        startWaitTestActivity();
+
         Screen deviceActiveScreen = testDevice.getActiveScreen();
 
-        boolean waitResult = deviceActiveScreen.waitForWindowUpdate(null, WINDOW_UPDATE_TIMEOUT);
+        boolean waitResult = deviceActiveScreen.waitForWindowUpdate(VALIDATOR_PACKAGE, WINDOW_UPDATE_TIMEOUT);
         assertFalse("Wait method indicated success, when no window update occurred.", waitResult);
     }
 
