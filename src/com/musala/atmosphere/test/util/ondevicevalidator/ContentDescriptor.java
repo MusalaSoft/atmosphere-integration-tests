@@ -46,7 +46,8 @@ public enum ContentDescriptor {
     PROVIDER_DISCONNECT_MONITOR("TestProviderDisconnectMonitor"),
     CONTENT_TEXT_BOX("ContentTextBox"),
     EMPTY_TEXT_BOX("EmptyTextBox"),
-    EMPTY_FIRST_LINE_TEXT_BOX("EmptyFirstLineTextBox");
+    EMPTY_FIRST_LINE_TEXT_BOX("EmptyFirstLineTextBox"),
+    PASTE_CONTAINER_TEXT_BOX("PasteTextBox");
 
     private String value;
 
