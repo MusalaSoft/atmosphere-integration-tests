@@ -12,6 +12,8 @@ import com.musala.atmosphere.client.builder.BuilderDeviceSelectionIntegrationTes
 import com.musala.atmosphere.client.device.BringTaskToFrontTest;
 import com.musala.atmosphere.client.device.CallTest;
 import com.musala.atmosphere.client.device.ClearTextTest;
+import com.musala.atmosphere.client.device.CopyTextTest;
+import com.musala.atmosphere.client.device.CutTextTest;
 import com.musala.atmosphere.client.device.DeviceGetScreenshotTest;
 import com.musala.atmosphere.client.device.DeviceInstallApkTest;
 import com.musala.atmosphere.client.device.DoubleTapTest;
@@ -55,7 +57,7 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
         OpenQuickSettingsTest.class, NotificationBarTest.class, NotificationInteractionTest.class,
         UninstallApplicationTest.class, DeviceProximityTest.class, BringTaskToFrontTest.class, MockLocationTest.class,
         PoolEventHandlerTest.class, InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class,
-        PasteTextTest.class})
+        PasteTextTest.class, CopyTextTest.class, CutTextTest.class})
 // @SuiteClasses({SetIMEAsDefaultTest.class, InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class,
 // PasteTextTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
