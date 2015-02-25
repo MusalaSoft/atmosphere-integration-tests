@@ -66,7 +66,12 @@ public class CutTextTest extends BaseIntegrationTest {
 
         String expectedText = singleLineTextBoxSelector.getStringValue(CssAttribute.TEXT);
 
-        singleLineTextBox.selectAllText();
+        singleLineTextBox.longPress();
+
+        screen.updateScreen();
+
+        UiElement selectAllButton = getElementByContentDescriptor(SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
+        selectAllButton.tap();
 
         singleLineTextBox.cutText();
 
@@ -83,17 +88,10 @@ public class CutTextTest extends BaseIntegrationTest {
 
         screen.updateScreen();
 
-        UiElementSelector selectAllButtonSelector = new UiElementSelector();
-        selectAllButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
-                                                      SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
-
-        UiElement selectAllButton = screen.getElement(selectAllButtonSelector);
+        selectAllButton = getElementByContentDescriptor(SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
         selectAllButton.tap();
 
-        UiElementSelector pasteButtonSelector = new UiElementSelector();
-        pasteButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, PASTE_BUTTON_CONTENT_DESCRIPTOR);
-
-        UiElement pasteButton = screen.getElement(pasteButtonSelector);
+        UiElement pasteButton = getElementByContentDescriptor(PASTE_BUTTON_CONTENT_DESCRIPTOR);
         pasteButton.tap();
 
         screen.updateScreen();
@@ -112,7 +110,12 @@ public class CutTextTest extends BaseIntegrationTest {
 
         String expectedText = multilineTextBoxSelector.getStringValue(CssAttribute.TEXT);
 
-        multilineTextBox.selectAllText();
+        multilineTextBox.longPress();
+
+        screen.updateScreen();
+
+        UiElement selectAllButton = getElementByContentDescriptor(SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
+        selectAllButton.tap();
 
         multilineTextBox.cutText();
 
@@ -129,17 +132,10 @@ public class CutTextTest extends BaseIntegrationTest {
 
         screen.updateScreen();
 
-        UiElementSelector selectAllButtonSelector = new UiElementSelector();
-        selectAllButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
-                                                      SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
-
-        UiElement selectAllButton = screen.getElement(selectAllButtonSelector);
+        selectAllButton = getElementByContentDescriptor(SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
         selectAllButton.tap();
 
-        UiElementSelector pasteButtonSelector = new UiElementSelector();
-        pasteButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, PASTE_BUTTON_CONTENT_DESCRIPTOR);
-
-        UiElement pasteButton = screen.getElement(pasteButtonSelector);
+        UiElement pasteButton = getElementByContentDescriptor(PASTE_BUTTON_CONTENT_DESCRIPTOR);
         pasteButton.tap();
 
         screen.updateScreen();

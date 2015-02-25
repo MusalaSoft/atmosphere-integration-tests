@@ -23,8 +23,6 @@ import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 public class SelectAllTextTest extends BaseIntegrationTest {
     private final static String TEXT_TO_INPUT_FOR_VERIFICATION = "success";
 
-    private final static long TIMEOUT_BETWEEN_OPERATIONS = 2000;
-
     @BeforeClass
     public static void setUp() throws Exception {
         initTestDevice(new DeviceParameters());
@@ -40,20 +38,45 @@ public class SelectAllTextTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testSelectAllText() throws Exception {
+    public void testSelectAllTextSingleLine() throws Exception {
         Screen screen = testDevice.getActiveScreen();
 
         UiElement selectTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
 
         selectTextBox.selectAllText();
 
-        Thread.sleep(TIMEOUT_BETWEEN_OPERATIONS);
+        screen.updateScreen();
+
+        selectTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
 
         selectTextBox.inputText(TEXT_TO_INPUT_FOR_VERIFICATION);
 
         screen.updateScreen();
 
         selectTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
+
+        assertElementText("Select all text failed! The text field content does not match the expected one.",
+                          selectTextBox,
+                          TEXT_TO_INPUT_FOR_VERIFICATION);
+    }
+
+    @Test
+    public void testSelectAllTextMultiline() throws Exception {
+        Screen screen = testDevice.getActiveScreen();
+
+        UiElement selectTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_FIRST_LINE_TEXT_BOX.toString());
+
+        selectTextBox.selectAllText();
+
+        screen.updateScreen();
+
+        selectTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_FIRST_LINE_TEXT_BOX.toString());
+
+        selectTextBox.inputText(TEXT_TO_INPUT_FOR_VERIFICATION);
+
+        screen.updateScreen();
+
+        selectTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_FIRST_LINE_TEXT_BOX.toString());
 
         assertElementText("Select all text failed! The text field content does not match the expected one.",
                           selectTextBox,
