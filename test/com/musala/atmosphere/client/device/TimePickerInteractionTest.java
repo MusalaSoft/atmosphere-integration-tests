@@ -26,6 +26,8 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 public class TimePickerInteractionTest extends BaseIntegrationTest {
+    private static final int JELLY_BEAN_MR2_API_LEVEL = 18;
+
     private static final int EXPECTED_HOUR = 11;
 
     private static final int EXPECTED_MINUTE = 45;
@@ -38,7 +40,9 @@ public class TimePickerInteractionTest extends BaseIntegrationTest {
 
     private static final int PM = Calendar.PM;
 
-    private static final String DONE = "Done";
+    private static final String DONE_BUTTON_TEXT = "Done";
+
+    private static final String DONE_BUTTON_RESOURCE_ID = "android:id/button1";
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -184,7 +188,14 @@ public class TimePickerInteractionTest extends BaseIntegrationTest {
      */
     private void clickDone(Screen screen) throws Exception {
         UiElementSelector doneButtonSelector = new UiElementSelector();
-        doneButtonSelector.addSelectionAttribute(CssAttribute.TEXT, DONE);
+
+        int apiLevel = testDevice.getInformation().getApiLevel();
+        if (apiLevel >= JELLY_BEAN_MR2_API_LEVEL) {
+            doneButtonSelector.addSelectionAttribute(CssAttribute.RESOURCE_ID, DONE_BUTTON_RESOURCE_ID);
+        } else {
+            doneButtonSelector.addSelectionAttribute(CssAttribute.TEXT, DONE_BUTTON_TEXT);
+        }
+
         UiElement doneButton = screen.getElement(doneButtonSelector);
         doneButton.tap();
     }

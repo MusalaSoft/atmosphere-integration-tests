@@ -26,6 +26,7 @@ import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 public class DatePickerInteractionTest extends BaseIntegrationTest {
+    private static final int JELLY_BEAN_MR2_API_LEVEL = 18;
 
     private static final int EXPECTED_YEAR = 2014;
 
@@ -43,7 +44,9 @@ public class DatePickerInteractionTest extends BaseIntegrationTest {
 
     private static final String EXPECTED_SET_DATE_STRING = "Feb-14-2015";
 
-    private static final String DONE = "Done";
+    private static final String DONE_BUTTON_TEXT = "Done";
+
+    private static final String DONE_BUTTON_RESOURCE_ID = "android:id/button1";
 
     private static final int DEFAULT_WAIT_FOR_GET_PICKER = 2000;
 
@@ -155,7 +158,14 @@ public class DatePickerInteractionTest extends BaseIntegrationTest {
      */
     private void clickDone(Screen screen) throws Exception {
         UiElementSelector doneButtonSelector = new UiElementSelector();
-        doneButtonSelector.addSelectionAttribute(CssAttribute.TEXT, DONE);
+
+        int apiLevel = testDevice.getInformation().getApiLevel();
+        if (apiLevel >= JELLY_BEAN_MR2_API_LEVEL) {
+            doneButtonSelector.addSelectionAttribute(CssAttribute.RESOURCE_ID, DONE_BUTTON_RESOURCE_ID);
+        } else {
+            doneButtonSelector.addSelectionAttribute(CssAttribute.TEXT, DONE_BUTTON_TEXT);
+        }
+
         UiElement doneButton = screen.getElement(doneButtonSelector);
         doneButton.tap();
     }

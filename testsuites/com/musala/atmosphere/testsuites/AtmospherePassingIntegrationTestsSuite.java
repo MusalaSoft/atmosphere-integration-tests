@@ -13,6 +13,7 @@ import com.musala.atmosphere.client.device.BringTaskToFrontTest;
 import com.musala.atmosphere.client.device.CallTest;
 import com.musala.atmosphere.client.device.ClearTextTest;
 import com.musala.atmosphere.client.device.CopyTextTest;
+import com.musala.atmosphere.client.device.DatePickerInteractionTest;
 import com.musala.atmosphere.client.device.CutTextTest;
 import com.musala.atmosphere.client.device.DeviceGetScreenshotTest;
 import com.musala.atmosphere.client.device.DeviceInstallApkTest;
@@ -38,6 +39,7 @@ import com.musala.atmosphere.client.device.StartActivityTest;
 import com.musala.atmosphere.client.device.StartApplicationTest;
 import com.musala.atmosphere.client.device.StopBackgroundProcessTest;
 import com.musala.atmosphere.client.device.TapTest;
+import com.musala.atmosphere.client.device.TimePickerInteractionTest;
 import com.musala.atmosphere.client.device.UninstallApplicationTest;
 import com.musala.atmosphere.client.device.WaitForExistsTest;
 import com.musala.atmosphere.client.device.WaitForWindowUpdateTest;
@@ -57,7 +59,7 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
         OpenQuickSettingsTest.class, NotificationBarTest.class, NotificationInteractionTest.class,
         UninstallApplicationTest.class, DeviceProximityTest.class, BringTaskToFrontTest.class, MockLocationTest.class,
         PoolEventHandlerTest.class, InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class,
-        PasteTextTest.class, CopyTextTest.class, CutTextTest.class})
+        PasteTextTest.class, CopyTextTest.class, CutTextTest.class, DatePickerInteractionTest.class, TimePickerInteractionTest.class})
 // @SuiteClasses({SetIMEAsDefaultTest.class, InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class,
 // PasteTextTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
