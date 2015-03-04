@@ -28,7 +28,7 @@ public class OpenQuickSettingsTest extends BaseIntegrationTest {
     public static void setUp() throws Exception {
         DeviceParameters deviceParameters = new DeviceParameters();
         deviceParameters.setDeviceType(DeviceType.DEVICE_ONLY);
-        deviceParameters.setApiLevel(19);
+        deviceParameters.setTargetApiLevel(19);
 
         try {
             initTestDevice(deviceParameters);

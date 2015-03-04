@@ -93,7 +93,7 @@ public class BuilderDeviceSelectionIntegrationTest {
         mockedDeviceOneInformation.setRam(511);
         mockedDeviceOneInformation.setResolution(new Pair<>(801, 601));
         mockedDeviceOneInformation.setDpi(121);
-        mockedDeviceOneInformation.setApiLevel(19);
+        mockedDeviceOneInformation.setApiLevel(7);
         when(mockedDeviceOne.route(eq(RoutingAction.GET_DEVICE_INFORMATION))).thenReturn(mockedDeviceOneInformation);
 
         IWrapDevice mockedDeviceTwo = mock(IWrapDevice.class);
@@ -105,6 +105,7 @@ public class BuilderDeviceSelectionIntegrationTest {
         mockedDeviceTwoInformation.setRam(512);
         mockedDeviceTwoInformation.setResolution(new Pair<>(802, 602));
         mockedDeviceTwoInformation.setDpi(122);
+        mockedDeviceTwoInformation.setApiLevel(15);
         when(mockedDeviceTwo.route(eq(RoutingAction.GET_DEVICE_INFORMATION))).thenReturn(mockedDeviceTwoInformation);
 
         IWrapDevice mockedDeviceThree = mock(IWrapDevice.class);
@@ -116,6 +117,7 @@ public class BuilderDeviceSelectionIntegrationTest {
         mockedDeviceThreeInformation.setRam(513);
         mockedDeviceThreeInformation.setResolution(new Pair<>(803, 603));
         mockedDeviceThreeInformation.setDpi(123);
+        mockedDeviceThreeInformation.setApiLevel(10);
         when(mockedDeviceThree.route(eq(RoutingAction.GET_DEVICE_INFORMATION))).thenReturn(mockedDeviceThreeInformation);
 
         Registry mockRegistry = mock(Registry.class);
@@ -432,8 +434,8 @@ public class BuilderDeviceSelectionIntegrationTest {
         assumeNotNull(agentDao);
         DeviceParameters parameters = new DeviceParameters();
 
-        int wantedApiVersion = 19;
-        parameters.setApiLevel(wantedApiVersion);
+        int wantedApiVersion = 7;
+        parameters.setTargetApiLevel(wantedApiVersion);
 
         Device receivedDevice = builder.getDevice(parameters);
 
@@ -449,8 +451,172 @@ public class BuilderDeviceSelectionIntegrationTest {
         DeviceParameters parameters = new DeviceParameters();
         parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
-        parameters.setApiLevel(666);
+        parameters.setTargetApiLevel(666);
 
         builder.getDevice(parameters);
+    }
+
+    @Test
+    public void testGetDeviceByGivenMinimumApiVersion() {
+        assumeNotNull(agentDao);
+        DeviceParameters parameters = new DeviceParameters();
+        int minApiVersion = 17;
+        parameters.setMinApiLevel(minApiVersion);
+
+        Device receivedDevice = builder.getDevice(parameters);
+
+        DeviceInformation receivedDeviceInformation = receivedDevice.getInformation();
+
+        assertTrue("Received device has lower API level than the set minimum.",
+                   receivedDeviceInformation.getApiLevel() >= minApiVersion);
+    }
+
+    @Test
+    public void testGetDeviceByGivenMaximumApiVersion() {
+        assumeNotNull(agentDao);
+        DeviceParameters parameters = new DeviceParameters();
+        int maxApiVersion = 19;
+        parameters.setMaxApiLevel(maxApiVersion);
+
+        Device receivedDevice = builder.getDevice(parameters);
+
+        DeviceInformation receivedDeviceInformation = receivedDevice.getInformation();
+
+        assertTrue("Received device has bigger API level than the set maximum.",
+                   receivedDeviceInformation.getApiLevel() <= maxApiVersion);
+    }
+
+    @Test
+    public void testGetDeviceByGivenRangeForApiVersion() {
+        assumeNotNull(agentDao);
+
+        DeviceParameters parameters = new DeviceParameters();
+        int maxApiVersion = 20;
+        int minApiVersion = 15;
+        parameters.setMaxApiLevel(maxApiVersion);
+        parameters.setMinApiLevel(minApiVersion);
+        Device receivedDevice = builder.getDevice(parameters);
+
+        DeviceInformation receivedDeviceInformation = receivedDevice.getInformation();
+
+        assertTrue("Received device has bigger API level than the set maximum.",
+                   receivedDeviceInformation.getApiLevel() <= maxApiVersion);
+        assertTrue("Received device has lower API level than the set minimum.",
+                   receivedDeviceInformation.getApiLevel() >= minApiVersion);
+    }
+
+    @Test
+    public void testGetDeviceByGivenRangeAndTargetForApiVersion() {
+        assumeNotNull(agentDao);
+        DeviceParameters parameters = new DeviceParameters();
+
+        int maxApiVersion = 20;
+        int minApiVersion = 5;
+        int targetApiLevel = 10;
+
+        parameters.setMaxApiLevel(maxApiVersion);
+        parameters.setMinApiLevel(minApiVersion);
+        parameters.setTargetApiLevel(targetApiLevel);
+
+        Device receivedDevice = builder.getDevice(parameters);
+
+        DeviceInformation receivedDeviceInformation = receivedDevice.getInformation();
+
+        assertEquals("Received device has different API level than the set target API level.",
+                     receivedDeviceInformation.getApiLevel(),
+                     targetApiLevel);
+    }
+
+    @Test
+    public void testGetDeviceByGivenRangeAndInvalidTargetApiVersion() {
+        assumeNotNull(agentDao);
+
+        DeviceParameters parameters = new DeviceParameters();
+
+        int maxApiVersion = 16;
+        int minApiVersion = 11;
+        int targetApiLevel = 12;
+        int expectedApiVersion = 15;
+
+        parameters.setMaxApiLevel(maxApiVersion);
+        parameters.setMinApiLevel(minApiVersion);
+        parameters.setTargetApiLevel(targetApiLevel);
+
+        Device receivedDevice = builder.getDevice(parameters);
+
+        DeviceInformation receivedDeviceInformation = receivedDevice.getInformation();
+
+        assertEquals("Received device is with different Api level than expected.",
+                     expectedApiVersion,
+                     receivedDeviceInformation.getApiLevel());
+    }
+
+    @Test
+    public void testGetDeviceByGivenRangeAndTargetApiVersionSetInvalidMax() throws Exception {
+        assumeNotNull(agentDao);
+        DeviceParameters parameters = new DeviceParameters();
+
+        int maxApiVersion = 16;
+        int minApiVersion = 12;
+        int targetApiLevel = 14;
+        int expectedApiVersion = 15;
+
+        parameters.setMaxApiLevel(maxApiVersion);
+        parameters.setMinApiLevel(minApiVersion);
+        parameters.setTargetApiLevel(targetApiLevel);
+
+        Device receiveDevice = builder.getDevice(parameters);
+
+        DeviceInformation receivedDeviceInformation = receiveDevice.getInformation();
+
+        assertEquals("Received device is with different Api level than expected.",
+                     expectedApiVersion,
+                     receivedDeviceInformation.getApiLevel());
+        builder.releaseAllDevices();
+
+        parameters.setMaxApiLevel(7);
+
+        Device receivedDeviceChangedMaxApiLevel = builder.getDevice(parameters);
+
+        DeviceInformation receivedDeviceChangedApiLevelInformation = receivedDeviceChangedMaxApiLevel.getInformation();
+
+        assertEquals("Received device is with different Api level than expected.",
+                     expectedApiVersion,
+                     receivedDeviceChangedApiLevelInformation.getApiLevel());
+    }
+
+    @Test
+    public void testGetDeviceByGivenRangeAndTargetSetInvalidMinApiVersion() throws Exception {
+        assumeNotNull(agentDao);
+        DeviceParameters parameters = new DeviceParameters();
+
+        int maxApiVersion = 9;
+        int minApiVersion = 7;
+        int targetApiLevel = 7;
+        int expectedApiVersion = 7;
+
+        parameters.setMaxApiLevel(maxApiVersion);
+        parameters.setMinApiLevel(minApiVersion);
+        parameters.setTargetApiLevel(targetApiLevel);
+
+        Device receivedDevice = builder.getDevice(parameters);
+
+        DeviceInformation receivedDeviceInformation = receivedDevice.getInformation();
+
+        assertEquals("Received device is with different Api level than expected.",
+                     expectedApiVersion,
+                     receivedDeviceInformation.getApiLevel());
+
+        builder.releaseAllDevices();
+
+        parameters.setMaxApiLevel(13);
+
+        Device receiveDeviceChangedMaxApiLevel = builder.getDevice(parameters);
+
+        DeviceInformation receivedDeviceChangedApiLevelInformation = receiveDeviceChangedMaxApiLevel.getInformation();
+
+        assertEquals("Received device is with different Api level than expected after the change of max API version failed.",
+                     expectedApiVersion,
+                     receivedDeviceChangedApiLevelInformation.getApiLevel());
     }
 }

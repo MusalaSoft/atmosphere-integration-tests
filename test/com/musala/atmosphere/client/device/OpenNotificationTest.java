@@ -28,7 +28,7 @@ public class OpenNotificationTest extends BaseIntegrationTest {
     public static void setUp() throws Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_ONLY);
-        testDeviceParams.setApiLevel(19);
+        testDeviceParams.setTargetApiLevel(19);
 
         try {
             initTestDevice(testDeviceParams);
