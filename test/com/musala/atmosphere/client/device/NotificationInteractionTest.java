@@ -46,7 +46,7 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
             Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_ONLY);
-        testDeviceParams.setTargetApiLevel(19);
+        testDeviceParams.setMinApiLevel(19);
 
         try {
             initTestDevice(testDeviceParams);

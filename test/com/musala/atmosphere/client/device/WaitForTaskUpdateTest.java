@@ -13,6 +13,7 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 
 /**
  * 
@@ -37,13 +38,21 @@ public class WaitForTaskUpdateTest extends BaseIntegrationTest {
     public static void setUp() throws Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
         testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
-        initTestDevice(testDeviceParams);
-        setTestDevice(testDevice);
+        testDeviceParams.setMaxApiLevel(19);
+        try {
+            initTestDevice(testDeviceParams);
+            setTestDevice(testDevice);
+        } catch (NoAvailableDeviceFoundException e) {
+            // Nothing to do here
+        }
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
-        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        if (testDevice != null) {
+            testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        }
+
         releaseDevice();
     }
 
