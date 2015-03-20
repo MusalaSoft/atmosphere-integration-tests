@@ -34,6 +34,7 @@ import com.musala.atmosphere.client.device.PasteTextTest;
 import com.musala.atmosphere.client.device.PinchTest;
 import com.musala.atmosphere.client.device.ProcessRunningTest;
 import com.musala.atmosphere.client.device.ReceiveSmsTest;
+import com.musala.atmosphere.client.device.ScreenRecordingTest;
 import com.musala.atmosphere.client.device.ScrollTest;
 import com.musala.atmosphere.client.device.SelectAllTextTest;
 import com.musala.atmosphere.client.device.SetIMEAsDefaultTest;
@@ -64,7 +65,7 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
         BringTaskToFrontTest.class, MockLocationTest.class, DisableMockLocationTest.class, PoolEventHandlerTest.class,
         InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class, PasteTextTest.class, CopyTextTest.class,
         CutTextTest.class, DatePickerInteractionTest.class, TimePickerInteractionTest.class,
-        GetRunningTaskIdsTest.class})
+        GetRunningTaskIdsTest.class, ScreenRecordingTest.class})
 // @SuiteClasses({GetRunningTaskIdsTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
