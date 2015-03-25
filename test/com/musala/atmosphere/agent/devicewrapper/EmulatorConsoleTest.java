@@ -13,7 +13,7 @@ import com.musala.atmosphere.commons.PowerProperties;
 import com.musala.atmosphere.commons.beans.BatteryLevel;
 import com.musala.atmosphere.commons.beans.BatteryState;
 import com.musala.atmosphere.commons.beans.PowerSource;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.sa.EmulatorParameters;
 import com.musala.atmosphere.commons.util.Pair;
 

@@ -17,7 +17,7 @@ import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.beans.DeviceMagneticField;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 
 public class DeviceMagneticFieldTest extends BaseIntegrationTest {
     // FIXME: Dirty fix - waits until the device screen rotation is over. It should be fixed!!!

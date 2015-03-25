@@ -17,7 +17,7 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.DeviceInformation;
 import com.musala.atmosphere.commons.ScreenOrientation;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.util.Pair;
 
 public class GetScreenshotTest extends BaseIntegrationTest {

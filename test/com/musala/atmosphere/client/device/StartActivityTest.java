@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 
 public class StartActivityTest extends BaseIntegrationTest {
     private final static String VALIDATOR_APP_PACKAGE = "com.musala.atmosphere.ondevice.validator";

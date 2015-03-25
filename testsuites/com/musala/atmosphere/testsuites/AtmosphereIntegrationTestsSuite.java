@@ -9,7 +9,7 @@ import com.musala.atmosphere.agent.Agent;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.server.Server;
 import com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert;
 

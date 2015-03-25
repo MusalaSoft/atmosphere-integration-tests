@@ -11,7 +11,7 @@ import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.device.HardwareButton;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceType;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.cs.exception.DeviceNotFoundException;
 import com.musala.atmosphere.server.Server;
 import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
@@ -24,98 +24,103 @@ import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
  */
 public class BaseIntegrationTest {
 
-    @com.musala.atmosphere.client.util.Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 0)
-    private static class GettingBuilderClass {
-        public GettingBuilderClass() {
-        }
+	@com.musala.atmosphere.client.util.Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 0)
+	private static class GettingBuilderClass {
+		public GettingBuilderClass() {
+		}
 
-        public Builder getBuilder() {
-            Builder classDeviceBuilder = Builder.getInstance();
-            return classDeviceBuilder;
-        }
-    }
+		public Builder getBuilder() {
+			Builder classDeviceBuilder = Builder.getInstance();
+			return classDeviceBuilder;
+		}
+	}
 
-    protected final static int SERVER_MANAGER_RMI_PORT = 2099;
+	protected final static int SERVER_MANAGER_RMI_PORT = 2099;
 
-    protected final static String ONDEVICEVALIDATOR_FILE = "OnDeviceValidator-release.apk";
+	protected final static String ONDEVICEVALIDATOR_FILE = "OnDeviceValidator-release.apk";
 
-    protected final static String PATH_TO_APK_DIR = "./ondeviceComponents/";
+	protected final static String PATH_TO_APK_DIR = "./ondeviceComponents/";
 
-    final static String PATH_TO_APK = PATH_TO_APK_DIR + ONDEVICEVALIDATOR_FILE;
+	final static String PATH_TO_APK = PATH_TO_APK_DIR + ONDEVICEVALIDATOR_FILE;
 
-    protected final static String VALIDATOR_APP_PACKAGE = "com.musala.atmosphere.ondevice.validator";
+	protected final static String VALIDATOR_APP_PACKAGE = "com.musala.atmosphere.ondevice.validator";
 
-    protected final static String VALIDATOR_APP_ACTIVITY = ".MainActivity";
+	protected final static String VALIDATOR_APP_ACTIVITY = ".MainActivity";
 
-    protected static Device testDevice;
+	protected static Device testDevice;
 
-    protected static Agent agent = AtmosphereIntegrationTestsSuite.getAgent();
+	protected static Agent agent = AtmosphereIntegrationTestsSuite.getAgent();
 
-    protected static Server server = AtmosphereIntegrationTestsSuite.getServer();
+	protected static Server server = AtmosphereIntegrationTestsSuite
+			.getServer();
 
-    private final static Logger LOGGER = Logger.getLogger(BaseIntegrationTest.class);
+	private final static Logger LOGGER = Logger
+			.getLogger(BaseIntegrationTest.class);
 
-    /*
-     * Timeout constants for different type of operations.
-     */
-    private static final long WAKE_TIMEOUT = 1500;
+	/*
+	 * Timeout constants for different type of operations.
+	 */
+	private static final long WAKE_TIMEOUT = 1500;
 
-    private static final long UNLOCK_TIMEOUT = 1000;
+	private static final long UNLOCK_TIMEOUT = 1000;
 
-    private static final long HOME_TIMEOUT = 500;
+	private static final long HOME_TIMEOUT = 500;
 
-    protected static void initTestDevice(DeviceParameters parameters) throws DeviceNotFoundException {
-        try {
-            GettingBuilderClass builderGet = new GettingBuilderClass();
-            Builder deviceBuilder = builderGet.getBuilder();
-            if (testDevice != null) {
-                deviceBuilder.releaseDevice(testDevice);
-            }
+	protected static void initTestDevice(DeviceParameters parameters)
+			throws DeviceNotFoundException {
+		try {
+			GettingBuilderClass builderGet = new GettingBuilderClass();
+			Builder deviceBuilder = builderGet.getBuilder();
+			if (testDevice != null) {
+				deviceBuilder.releaseDevice(testDevice);
+			}
 
-            if (parameters.getDeviceType().equals(DeviceType.NO_PREFERENCE)) {
-                parameters.setDeviceType(DeviceType.DEVICE_PREFERRED);
-            }
-            testDevice = deviceBuilder.getDevice(parameters);
+			if (parameters.getDeviceType().equals(DeviceType.NO_PREFERENCE)) {
+				parameters.setDeviceType(DeviceType.DEVICE_PREFERRED);
+			}
+			testDevice = deviceBuilder.getDevice(parameters);
 
-            assertNotNull("Could not get a device.", testDevice);
+			assertNotNull("Could not get a device.", testDevice);
 
-            // Assert our device is awake
-            if (!testDevice.isAwake()) {
-                testDevice.pressButton(HardwareButton.POWER);
-                Thread.sleep(WAKE_TIMEOUT);
-            }
+			// Assert our device is awake
+			if (!testDevice.isAwake()) {
+				testDevice.pressButton(HardwareButton.POWER);
+				Thread.sleep(WAKE_TIMEOUT);
+			}
 
-            // Assert our device is not locked
-            if (testDevice.isLocked()) {
-                testDevice.setLocked(false);
-                Thread.sleep(UNLOCK_TIMEOUT);
-            }
+			// Assert our device is not locked
+			if (testDevice.isLocked()) {
+				testDevice.setLocked(false);
+				Thread.sleep(UNLOCK_TIMEOUT);
+			}
 
-            // Assert we start our test from the Home screen
-            {
-                testDevice.pressButton(HardwareButton.HOME);
-                Thread.sleep(HOME_TIMEOUT);
-            }
-        } catch (InterruptedException e) {
-            LOGGER.error("Device preparation for integration test has been interrupted.", e);
-        }
-    }
+			// Assert we start our test from the Home screen
+			{
+				testDevice.pressButton(HardwareButton.HOME);
+				Thread.sleep(HOME_TIMEOUT);
+			}
+		} catch (InterruptedException e) {
+			LOGGER.error(
+					"Device preparation for integration test has been interrupted.",
+					e);
+		}
+	}
 
-    protected static void installValidatorApplication() {
-        assertNotNull("There is no allocated test device.", testDevice);
+	protected static void installValidatorApplication() {
+		assertNotNull("There is no allocated test device.", testDevice);
 
-        testDevice.installAPK(PATH_TO_APK, true);
-        setTestDevice(testDevice);
-    }
+		testDevice.installAPK(PATH_TO_APK, true);
+		setTestDevice(testDevice);
+	}
 
-    @AfterClass
-    public static void releaseDevice() throws DeviceNotFoundException {
-        GettingBuilderClass builderGet = new GettingBuilderClass();
-        Builder deviceBuilder = builderGet.getBuilder();
+	@AfterClass
+	public static void releaseDevice() throws DeviceNotFoundException {
+		GettingBuilderClass builderGet = new GettingBuilderClass();
+		Builder deviceBuilder = builderGet.getBuilder();
 
-        if (testDevice != null) {
-            deviceBuilder.releaseDevice(testDevice);
-            testDevice = null;
-        }
-    }
+		if (testDevice != null) {
+			deviceBuilder.releaseDevice(testDevice);
+			testDevice = null;
+		}
+	}
 }
