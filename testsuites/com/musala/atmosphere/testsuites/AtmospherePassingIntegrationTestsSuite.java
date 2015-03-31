@@ -24,6 +24,7 @@ import com.musala.atmosphere.client.device.GestureExecutionTest;
 import com.musala.atmosphere.client.device.GetRunningTaskIdsTest;
 import com.musala.atmosphere.client.device.HorizontalScrollTest;
 import com.musala.atmosphere.client.device.InputTextTest;
+import com.musala.atmosphere.client.device.LockUnlockTest;
 import com.musala.atmosphere.client.device.LongPressTest;
 import com.musala.atmosphere.client.device.MockLocationTest;
 import com.musala.atmosphere.client.device.NotificationBarTest;
@@ -34,10 +35,12 @@ import com.musala.atmosphere.client.device.PasteTextTest;
 import com.musala.atmosphere.client.device.PinchTest;
 import com.musala.atmosphere.client.device.ProcessRunningTest;
 import com.musala.atmosphere.client.device.ReceiveSmsTest;
+import com.musala.atmosphere.client.device.ScreenOffTimeoutTest;
 import com.musala.atmosphere.client.device.ScreenRecordingTest;
 import com.musala.atmosphere.client.device.ScrollTest;
 import com.musala.atmosphere.client.device.SelectAllTextTest;
 import com.musala.atmosphere.client.device.SetIMEAsDefaultTest;
+import com.musala.atmosphere.client.device.SetKeyguardTest;
 import com.musala.atmosphere.client.device.StartActivityTest;
 import com.musala.atmosphere.client.device.StartApplicationTest;
 import com.musala.atmosphere.client.device.StopBackgroundProcessTest;
@@ -52,7 +55,7 @@ import com.musala.atmosphere.client.screen.GetElementWhenPresentTest;
 import com.musala.atmosphere.server.PoolEventHandlerTest;
 import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
 
-@SuiteClasses({ScreenOrientationTest.class, TapTest.class, StartActivityTest.class,
+@SuiteClasses({ScreenOrientationTest.class, TapTest.class, StartActivityTest.class, LockUnlockTest.class,
         BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class, DeviceInstallApkTest.class,
         GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class, GestureExecutionTest.class,
         TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class, PinchTest.class,
@@ -65,7 +68,7 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
         BringTaskToFrontTest.class, MockLocationTest.class, DisableMockLocationTest.class, PoolEventHandlerTest.class,
         InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class, PasteTextTest.class, CopyTextTest.class,
         CutTextTest.class, DatePickerInteractionTest.class, TimePickerInteractionTest.class,
-        GetRunningTaskIdsTest.class, ScreenRecordingTest.class})
-// @SuiteClasses({GetRunningTaskIdsTest.class})
+        GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class, ScreenOffTimeoutTest.class})
+// @SuiteClasses({LockUnlockTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

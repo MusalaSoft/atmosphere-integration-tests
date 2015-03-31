@@ -10,8 +10,6 @@ import com.musala.atmosphere.agent.devicewrapper.DeviceOrientationTest;
 import com.musala.atmosphere.agent.devicewrapper.EmulatorConsoleTest;
 import com.musala.atmosphere.agent.devicewrapper.NetworkConnectionTest;
 import com.musala.atmosphere.client.builder.BuilderIntegrationTest;
-import com.musala.atmosphere.client.device.ScreenOffTimeoutTest;
-import com.musala.atmosphere.client.device.SetKeyguardTest;
 import com.musala.atmosphere.client.device.SwipeTest;
 import com.musala.atmosphere.server.EmulatorCreationTest;
 
@@ -24,6 +22,6 @@ import com.musala.atmosphere.server.EmulatorCreationTest;
 @RunWith(Suite.class)
 @SuiteClasses({DeviceAcceleratoinTest.class, BatteryRelatedMethodsTest.class, DeviceOrientationTest.class,
         BuilderIntegrationTest.class, EmulatorConsoleTest.class, EmulatorCreationTest.class,
-        NetworkConnectionTest.class, SetKeyguardTest.class, SwipeTest.class, ScreenOffTimeoutTest.class,})
+        NetworkConnectionTest.class, SwipeTest.class})
 public class AtmosphereFailingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

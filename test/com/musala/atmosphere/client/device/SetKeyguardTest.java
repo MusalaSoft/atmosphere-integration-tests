@@ -26,7 +26,8 @@ public class SetKeyguardTest extends BaseIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
-        testDeviceParams.setDeviceType(DeviceType.DEVICE_ONLY);
+        testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
+        testDeviceParams.setMaxApiLevel(19);
         try {
             initTestDevice(testDeviceParams);
         } catch (NoAvailableDeviceFoundException e) {
