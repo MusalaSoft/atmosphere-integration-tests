@@ -53,22 +53,26 @@ import com.musala.atmosphere.client.device.WaitForWindowUpdateTest;
 import com.musala.atmosphere.client.device.WaitUntilGoneTest;
 import com.musala.atmosphere.client.screen.GetElementWhenPresentTest;
 import com.musala.atmosphere.server.PoolEventHandlerTest;
-import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
 
-@SuiteClasses({ScreenOrientationTest.class, TapTest.class, StartActivityTest.class, LockUnlockTest.class,
-        BuilderDeviceSelectionIntegrationTest.class, GetUiXmlTest.class, DeviceInstallApkTest.class,
-        GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class, GestureExecutionTest.class,
-        TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class, PinchTest.class,
-        AtmosphereServiceConnectionTest.class, CallTest.class, LongPressTest.class, WaitForExistsTest.class,
-        ScrollTest.class, HorizontalScrollTest.class, WaitForWindowUpdateTest.class, EmulatorCameraTest.class,
-        WaitUntilGoneTest.class, ProcessRunningTest.class, ForceStopProcessTest.class, StopBackgroundProcessTest.class,
-        GetElementWhenPresentTest.class, SetIMEAsDefaultTest.class, OpenNotificationTest.class,
-        OpenQuickSettingsTest.class, NotificationBarTest.class, NotificationInteractionTest.class,
-        UninstallApplicationTest.class, DeviceProximityTest.class, WaitForTaskUpdateTest.class,
-        BringTaskToFrontTest.class, MockLocationTest.class, DisableMockLocationTest.class, PoolEventHandlerTest.class,
-        InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class, PasteTextTest.class, CopyTextTest.class,
-        CutTextTest.class, DatePickerInteractionTest.class, TimePickerInteractionTest.class,
-        GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class, ScreenOffTimeoutTest.class})
-// @SuiteClasses({LockUnlockTest.class})
+@SuiteClasses({ScreenOrientationTest.class, BuilderDeviceSelectionIntegrationTest.class, TapTest.class,
+    StartActivityTest.class, LockUnlockTest.class, GetUiXmlTest.class, DeviceInstallApkTest.class,
+    GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class, GestureExecutionTest.class,
+    TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class, PinchTest.class,
+    CallTest.class, LongPressTest.class, WaitForExistsTest.class, ScrollTest.class, HorizontalScrollTest.class,
+    WaitForWindowUpdateTest.class, EmulatorCameraTest.class, WaitUntilGoneTest.class, ProcessRunningTest.class,
+    ForceStopProcessTest.class, StopBackgroundProcessTest.class, GetElementWhenPresentTest.class,
+    SetIMEAsDefaultTest.class, OpenNotificationTest.class, OpenQuickSettingsTest.class, NotificationBarTest.class,
+    NotificationInteractionTest.class, UninstallApplicationTest.class, DeviceProximityTest.class,
+    WaitForTaskUpdateTest.class, BringTaskToFrontTest.class, MockLocationTest.class, DisableMockLocationTest.class,
+    PoolEventHandlerTest.class, InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class,
+    PasteTextTest.class, CopyTextTest.class, CutTextTest.class, DatePickerInteractionTest.class,
+    TimePickerInteractionTest.class, GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class,
+    ScreenOffTimeoutTest.class})
+// @SuiteClasses({LockUnlockTest.class, ScreenOrientationTest.class, ScreenOffTimeoutTest.class, TapTest.class,
+// PinchTest.class, InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class, PasteTextTest.class,
+// CopyTextTest.class, CutTextTest.class, DisableMockLocationTest.class, MockLocationTest.class,
+// LongPressTest.class, WaitForExistsTest.class, WaitUntilGoneTest.class, ProcessRunningTest.class,
+// ForceStopProcessTest.class, StopBackgroundProcessTest.class, GetElementWhenPresentTest.class,
+// UninstallApplicationTest.class, BringTaskToFrontTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

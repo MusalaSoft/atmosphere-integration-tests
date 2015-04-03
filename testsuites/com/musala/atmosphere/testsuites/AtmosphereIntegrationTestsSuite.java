@@ -15,9 +15,9 @@ import com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert
 
 /**
  * JUnit test suite with all running integration tests.
- * 
+ *
  * @author valyo.yolovski
- * 
+ *
  */
 @RunWith(Suite.class)
 public class AtmosphereIntegrationTestsSuite {
@@ -26,6 +26,8 @@ public class AtmosphereIntegrationTestsSuite {
     private final static int AGENTMANAGER_RMI_PORT = 2000;
 
     private final static int WAIT_FOR_CONNECTING_TIMEOUT = 3000;
+
+    private final static long SCREEN_OFF_TIMEOUT = 180000;
 
     private final static String SERVER_IP = "localhost";
 
@@ -78,6 +80,8 @@ public class AtmosphereIntegrationTestsSuite {
 
         OnDeviceValidatorAssert.setTestDevice(device);
         OnDeviceValidatorAssert.setupOndeviceValidator();
+
+        device.setScreenOffTimeout(SCREEN_OFF_TIMEOUT);
 
         deviceBuilder.releaseDevice(device);
     }

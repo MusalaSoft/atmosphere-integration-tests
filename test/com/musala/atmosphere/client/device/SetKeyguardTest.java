@@ -15,9 +15,9 @@ import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 
 /**
- * 
+ *
  * @author denis.bialev
- * 
+ *
  */
 public class SetKeyguardTest extends BaseIntegrationTest {
 
@@ -26,7 +26,7 @@ public class SetKeyguardTest extends BaseIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
         DeviceParameters testDeviceParams = new DeviceParameters();
-        testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
+        testDeviceParams.setDeviceType(DeviceType.DEVICE_ONLY);
         testDeviceParams.setMaxApiLevel(19);
         try {
             initTestDevice(testDeviceParams);
