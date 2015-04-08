@@ -11,7 +11,7 @@ import org.junit.After;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.client.geometry.Point;
+import com.musala.atmosphere.commons.geometry.Point;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;

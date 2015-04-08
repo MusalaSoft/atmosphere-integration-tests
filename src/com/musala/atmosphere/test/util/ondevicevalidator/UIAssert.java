@@ -10,7 +10,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.geometry.Bounds;
+import com.musala.atmosphere.commons.geometry.Bounds;
 
 /**
  * Class containing core assert methods that can be used for constructing more complex ones.

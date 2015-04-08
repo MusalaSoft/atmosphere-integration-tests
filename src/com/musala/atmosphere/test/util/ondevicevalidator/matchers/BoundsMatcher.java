@@ -4,7 +4,7 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.geometry.Bounds;
+import com.musala.atmosphere.commons.geometry.Bounds;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.client.uiutils.UiElementSelector;
 

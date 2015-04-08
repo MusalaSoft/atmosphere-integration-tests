@@ -3,7 +3,7 @@ package com.musala.atmosphere.test.util.ondevicevalidator.matchers;
 import org.hamcrest.Matcher;
 
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.geometry.Bounds;
+import com.musala.atmosphere.commons.geometry.Bounds;
 
 public class OnDeviceValidatorUIMatchersFactory {
 
