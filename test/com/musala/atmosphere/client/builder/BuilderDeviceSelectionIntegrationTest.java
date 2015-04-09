@@ -31,7 +31,7 @@ import com.musala.atmosphere.commons.sa.IAgentManager;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
 import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.commons.util.Pair;
-import com.musala.atmosphere.server.data.dao.db.ormlite.AgentDao;
+import com.musala.atmosphere.server.data.db.ormlite.AgentDao;
 import com.musala.atmosphere.server.data.provider.ormlite.DataSourceProvider;
 import com.musala.atmosphere.server.pool.PoolManager;
 
