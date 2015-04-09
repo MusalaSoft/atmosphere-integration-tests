@@ -32,6 +32,8 @@ public class ScreenRecordingTest extends BaseIntegrationTest {
 
     private static final String LOCAL_FILE_FORMAT = ".mp4";
 
+    private static final long PULL_FILE_TIMEOUT = 1000;
+
     private File screenRecordFile;
 
     @BeforeClass
@@ -73,7 +75,10 @@ public class ScreenRecordingTest extends BaseIntegrationTest {
 
         testDevice.stopScreenRecording(fullLocalFilePath);
 
+        Thread.sleep(PULL_FILE_TIMEOUT);
+
         screenRecordFile = new File(fullLocalFilePath);
+
         assertTrue("There is no such file recorded.", screenRecordFile.exists());
     }
 
