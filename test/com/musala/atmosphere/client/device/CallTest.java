@@ -15,7 +15,8 @@ import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.beans.PhoneNumber;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 
 public class CallTest extends BaseIntegrationTest {
@@ -30,9 +31,9 @@ public class CallTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void classSetUp() throws Exception {
-        DeviceParameters testDeviceParameters = new DeviceParameters();
-        testDeviceParameters.setDeviceType(DeviceType.EMULATOR_ONLY);
-        initTestDevice(testDeviceParameters);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.EMULATOR_ONLY);
+        DeviceSelector testDeviceSelector = selectorBuilder.build();
+        initTestDevice(testDeviceSelector);
         setTestDevice(testDevice);
     }
 

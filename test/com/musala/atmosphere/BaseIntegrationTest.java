@@ -10,17 +10,16 @@ import com.musala.atmosphere.agent.Agent;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.device.HardwareButton;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
-import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.exception.DeviceNotFoundException;
 import com.musala.atmosphere.server.Server;
 import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
 /**
- *
- *
+ * 
+ * 
  * @author valyo.yolovski
- *
+ * 
  */
 public class BaseIntegrationTest {
 
@@ -64,7 +63,7 @@ public class BaseIntegrationTest {
 
     private static final long HOME_TIMEOUT = 500;
 
-    protected static void initTestDevice(DeviceParameters parameters) throws DeviceNotFoundException {
+    protected static void initTestDevice(DeviceSelector deviceSelector) throws DeviceNotFoundException {
         try {
             GettingBuilderClass builderGet = new GettingBuilderClass();
             Builder deviceBuilder = builderGet.getBuilder();
@@ -72,10 +71,7 @@ public class BaseIntegrationTest {
                 deviceBuilder.releaseDevice(testDevice);
             }
 
-            if (parameters.getDeviceType().equals(DeviceType.NO_PREFERENCE)) {
-                parameters.setDeviceType(DeviceType.DEVICE_PREFERRED);
-            }
-            testDevice = deviceBuilder.getDevice(parameters);
+            testDevice = deviceBuilder.getDevice(deviceSelector);
 
             assertNotNull("Could not get a device.", testDevice);
 

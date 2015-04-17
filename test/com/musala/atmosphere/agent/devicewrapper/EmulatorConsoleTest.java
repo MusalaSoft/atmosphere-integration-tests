@@ -13,6 +13,8 @@ import com.musala.atmosphere.commons.PowerProperties;
 import com.musala.atmosphere.commons.beans.BatteryLevel;
 import com.musala.atmosphere.commons.beans.BatteryState;
 import com.musala.atmosphere.commons.beans.PowerSource;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.sa.EmulatorParameters;
 import com.musala.atmosphere.commons.util.Pair;
@@ -41,9 +43,9 @@ public class EmulatorConsoleTest extends BaseIntegrationTest {
                                                                                 EMULATOR_CREATION_RESOLUTION_W));
         }
 
-        com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters emulatorInformation = new com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters();
-        emulatorInformation.setDeviceType(DeviceType.EMULATOR_ONLY);
-        initTestDevice(emulatorInformation);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.EMULATOR_ONLY);
+        DeviceSelector testDeviceSelector = selectorBuilder.build();
+        initTestDevice(testDeviceSelector);
     }
 
     @Test

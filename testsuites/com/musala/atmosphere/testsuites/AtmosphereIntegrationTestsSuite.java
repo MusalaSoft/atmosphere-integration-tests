@@ -8,16 +8,17 @@ import org.junit.runners.Suite;
 import com.musala.atmosphere.agent.Agent;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.server.Server;
 import com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert;
 
 /**
  * JUnit test suite with all running integration tests.
- *
+ * 
  * @author valyo.yolovski
- *
+ * 
  */
 @RunWith(Suite.class)
 public class AtmosphereIntegrationTestsSuite {
@@ -63,20 +64,19 @@ public class AtmosphereIntegrationTestsSuite {
         GettingBuilderClass builderGet = new GettingBuilderClass();
         Builder deviceBuilder = builderGet.getBuilder();
 
-        DeviceParameters emulatorDeviceParameters = new DeviceParameters();
-        emulatorDeviceParameters.setDeviceType(DeviceType.EMULATOR_ONLY);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder();
+        DeviceSelector emulatorSelector = selectorBuilder.deviceType(DeviceType.EMULATOR_ONLY).build();
 
-        Device device = deviceBuilder.getDevice(emulatorDeviceParameters);
+        Device device = deviceBuilder.getDevice(emulatorSelector);
 
         OnDeviceValidatorAssert.setTestDevice(device);
         OnDeviceValidatorAssert.setupOndeviceValidator();
 
         deviceBuilder.releaseDevice(device);
 
-        DeviceParameters realDeviceParameters = new DeviceParameters();
-        realDeviceParameters.setDeviceType(DeviceType.DEVICE_PREFERRED);
+        DeviceSelector realDeviceSelector = selectorBuilder.deviceType(DeviceType.DEVICE_PREFERRED).build();
 
-        device = deviceBuilder.getDevice(realDeviceParameters);
+        device = deviceBuilder.getDevice(realDeviceSelector);
 
         OnDeviceValidatorAssert.setTestDevice(device);
         OnDeviceValidatorAssert.setupOndeviceValidator();

@@ -11,9 +11,10 @@ import org.junit.After;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.commons.geometry.Point;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.geometry.Point;
 import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 
 public class ScreenOffTimeoutTest extends BaseIntegrationTest {
@@ -34,11 +35,11 @@ public class ScreenOffTimeoutTest extends BaseIntegrationTest {
 
     @Test
     public void testSetScreenOffTimeoutOnRealDevice() throws Exception {
-        DeviceParameters deviceParameters = new DeviceParameters();
-        deviceParameters.setDeviceType(DeviceType.DEVICE_ONLY);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY);
+        DeviceSelector testDeviceSelector = selectorBuilder.build();
 
         try {
-            initTestDevice(deviceParameters);
+            initTestDevice(testDeviceSelector);
         } catch (NoAvailableDeviceFoundException e) {
         }
 
@@ -60,10 +61,9 @@ public class ScreenOffTimeoutTest extends BaseIntegrationTest {
 
     @Test
     public void testOnlySetScreenOffTimeoutOnDevice() throws Exception {
-        DeviceParameters deviceParameters = new DeviceParameters();
-        deviceParameters.setDeviceType(DeviceType.EMULATOR_PREFERRED);
-
-        initTestDevice(deviceParameters);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.EMULATOR_PREFERRED);
+        DeviceSelector testDeviceSelector = selectorBuilder.build();
+        initTestDevice(testDeviceSelector);
         assumeNotNull(testDevice);
         setTestDevice(testDevice);
         startMainActivity();

@@ -16,7 +16,8 @@ import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.client.uiutils.UiElementSelector;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 
@@ -26,12 +27,12 @@ public class OpenQuickSettingsTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        DeviceParameters deviceParameters = new DeviceParameters();
-        deviceParameters.setDeviceType(DeviceType.DEVICE_ONLY);
-        deviceParameters.setMinApiLevel(19);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY)
+                                                                           .minApi(19);
+        DeviceSelector testDeviceSelector = selectorBuilder.build();
 
         try {
-            initTestDevice(deviceParameters);
+            initTestDevice(testDeviceSelector);
         } catch (NoAvailableDeviceFoundException e) {
         }
     }

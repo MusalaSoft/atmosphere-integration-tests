@@ -14,7 +14,8 @@ import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.TelephonyInformation;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 
 public class AtmosphereServiceConnectionTest extends BaseIntegrationTest {
@@ -25,9 +26,9 @@ public class AtmosphereServiceConnectionTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void masterSetUp() throws Exception {
-        DeviceParameters deviceParameters = new DeviceParameters();
-        deviceParameters.setDeviceType(DeviceType.DEVICE_PREFERRED);
-        initTestDevice(deviceParameters);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
+        DeviceSelector deviceSelector = selectorBuilder.build();
+        initTestDevice(deviceSelector);
     }
 
     @Before

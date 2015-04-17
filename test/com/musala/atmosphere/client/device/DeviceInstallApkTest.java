@@ -35,7 +35,8 @@ import com.musala.atmosphere.agent.util.FakeOnDeviceComponentAnswer;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.util.Server;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
 public class DeviceInstallApkTest extends BaseIntegrationTest {
@@ -60,9 +61,9 @@ public class DeviceInstallApkTest extends BaseIntegrationTest {
         public GettingDeviceSampleClass() {
         }
 
-        public void getDeviceAndInstallApk(DeviceParameters parameters) {
+        public void getDeviceAndInstallApk(DeviceSelector deviceSelector) {
             Builder builder = Builder.getInstance();
-            Device device = builder.getDevice(parameters);
+            Device device = builder.getDevice(deviceSelector);
             device.installAPK(PATH_TO_APK);
         }
     }
@@ -134,10 +135,10 @@ public class DeviceInstallApkTest extends BaseIntegrationTest {
             }
         });
 
-        DeviceParameters parameters = new DeviceParameters();
-        parameters.setSerialNumber(MOCK_SERIAL_NUMBER);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().serialNumber(MOCK_SERIAL_NUMBER);
+        DeviceSelector deviceSelector = selectorBuilder.build();
         GettingDeviceSampleClass userTest = new GettingDeviceSampleClass();
-        userTest.getDeviceAndInstallApk(parameters);
+        userTest.getDeviceAndInstallApk(deviceSelector);
 
         // This may change depending on the preconditions behavior
         verify(mockDevice, atLeast(1)).installPackage(anyString(), anyBoolean());

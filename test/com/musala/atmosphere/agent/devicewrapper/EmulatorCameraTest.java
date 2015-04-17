@@ -11,18 +11,18 @@ import org.junit.After;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 
 public class EmulatorCameraTest extends BaseIntegrationTest {
 
     @Test
     public void emulatorMissingCameraTest() throws Exception {
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.EMULATOR_ONLY);
+        DeviceSelector testDeviceSelector = selectorBuilder.build();
 
-        DeviceParameters deviceParameters = new DeviceParameters();
-        deviceParameters.setDeviceType(DeviceType.EMULATOR_ONLY); // these tests will work for emulators only
-
-        initTestDevice(deviceParameters);
+        initTestDevice(testDeviceSelector);
         setTestDevice(testDevice);
         startMainActivity();
 
@@ -38,11 +38,10 @@ public class EmulatorCameraTest extends BaseIntegrationTest {
 
     @Test
     public void deviceCameraTest() throws Exception {
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
+        DeviceSelector testDeviceSelector = selectorBuilder.build();
 
-        DeviceParameters deviceParameters = new DeviceParameters();
-        deviceParameters.setDeviceType(DeviceType.DEVICE_PREFERRED); // these tests will prefer real devices
-
-        initTestDevice(deviceParameters);
+        initTestDevice(testDeviceSelector);
         setTestDevice(testDevice);
         startMainActivity();
 

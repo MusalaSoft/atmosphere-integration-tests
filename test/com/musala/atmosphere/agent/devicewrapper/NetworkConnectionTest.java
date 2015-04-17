@@ -11,7 +11,8 @@ import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.commons.ConnectionType;
 import com.musala.atmosphere.commons.beans.MobileDataState;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.cs.exception.DeviceNotFoundException;
 
@@ -36,9 +37,10 @@ public class NetworkConnectionTest {
      */
     @Test
     public void getAndSetMobileDataStateOnEmulators() {
-        DeviceParameters deviceParameters = new DeviceParameters();
-        deviceParameters.setDeviceType(DeviceType.EMULATOR_ONLY);
-        testDevice = builder.getDevice(deviceParameters);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.EMULATOR_ONLY);
+        DeviceSelector testDeviceSelector = selectorBuilder.build();
+
+        testDevice = builder.getDevice(testDeviceSelector);
         assertNotNull("No emulator found.", testDevice);
 
         MobileDataState expectedState = MobileDataState.UNREGISTERED;
@@ -52,9 +54,9 @@ public class NetworkConnectionTest {
      */
     @Test
     public void getConnectionTypeOnRealDevicesTest() {
-        DeviceParameters deviceParameters = new DeviceParameters();
-        deviceParameters.setDeviceType(DeviceType.DEVICE_ONLY);
-        testDevice = builder.getDevice(deviceParameters);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY);
+        DeviceSelector deviceSelector = selectorBuilder.build();
+        testDevice = builder.getDevice(deviceSelector);
         assertNotNull("No real device found.", testDevice);
 
         ConnectionType connectionType = testDevice.getConnectionType();

@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeNotNull;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -23,10 +22,12 @@ import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.util.Server;
 import com.musala.atmosphere.commons.DeviceInformation;
 import com.musala.atmosphere.commons.RoutingAction;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceOs;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.cs.exception.DeviceNotFoundException;
+import com.musala.atmosphere.commons.cs.exception.ValidationException;
 import com.musala.atmosphere.commons.sa.IAgentManager;
 import com.musala.atmosphere.commons.sa.IWrapDevice;
 import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
@@ -41,7 +42,21 @@ import com.musala.atmosphere.server.pool.PoolManager;
  * 
  */
 public class BuilderDeviceSelectionIntegrationTest {
+    private static final int INVALID_API_LEVEL = 66;
+
+    private static final int NONEXISTING_DEVICE_SCREEN_DPI = 999;
+
+    private static final int NONEXISTING_DEVICE_RESOLUTION = 999;
+
+    private static final int NONEXISTING_DEVICE_RAM = 999;
+
+    private static final String NONEXISTING_DEVICE_MODEL = "nonexisting_model";
+
+    private static final String NONEXISTING_DEVICE_SERIAL_NUMBER = "nonexisting_serial_number";
+
     private final static int SERVER_MANAGER_RMI_PORT = 2099;
+
+    private final static int AGENTMANAGER_RMI_PORT = 2000;
 
     private final static String AGENT_ID = "mockagent";
 
@@ -81,7 +96,7 @@ public class BuilderDeviceSelectionIntegrationTest {
         agentDao = dataSourceProvider.getAgentDao();
 
         if (agentDao != null) {
-            agentDao.add(AGENT_ID, TEST_IP_ADDRESS, SERVER_MANAGER_RMI_PORT);
+            agentDao.add(AGENT_ID, TEST_IP_ADDRESS, AGENTMANAGER_RMI_PORT);
         }
 
         IWrapDevice mockedDeviceOne = mock(IWrapDevice.class);
@@ -164,23 +179,21 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetDeviceByNoPrefference() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder();
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        Device receivedDevice = builder.getDevice(parameters);
+        Device receivedDevice = builder.getDevice(deviceSelector);
 
         assertNotNull("Got null device.", receivedDevice);
     }
 
     @Test
     public void testGetDeviceBySerialNumber() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-
         String wantedSerialNumber = DEVICE1_SERIAL_NUMBER;
-        parameters.setSerialNumber(wantedSerialNumber);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().serialNumber(wantedSerialNumber);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        Device receivedDevice = builder.getDevice(parameters);
+        Device receivedDevice = builder.getDevice(deviceSelector);
 
         DeviceInformation information = receivedDevice.getInformation();
         String realSerialNumber = information.getSerialNumber();
@@ -192,23 +205,19 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingSerialNumber() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().serialNumber(NONEXISTING_DEVICE_SERIAL_NUMBER)
+                                                                           .deviceType(DeviceType.DEVICE_ONLY);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        parameters.setSerialNumber("nonexisting_serial_number");
-
-        builder.getDevice(parameters);
+        builder.getDevice(deviceSelector);
     }
 
     @Test
     public void testGetEmulatorDevice() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.EMULATOR_ONLY);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        parameters.setDeviceType(DeviceType.EMULATOR_ONLY);
-
-        Device receivedDevice = builder.getDevice(parameters);
+        Device receivedDevice = builder.getDevice(deviceSelector);
         DeviceInformation information = receivedDevice.getInformation();
         boolean isDeviceEmulator = information.isEmulator();
 
@@ -217,12 +226,10 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetRealDevice() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
-
-        Device receivedDevice = builder.getDevice(parameters);
+        Device receivedDevice = builder.getDevice(deviceSelector);
 
         DeviceInformation information = receivedDevice.getInformation();
         boolean isDeviceEmulator = information.isEmulator();
@@ -232,13 +239,11 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetDeviceByOperatingSystem() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-
         DeviceOs wantedOS = DeviceOs.JELLY_BEAN_MR1_4_2_2;
-        parameters.setOs(wantedOS);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceOs(wantedOS);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        Device receivedDevice = builder.getDevice(parameters);
+        Device receivedDevice = builder.getDevice(deviceSelector);
 
         DeviceInformation information = receivedDevice.getInformation();
         String realOS = information.getOS();
@@ -249,78 +254,64 @@ public class BuilderDeviceSelectionIntegrationTest {
     // FIXME If a test device with OS DeviceOs.JELLY_BEAN_4_1 is connected to the server this test will fail.
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingOperatingSystem() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceOs(DeviceOs.JELLY_BEAN_4_1);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        parameters.setOs(DeviceOs.JELLY_BEAN_4_1);
-
-        builder.getDevice(parameters);
+        builder.getDevice(deviceSelector);
     }
 
     @Test
     public void testGetDeviceByModel() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceModel(DEVICE2_MODEL);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        String wantedModel = DEVICE2_MODEL;
-        parameters.setModel(wantedModel);
-
-        Device receivedDevice = builder.getDevice(parameters);
+        Device receivedDevice = builder.getDevice(deviceSelector);
 
         DeviceInformation information = receivedDevice.getInformation();
         String realModel = information.getModel();
 
-        assertEquals("Device model does not match requested model.", wantedModel, realModel);
+        assertEquals("Device model does not match requested model.", DEVICE2_MODEL, realModel);
     }
 
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingModel() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY)
+                                                                           .deviceModel(NONEXISTING_DEVICE_MODEL);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        parameters.setModel("nonexisting_model");
-
-        builder.getDevice(parameters);
+        builder.getDevice(deviceSelector);
     }
 
     @Test
     public void testGetDeviceByRAM() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
+        int wantedRam = 513;
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().ramCapacity(wantedRam);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        int wantedRAM = 513;
-        parameters.setRam(wantedRAM);
-
-        Device receivedDevice = builder.getDevice(parameters);
+        Device receivedDevice = builder.getDevice(deviceSelector);
 
         DeviceInformation information = receivedDevice.getInformation();
-        int realRAM = information.getRam();
+        int realRam = information.getRam();
 
-        assertEquals("Device RAM does not match requested RAM.", wantedRAM, realRAM);
+        assertEquals("Device RAM does not match requested RAM.", wantedRam, realRam);
     }
 
     @Test(expected = NoAvailableDeviceFoundException.class)
-    public void testGetDeviceByNonexistingRAM() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
+    public void testGetDeviceByNonexistingRam() {
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY)
+                                                                           .ramCapacity(NONEXISTING_DEVICE_RAM);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        parameters.setRam(999);
-
-        builder.getDevice(parameters);
+        builder.getDevice(deviceSelector);
     }
 
     @Test
     public void testGetDeviceByResolutionWidth() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-
         int wantedResolutionWidth = 601;
-        parameters.setResolutionWidth(wantedResolutionWidth);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().screenWidth(wantedResolutionWidth);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        Device receivedDevice = builder.getDevice(parameters);
+        Device receivedDevice = builder.getDevice(deviceSelector);
 
         DeviceInformation information = receivedDevice.getInformation();
         int realResolutionWidth = information.getResolution().getValue();
@@ -332,24 +323,20 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingResolutionWidth() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY)
+                                                                           .screenWidth(NONEXISTING_DEVICE_RESOLUTION);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        parameters.setResolutionWidth(999);
-
-        builder.getDevice(parameters);
+        builder.getDevice(deviceSelector);
     }
 
     @Test
     public void testGetDeviceByResolutionHeight() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-
         int wantedResolutionHeight = 801;
-        parameters.setResolutionHeight(wantedResolutionHeight);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().screenHeight(wantedResolutionHeight);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        Device receivedDevice = builder.getDevice(parameters);
+        Device receivedDevice = builder.getDevice(deviceSelector);
 
         DeviceInformation information = receivedDevice.getInformation();
         int realResolutionHeight = information.getResolution().getKey();
@@ -361,83 +348,44 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByNonexistingResolutionHeight() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY)
+                                                                           .screenHeight(NONEXISTING_DEVICE_RESOLUTION);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        parameters.setResolutionHeight(999);
-
-        builder.getDevice(parameters);
+        builder.getDevice(deviceSelector);
     }
 
     @Test
-    public void testGetDeviceByDPI() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
+    public void testGetDeviceByDpi() {
+        int wantedDpi = 122;
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().screenDpi(wantedDpi);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        int wantedDPI = 122;
-        parameters.setDpi(wantedDPI);
-
-        Device receivedDevice = builder.getDevice(parameters);
+        Device receivedDevice = builder.getDevice(deviceSelector);
 
         DeviceInformation information = receivedDevice.getInformation();
         int realDPI = information.getDpi();
 
-        assertEquals("Device DPI does not match requested DPI.", wantedDPI, realDPI);
+        assertEquals("Device DPI does not match requested DPI.", wantedDpi, realDPI);
     }
 
     @Test(expected = NoAvailableDeviceFoundException.class)
-    public void testGetDeviceByNonexistingDPI() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
+    public void testGetDeviceByNonexistingDpi() {
 
-        parameters.setDpi(999);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY)
+                                                                           .screenDpi(NONEXISTING_DEVICE_SCREEN_DPI);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        builder.getDevice(parameters);
-    }
-
-    @Test
-    public void testGetDeviceByParametersCreatedFromMockedDeviceInfoOne() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters(mockedDeviceOneInformation);
-
-        Device receivedDevice = builder.getDevice(parameters);
-
-        DeviceInformation information = receivedDevice.getInformation();
-
-        assertEquals("Device information does not match the initial information",
-                     information,
-                     mockedDeviceOneInformation);
-    }
-
-    @Test(expected = NoAvailableDeviceFoundException.class)
-    public void testGetDeviceByParametersCreatedFromChangedMockedDeviceInfoOne() {
-        assumeNotNull(agentDao);
-        DeviceInformation changedMockedDeviceInfoOne = null;
-        changedMockedDeviceInfoOne = new DeviceInformation();
-        changedMockedDeviceInfoOne.setSerialNumber(DEVICE1_SERIAL_NUMBER);
-        changedMockedDeviceInfoOne.setModel(DEVICE1_MODEL);
-        changedMockedDeviceInfoOne.setOs("4.2.1");
-        changedMockedDeviceInfoOne.setEmulator(false);
-        changedMockedDeviceInfoOne.setRam(514);
-        changedMockedDeviceInfoOne.setResolution(new Pair<>(801, 601));
-        changedMockedDeviceInfoOne.setDpi(121);
-
-        DeviceParameters parameters = new DeviceParameters(changedMockedDeviceInfoOne);
-
-        builder.getDevice(parameters);
+        builder.getDevice(deviceSelector);
     }
 
     @Test
     public void testGetDeviceByApi() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-
         int wantedApiVersion = 7;
-        parameters.setTargetApiLevel(wantedApiVersion);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().targetApi(wantedApiVersion);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        Device receivedDevice = builder.getDevice(parameters);
+        Device receivedDevice = builder.getDevice(deviceSelector);
 
         DeviceInformation information = receivedDevice.getInformation();
         int realApiVersion = information.getApiLevel();
@@ -447,23 +395,20 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test(expected = NoAvailableDeviceFoundException.class)
     public void testGetDeviceByInvalidApiVersion() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-        parameters.setDeviceType(DeviceType.DEVICE_ONLY);
 
-        parameters.setTargetApiLevel(666);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().targetApi(INVALID_API_LEVEL);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        builder.getDevice(parameters);
+        builder.getDevice(deviceSelector);
     }
 
     @Test
     public void testGetDeviceByGivenMinimumApiVersion() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
         int minApiVersion = 17;
-        parameters.setMinApiLevel(minApiVersion);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().minApi(minApiVersion);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        Device receivedDevice = builder.getDevice(parameters);
+        Device receivedDevice = builder.getDevice(deviceSelector);
 
         DeviceInformation receivedDeviceInformation = receivedDevice.getInformation();
 
@@ -473,12 +418,11 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetDeviceByGivenMaximumApiVersion() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
         int maxApiVersion = 19;
-        parameters.setMaxApiLevel(maxApiVersion);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().maxApi(maxApiVersion);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        Device receivedDevice = builder.getDevice(parameters);
+        Device receivedDevice = builder.getDevice(deviceSelector);
 
         DeviceInformation receivedDeviceInformation = receivedDevice.getInformation();
 
@@ -488,14 +432,12 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetDeviceByGivenRangeForApiVersion() {
-        assumeNotNull(agentDao);
-
-        DeviceParameters parameters = new DeviceParameters();
         int maxApiVersion = 20;
         int minApiVersion = 15;
-        parameters.setMaxApiLevel(maxApiVersion);
-        parameters.setMinApiLevel(minApiVersion);
-        Device receivedDevice = builder.getDevice(parameters);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().minApi(minApiVersion).maxApi(maxApiVersion);
+        DeviceSelector deviceSelector = selectorBuilder.build();
+
+        Device receivedDevice = builder.getDevice(deviceSelector);
 
         DeviceInformation receivedDeviceInformation = receivedDevice.getInformation();
 
@@ -507,42 +449,35 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetDeviceByGivenRangeAndTargetForApiVersion() {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-
         int maxApiVersion = 20;
         int minApiVersion = 5;
-        int targetApiLevel = 10;
+        int targetApiVersion = 10;
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().minApi(minApiVersion)
+                                                                           .maxApi(maxApiVersion)
+                                                                           .targetApi(targetApiVersion);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        parameters.setMaxApiLevel(maxApiVersion);
-        parameters.setMinApiLevel(minApiVersion);
-        parameters.setTargetApiLevel(targetApiLevel);
-
-        Device receivedDevice = builder.getDevice(parameters);
+        Device receivedDevice = builder.getDevice(deviceSelector);
 
         DeviceInformation receivedDeviceInformation = receivedDevice.getInformation();
 
         assertEquals("Received device has different API level than the set target API level.",
                      receivedDeviceInformation.getApiLevel(),
-                     targetApiLevel);
+                     targetApiVersion);
     }
 
     @Test
     public void testGetDeviceByGivenRangeAndInvalidTargetApiVersion() {
-        assumeNotNull(agentDao);
-
-        DeviceParameters parameters = new DeviceParameters();
-
         int maxApiVersion = 16;
         int minApiVersion = 11;
-        int targetApiLevel = 12;
+        int targetApiVersion = 12;
         int expectedApiVersion = 15;
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().minApi(minApiVersion)
+                                                                           .maxApi(maxApiVersion)
+                                                                           .targetApi(targetApiVersion);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        parameters.setMaxApiLevel(maxApiVersion);
-        parameters.setMinApiLevel(minApiVersion);
-        parameters.setTargetApiLevel(targetApiLevel);
-
-        Device receivedDevice = builder.getDevice(parameters);
+        Device receivedDevice = builder.getDevice(deviceSelector);
 
         DeviceInformation receivedDeviceInformation = receivedDevice.getInformation();
 
@@ -551,72 +486,27 @@ public class BuilderDeviceSelectionIntegrationTest {
                      receivedDeviceInformation.getApiLevel());
     }
 
-    @Test
-    public void testGetDeviceByGivenRangeAndTargetApiVersionSetInvalidMax() throws Exception {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-
-        int maxApiVersion = 16;
+    @Test(expected = ValidationException.class)
+    public void testInvalidMaxApiInRange() throws Exception {
+        int invalidMaxApiVersion = 7;
         int minApiVersion = 12;
-        int targetApiLevel = 14;
-        int expectedApiVersion = 15;
+        int targetApiVersion = 14;
 
-        parameters.setMaxApiLevel(maxApiVersion);
-        parameters.setMinApiLevel(minApiVersion);
-        parameters.setTargetApiLevel(targetApiLevel);
-
-        Device receiveDevice = builder.getDevice(parameters);
-
-        DeviceInformation receivedDeviceInformation = receiveDevice.getInformation();
-
-        assertEquals("Received device is with different Api level than expected.",
-                     expectedApiVersion,
-                     receivedDeviceInformation.getApiLevel());
-        builder.releaseAllDevices();
-
-        parameters.setMaxApiLevel(7);
-
-        Device receivedDeviceChangedMaxApiLevel = builder.getDevice(parameters);
-
-        DeviceInformation receivedDeviceChangedApiLevelInformation = receivedDeviceChangedMaxApiLevel.getInformation();
-
-        assertEquals("Received device is with different Api level than expected.",
-                     expectedApiVersion,
-                     receivedDeviceChangedApiLevelInformation.getApiLevel());
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().minApi(minApiVersion)
+                                                                           .maxApi(invalidMaxApiVersion)
+                                                                           .targetApi(targetApiVersion);
+        selectorBuilder.build();
     }
 
-    @Test
-    public void testGetDeviceByGivenRangeAndTargetSetInvalidMinApiVersion() throws Exception {
-        assumeNotNull(agentDao);
-        DeviceParameters parameters = new DeviceParameters();
-
+    @Test(expected = ValidationException.class)
+    public void testInvalidMinApiInRange() throws Exception {
         int maxApiVersion = 9;
-        int minApiVersion = 7;
-        int targetApiLevel = 7;
-        int expectedApiVersion = 7;
+        int invalidMinApiVersion = 13;
+        int targetApiVersion = 7;
 
-        parameters.setMaxApiLevel(maxApiVersion);
-        parameters.setMinApiLevel(minApiVersion);
-        parameters.setTargetApiLevel(targetApiLevel);
-
-        Device receivedDevice = builder.getDevice(parameters);
-
-        DeviceInformation receivedDeviceInformation = receivedDevice.getInformation();
-
-        assertEquals("Received device is with different Api level than expected.",
-                     expectedApiVersion,
-                     receivedDeviceInformation.getApiLevel());
-
-        builder.releaseAllDevices();
-
-        parameters.setMaxApiLevel(13);
-
-        Device receiveDeviceChangedMaxApiLevel = builder.getDevice(parameters);
-
-        DeviceInformation receivedDeviceChangedApiLevelInformation = receiveDeviceChangedMaxApiLevel.getInformation();
-
-        assertEquals("Received device is with different Api level than expected after the change of max API version failed.",
-                     expectedApiVersion,
-                     receivedDeviceChangedApiLevelInformation.getApiLevel());
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().minApi(invalidMinApiVersion)
+                                                                           .maxApi(maxApiVersion)
+                                                                           .targetApi(targetApiVersion);
+        selectorBuilder.build();
     }
 }

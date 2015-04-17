@@ -19,7 +19,8 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.agent.AndroidDebugBridgeManager;
 import com.musala.atmosphere.agent.util.FakeOnDeviceComponentAnswer;
 import com.musala.atmosphere.commons.cs.clientbuilder.DeviceAllocationInformation;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.server.pool.PoolManager;
 
@@ -84,10 +85,10 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
 
         Thread.sleep(TIMEOUT_AFTER_DEVICE_CONNECT);
 
-        DeviceParameters deviceParameters = new DeviceParameters();
-        deviceParameters.setSerialNumber(fakeDeviceSerialNumber);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().serialNumber(fakeDeviceSerialNumber);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        poolManager.allocateDevice(deviceParameters);
+        poolManager.allocateDevice(deviceSelector);
 
         deviceChangeListener.deviceDisconnected(fakeDevice);
     }
@@ -104,16 +105,16 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
 
         Thread.sleep(TIMEOUT_AFTER_DEVICE_CONNECT);
 
-        DeviceParameters deviceParameters = new DeviceParameters();
-        deviceParameters.setSerialNumber(fakeDeviceSerialNumber);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().serialNumber(fakeDeviceSerialNumber);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
-        DeviceAllocationInformation deviceAllocationInformation = poolManager.allocateDevice(deviceParameters);
+        DeviceAllocationInformation deviceAllocationInformation = poolManager.allocateDevice(deviceSelector);
         String connectedDeviceId = deviceAllocationInformation.getDeviceId();
 
         String agentId = agent.getId();
 
-        Class<?> pmc = PoolManager.class;
-        Method getId = pmc.getDeclaredMethod("buildDeviceIdentifier", String.class, String.class);
+        Class<?> poolManagerClass = PoolManager.class;
+        Method getId = poolManagerClass.getDeclaredMethod("buildDeviceIdentifier", String.class, String.class);
         getId.setAccessible(true);
         String fakeDeviceId = (String) getId.invoke(null, agentId, fakeDeviceSerialNumber);
 
@@ -137,13 +138,13 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
 
         Thread.sleep(TIMEOUT_AFTER_DEVICE_CONNECT);
 
-        DeviceParameters deviceParameters = new DeviceParameters();
-        deviceParameters.setSerialNumber(fakeDeviceSerialNumber);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().serialNumber(fakeDeviceSerialNumber);
+        DeviceSelector deviceSelector = selectorBuilder.build();
 
         deviceChangeListener.deviceDisconnected(fakeDevice);
 
         Thread.sleep(TIMEOUT_AFTER_DEVICE_DISCONNECT);
 
-        poolManager.allocateDevice(deviceParameters);
+        poolManager.allocateDevice(deviceSelector);
     }
 }

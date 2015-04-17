@@ -21,28 +21,23 @@ import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
-import com.musala.atmosphere.commons.geometry.Bounds;
-import com.musala.atmosphere.commons.geometry.Point;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.beans.SwipeDirection;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.geometry.Bounds;
+import com.musala.atmosphere.commons.geometry.Point;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 public class SwipeTest extends BaseIntegrationTest {
 
     @BeforeClass
-    public static void setUp()
-        throws UiElementFetchingException,
-            InterruptedException,
-            ActivityStartingException,
-            XPathExpressionException,
-            InvalidCssQueryException,
-            Exception {
-        DeviceParameters testDeviceParams = new DeviceParameters();
-        testDeviceParams.setDeviceType(DeviceType.DEVICE_PREFERRED);
-        initTestDevice(testDeviceParams);
+    public static void setUp() throws Exception {
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
+        DeviceSelector testDeviceSelector = selectorBuilder.build();
+        initTestDevice(testDeviceSelector);
         setTestDevice(testDevice);
 
         startGestureActivity();

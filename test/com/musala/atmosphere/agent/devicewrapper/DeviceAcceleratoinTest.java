@@ -20,7 +20,8 @@ import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.commons.beans.DeviceAcceleration;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
@@ -30,9 +31,9 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        DeviceParameters emulatorTestDevice = new DeviceParameters();
-        emulatorTestDevice.setDeviceType(DeviceType.EMULATOR_ONLY);
-        initTestDevice(emulatorTestDevice);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.EMULATOR_ONLY);
+        DeviceSelector testDeviceSelector = selectorBuilder.build();
+        initTestDevice(testDeviceSelector);
 
         setTestDevice(testDevice);
 

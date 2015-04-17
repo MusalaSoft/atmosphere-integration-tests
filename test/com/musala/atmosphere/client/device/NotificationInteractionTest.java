@@ -21,7 +21,8 @@ import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.client.uiutils.UiElementSelector;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
@@ -44,12 +45,12 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
             XPathExpressionException,
             InvalidCssQueryException,
             Exception {
-        DeviceParameters testDeviceParams = new DeviceParameters();
-        testDeviceParams.setDeviceType(DeviceType.DEVICE_ONLY);
-        testDeviceParams.setMinApiLevel(19);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY)
+                                                                           .minApi(19);
+        DeviceSelector testDeviceSelector = selectorBuilder.build();
 
         try {
-            initTestDevice(testDeviceParams);
+            initTestDevice(testDeviceSelector);
             setTestDevice(testDevice);
 
             notificationBar = new NotificationBar(testDevice);

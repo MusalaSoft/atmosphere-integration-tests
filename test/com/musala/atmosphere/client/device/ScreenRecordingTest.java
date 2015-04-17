@@ -17,13 +17,15 @@ import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.commons.cs.clientbuilder.DeviceParameters;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
  * 
  * @author yavor.stankov
- *
+ * 
  */
 public class ScreenRecordingTest extends BaseIntegrationTest {
     private static final String LOCAL_FILE_PATH = System.getProperty("user.dir");
@@ -38,7 +40,10 @@ public class ScreenRecordingTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        initTestDevice(new DeviceParameters());
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY)
+                                                                           .minApi(19);
+        DeviceSelector testDeviceSelector = selectorBuilder.build();
+        initTestDevice(testDeviceSelector);
         setTestDevice(testDevice);
         startImeTestActivity();
     }
