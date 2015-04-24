@@ -20,6 +20,7 @@ import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.geometry.Point;
+import com.musala.atmosphere.commons.ui.UiElementPropertiesContainer;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
@@ -66,9 +67,9 @@ public class CutTextTest extends BaseIntegrationTest {
         Screen screen = testDevice.getActiveScreen();
 
         UiElement singleLineTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
-        UiElementSelector singleLineTextBoxSelector = singleLineTextBox.getElementSelector();
+        UiElementPropertiesContainer singleLineTextBoxProperties = singleLineTextBox.getProperties();
 
-        String expectedText = singleLineTextBoxSelector.getStringValue(CssAttribute.TEXT);
+        String expectedText = singleLineTextBoxProperties.getText();
 
         singleLineTextBox.longPress();
 
@@ -110,9 +111,9 @@ public class CutTextTest extends BaseIntegrationTest {
         Screen screen = testDevice.getActiveScreen();
 
         UiElement multilineTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_FIRST_LINE_TEXT_BOX.toString());
-        UiElementSelector multilineTextBoxSelector = multilineTextBox.getElementSelector();
+        UiElementPropertiesContainer multilineTextBoxProperties = multilineTextBox.getProperties();
 
-        String expectedText = multilineTextBoxSelector.getStringValue(CssAttribute.TEXT);
+        String expectedText = multilineTextBoxProperties.getText();
 
         multilineTextBox.longPress();
 

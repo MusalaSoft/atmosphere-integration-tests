@@ -73,7 +73,7 @@ public class LongPressTest extends BaseIntegrationTest {
         UiElement longPressTextField = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
 
         // make sure to click outside the element
-        final Bounds elementBounds = longPressTextField.getElementSelector().getBoundsValue(CssAttribute.BOUNDS);
+        final Bounds elementBounds = longPressTextField.getProperties().getBounds();
         Point lowerRightCorner = elementBounds.getLowerRightCorner();
         final int x = lowerRightCorner.getX();
         final int y = lowerRightCorner.getY();

@@ -14,13 +14,12 @@ import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.uiutils.CssAttribute;
-import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.geometry.Bounds;
 import com.musala.atmosphere.commons.geometry.Point;
+import com.musala.atmosphere.commons.ui.UiElementPropertiesContainer;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
@@ -73,15 +72,15 @@ public class TapTest extends BaseIntegrationTest {
     @Test
     public void testRelativeTap() throws Exception {
         UiElement imeRelativeLayout = getElementByContentDescriptor(IME_RELATIVE_LAYOUT_CONTENT_DESCRIPTOR);
-        UiElementSelector imeRelativeLayoutSelector = imeRelativeLayout.getElementSelector();
+        UiElementPropertiesContainer imeRelativeLayoutProperties = imeRelativeLayout.getProperties();
 
         UiElement emptyTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
-        UiElementSelector emptyTextBoxSelector = emptyTextBox.getElementSelector();
+        UiElementPropertiesContainer emptyTextBoxProperties = emptyTextBox.getProperties();
 
-        Bounds emptyTextBoxBoundsAttributeValue = emptyTextBoxSelector.getBoundsValue(CssAttribute.BOUNDS);
+        Bounds emptyTextBoxBoundsAttributeValue = emptyTextBoxProperties.getBounds();
         Point emptyTextBoxUpperLeftCorner = emptyTextBoxBoundsAttributeValue.getUpperLeftCorner();
 
-        Bounds imeRelativeLayoutBoundsAttributeValue = imeRelativeLayoutSelector.getBoundsValue(CssAttribute.BOUNDS);
+        Bounds imeRelativeLayoutBoundsAttributeValue = imeRelativeLayoutProperties.getBounds();
         Point imeRelativeLayoutUpperLeftCorner = imeRelativeLayoutBoundsAttributeValue.getRelativePoint(emptyTextBoxUpperLeftCorner);
 
         assertTrue(TAPPING_SCREEN_FAILED_MESSAGE, imeRelativeLayout.tap(imeRelativeLayoutUpperLeftCorner));

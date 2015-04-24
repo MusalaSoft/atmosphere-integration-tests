@@ -19,14 +19,13 @@ import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
-import com.musala.atmosphere.client.uiutils.CssAttribute;
-import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.DeviceInformation;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.geometry.Bounds;
 import com.musala.atmosphere.commons.geometry.Point;
+import com.musala.atmosphere.commons.ui.UiElementPropertiesContainer;
 import com.musala.atmosphere.commons.util.Pair;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
@@ -76,9 +75,9 @@ public class PinchTest extends BaseIntegrationTest {
 
         // getting the point at the center of the element
         gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
-        UiElementSelector gestureValidatorSelector = gestureValidator.getElementSelector();
+        UiElementPropertiesContainer gestureValidatorProperties = gestureValidator.getProperties();
 
-        Bounds elementBounds = gestureValidatorSelector.getBoundsValue(CssAttribute.BOUNDS);
+        Bounds elementBounds = gestureValidatorProperties.getBounds();
         Point firstFingerInitial = elementBounds.getUpperLeftCorner();
         Point secondFingerInitial = elementBounds.getLowerRightCorner();
 
@@ -110,9 +109,9 @@ public class PinchTest extends BaseIntegrationTest {
 
         // getting the point at the center of the element
         gestureValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
-        UiElementSelector gestureValidatorSelector = gestureValidator.getElementSelector();
+        UiElementPropertiesContainer gestureValidatorProperties = gestureValidator.getProperties();
 
-        Bounds elementBounds = gestureValidatorSelector.getBoundsValue(CssAttribute.BOUNDS);
+        Bounds elementBounds = gestureValidatorProperties.getBounds();
         Point firstFingerEnd = elementBounds.getUpperLeftCorner();
         Point secondFingerEnd = elementBounds.getLowerRightCorner();
 

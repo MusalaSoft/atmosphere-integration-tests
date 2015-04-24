@@ -18,7 +18,6 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
-import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.commons.beans.DeviceAcceleration;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
@@ -208,6 +207,6 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest {
             XPathExpressionException,
             InvalidCssQueryException {
         UiElement elementByContentDescriptor = getElementByContentDescriptor(contentDescriptor.toString());
-        return elementByContentDescriptor.getElementSelector().getStringValue(CssAttribute.TEXT);
+        return elementByContentDescriptor.getProperties().getText();
     }
 }

@@ -25,6 +25,7 @@ import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.geometry.Bounds;
 import com.musala.atmosphere.commons.geometry.Point;
+import com.musala.atmosphere.commons.ui.UiElementPropertiesContainer;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
@@ -72,8 +73,8 @@ public class DoubleTapTest extends BaseIntegrationTest {
 
         // getting the point at the center of the element
         doubleTapValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
-        UiElementSelector doubleTapValidatorSelector = doubleTapValidator.getElementSelector();
-        Bounds elementBounds = doubleTapValidatorSelector.getBoundsValue(CssAttribute.BOUNDS);
+        UiElementPropertiesContainer doubleTapValidatorProperties = doubleTapValidator.getProperties();
+        Bounds elementBounds = doubleTapValidatorProperties.getBounds();
         Point centerPoint = elementBounds.getCenter();
 
         boolean tapResult = testDevice.doubleTap(centerPoint);

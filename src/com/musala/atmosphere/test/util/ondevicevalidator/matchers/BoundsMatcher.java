@@ -5,8 +5,7 @@ import org.hamcrest.Description;
 
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.geometry.Bounds;
-import com.musala.atmosphere.client.uiutils.CssAttribute;
-import com.musala.atmosphere.client.uiutils.UiElementSelector;
+import com.musala.atmosphere.commons.ui.UiElementPropertiesContainer;
 
 /**
  * Base Matcher class used for checking if a given UI element has expected bounds.
@@ -27,9 +26,8 @@ public class BoundsMatcher extends BaseMatcher<UiElement> {
             Bounds expectedBounds = (Bounds) obj;
 
             UiElement uiElement = (UiElement) obj;
-            UiElementSelector uiElementSelector = uiElement.getElementSelector();
-            Bounds actualBounds = uiElementSelector.getBoundsValue(CssAttribute.BOUNDS);
-
+            UiElementPropertiesContainer uiElementProperties = uiElement.getProperties();
+            Bounds actualBounds = uiElementProperties.getBounds();
             return actualBounds.equals(expectedBounds);
         }
         return false;

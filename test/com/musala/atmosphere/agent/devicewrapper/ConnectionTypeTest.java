@@ -15,7 +15,6 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
-import com.musala.atmosphere.client.uiutils.CssAttribute;
 import com.musala.atmosphere.commons.ConnectionType;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
@@ -47,7 +46,7 @@ public class ConnectionTypeTest extends BaseIntegrationTest {
             InvalidCssQueryException {
         ConnectionType connectionType = testDevice.getConnectionType();
         UiElement connectionTypeBox = getElementByContentDescriptor(ContentDescriptor.CONNECTION_TYPE_BOX.toString());
-        String connectionTypeBoxText = connectionTypeBox.getElementSelector().getStringValue(CssAttribute.TEXT);
+        String connectionTypeBoxText = connectionTypeBox.getProperties().getText();
         assertEquals("Getting connection type did not return the expected result.",
                      Integer.parseInt(connectionTypeBoxText),
                      connectionType.getId());

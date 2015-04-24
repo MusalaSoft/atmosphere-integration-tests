@@ -23,6 +23,7 @@ import com.musala.atmosphere.commons.ScreenOrientation;
 import com.musala.atmosphere.commons.SmsMessage;
 import com.musala.atmosphere.commons.beans.BatteryState;
 import com.musala.atmosphere.commons.beans.PhoneNumber;
+import com.musala.atmosphere.commons.ui.UiElementPropertiesContainer;
 import com.musala.atmosphere.commons.util.GeoLocation;
 
 /**
@@ -445,8 +446,8 @@ public class OnDeviceValidatorAssert {
      *        - the expected text of the element
      */
     public static void assertElementText(String message, UiElement element, String expected) {
-        UiElementSelector selector = element.getElementSelector();
-        String elementText = selector.getStringValue(CssAttribute.TEXT);
+        UiElementPropertiesContainer elementProperties = element.getProperties();
+        String elementText = elementProperties.getText();
 
         assertEquals(message, expected, elementText);
     }

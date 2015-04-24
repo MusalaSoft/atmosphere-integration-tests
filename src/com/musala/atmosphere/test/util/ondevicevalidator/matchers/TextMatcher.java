@@ -4,8 +4,7 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.uiutils.CssAttribute;
-import com.musala.atmosphere.client.uiutils.UiElementSelector;
+import com.musala.atmosphere.commons.ui.UiElementPropertiesContainer;
 
 /**
  * Base Matcher class used for checking if a given UI element has the expected text.
@@ -26,8 +25,8 @@ public class TextMatcher extends BaseMatcher<UiElement> {
             String expectedText = (String) expected;
 
             UiElement uiElement = (UiElement) obj;
-            UiElementSelector uiElementSelector = uiElement.getElementSelector();
-            String actualText = uiElementSelector.getStringValue(CssAttribute.TEXT);
+            UiElementPropertiesContainer uiElementProperties = uiElement.getProperties();
+            String actualText = uiElementProperties.getText();
 
             return actualText.equals(expectedText);
         }

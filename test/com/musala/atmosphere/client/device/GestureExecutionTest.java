@@ -20,6 +20,7 @@ import com.musala.atmosphere.commons.geometry.Bounds;
 import com.musala.atmosphere.commons.gesture.Anchor;
 import com.musala.atmosphere.commons.gesture.Gesture;
 import com.musala.atmosphere.commons.gesture.Timeline;
+import com.musala.atmosphere.commons.ui.UiElementPropertiesContainer;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
@@ -51,9 +52,9 @@ public class GestureExecutionTest extends BaseIntegrationTest {
     @Test
     public void testTap() throws Exception {
         UiElement inputTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
-        UiElementSelector selector = inputTextBox.getElementSelector();
+        UiElementPropertiesContainer properties = inputTextBox.getProperties();
 
-        Bounds boxBounds = selector.getBoundsValue(CssAttribute.BOUNDS);
+        Bounds boxBounds = properties.getBounds();
         int xCoord = boxBounds.getCenter().getX();
         int yCoord = boxBounds.getCenter().getY();
 
