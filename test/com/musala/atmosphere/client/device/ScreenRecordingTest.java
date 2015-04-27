@@ -1,22 +1,25 @@
 package com.musala.atmosphere.client.device;
 
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertInputText;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertElementText;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startImeTestActivity;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.IOException;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
+import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
+import com.musala.atmosphere.client.uiutils.CssAttribute;
+import com.musala.atmosphere.client.uiutils.UiElementSelector;
+import com.musala.atmosphere.commons.DeviceInformation;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
@@ -25,18 +28,24 @@ import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 /**
  * 
  * @author yavor.stankov
- * 
+ *
  */
 public class ScreenRecordingTest extends BaseIntegrationTest {
     private static final String LOCAL_FILE_PATH = System.getProperty("user.dir");
 
-    private static final String LOCAL_FILE_NAME = "screenrecord";
+    private static final long PULL_FILE_TIMEOUT = 3000;
 
-    private static final String LOCAL_FILE_FORMAT = ".mp4";
+    private static final long TIMEOUT_BETWEEN_INTERACTIONS = 40000;
 
-    private static final long PULL_FILE_TIMEOUT = 1000;
+    private static final int NUMBER_OF_EXPECTED_FILES = 2;
 
-    private File screenRecordFile;
+    private static final String EXPECTED_TEXT_RESULT = "Sample Text";
+
+    private static final String COPY_BUTTON_CONTENT_DESCRIPTOR = "Copy";
+
+    private static final String SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR = "Select all";
+
+    private File screenRecordDirectory;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -50,48 +59,90 @@ public class ScreenRecordingTest extends BaseIntegrationTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
-        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
-
         releaseDevice();
     }
 
     @After
-    public void tearDownTest() throws InterruptedException {
-        screenRecordFile.delete();
+    public void tearDownTest() throws InterruptedException, IOException {
+        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+
+        deleteDirectory(screenRecordDirectory);
     }
 
     @Test
     public void testScreenRecordTextInput() throws Exception {
-        testDevice.startScreenRecording();
+        DeviceInformation deviceInformation = testDevice.getInformation();
+        String serialNumber = deviceInformation.getSerialNumber();
+        String path = String.format("%s/screen_records-%s", LOCAL_FILE_PATH, serialNumber);
 
-        String textToInput = "Screen recording!!!";
+        testDevice.startScreenRecording(path);
 
-        UiElement inputTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
-        inputTextBox.inputText(textToInput);
+        Thread.sleep(TIMEOUT_BETWEEN_INTERACTIONS);
 
-        assertInputText("Inputting text failed.", textToInput);
+        Screen screen = testDevice.getActiveScreen();
 
-        String fullLocalFilePath = String.format("%s%s%s%s%s",
-                                                 LOCAL_FILE_PATH,
-                                                 File.separator,
-                                                 LOCAL_FILE_NAME,
-                                                 getCurrentTimeStamp(),
-                                                 LOCAL_FILE_FORMAT);
+        UiElement copyTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
+        copyTextBox.longPress();
 
-        testDevice.stopScreenRecording(fullLocalFilePath);
+        Thread.sleep(TIMEOUT_BETWEEN_INTERACTIONS);
+
+        screen.updateScreen();
+
+        UiElementSelector selectAllButtonSelector = new UiElementSelector();
+        selectAllButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
+                                                      SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
+
+        UiElement selectAllButton = screen.getElement(selectAllButtonSelector);
+        selectAllButton.tap();
+
+        Thread.sleep(TIMEOUT_BETWEEN_INTERACTIONS);
+
+        UiElementSelector copyButtonSelector = new UiElementSelector();
+        copyButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, COPY_BUTTON_CONTENT_DESCRIPTOR);
+
+        UiElement copyButton = screen.getElement(copyButtonSelector);
+        copyButton.tap();
+
+        Thread.sleep(TIMEOUT_BETWEEN_INTERACTIONS);
+
+        UiElement pasteTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
+        pasteTextBox.pasteText();
+
+        Thread.sleep(TIMEOUT_BETWEEN_INTERACTIONS);
+
+        screen.updateScreen();
+
+        pasteTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
+
+        assertElementText("Paste text failed! The text field content does not match the expected one.",
+                          pasteTextBox,
+                          EXPECTED_TEXT_RESULT);
+
+        testDevice.stopScreenRecording();
 
         Thread.sleep(PULL_FILE_TIMEOUT);
 
-        screenRecordFile = new File(fullLocalFilePath);
+        screenRecordDirectory = new File(path);
+        String[] recordedFiles = screenRecordDirectory.list();
+        int numberOfRecordedFiles = recordedFiles.length;
 
-        assertTrue("There is no such file recorded.", screenRecordFile.exists());
+        Assert.assertEquals("The number of recorded files is not the same as axpected!",
+                            NUMBER_OF_EXPECTED_FILES,
+                            numberOfRecordedFiles);
     }
 
-    private static String getCurrentTimeStamp() {
-        SimpleDateFormat simpleDateFormatTime = new SimpleDateFormat("HHmmss");
-        long currentTime = new Date().getTime();
-        String timeStamp = simpleDateFormatTime.format(currentTime);
+    private boolean deleteDirectory(File directory) {
+        if (directory.exists()) {
+            File[] files = directory.listFiles();
 
-        return timeStamp;
+            if (files != null) {
+
+                for (File file : files) {
+                    file.delete();
+                }
+            }
+        }
+
+        return (directory.delete());
     }
 }
