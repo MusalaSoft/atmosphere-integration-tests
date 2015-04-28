@@ -17,18 +17,18 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.uiutils.CssAttribute;
-import com.musala.atmosphere.client.uiutils.UiElementSelector;
 import com.musala.atmosphere.commons.DeviceInformation;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.ui.selector.CssAttribute;
+import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
  * 
  * @author yavor.stankov
- *
+ * 
  */
 public class ScreenRecordingTest extends BaseIntegrationTest {
     private static final String LOCAL_FILE_PATH = System.getProperty("user.dir");
