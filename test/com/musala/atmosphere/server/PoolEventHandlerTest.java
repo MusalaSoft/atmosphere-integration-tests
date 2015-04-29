@@ -70,6 +70,8 @@ public class PoolEventHandlerTest extends BaseIntegrationTest {
         FakeOnDeviceComponentAnswer fakeOnDeviceComponentAnswer = new FakeOnDeviceComponentAnswer();
         Mockito.doAnswer(fakeOnDeviceComponentAnswer).when(fakeDevice).createForward(anyInt(), anyInt());
 
+        // TODO: mock the device boot logic.
+
         return fakeDevice;
     }
 
