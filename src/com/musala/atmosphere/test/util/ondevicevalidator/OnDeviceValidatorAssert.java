@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -498,6 +499,24 @@ public class OnDeviceValidatorAssert {
                                                                                        expected);
 
         assertElementExists(message, inputTextSelector);
+    }
+
+    /**
+     * Asserts that a given string has been inputted on the test device.
+     * 
+     * @param message
+     *        - message to be displayed if assertion fails.
+     * @param expected
+     *        - the expected input string.
+     * @param - the time to wait for the text to be present
+     * @throws UiElementFetchingException
+     */
+    public static void assertInputText(String message, String expected, int inputTimeout)
+        throws UiElementFetchingException {
+        UiElementSelector inputTextSelector = createSelectorByTextAndContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX,
+                                                                                       expected);
+
+        assertElementExists(message, inputTextSelector, inputTimeout);
     }
 
     /**
@@ -1154,7 +1173,7 @@ public class OnDeviceValidatorAssert {
         Screen activeScreen = device.getActiveScreen();
         activeScreen.updateScreen();
         final String query = String.format(CSS_PACKAGE, packageName);
-        return activeScreen.getAllElementsByCSS(query);
+        return new ArrayList<UiElement>(activeScreen.getAllElementsByCSS(query));
     }
 
     /**
