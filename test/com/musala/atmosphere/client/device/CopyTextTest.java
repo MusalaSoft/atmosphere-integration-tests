@@ -117,6 +117,7 @@ public class CopyTextTest extends BaseIntegrationTest {
         UiElement copyTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
         copyTextBox.longPress();
 
+        copyTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
         assertTrue(copyTextBox.copyText());
 
         UiElement pasteTextBox = getElementByContentDescriptor(ContentDescriptor.PASTE_CONTAINER_TEXT_BOX.toString());

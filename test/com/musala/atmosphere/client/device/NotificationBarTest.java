@@ -82,7 +82,9 @@ public class NotificationBarTest extends BaseIntegrationTest {
     }
 
     public void verifyNotification(UiElement notification) throws Exception {
-        List<UiElement> notificationElements = notification.getChildren(NOTIFICATION_TITLE_TEXT_XPATH_QUERY);
+        UiElementSelector selector = new UiElementSelector();
+        selector.addSelectionAttribute(CssAttribute.TEXT, NOTIFICATION_TITLE_TEXT);
+        List<UiElement> notificationElements = notification.getChildren(selector);
 
         assertNotNull("The method did not return the right notification.", notificationElements);
     }

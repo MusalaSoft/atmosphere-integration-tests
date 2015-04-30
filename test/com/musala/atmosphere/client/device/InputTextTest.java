@@ -64,6 +64,6 @@ public class InputTextTest extends BaseIntegrationTest {
         UiElement inputTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
         inputTextBox.inputText(textToInput, INPUT_INTERVAL);
 
-        assertInputText("Inputting text failed.", textToInput);
+        assertInputText("Inputting text failed.", textToInput, (int) INPUT_INTERVAL * (textToInput.length() + 1));
     }
 }

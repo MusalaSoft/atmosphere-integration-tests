@@ -48,7 +48,6 @@ public class OpenQuickSettingsTest extends BaseIntegrationTest {
             UiElementFetchingException,
             InvalidCssQueryException {
         assumeNotNull(testDevice);
-        System.out.println("maika ti");
         setTestDevice(testDevice);
 
         UiElementSelector quickSettingsSelector = new UiElementSelector();

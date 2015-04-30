@@ -18,7 +18,6 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.TimePicker;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.util.settings.ElementValidationType;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
@@ -107,7 +106,6 @@ public class TimePickerInteractionTest extends BaseIntegrationTest {
     @Test
     public void testSetTimeInTimePicker() throws Exception {
         UiElement timePickerButton = getElementByContentDescriptor(ContentDescriptor.TIME_PICKER.toString());
-        timePickerButton.setValidationType(ElementValidationType.MANUAL);
         timePickerButton.tap();
 
         Screen screen = testDevice.getActiveScreen();

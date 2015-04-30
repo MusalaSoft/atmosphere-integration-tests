@@ -12,7 +12,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
@@ -62,8 +61,6 @@ public class CutTextTest extends BaseIntegrationTest {
 
     @Test
     public void testCutTextSingleLine() throws Exception {
-        Screen screen = testDevice.getActiveScreen();
-
         UiElement singleLineTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
         UiElementPropertiesContainer singleLineTextBoxProperties = singleLineTextBox.getProperties();
 
@@ -71,14 +68,10 @@ public class CutTextTest extends BaseIntegrationTest {
 
         singleLineTextBox.longPress();
 
-        screen.updateScreen();
-
         UiElement selectAllButton = getElementByContentDescriptor(SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
         selectAllButton.tap();
 
         singleLineTextBox.cutText();
-
-        screen.updateScreen();
 
         singleLineTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
 
@@ -89,15 +82,11 @@ public class CutTextTest extends BaseIntegrationTest {
         Point pasteTextBoxBeginning = new Point(0, 0);
         pasteTextBox.longPress(pasteTextBoxBeginning, LONG_PRESS_TIMEOUT);
 
-        screen.updateScreen();
-
         selectAllButton = getElementByContentDescriptor(SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
         selectAllButton.tap();
 
         UiElement pasteButton = getElementByContentDescriptor(PASTE_BUTTON_CONTENT_DESCRIPTOR);
         pasteButton.tap();
-
-        screen.updateScreen();
 
         pasteTextBox = getElementByContentDescriptor(ContentDescriptor.PASTE_CONTAINER_TEXT_BOX.toString());
 
@@ -106,23 +95,18 @@ public class CutTextTest extends BaseIntegrationTest {
 
     @Test
     public void testCutTextMultiline() throws Exception {
-        Screen screen = testDevice.getActiveScreen();
-
         UiElement multilineTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_FIRST_LINE_TEXT_BOX.toString());
         UiElementPropertiesContainer multilineTextBoxProperties = multilineTextBox.getProperties();
 
         String expectedText = multilineTextBoxProperties.getText();
 
         multilineTextBox.longPress();
-
-        screen.updateScreen();
+        multilineTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_FIRST_LINE_TEXT_BOX.toString());
 
         UiElement selectAllButton = getElementByContentDescriptor(SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
         selectAllButton.tap();
 
         multilineTextBox.cutText();
-
-        screen.updateScreen();
 
         multilineTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_FIRST_LINE_TEXT_BOX.toString());
 
@@ -133,15 +117,11 @@ public class CutTextTest extends BaseIntegrationTest {
         Point pasteTextBoxBeginning = new Point(0, 0);
         pasteTextBox.longPress(pasteTextBoxBeginning, LONG_PRESS_TIMEOUT);
 
-        screen.updateScreen();
-
         selectAllButton = getElementByContentDescriptor(SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
         selectAllButton.tap();
 
         UiElement pasteButton = getElementByContentDescriptor(PASTE_BUTTON_CONTENT_DESCRIPTOR);
         pasteButton.tap();
-
-        screen.updateScreen();
 
         pasteTextBox = getElementByContentDescriptor(ContentDescriptor.PASTE_CONTAINER_TEXT_BOX.toString());
 

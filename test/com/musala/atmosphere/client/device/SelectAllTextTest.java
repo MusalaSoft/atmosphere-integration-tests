@@ -10,7 +10,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
@@ -43,19 +42,14 @@ public class SelectAllTextTest extends BaseIntegrationTest {
 
     @Test
     public void testSelectAllTextSingleLine() throws Exception {
-        Screen screen = testDevice.getActiveScreen();
 
         UiElement selectTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
 
         selectTextBox.selectAllText();
 
-        screen.updateScreen();
-
         selectTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
 
         selectTextBox.inputText(TEXT_TO_INPUT_FOR_VERIFICATION);
-
-        screen.updateScreen();
 
         selectTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
 
@@ -66,19 +60,13 @@ public class SelectAllTextTest extends BaseIntegrationTest {
 
     @Test
     public void testSelectAllTextMultiline() throws Exception {
-        Screen screen = testDevice.getActiveScreen();
-
         UiElement selectTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_FIRST_LINE_TEXT_BOX.toString());
 
         selectTextBox.selectAllText();
 
-        screen.updateScreen();
-
         selectTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_FIRST_LINE_TEXT_BOX.toString());
 
         selectTextBox.inputText(TEXT_TO_INPUT_FOR_VERIFICATION);
-
-        screen.updateScreen();
 
         selectTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_FIRST_LINE_TEXT_BOX.toString());
 

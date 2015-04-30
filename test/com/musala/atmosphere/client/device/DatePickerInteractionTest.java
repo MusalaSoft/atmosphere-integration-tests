@@ -18,7 +18,6 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.DatePicker;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.util.settings.ElementValidationType;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
@@ -107,7 +106,6 @@ public class DatePickerInteractionTest extends BaseIntegrationTest {
     public void testSetDateInDatePicker() throws Exception {
 
         UiElement datePickerButton = getElementByContentDescriptor(ContentDescriptor.DATE_PICKER.toString());
-        datePickerButton.setValidationType(ElementValidationType.MANUAL);
         datePickerButton.tap();
 
         Screen screen = testDevice.getActiveScreen();
