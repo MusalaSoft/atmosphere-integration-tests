@@ -26,7 +26,7 @@ public class AtmosphereIntegrationTestsSuite {
 
     private final static int AGENTMANAGER_RMI_PORT = 2000;
 
-    private final static int WAIT_FOR_CONNECTING_TIMEOUT = 3000;
+    private final static int WAIT_FOR_CONNECTING_TIMEOUT = 45000;
 
     private final static long SCREEN_OFF_TIMEOUT = 180000;
 
@@ -58,6 +58,8 @@ public class AtmosphereIntegrationTestsSuite {
         agent.connectToServer(SERVER_IP, SERVER_MANAGER_RMI_PORT);
         String agentId = agent.getId();
         server.waitForGivenAgentToConnect(agentId);
+        // Waits for deive's wrapping and connection
+        // TODO Find a better way to handle this
         Thread.sleep(WAIT_FOR_CONNECTING_TIMEOUT);
 
         // Install OnDeviceValidator on all available devices.
