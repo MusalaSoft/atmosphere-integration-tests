@@ -74,6 +74,14 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     private final static String TEST_IP_ADDRESS = "localhost";
 
+    private static final String SCREEN_RECORD_COMPONENT_PATH = "/data/local/tmp";
+
+    private static final String STOP_SCREENRECORD_SCRIPT_NAME = "stop_screenrecord.sh";
+
+    private static final String STOP_SCREEN_RECORD_COMMAND = String.format("sh %s/%s",
+                                                                           SCREEN_RECORD_COMPONENT_PATH,
+                                                                           STOP_SCREENRECORD_SCRIPT_NAME);
+
     private static DeviceInformation mockedDeviceOneInformation;
 
     private static AgentDao agentDao;
@@ -139,6 +147,10 @@ public class BuilderDeviceSelectionIntegrationTest {
         when(mockRegistry.lookup(DEVICE1_SERIAL_NUMBER)).thenReturn(mockedDeviceOne);
         when(mockRegistry.lookup(DEVICE2_SERIAL_NUMBER)).thenReturn(mockedDeviceTwo);
         when(mockRegistry.lookup(DEVICE3_SERIAL_NUMBER)).thenReturn(mockedDeviceThree);
+
+        when(mockedDeviceOne.route(eq(RoutingAction.EXECUTE_SHELL_COMMAND), eq(STOP_SCREEN_RECORD_COMMAND))).thenReturn("");
+        when(mockedDeviceTwo.route(eq(RoutingAction.EXECUTE_SHELL_COMMAND), eq(STOP_SCREEN_RECORD_COMMAND))).thenReturn("");
+        when(mockedDeviceThree.route(eq(RoutingAction.EXECUTE_SHELL_COMMAND), eq(STOP_SCREEN_RECORD_COMMAND))).thenReturn("");
 
         PoolManager poolManager = PoolManager.getInstance();
 
@@ -404,7 +416,7 @@ public class BuilderDeviceSelectionIntegrationTest {
 
     @Test
     public void testGetDeviceByGivenMinimumApiVersion() {
-        int minApiVersion = 17;
+        int minApiVersion = 13;
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().minApi(minApiVersion);
         DeviceSelector deviceSelector = selectorBuilder.build();
 

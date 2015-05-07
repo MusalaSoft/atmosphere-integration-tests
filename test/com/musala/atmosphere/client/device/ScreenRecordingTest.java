@@ -17,7 +17,6 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.commons.DeviceInformation;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
@@ -31,21 +30,19 @@ import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
  * 
  */
 public class ScreenRecordingTest extends BaseIntegrationTest {
-    private static final String LOCAL_FILE_PATH = System.getProperty("user.dir");
+    private static final String RECORDS_DIR_SUFFIX = "VideoRecords";
 
-    private static final long PULL_FILE_TIMEOUT = 3000;
+    private static final String LOCAL_FILE_PATH = System.getProperty("user.dir");
 
     private static final long TIMEOUT_BETWEEN_INTERACTIONS = 40000;
 
-    private static final int NUMBER_OF_EXPECTED_FILES = 2;
+    private static final int EXPECTED_RECORDED_FILES_COUNT = 2;
 
     private static final String EXPECTED_TEXT_RESULT = "Sample Text";
 
     private static final String COPY_BUTTON_CONTENT_DESCRIPTOR = "Copy";
 
     private static final String SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR = "Select all";
-
-    private File screenRecordDirectory;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -55,6 +52,8 @@ public class ScreenRecordingTest extends BaseIntegrationTest {
         initTestDevice(testDeviceSelector);
         setTestDevice(testDevice);
         startImeTestActivity();
+
+        removeOldRecords();
     }
 
     @AfterClass
@@ -65,17 +64,11 @@ public class ScreenRecordingTest extends BaseIntegrationTest {
     @After
     public void tearDownTest() throws InterruptedException, IOException {
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
-
-        deleteDirectory(screenRecordDirectory);
     }
 
     @Test
     public void testScreenRecordTextInput() throws Exception {
-        DeviceInformation deviceInformation = testDevice.getInformation();
-        String serialNumber = deviceInformation.getSerialNumber();
-        String path = String.format("%s/screen_records-%s", LOCAL_FILE_PATH, serialNumber);
-
-        testDevice.startScreenRecording(path);
+        testDevice.startScreenRecording();
 
         Thread.sleep(TIMEOUT_BETWEEN_INTERACTIONS);
 
@@ -120,18 +113,37 @@ public class ScreenRecordingTest extends BaseIntegrationTest {
 
         testDevice.stopScreenRecording();
 
-        Thread.sleep(PULL_FILE_TIMEOUT);
+        File screenRecordsDirectory = null;
+        int actualRecordedFilesCount = 0;
+        File currentDir = new File(LOCAL_FILE_PATH);
 
-        screenRecordDirectory = new File(path);
-        String[] recordedFiles = screenRecordDirectory.list();
-        int numberOfRecordedFiles = recordedFiles.length;
+        for (String file : currentDir.list()) {
+            if (file.contains(RECORDS_DIR_SUFFIX)) {
+                screenRecordsDirectory = new File(LOCAL_FILE_PATH + File.separator + file);
+            }
+        }
 
-        Assert.assertEquals("The number of recorded files is not the same as axpected!",
-                            NUMBER_OF_EXPECTED_FILES,
-                            numberOfRecordedFiles);
+        if (screenRecordsDirectory != null) {
+            String[] recordedFiles = screenRecordsDirectory.list();
+            actualRecordedFilesCount = recordedFiles.length;
+        }
+
+        Assert.assertEquals("The number of recorded files is not the same as the expected!",
+                            EXPECTED_RECORDED_FILES_COUNT,
+                            actualRecordedFilesCount);
     }
 
-    private boolean deleteDirectory(File directory) {
+    // TODO: This should be executed on Agent stop.
+    private static void removeOldRecords() {
+        File currentDir = new File(LOCAL_FILE_PATH);
+        for (String file : currentDir.list()) {
+            if (file.contains(RECORDS_DIR_SUFFIX)) {
+                deleteDirectory(new File(LOCAL_FILE_PATH + File.separator + file));
+            }
+        }
+    }
+
+    private static boolean deleteDirectory(File directory) {
         if (directory.exists()) {
             File[] files = directory.listFiles();
 
