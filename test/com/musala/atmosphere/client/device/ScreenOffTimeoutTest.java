@@ -14,8 +14,8 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.commons.geometry.Point;
-import com.musala.atmosphere.commons.sa.exceptions.NoAvailableDeviceFoundException;
 
 public class ScreenOffTimeoutTest extends BaseIntegrationTest {
     private static final long SCREEN_OFF_TIMEOUT = 7000;
