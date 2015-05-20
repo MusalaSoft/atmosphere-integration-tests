@@ -7,9 +7,6 @@ import static org.junit.Assume.assumeNotNull;
 
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,8 +15,6 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.NotificationBar;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.exceptions.ActivityStartingException;
-import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
@@ -42,13 +37,7 @@ public class NotificationBarTest extends BaseIntegrationTest {
     private static final String UNEXISTING_NOTIFICATION_SELECTOR_TEXT = "unexisting notification";
 
     @BeforeClass
-    public static void setUp()
-        throws XPathExpressionException,
-            UiElementFetchingException,
-            InvalidCssQueryException,
-            ActivityStartingException,
-            InterruptedException,
-            Exception {
+    public static void setUp() throws Exception {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY)
                                                                            .minApi(19);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
@@ -128,11 +117,7 @@ public class NotificationBarTest extends BaseIntegrationTest {
     }
 
     @Test(expected = UiElementFetchingException.class)
-    public void testGetUnexistingNotification()
-        throws XPathExpressionException,
-            InvalidCssQueryException,
-            UiElementFetchingException,
-            ParserConfigurationException {
+    public void testGetUnexistingNotification() throws Exception {
         assumeNotNull(testDevice);
 
         notificationBar.getNotificationByText(UNEXISTING_NOTIFICATION_SELECTOR_TEXT);

@@ -6,8 +6,6 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import javax.xml.xpath.XPathExpressionException;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,7 +14,6 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
-import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
@@ -35,13 +32,7 @@ public class WaitForExistsTest extends BaseIntegrationTest {
     private static final String CHANGING_TEXT_BUTTON_CHANGED_TEXT = "Changed text button";
 
     @BeforeClass
-    public static void setUp()
-        throws UiElementFetchingException,
-            InterruptedException,
-            ActivityStartingException,
-            XPathExpressionException,
-            InvalidCssQueryException,
-            Exception {
+    public static void setUp() throws Exception {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
         initTestDevice(testDeviceSelector);
@@ -51,16 +42,13 @@ public class WaitForExistsTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() throws UiElementFetchingException, Exception {
+    public static void tearDown() throws Exception {
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }
 
     @Test
-    public void waitForExistingElement()
-        throws InterruptedException,
-            ActivityStartingException,
-            UiElementFetchingException {
+    public void waitForExistingElement() throws Exception {
 
         UiElementSelector selector = new UiElementSelector();
         selector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, CHANGING_TEXT_BUTTON_DESCRIPTOR);
@@ -84,12 +72,7 @@ public class WaitForExistsTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void waitForAppearingElement()
-        throws InterruptedException,
-            ActivityStartingException,
-            UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public void waitForAppearingElement() throws Exception {
 
         UiElementSelector selector = new UiElementSelector();
         selector.addSelectionAttribute(CssAttribute.TEXT, CHANGING_TEXT_BUTTON_CHANGED_TEXT);

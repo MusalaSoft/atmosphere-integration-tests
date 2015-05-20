@@ -17,6 +17,7 @@ import com.musala.atmosphere.client.ScrollableView;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
+import com.musala.atmosphere.client.exceptions.MultipleElementsFoundException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.ScreenOrientation;
 import com.musala.atmosphere.commons.SmsMessage;
@@ -1125,11 +1126,13 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      * @throws InvalidCssQueryException
      * @throws XPathExpressionException
+     * @throws MultipleElementsFoundException
      */
     public static UiElement getElementByClass(String cssClass)
         throws UiElementFetchingException,
             XPathExpressionException,
-            InvalidCssQueryException {
+            InvalidCssQueryException,
+            MultipleElementsFoundException {
         Screen activeScreen = device.getActiveScreen();
         activeScreen.updateScreen();
         final String query = String.format(CSS_CLASS, cssClass);
@@ -1145,11 +1148,13 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      * @throws InvalidCssQueryException
      * @throws XPathExpressionException
+     * @throws MultipleElementsFoundException
      */
     public static UiElement getElementByContentDescriptor(String contentDescriptor)
         throws UiElementFetchingException,
             XPathExpressionException,
-            InvalidCssQueryException {
+            InvalidCssQueryException,
+            MultipleElementsFoundException {
         Screen activeScreen = device.getActiveScreen();
         activeScreen.updateScreen();
         final String query = String.format(CONTENT_DESCRIPTOR, contentDescriptor);
@@ -1485,11 +1490,13 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      * @throws InvalidCssQueryException
      * @throws XPathExpressionException
+     * @throws MultipleElementsFoundException
      */
     public static ScrollableView getScrollableView(String contentDescription)
         throws UiElementFetchingException,
             XPathExpressionException,
-            InvalidCssQueryException {
+            InvalidCssQueryException,
+            MultipleElementsFoundException {
         Screen activeScreen = device.getActiveScreen();
         activeScreen.updateScreen();
         UiElementSelector selector = new UiElementSelector();

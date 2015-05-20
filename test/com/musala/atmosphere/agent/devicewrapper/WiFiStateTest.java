@@ -5,15 +5,11 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
 
-import javax.xml.xpath.XPathExpressionException;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
-import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
@@ -36,14 +32,14 @@ public class WiFiStateTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testSetWiFiOn() throws UiElementFetchingException, XPathExpressionException, InvalidCssQueryException {
+    public void testSetWiFiOn() throws Exception {
         testDevice.setWiFi(true);
 
         assertWiFiIsOn("WiFi on the testing device is not turned on.");
     }
 
     @Test
-    public void testSetWiFiOff() throws UiElementFetchingException, XPathExpressionException, InvalidCssQueryException {
+    public void testSetWiFiOff() throws Exception {
         testDevice.setWiFi(false);
 
         assertWiFiIsOff("WiFi on the testing device is not turned off.");

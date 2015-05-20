@@ -13,9 +13,6 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,9 +20,6 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.ScrollableView;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.exceptions.ActivityStartingException;
-import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
-import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
@@ -41,13 +35,7 @@ public class HorizontalScrollTest extends BaseIntegrationTest {
     private static final Integer MAX_SWIPES = 30;
 
     @BeforeClass
-    public static void setUp()
-        throws UiElementFetchingException,
-            InterruptedException,
-            ActivityStartingException,
-            XPathExpressionException,
-            InvalidCssQueryException,
-            Exception {
+    public static void setUp() throws Exception {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
         initTestDevice(testDeviceSelector);
@@ -57,16 +45,13 @@ public class HorizontalScrollTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() throws UiElementFetchingException, Exception {
+    public static void tearDown() throws Exception {
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }
 
     @Test
-    public void testHorizontalScrollToEnd()
-        throws UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public void testHorizontalScrollToEnd() throws Exception {
         ScrollableView scrollableView = getScrollableView(ContentDescriptor.HORIZONTAL_SCROLL_VIEW_VALIDATOR.toString());
 
         UiElement scrollToBeginningButton = getElementByContentDescriptor(ContentDescriptor.SCROLL_TO_BEGINNING_BUTTON.toString());
@@ -83,10 +68,7 @@ public class HorizontalScrollTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testHorizontalScrollToBeginning()
-        throws UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public void testHorizontalScrollToBeginning() throws Exception {
         ScrollableView scrollableView = getScrollableView(ContentDescriptor.HORIZONTAL_SCROLL_VIEW_VALIDATOR.toString());
 
         UiElement scrollToEndButton = getElementByContentDescriptor(ContentDescriptor.SCROLL_TO_END_BUTTON.toString());
@@ -104,10 +86,7 @@ public class HorizontalScrollTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testScrollBackwardHorizontally()
-        throws UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public void testScrollBackwardHorizontally() throws Exception {
         ScrollableView scrollableView = getScrollableView(ContentDescriptor.HORIZONTAL_SCROLL_VIEW_VALIDATOR.toString());
 
         UiElement scrollToEndButton = getElementByContentDescriptor(ContentDescriptor.SCROLL_TO_END_BUTTON.toString());
@@ -125,10 +104,7 @@ public class HorizontalScrollTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testScrollForwardHorizontally()
-        throws UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public void testScrollForwardHorizontally() throws Exception {
         ScrollableView scrollableView = getScrollableView(ContentDescriptor.HORIZONTAL_SCROLL_VIEW_VALIDATOR.toString());
         UiElement scrollToBeginningButton = getElementByContentDescriptor(ContentDescriptor.SCROLL_TO_BEGINNING_BUTTON.toString());
         scrollToBeginningButton.tap();
@@ -145,11 +121,7 @@ public class HorizontalScrollTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testScrollToElementBySelector()
-        throws UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException,
-            ParserConfigurationException {
+    public void testScrollToElementBySelector() throws Exception {
         ScrollableView scrollableView = getScrollableView(ContentDescriptor.HORIZONTAL_SCROLL_VIEW_VALIDATOR.toString());
         scrollableView.setAsHorizontalScrollableView();
         UiElement scrollToEndButton = getElementByContentDescriptor(ContentDescriptor.SCROLL_TO_END_BUTTON.toString());
@@ -168,11 +140,7 @@ public class HorizontalScrollTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testTapElementBySelectorWithScrolling()
-        throws UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException,
-            ParserConfigurationException {
+    public void testTapElementBySelectorWithScrolling() throws Exception {
         ScrollableView scrollableView = getScrollableView(ContentDescriptor.HORIZONTAL_SCROLL_VIEW_VALIDATOR.toString());
         scrollableView.setAsHorizontalScrollableView();
         UiElement scrollToEndButton = getElementByContentDescriptor(ContentDescriptor.SCROLL_TO_END_BUTTON.toString());
@@ -191,11 +159,7 @@ public class HorizontalScrollTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testTapElementBySelectorWithoutScrolling()
-        throws UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException,
-            ParserConfigurationException {
+    public void testTapElementBySelectorWithoutScrolling() throws Exception {
         ScrollableView scrollableView = getScrollableView(ContentDescriptor.HORIZONTAL_SCROLL_VIEW_VALIDATOR.toString());
         UiElement scrollToBeginningButton = getElementByContentDescriptor(ContentDescriptor.SCROLL_TO_BEGINNING_BUTTON.toString());
         scrollToBeginningButton.tap();

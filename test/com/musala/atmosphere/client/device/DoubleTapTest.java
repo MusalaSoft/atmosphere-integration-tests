@@ -6,8 +6,6 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startGestureActivity;
 import static org.junit.Assert.assertTrue;
 
-import javax.xml.xpath.XPathExpressionException;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -15,9 +13,6 @@ import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.exceptions.ActivityStartingException;
-import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
-import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
@@ -34,13 +29,7 @@ import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 public class DoubleTapTest extends BaseIntegrationTest {
 
     @BeforeClass
-    public static void setUp()
-        throws InterruptedException,
-            Exception,
-            UiElementFetchingException,
-            ActivityStartingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public static void setUp() throws Exception {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
         initTestDevice(testDeviceSelector);
@@ -50,23 +39,19 @@ public class DoubleTapTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() throws UiElementFetchingException, Exception {
+    public static void tearDown() throws Exception {
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }
 
     @Before
-    public void setUpTest() throws XPathExpressionException, UiElementFetchingException, InvalidCssQueryException {
+    public void setUpTest() throws Exception {
         UiElement clearTextButton = getElementByContentDescriptor(ContentDescriptor.CLEAR_TEXT_BUTTON.toString());
         clearTextButton.tap();
     }
 
     @Test
-    public void testDeviceDoubleTap()
-        throws InterruptedException,
-            UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public void testDeviceDoubleTap() throws Exception {
         UiElement doubleTapValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
 
         // getting the point at the center of the element
@@ -86,12 +71,7 @@ public class DoubleTapTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testDoubleTap()
-        throws InterruptedException,
-            ActivityStartingException,
-            UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public void testDoubleTap() throws Exception {
         // FIXME element becomes invalid every time the focus changes
         UiElement doubleTapValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
 
@@ -107,11 +87,7 @@ public class DoubleTapTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testRelativeDoubleTap()
-        throws InterruptedException,
-            UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public void testRelativeDoubleTap() throws Exception {
         UiElement doubleTapValidator = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
 
         // the tap point is relative to the element's coordinates

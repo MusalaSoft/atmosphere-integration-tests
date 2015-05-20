@@ -6,15 +6,11 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMagneticFieldActivity;
 
-import javax.xml.xpath.XPathExpressionException;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
-import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.beans.DeviceMagneticField;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
@@ -42,11 +38,7 @@ public class DeviceMagneticFieldTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testDeviceRandomMagneticFieldSetting()
-        throws UiElementFetchingException,
-            InterruptedException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public void testDeviceRandomMagneticFieldSetting() throws Exception {
         // set "random" magnetic field
         final float magneticFieldX = 30.087f;
         final float magneticFieldY = -17.130f;

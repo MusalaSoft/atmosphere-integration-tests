@@ -7,8 +7,6 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import javax.xml.xpath.XPathExpressionException;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -17,8 +15,6 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
-import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
@@ -43,7 +39,7 @@ public class LongPressTest extends BaseIntegrationTest {
     }
 
     @Before
-    public void setUpTest() throws XPathExpressionException, UiElementFetchingException, InvalidCssQueryException {
+    public void setUpTest() throws Exception {
         UiElementSelector clearTextButtonSelector = new UiElementSelector();
         clearTextButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
                                                       ContentDescriptor.CLEAR_TEXT_BUTTON.toString());
@@ -54,10 +50,7 @@ public class LongPressTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testValidLongPress()
-        throws UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public void testValidLongPress() throws Exception {
         UiElement longPressTextField = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
         boolean longPressResult = longPressTextField.longPress();
         assertTrue("Long press indicated failure.", longPressResult);
@@ -65,10 +58,7 @@ public class LongPressTest extends BaseIntegrationTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testFailedLongPress()
-        throws UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public void testFailedLongPress() throws Exception {
 
         UiElement longPressTextField = getElementByContentDescriptor(ContentDescriptor.GESTURE_VALIDATOR.toString());
 

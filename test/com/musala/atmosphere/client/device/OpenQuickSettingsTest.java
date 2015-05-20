@@ -4,15 +4,12 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.junit.Assert.fail;
 import static org.junit.Assume.assumeNotNull;
 
-import javax.xml.xpath.XPathExpressionException;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.Screen;
-import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
@@ -43,10 +40,7 @@ public class OpenQuickSettingsTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testOpenQuickSettings()
-        throws XPathExpressionException,
-            UiElementFetchingException,
-            InvalidCssQueryException {
+    public void testOpenQuickSettings() throws Exception {
         assumeNotNull(testDevice);
         setTestDevice(testDevice);
 

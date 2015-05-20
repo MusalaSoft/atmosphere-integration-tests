@@ -4,8 +4,6 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startWaitTestActivity;
 import static org.junit.Assert.assertNotNull;
 
-import javax.xml.xpath.XPathExpressionException;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,8 +13,6 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.exceptions.ActivityStartingException;
-import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
@@ -47,11 +43,7 @@ public class GetElementWhenPresentTest extends BaseIntegrationTest {
     private static Screen deviceScreen;
 
     @BeforeClass
-    public static void setUp()
-        throws ActivityStartingException,
-            InterruptedException,
-            UiElementFetchingException,
-            Exception {
+    public static void setUp() throws Exception {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
         initTestDevice(testDeviceSelector);
@@ -66,7 +58,7 @@ public class GetElementWhenPresentTest extends BaseIntegrationTest {
     }
 
     @Before
-    public void setUpTest() throws ActivityStartingException, InterruptedException, UiElementFetchingException {
+    public void setUpTest() throws Exception {
         startWaitTestActivity();
         deviceScreen.updateScreen();
     }
@@ -77,10 +69,7 @@ public class GetElementWhenPresentTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testGettingAppearingElement()
-        throws UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public void testGettingAppearingElement() throws Exception {
         UiElement testButton = deviceScreen.getElementByCSS(TEST_BUTTON_INITIAL_TEXT_CSS);
         testButton.tap();
 
@@ -92,10 +81,7 @@ public class GetElementWhenPresentTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testGettingExistingElement()
-        throws XPathExpressionException,
-            UiElementFetchingException,
-            InvalidCssQueryException {
+    public void testGettingExistingElement() throws Exception {
         UiElementSelector testButtonSelector = new UiElementSelector();
         testButtonSelector.addSelectionAttribute(CssAttribute.TEXT, TEST_BUTTON_INITIAL_TEXT);
         UiElement testButton = deviceScreen.getElementWhenPresent(testButtonSelector);
@@ -104,10 +90,7 @@ public class GetElementWhenPresentTest extends BaseIntegrationTest {
     }
 
     @Test(expected = UiElementFetchingException.class)
-    public void testGettingUnexistingElement()
-        throws XPathExpressionException,
-            UiElementFetchingException,
-            InvalidCssQueryException {
+    public void testGettingUnexistingElement() throws Exception {
         UiElementSelector unexistingElementSelector = new UiElementSelector();
         unexistingElementSelector.addSelectionAttribute(CssAttribute.TEXT, NON_EXISTING_ELEMENT_TEXT);
 
