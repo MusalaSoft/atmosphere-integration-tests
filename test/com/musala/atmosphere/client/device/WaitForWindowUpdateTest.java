@@ -5,8 +5,6 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import javax.xml.xpath.XPathExpressionException;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -15,9 +13,6 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.exceptions.ActivityStartingException;
-import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
-import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
@@ -42,11 +37,7 @@ public class WaitForWindowUpdateTest extends BaseIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown()
-        throws ActivityStartingException,
-            InterruptedException,
-            UiElementFetchingException,
-            Exception {
+    public static void tearDown() throws Exception {
         releaseDevice();
     }
 
@@ -56,12 +47,7 @@ public class WaitForWindowUpdateTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testWaitForWindowUpdateAnyPackage()
-        throws ActivityStartingException,
-            InterruptedException,
-            UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public void testWaitForWindowUpdateAnyPackage() throws Exception {
         startWaitTestActivity();
 
         UiElementSelector activitySwitcherSelector = new UiElementSelector();
@@ -77,12 +63,7 @@ public class WaitForWindowUpdateTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testWaitForWindowUpdateValidator()
-        throws ActivityStartingException,
-            InterruptedException,
-            UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public void testWaitForWindowUpdateValidator() throws Exception {
         startWaitTestActivity();
 
         UiElementSelector activitySwitcherSelector = new UiElementSelector();
@@ -108,12 +89,7 @@ public class WaitForWindowUpdateTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testWaitForWindowUpdateWrongPackage()
-        throws ActivityStartingException,
-            InterruptedException,
-            UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public void testWaitForWindowUpdateWrongPackage() throws Exception {
         startWaitTestActivity();
 
         UiElementSelector activitySwitcherSelector = new UiElementSelector();
