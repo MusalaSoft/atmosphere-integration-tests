@@ -5,9 +5,6 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startNotificationTestActivity;
 import static org.junit.Assume.assumeNotNull;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,9 +13,6 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.NotificationBar;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.exceptions.ActivityStartingException;
-import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
-import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
@@ -38,13 +32,7 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
     private static Screen deviceActiveScreen = null;
 
     @BeforeClass
-    public static void setUp()
-        throws UiElementFetchingException,
-            InterruptedException,
-            ActivityStartingException,
-            XPathExpressionException,
-            InvalidCssQueryException,
-            Exception {
+    public static void setUp() throws Exception {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY)
                                                                            .minApi(19);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
@@ -78,11 +66,7 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testTapOnButtonInNotification()
-        throws XPathExpressionException,
-            InvalidCssQueryException,
-            UiElementFetchingException,
-            ParserConfigurationException {
+    public void testTapOnButtonInNotification() throws Exception {
         assumeNotNull(testDevice);
 
         notificationBar.open();

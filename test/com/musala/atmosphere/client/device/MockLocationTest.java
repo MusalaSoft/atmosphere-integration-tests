@@ -11,8 +11,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.client.exceptions.ActivityStartingException;
-import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
@@ -47,11 +45,7 @@ public class MockLocationTest extends BaseIntegrationTest {
     private static GeoLocation defaultMonitoredProviderLocation;
 
     @BeforeClass
-    public static void setUp()
-        throws ActivityStartingException,
-            InterruptedException,
-            UiElementFetchingException,
-            Exception {
+    public static void setUp() throws Exception {
         defaultMonitoredProviderLocation = new GeoLocation(MONITORED_PROVIDER_DEFAULT_LATITUDE,
                                                            MONITORED_PROVIDER_DEFAULT_LONGITUDE,
                                                            MONITORED_PROVIDER_NAME);
