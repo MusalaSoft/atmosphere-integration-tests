@@ -119,6 +119,8 @@ public class OnDeviceValidatorAssert {
 
     private static final String LOCATION_FORMAT = "%s, %s, %s";
 
+    private static final String VALIDATOR_UI_ELEMENTS_ACTIVITY = ".UiElementsActivity";
+
     private static Device device;
 
     private static Screen screen;
@@ -1552,5 +1554,22 @@ public class OnDeviceValidatorAssert {
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_PROXIMITY_ACTIVITY);
+    }
+
+    /**
+     * Starts the UI elements activity.
+     * 
+     * @throws ActivityStartingException
+     *         if the activity was not started successfully
+     * @throws InterruptedException
+     *         if the start of the activity was interrupted
+     * @throws UiElementFetchingException
+     *         if the UI element could not be found
+     */
+    public static void startUiElementsActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_UI_ELEMENTS_ACTIVITY);
     }
 }
