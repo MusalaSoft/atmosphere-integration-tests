@@ -18,11 +18,11 @@ import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.InvalidCssQueryException;
 import com.musala.atmosphere.client.exceptions.MultipleElementsFoundException;
-import com.musala.atmosphere.client.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.ScreenOrientation;
 import com.musala.atmosphere.commons.SmsMessage;
 import com.musala.atmosphere.commons.beans.BatteryState;
 import com.musala.atmosphere.commons.beans.PhoneNumber;
+import com.musala.atmosphere.commons.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.ui.UiElementPropertiesContainer;
 import com.musala.atmosphere.commons.ui.selector.CssAttribute;
 import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
@@ -119,7 +119,9 @@ public class OnDeviceValidatorAssert {
 
     private static final String LOCATION_FORMAT = "%s, %s, %s";
 
-    private static final String VALIDATOR_UI_ELEMENTS_ACTIVITY = ".UiElementsActivity";
+    private static final String VALIDATOR_UI_ELEMENTS_ACTIVITY = ".UiElementActivity";
+
+    private static final String VALIDATOR_UI_ELEMENT_CHILDREN_ACTIVITY = ".UiElementChildrenActivity";
 
     private static Device device;
 
@@ -1571,5 +1573,22 @@ public class OnDeviceValidatorAssert {
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_UI_ELEMENTS_ACTIVITY);
+    }
+
+    /**
+     * Starts the UI element activity, used for testing retrieving children.
+     * 
+     * @throws ActivityStartingException
+     *         if the activity was not started successfully
+     * @throws InterruptedException
+     *         if the start of the activity was interrupted
+     * @throws UiElementFetchingException
+     *         if the UI element could not be found
+     */
+    public static void startUiElementChildrenActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_UI_ELEMENT_CHILDREN_ACTIVITY);
     }
 }
