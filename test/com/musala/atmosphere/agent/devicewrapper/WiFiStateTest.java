@@ -33,14 +33,14 @@ public class WiFiStateTest extends BaseIntegrationTest {
 
     @Test
     public void testSetWiFiOn() throws Exception {
-        testDevice.setWiFi(true);
+        testDevice.enableWiFi();
 
         assertWiFiIsOn("WiFi on the testing device is not turned on.");
     }
 
     @Test
     public void testSetWiFiOff() throws Exception {
-        testDevice.setWiFi(false);
+        testDevice.disableWiFi();
 
         assertWiFiIsOff("WiFi on the testing device is not turned off.");
     }
