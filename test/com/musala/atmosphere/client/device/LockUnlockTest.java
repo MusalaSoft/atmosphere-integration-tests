@@ -49,7 +49,7 @@ public class LockUnlockTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testSetLockedUnlockingDeviceWhenItIsInAsleepState() throws Exception {
+    public void testUnlockingDeviceWhenItIsInAsleepState() throws Exception {
         if (testDevice.isAwake()) {
             testDevice.pressButton(HardwareButton.POWER);
         }
@@ -59,7 +59,7 @@ public class LockUnlockTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testSetLockedLockUnlockWithStartedApplication() throws Exception {
+    public void testLockUnlockWithStartedApplication() throws Exception {
         assertLockDevice();
         assertValidatorIsNotStarted("The validation element should not be available when the device is locked.");
 
@@ -68,7 +68,7 @@ public class LockUnlockTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testSetLockedUnlockAndLockDevice() throws Exception {
+    public void testUnlockAndLockDevice() throws Exception {
         assertLockDevice();
         assertValidatorIsNotStarted("The validation element should not be available when the device is locked.");
 
@@ -81,14 +81,14 @@ public class LockUnlockTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testSetLockedLockingAlreadyLockedDevice() throws Exception {
+    public void testLockingAlreadyLockedDevice() throws Exception {
         assertLockDevice();
         assertLockDevice();
         assertValidatorIsNotStarted("The validation element should not be available when the device is locked.");
     }
 
     @Test
-    public void testSetLockedUnlockingAlreadyUnlockedDevice() throws Exception {
+    public void testUnlockingAlreadyUnlockedDevice() throws Exception {
         assertLockDevice();
 
         assertUnlockDevice();
@@ -106,14 +106,14 @@ public class LockUnlockTest extends BaseIntegrationTest {
     }
 
     private void assertLockDevice() throws Exception {
-        assertTrue("The device was not locked.", testDevice.setLocked(true));
+        assertTrue("The device was not locked.", testDevice.lock());
         waitForSetLocked(WAIT_FOR_LOCK_TIMEOUT);
 
         assertTrue("Device was not successfuly locked.", testDevice.isLocked());
     }
 
     private void assertUnlockDevice() {
-        assertTrue("Unlocking the device returned false.", testDevice.setLocked(false));
+        assertTrue("Unlocking the device returned false.", testDevice.unlock());
 
         assertFalse("Device was not successfuly unlocked.", testDevice.isLocked());
         assertTrue("Device is awake after unlock.", testDevice.isAwake());

@@ -45,12 +45,12 @@ public class SetKeyguardTest extends BaseIntegrationTest {
 
     @Test
     public void testSettingKeyguard() throws Exception {
-        testDevice.setLocked(true);
+        testDevice.lock();
         Thread.sleep(WAIT_FOR_LOCK_TIMEOUT);
         testDevice.setKeyguard(false);
         assertFalse("The keyguard is present when it should be removed.", testDevice.isLocked());
         testDevice.setKeyguard(true);
-        testDevice.setLocked(true);
+        testDevice.lock();
         Thread.sleep(WAIT_FOR_LOCK_TIMEOUT);
         assertTrue("The Keyguard is not present when is re-enabled.", testDevice.isLocked());
     }

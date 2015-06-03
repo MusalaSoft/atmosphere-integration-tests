@@ -1353,7 +1353,7 @@ public class OnDeviceValidatorAssert {
         throws ActivityStartingException,
             InterruptedException,
             UiElementFetchingException {
-        device.setLocked(false);
+        device.unlock();
         device.startActivity(appPackage, appActivity);
 
         assertValidatorIsStarted();

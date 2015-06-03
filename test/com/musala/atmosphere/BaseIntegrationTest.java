@@ -83,7 +83,7 @@ public class BaseIntegrationTest {
 
             // Assert our device is not locked
             if (testDevice.isLocked()) {
-                testDevice.setLocked(false);
+                testDevice.unlock();
                 Thread.sleep(UNLOCK_TIMEOUT);
             }
 
