@@ -17,6 +17,7 @@ import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.ui.UiElementPropertiesContainer;
 import com.musala.atmosphere.commons.ui.selector.CssAttribute;
 import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 
@@ -26,6 +27,12 @@ import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
  *
  */
 public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
+    private static final String HEADER_VIEW_BUTTON_TEXT = "Header view";
+
+    private static final String UNEXPECTED_ELEMENT_FOUND_MESSAGE = "Unexpectedly children matching the given attributes were found.";
+
+    private static final String ELEMENT_PROPERTY_MISSMATCH_MESSAGE = "The expected children class name is different from the received.";
+
     private static final String ANDROID_WIDGET_LIST_VIEW = "android.widget.ListView";
 
     private static final String ANDROID_WIDGET_IMAGE_BUTTON = "android.widget.ImageButton";
@@ -66,7 +73,7 @@ public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
         childSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_IMAGE_BUTTON);
         List<UiElement> children = parent.getChildren(childSelector);
 
-        assertTrue("Unexpectedly children matching the given attributes were found.", children.isEmpty());
+        assertTrue(UNEXPECTED_ELEMENT_FOUND_MESSAGE, children.isEmpty());
     }
 
     @Test
@@ -83,9 +90,8 @@ public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
         assertEquals(MISSMATCH_CHILDREN_COUNT_ERROR_MESSAGE, expectedChildrenCount, children.size());
 
         for (UiElement child : children) {
-            assertEquals("The expected children class name is different from the received.",
-                         ANDROID_WIDGET_BUTTON,
-                         child.getProperties().getClassName());
+            assertEquals(ELEMENT_PROPERTY_MISSMATCH_MESSAGE, ANDROID_WIDGET_BUTTON, child.getProperties()
+                                                                                         .getClassName());
         }
     }
 
@@ -123,5 +129,36 @@ public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
         List<UiElement> children = parent.getChildren(new UiElementSelector());
 
         assertEquals(MISSMATCH_CHILDREN_COUNT_ERROR_MESSAGE, expectedChildrenCount, children.size());
+    }
+
+    @Test
+    public void testGetDirectChildrenThatMatchSelectorAttributes() throws Exception {
+        int expectedChildrenCount = 1;
+        UiElementSelector parentSelector = new UiElementSelector();
+        parentSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_RELATIVE_LAYOUT);
+        UiElement parent = screen.getAccessibilityUiElement(parentSelector);
+
+        UiElementSelector childSelector = new UiElementSelector();
+        childSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_BUTTON);
+        List<UiElement> children = parent.getDirectChildren(childSelector);
+
+        assertEquals(MISSMATCH_CHILDREN_COUNT_ERROR_MESSAGE, expectedChildrenCount, children.size());
+
+        UiElementPropertiesContainer childProperties = children.get(0).getProperties();
+        assertEquals(ELEMENT_PROPERTY_MISSMATCH_MESSAGE, ANDROID_WIDGET_BUTTON, childProperties.getClassName());
+    }
+
+    @Test
+    public void testGetDirectChildrenWhenNoChildMatchesSelectionAttributes() throws Exception {
+        UiElementSelector parentSelector = new UiElementSelector();
+        parentSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_RELATIVE_LAYOUT);
+        UiElement parent = screen.getAccessibilityUiElement(parentSelector);
+
+        UiElementSelector childSelector = new UiElementSelector();
+        childSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_BUTTON);
+        childSelector.addSelectionAttribute(CssAttribute.TEXT, HEADER_VIEW_BUTTON_TEXT);
+        List<UiElement> children = parent.getDirectChildren(childSelector);
+
+        assertTrue(UNEXPECTED_ELEMENT_FOUND_MESSAGE, children.isEmpty());
     }
 }
