@@ -54,6 +54,7 @@ import com.musala.atmosphere.client.screen.GetAccessibilityUiElementTest;
 import com.musala.atmosphere.client.screen.GetAccessibilityUiElementsTest;
 import com.musala.atmosphere.client.screen.GetElementWhenPresentTest;
 import com.musala.atmosphere.client.uielement.GetAccessibilityUiElementChildrenTest;
+import com.musala.atmosphere.client.uielement.UiElementRevalidationTest;
 import com.musala.atmosphere.server.PoolEventHandlerTest;
 
 @SuiteClasses({ScreenOrientationTest.class, BuilderDeviceSelectionIntegrationTest.class, TapTest.class,
@@ -71,7 +72,7 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         TimePickerInteractionTest.class, GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class,
         ScreenOffTimeoutTest.class, GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
         com.musala.atmosphere.client.device.GetAccessibilityUiElementsTest.class,
-        GetAccessibilityUiElementChildrenTest.class})
+        GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class})
 // @SuiteClasses({GetAccessibilityUiElementChildrenTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
