@@ -38,15 +38,15 @@ public class ScreenOrientationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testSettingAutoRotationOff() throws Exception {
-        assertTrue("Setting auto rotation returned false.", testDevice.setAutoRotation(false));
+    public void testDisablingScreenAutoRotation() throws Exception {
+        assertTrue("Setting auto rotation returned false.", testDevice.disableScreenAutoRotation());
         Thread.sleep(OPERATION_TIMEOUT);
         assertAutoRotationOff("Auto rotation is not off.");
     }
 
     @Test
-    public void testSettingAutoRotationOn() throws Exception {
-        assertTrue("Setting auto rotation returned false.", testDevice.setAutoRotation(true));
+    public void testEnablingScreenAutoRotation() throws Exception {
+        assertTrue("Setting auto rotation returned false.", testDevice.enableScreenAutoRotation());
         Thread.sleep(OPERATION_TIMEOUT);
         assertAutoRotationOn("Auto rotation is not on.");
     }
