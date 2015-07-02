@@ -1,6 +1,5 @@
-package com.musala.atmosphere.client.device;
+package com.musala.atmosphere.client.uielement;
 
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertUIElementOnScreen;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startWaitTestActivity;
 import static org.junit.Assert.assertFalse;
@@ -13,20 +12,21 @@ import org.junit.Test;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
-import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
-import com.musala.atmosphere.commons.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.ui.selector.CssAttribute;
 import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
-public class WaitUntilGoneTest extends BaseIntegrationTest {
+/**
+ *
+ * @author yordan.petrov
+ *
+ */
+public class UiElementRevalidationTest extends BaseIntegrationTest {
 
     private static final Integer ELEMENT_WAIT_TIMEOUT = 10000;
-
-    private static final String UNEXISTING_BUTTON_DESCRIPTOR = "UnexistingButton";
 
     private static final String CHANGING_TEXT_BUTTON_ORIGINAL_TEXT = "Text button";
 
@@ -47,49 +47,39 @@ public class WaitUntilGoneTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testWaitUntilPermamentlyExistingElementGone() throws Exception {
-
+    public void testRevalidatePermamentlyExistingElement() throws Exception {
         UiElementSelector selector = new UiElementSelector();
         selector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
                                        ContentDescriptor.CHANGING_TEXT_BUTTON_DESCRIPTOR.toString());
         Screen activeScreen = testDevice.getActiveScreen();
-        boolean result = activeScreen.waitUntilElementGone(selector, ELEMENT_WAIT_TIMEOUT);
-        assertFalse("Wait until element gone returned true.", result);
+        boolean isPresent = activeScreen.waitForElementExists(selector, ELEMENT_WAIT_TIMEOUT);
+        assertTrue("Wait for element existance returned false.", isPresent);
+
+        UiElement changingTextButton = activeScreen.getElement(selector);
+        assertTrue("Element revalidation returned false, but the element is present on the screen.",
+                   changingTextButton.revalidate());
     }
 
     @Test
-    public void testWaitUntilUnexistingElementGone()
-        throws InterruptedException,
-            ActivityStartingException,
-            UiElementFetchingException {
-
-        UiElementSelector selector = new UiElementSelector();
-        selector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, UNEXISTING_BUTTON_DESCRIPTOR);
-        Screen activeScreen = testDevice.getActiveScreen();
-        boolean result = activeScreen.waitUntilElementGone(selector, ELEMENT_WAIT_TIMEOUT);
-
-        assertTrue("Wait until element gone returned false.", result);
-    }
-
-    @Test
-    public void testWaitUntilTemporaryExistingElementGone() throws Exception {
-
+    public void testRevalidateTemporaryExistingElement() throws Exception {
         UiElementSelector selector = new UiElementSelector();
         selector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
                                        ContentDescriptor.CHANGING_TEXT_BUTTON_DESCRIPTOR.toString());
-
-        assertUIElementOnScreen("Validation element does not exists on the screen at the beginning of the test.",
-                                selector);
-
         Screen activeScreen = testDevice.getActiveScreen();
+        boolean isPresent = activeScreen.waitForElementExists(selector, ELEMENT_WAIT_TIMEOUT);
+        assertTrue("Wait for element existance returned false.", isPresent);
 
-        UiElement buttonElement = activeScreen.getElement(selector);
-        buttonElement.tap();
+        UiElement changingTextButton = activeScreen.getElement(selector);
+        assertTrue("Element revalidation returned false, but the element is present on the screen.",
+                   changingTextButton.revalidate());
 
+        changingTextButton.tap();
         selector.addSelectionAttribute(CssAttribute.TEXT, CHANGING_TEXT_BUTTON_ORIGINAL_TEXT);
+        boolean isGone = activeScreen.waitUntilElementGone(selector, ELEMENT_WAIT_TIMEOUT);
 
-        boolean result = activeScreen.waitUntilElementGone(selector, ELEMENT_WAIT_TIMEOUT);
+        assertTrue("Wait until element gone returned false.", isGone);
 
-        assertTrue("Wait until element gone returned false.", result);
+        assertFalse("Element revalidation returned true, but the element is not present on the screen.",
+                    changingTextButton.revalidate());
     }
 }

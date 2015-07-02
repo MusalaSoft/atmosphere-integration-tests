@@ -50,7 +50,11 @@ import com.musala.atmosphere.client.device.WaitForExistsTest;
 import com.musala.atmosphere.client.device.WaitForTaskUpdateTest;
 import com.musala.atmosphere.client.device.WaitForWindowUpdateTest;
 import com.musala.atmosphere.client.device.WaitUntilGoneTest;
+import com.musala.atmosphere.client.screen.GetAccessibilityUiElementTest;
+import com.musala.atmosphere.client.screen.GetAccessibilityUiElementsTest;
 import com.musala.atmosphere.client.screen.GetElementWhenPresentTest;
+import com.musala.atmosphere.client.uielement.GetAccessibilityUiElementChildrenTest;
+import com.musala.atmosphere.client.uielement.UiElementRevalidationTest;
 import com.musala.atmosphere.server.PoolEventHandlerTest;
 
 @SuiteClasses({ScreenOrientationTest.class, BuilderDeviceSelectionIntegrationTest.class, TapTest.class,
@@ -66,12 +70,9 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         PoolEventHandlerTest.class, InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class,
         PasteTextTest.class, CopyTextTest.class, CutTextTest.class, DatePickerInteractionTest.class,
         TimePickerInteractionTest.class, GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class,
-        ScreenOffTimeoutTest.class})
-// @SuiteClasses({LockUnlockTest.class, ScreenOrientationTest.class, ScreenOffTimeoutTest.class, TapTest.class,
-// PinchTest.class, InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class, PasteTextTest.class,
-// CopyTextTest.class, CutTextTest.class, DisableMockLocationTest.class, MockLocationTest.class,
-// LongPressTest.class, WaitForExistsTest.class, WaitUntilGoneTest.class, ProcessRunningTest.class,
-// ForceStopProcessTest.class, StopBackgroundProcessTest.class, GetElementWhenPresentTest.class,
-// UninstallApplicationTest.class, BringTaskToFrontTest.class})
+        ScreenOffTimeoutTest.class, GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
+        com.musala.atmosphere.client.device.GetAccessibilityUiElementsTest.class,
+        GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class})
+// @SuiteClasses({GetAccessibilityUiElementChildrenTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
