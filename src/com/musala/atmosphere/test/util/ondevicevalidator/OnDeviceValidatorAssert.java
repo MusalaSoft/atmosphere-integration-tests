@@ -67,6 +67,8 @@ public class OnDeviceValidatorAssert {
 
     private final static String VALIDATOR_IME_TEST_ACTIVITY = ".ImeTestActivity";
 
+    private final static String VALIDATOR_APPLICATION_DATA_TEST_ACTIVITY = ".ApplicationDataSizeActivity";
+
     private final static String VALIDATOR_PICKER_ACTIVITY = ".PickerViewActivity";
 
     private final static String VALIDATOR_NOTIFICATION_TEST_ACTIVITY = ".NotificationTestActivity";
@@ -122,6 +124,8 @@ public class OnDeviceValidatorAssert {
     private static final String VALIDATOR_UI_ELEMENTS_ACTIVITY = ".UiElementActivity";
 
     private static final String VALIDATOR_UI_ELEMENT_CHILDREN_ACTIVITY = ".UiElementChildrenActivity";
+
+    private static final int CLEAR_DATA_SIZE = 1;
 
     private static Device device;
 
@@ -1044,6 +1048,30 @@ public class OnDeviceValidatorAssert {
     }
 
     /**
+     * Asserts that the OnDeviceValidator data is cleared.
+     * 
+     * @param message
+     *        - message to be displayed if the assertion fails
+     * @param dataSize
+     *        - the number of files that are currently saved in the application data dir
+     */
+    public static void assertDataIsClear(String message, int dataSize) {
+        assertTrue(message, dataSize == CLEAR_DATA_SIZE);
+    }
+
+    /**
+     * Asserts that the OnDeviceValidator data is not cleared.
+     * 
+     * @param message
+     *        - message to be displayed if the assertion fails
+     * @param dataSize
+     *        - the number of files that are currently saved in the application data dir
+     */
+    public static void assertDataIsNotClear(String message, int dataSize) {
+        assertTrue(message, dataSize > CLEAR_DATA_SIZE);
+    }
+
+    /**
      * Gets a selector for the UI element monitoring the location in the validator application. The passed location is
      * parsed to its expected text representation and added as a selection attribute.
      * 
@@ -1438,6 +1466,13 @@ public class OnDeviceValidatorAssert {
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_IME_TEST_ACTIVITY);
+    }
+
+    public static void startApplicationDataTestActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APPLICATION_DATA_TEST_ACTIVITY);
     }
 
     /**
