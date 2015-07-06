@@ -83,6 +83,8 @@ public class OnDeviceValidatorAssert {
 
     private static final String VALIDATOR_SERVICE_ACTIVITY = ".StartServiceActivity";
 
+    private static final String VALIDATOR_DETECT_AUDIO_ACTIVITY = ".DetectAudioActivity";
+
     private final static String PHONE_PACKAGE_NAME = "com.android.phone";
 
     private final static String INCOMING_CALL_TEXT = "Incoming call";
@@ -1574,6 +1576,23 @@ public class OnDeviceValidatorAssert {
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_NOTIFICATION_TEST_ACTIVITY);
+    }
+
+    /**
+     * Starts the detect audio test activity.
+     * 
+     * @throws ActivityStartingException
+     *         - if the activity was not started successfully
+     * @throws InterruptedException
+     *         - if the starting of the activity was interrupted
+     * @throws UiElementFetchingException
+     *         - if the UI element could not be found
+     */
+    public static void startDetectAudioTestActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_DETECT_AUDIO_ACTIVITY);
     }
 
     /**
