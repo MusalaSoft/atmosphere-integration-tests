@@ -10,6 +10,7 @@ import com.musala.atmosphere.agent.devicewrapper.ScreenOrientationTest;
 import com.musala.atmosphere.agent.devicewrapper.TelephonyInformationTest;
 import com.musala.atmosphere.client.builder.BuilderDeviceSelectionIntegrationTest;
 import com.musala.atmosphere.client.device.BringTaskToFrontTest;
+import com.musala.atmosphere.client.device.ClearDataTest;
 import com.musala.atmosphere.client.device.ClearTextTest;
 import com.musala.atmosphere.client.device.CopyTextTest;
 import com.musala.atmosphere.client.device.CutTextTest;
@@ -72,7 +73,6 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         TimePickerInteractionTest.class, GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class,
         ScreenOffTimeoutTest.class, GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
         com.musala.atmosphere.client.device.GetAccessibilityUiElementsTest.class,
-        GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class})
-// @SuiteClasses({GetAccessibilityUiElementChildrenTest.class})
+        GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class, ClearDataTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
