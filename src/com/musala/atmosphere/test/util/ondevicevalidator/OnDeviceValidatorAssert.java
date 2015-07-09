@@ -1150,25 +1150,24 @@ public class OnDeviceValidatorAssert {
     }
 
     /**
-     * Gets UI element by given CSS class.
+     * Gets UI element by given class name.
      * 
-     * @param cssClass
-     *        - CSS class to search for.
+     * @param className
+     *        - class name to search for.
      * @return - UI element with the given class.
      * @throws UiElementFetchingException
-     * @throws InvalidCssQueryException
-     * @throws XPathExpressionException
      * @throws MultipleElementsFoundException
      */
-    public static UiElement getElementByClass(String cssClass)
+    public static UiElement getElementByClass(String className)
         throws UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException,
             MultipleElementsFoundException {
         Screen activeScreen = device.getActiveScreen();
         activeScreen.updateScreen();
-        final String query = String.format(CSS_CLASS, cssClass);
-        return activeScreen.getElementByCSS(query);
+
+        UiElementSelector selector = new UiElementSelector();
+        selector.addSelectionAttribute(CssAttribute.CLASS_NAME, className);
+
+        return activeScreen.getElement(selector);
     }
 
     /**
@@ -1178,39 +1177,36 @@ public class OnDeviceValidatorAssert {
      *        - content descriptor to search for.
      * @return - UI element with the given content descriptor.
      * @throws UiElementFetchingException
-     * @throws InvalidCssQueryException
-     * @throws XPathExpressionException
      * @throws MultipleElementsFoundException
      */
     public static UiElement getElementByContentDescriptor(String contentDescriptor)
         throws UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException,
             MultipleElementsFoundException {
         Screen activeScreen = device.getActiveScreen();
         activeScreen.updateScreen();
-        final String query = String.format(CONTENT_DESCRIPTOR, contentDescriptor);
-        return activeScreen.getElementByCSS(query);
+
+        UiElementSelector selector = new UiElementSelector();
+        selector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, contentDescriptor);
+
+        return activeScreen.getElement(selector);
     }
 
     /**
-     * Gets list of UI elements by given CSS package.
+     * Gets list of UI elements by given package.
      * 
      * @param packageName
      *        - package name to search for.
      * @return - UI element list with the given package.
      * @throws UiElementFetchingException
-     * @throws InvalidCssQueryException
-     * @throws XPathExpressionException
      */
-    public static List<UiElement> getElementsByPackage(String packageName)
-        throws UiElementFetchingException,
-            XPathExpressionException,
-            InvalidCssQueryException {
+    public static List<UiElement> getElementsByPackage(String packageName) throws UiElementFetchingException {
         Screen activeScreen = device.getActiveScreen();
         activeScreen.updateScreen();
-        final String query = String.format(CSS_PACKAGE, packageName);
-        return new ArrayList<UiElement>(activeScreen.getAllElementsByCSS(query));
+
+        UiElementSelector selector = new UiElementSelector();
+        selector.addSelectionAttribute(CssAttribute.PACKAGE_NAME, packageName);
+
+        return new ArrayList<UiElement>(activeScreen.getElements(selector));
     }
 
     /**
