@@ -56,7 +56,6 @@ import com.musala.atmosphere.client.screen.GetAccessibilityUiElementsTest;
 import com.musala.atmosphere.client.screen.GetElementWhenPresentTest;
 import com.musala.atmosphere.client.uielement.GetAccessibilityUiElementChildrenTest;
 import com.musala.atmosphere.client.uielement.UiElementRevalidationTest;
-import com.musala.atmosphere.server.PoolEventHandlerTest;
 
 @SuiteClasses({ScreenOrientationTest.class, BuilderDeviceSelectionIntegrationTest.class, TapTest.class,
         StartActivityTest.class, LockUnlockTest.class, GetUiXmlTest.class, DeviceInstallApkTest.class,
@@ -68,10 +67,10 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         SetIMEAsDefaultTest.class, OpenNotificationTest.class, OpenQuickSettingsTest.class, NotificationBarTest.class,
         NotificationInteractionTest.class, UninstallApplicationTest.class, DeviceProximityTest.class,
         WaitForTaskUpdateTest.class, BringTaskToFrontTest.class, MockLocationTest.class, DisableMockLocationTest.class,
-        PoolEventHandlerTest.class, InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class,
-        PasteTextTest.class, CopyTextTest.class, CutTextTest.class, DatePickerInteractionTest.class,
-        TimePickerInteractionTest.class, GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class,
-        ScreenOffTimeoutTest.class, GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
+        InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class, PasteTextTest.class, CopyTextTest.class,
+        CutTextTest.class, DatePickerInteractionTest.class, TimePickerInteractionTest.class,
+        GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class, ScreenOffTimeoutTest.class,
+        GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
         com.musala.atmosphere.client.device.GetAccessibilityUiElementsTest.class,
         GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class, ClearDataTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
