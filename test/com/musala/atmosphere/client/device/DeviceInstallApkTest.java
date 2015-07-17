@@ -1,146 +1,66 @@
 package com.musala.atmosphere.client.device;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertElementExists;
+import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
+import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.security.MessageDigest;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
-
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
-import com.android.ddmlib.AndroidDebugBridge.IDeviceChangeListener;
-import com.android.ddmlib.IDevice;
-import com.android.ddmlib.InstallException;
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.agent.AndroidDebugBridgeManager;
-import com.musala.atmosphere.agent.DevicePropertyStringConstants;
-import com.musala.atmosphere.agent.util.FakeOnDeviceComponentAnswer;
-import com.musala.atmosphere.client.Builder;
-import com.musala.atmosphere.client.Device;
-import com.musala.atmosphere.client.util.Server;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
-import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
+import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.ui.selector.CssAttribute;
+import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 
+/**
+ * 
+ * @author yavor.stankov
+ *
+ */
 public class DeviceInstallApkTest extends BaseIntegrationTest {
-    private final static int SERVERMANAGER_RMI_PORT = 2099;
+    private static final String TEST_APPLICATION_APK_NAME = "TestApplication.apk";
 
-    private final static String PATH_TO_APK_DIR = "./ondeviceComponents";
+    private static final String APK_FILE_PATH = String.format("%s/apks/%s",
+                                                              System.getProperty("user.dir"),
+                                                              TEST_APPLICATION_APK_NAME);
 
-    private final static String NAME_OF_APK_FILE = "\\OnDeviceValidator-release.apk";
+    private static final String TEST_APPLICATION_PACKAGE_NAME = "com.musala.atmosphere.testapplication";
 
-    private final static String PATH_TO_APK = PATH_TO_APK_DIR + NAME_OF_APK_FILE;
+    private static final int DEFAULT_TIMEOUT = 3000;
 
-    private final static String MOCK_SERIAL_NUMBER = "mockedDevice";
+    @BeforeClass
+    public static void setUp() throws Exception {
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
+        DeviceSelector testDeviceSelector = selectorBuilder.build();
+        initTestDevice(testDeviceSelector);
+        setTestDevice(testDevice);
 
-    private final static Integer MOCK_DEVICE_DENSITY = 666;
-
-    private IDevice mockDevice;
-
-    private IDeviceChangeListener deviceChangeListener;
-
-    @Server(ip = "localhost", port = SERVERMANAGER_RMI_PORT, connectionRetryLimit = 10)
-    private class GettingDeviceSampleClass {
-        public GettingDeviceSampleClass() {
-        }
-
-        public void getDeviceAndInstallApk(DeviceSelector deviceSelector) {
-            Builder builder = Builder.getInstance();
-            Device device = builder.getDevice(deviceSelector);
-            device.installAPK(PATH_TO_APK);
-        }
+        testDevice.uninstallApplication(TEST_APPLICATION_PACKAGE_NAME);
     }
 
-    @Before
-    public void setUp() throws Exception {
-        server = AtmosphereIntegrationTestsSuite.getServer();
+    @AfterClass
+    public static void tearDown() throws Exception {
+        testDevice.forceStopProcess(TEST_APPLICATION_PACKAGE_NAME);
+        testDevice.uninstallApplication(TEST_APPLICATION_PACKAGE_NAME);
 
-        // Setup mock device
-        mockDevice = mock(IDevice.class);
-        when(mockDevice.getSerialNumber()).thenReturn(MOCK_SERIAL_NUMBER);
-        when(mockDevice.isEmulator()).thenReturn(false);
-        when(mockDevice.arePropertiesSet()).thenReturn(true);
-        when(mockDevice.isOffline()).thenReturn(false);
-
-        FakeOnDeviceComponentAnswer fakeOnDeviceComponentAnswer = new FakeOnDeviceComponentAnswer();
-        Mockito.doAnswer(fakeOnDeviceComponentAnswer).when(mockDevice).createForward(anyInt(), anyInt());
-
-        Map<String, String> mockDeviceProperties = new HashMap<String, String>();
-        mockDeviceProperties.put(DevicePropertyStringConstants.PROPERTY_EMUDEVICE_LCD_DENSITY.toString(),
-                                 Integer.toString(MOCK_DEVICE_DENSITY));
-        when(mockDevice.getProperties()).thenReturn(mockDeviceProperties);
-
-        // Get AndroidDebugBridgeManager instance
-        Class<?> agentClass = agent.getClass();
-        Field androidDebugBridgeManagerField = agentClass.getDeclaredField("androidDebugBridgeManager");
-        androidDebugBridgeManagerField.setAccessible(true);
-        AndroidDebugBridgeManager androidDebugBridgeManager = (AndroidDebugBridgeManager) androidDebugBridgeManagerField.get(agent);
-
-        // Get the current device change listener
-        Class<?> adbManagerClass = androidDebugBridgeManager.getClass();
-        Field currentDeviceChangeListenerField = adbManagerClass.getDeclaredField("currentDeviceChangeListener");
-        currentDeviceChangeListenerField.setAccessible(true);
-        deviceChangeListener = (IDeviceChangeListener) currentDeviceChangeListenerField.get(androidDebugBridgeManager);
-
-        // Connect mocked device
-        deviceChangeListener.deviceConnected(mockDevice);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        // Disconnect mocked device
-        deviceChangeListener.deviceDisconnected(mockDevice);
+        releaseDevice();
     }
 
     @Test
-    public void testTransferringApk() throws InstallException {
-        when(mockDevice.installPackage(anyString(), anyBoolean())).thenAnswer(new Answer<String>() {
-            @Override
-            public String answer(InvocationOnMock invocation) throws Throwable {
-                String filePath = (String) invocation.getArguments()[0];
+    public void testInstallApk() {
+        assertTrue("Failed to install the test application.", testDevice.installAPK(APK_FILE_PATH));
 
-                File expectedFile = new File(PATH_TO_APK);
-                File transferredFile = new File(filePath);
+        assertTrue("Failed to start the test application after the installation.",
+                   testDevice.startApplication(TEST_APPLICATION_PACKAGE_NAME));
 
-                // if sizes of files doesn't match there is error somewhere in the transferring mechanism
-                assertEquals("Expected file size does not match.", expectedFile.length(), transferredFile.length());
+        UiElementSelector testApplicationTextViewSelector = new UiElementSelector();
+        testApplicationTextViewSelector.addSelectionAttribute(CssAttribute.TEXT, "SampleText");
 
-                byte[] expectedContent = Files.readAllBytes(expectedFile.toPath());
-                byte[] realContent = Files.readAllBytes(transferredFile.toPath());
-
-                MessageDigest md = MessageDigest.getInstance("md5");
-                String md51 = (new HexBinaryAdapter()).marshal(md.digest(expectedContent));
-                String md52 = (new HexBinaryAdapter()).marshal(md.digest(realContent));
-
-                assertEquals("Transferred file is not as expected.", md51, md52);
-
-                return null;
-            }
-        });
-
-        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().serialNumber(MOCK_SERIAL_NUMBER);
-        DeviceSelector deviceSelector = selectorBuilder.build();
-        GettingDeviceSampleClass userTest = new GettingDeviceSampleClass();
-        userTest.getDeviceAndInstallApk(deviceSelector);
-
-        // This may change depending on the preconditions behavior
-        verify(mockDevice, atLeast(1)).installPackage(anyString(), anyBoolean());
+        assertElementExists("The application was installed successfully, but the main activity is not the same as expected.",
+                            testApplicationTextViewSelector,
+                            DEFAULT_TIMEOUT);
     }
 }

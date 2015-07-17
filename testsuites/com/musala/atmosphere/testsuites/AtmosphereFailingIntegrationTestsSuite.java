@@ -13,6 +13,7 @@ import com.musala.atmosphere.client.builder.BuilderIntegrationTest;
 import com.musala.atmosphere.client.device.CallTest;
 import com.musala.atmosphere.client.device.SwipeTest;
 import com.musala.atmosphere.server.EmulatorCreationTest;
+import com.musala.atmosphere.server.PoolEventHandlerTest;
 import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
 
 /**
@@ -24,6 +25,7 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
 @RunWith(Suite.class)
 @SuiteClasses({DeviceAcceleratoinTest.class, BatteryRelatedMethodsTest.class, DeviceOrientationTest.class,
         BuilderIntegrationTest.class, EmulatorConsoleTest.class, EmulatorCreationTest.class,
-        NetworkConnectionTest.class, SwipeTest.class, AtmosphereServiceConnectionTest.class, CallTest.class})
+        NetworkConnectionTest.class, SwipeTest.class, AtmosphereServiceConnectionTest.class, CallTest.class,
+        PoolEventHandlerTest.class})
 public class AtmosphereFailingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
