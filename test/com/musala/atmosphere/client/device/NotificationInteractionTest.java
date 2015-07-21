@@ -23,7 +23,7 @@ import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 public class NotificationInteractionTest extends BaseIntegrationTest {
 
-    private static final String NOTIFICATION_TITLE_TEXT = "Notification Title";
+    private static final String NOTIFICATION_RESOURCE_ID = "android:id/status_bar_latest_event_content";
 
     private static final String NOTIFICATION_BUTTON_TEXT = "Open";
 
@@ -72,11 +72,12 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
         notificationBar.open();
 
         UiElementSelector notificationSelector = new UiElementSelector();
-        notificationSelector.addSelectionAttribute(CssAttribute.TEXT, NOTIFICATION_TITLE_TEXT);
-        UiElement notification = notificationBar.getNotificationBySelector(notificationSelector);
+        notificationSelector.addSelectionAttribute(CssAttribute.RESOURCE_ID, NOTIFICATION_RESOURCE_ID);
+        notificationBar.getNotificationByText(NOTIFICATION_BUTTON_TEXT);
+        UiElement notification = notificationBar.getNotificationsBySelector(notificationSelector).get(0);
 
         notification.pinchOut();
-        notification = notificationBar.getNotificationBySelector(notificationSelector);
+        notification = notificationBar.getNotificationsBySelector(notificationSelector).get(0);
 
         UiElementSelector notificationOpenButtonSelector = new UiElementSelector();
         notificationOpenButtonSelector.addSelectionAttribute(CssAttribute.TEXT, NOTIFICATION_BUTTON_TEXT);
