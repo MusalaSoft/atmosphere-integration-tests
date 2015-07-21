@@ -32,7 +32,7 @@ import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 public class ScreenRecordingTest extends BaseIntegrationTest {
     private static final String RECORDS_DIR_SUFFIX = "VideoRecords";
 
-    private static final String LOCAL_FILE_PATH = System.getProperty("user.dir");
+    private static final String LOCAL_FILE_PATH = new File(".").getAbsolutePath();
 
     private static final long TIMEOUT_BETWEEN_INTERACTIONS = 40000;
 
