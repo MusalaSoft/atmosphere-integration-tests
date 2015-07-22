@@ -20,6 +20,7 @@ import com.musala.atmosphere.client.device.DisableMockLocationTest;
 import com.musala.atmosphere.client.device.DoubleTapTest;
 import com.musala.atmosphere.client.device.ForceStopProcessTest;
 import com.musala.atmosphere.client.device.GestureExecutionTest;
+import com.musala.atmosphere.client.device.GetLastToastTest;
 import com.musala.atmosphere.client.device.GetRunningTaskIdsTest;
 import com.musala.atmosphere.client.device.HorizontalScrollTest;
 import com.musala.atmosphere.client.device.InputTextTest;
@@ -66,12 +67,7 @@ import com.musala.atmosphere.server.PoolEventHandlerTest;
         PoolEventHandlerTest.class, InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class,
         PasteTextTest.class, CopyTextTest.class, CutTextTest.class, DatePickerInteractionTest.class,
         TimePickerInteractionTest.class, GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class,
-        ScreenOffTimeoutTest.class})
-// @SuiteClasses({LockUnlockTest.class, ScreenOrientationTest.class, ScreenOffTimeoutTest.class, TapTest.class,
-// PinchTest.class, InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class, PasteTextTest.class,
-// CopyTextTest.class, CutTextTest.class, DisableMockLocationTest.class, MockLocationTest.class,
-// LongPressTest.class, WaitForExistsTest.class, WaitUntilGoneTest.class, ProcessRunningTest.class,
-// ForceStopProcessTest.class, StopBackgroundProcessTest.class, GetElementWhenPresentTest.class,
-// UninstallApplicationTest.class, BringTaskToFrontTest.class})
+        ScreenOffTimeoutTest.class, GetLastToastTest.class})
+// @SuiteClasses({GetLastToastTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
