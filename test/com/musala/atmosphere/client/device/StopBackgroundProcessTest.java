@@ -13,10 +13,12 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.ui.selector.CssAttribute;
+import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 
 public class StopBackgroundProcessTest extends BaseIntegrationTest {
 
-    private static final int APPLICATION_GO_BACKGROUND_TIMEOUT = 2000;
+    private static final int APPLICATION_GO_BACKGROUND_TIMEOUT = 3000;
 
     private static final String SYSTEM_PROCESS_PACKAGE = "com.android.phone";
 
@@ -39,8 +41,7 @@ public class StopBackgroundProcessTest extends BaseIntegrationTest {
     @Test
     public void testStopForegroundProcess() throws Exception {
         startMainActivity();
-        boolean result = testDevice.stopBackgroundProcess(VALIDATOR_APP_PACKAGE);
-        assertTrue("Shell command execution returned exception", result);
+        testDevice.stopBackgroundProcess(VALIDATOR_APP_PACKAGE);
         assertTrue("Foreground process should't be stopped after stopBackgroundProcess",
                    testDevice.isProcessRunning(VALIDATOR_APP_PACKAGE));
 
@@ -48,21 +49,19 @@ public class StopBackgroundProcessTest extends BaseIntegrationTest {
 
     @Test
     public void testStopBackgroundProcess() throws Exception {
-
         startMainActivity();
         testDevice.pressButton(HardwareButton.HOME);
-        testDevice.getActiveScreen().waitForWindowUpdate(HOME_SCREEN_PACKAGE, APPLICATION_GO_BACKGROUND_TIMEOUT);
-        boolean result = testDevice.stopBackgroundProcess(VALIDATOR_APP_PACKAGE);
-        assertTrue("Shell command excecution return exception", result);
+        UiElementSelector selector = new UiElementSelector();
+        selector.addSelectionAttribute(CssAttribute.PACKAGE_NAME, HOME_SCREEN_PACKAGE);
+        testDevice.getActiveScreen().waitForElementExists(selector, APPLICATION_GO_BACKGROUND_TIMEOUT);
+        testDevice.stopBackgroundProcess(VALIDATOR_APP_PACKAGE);
         assertFalse("isProcessRunning returned true after stopping background Process",
                     testDevice.isProcessRunning(VALIDATOR_APP_PACKAGE));
     }
 
     @Test
     public void testStopBackgroundSystemProcess() throws Exception {
-
-        boolean result = testDevice.stopBackgroundProcess(SYSTEM_PROCESS_PACKAGE);
-        assertTrue("Shell command excecution return exception", result);
+        testDevice.stopBackgroundProcess(SYSTEM_PROCESS_PACKAGE);
         assertTrue("isProcessRunning returned false when system process is running",
                    testDevice.isProcessRunning(SYSTEM_PROCESS_PACKAGE));
     }
