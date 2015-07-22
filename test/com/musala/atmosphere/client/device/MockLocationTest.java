@@ -11,9 +11,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
+import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.ui.selector.CssAttribute;
+import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 import com.musala.atmosphere.commons.util.GeoLocation;
 
 /**
@@ -42,7 +45,15 @@ public class MockLocationTest extends BaseIntegrationTest {
 
     private static final String LOCATION_MOCK_UNSUCCESSFUL = "Location was not successfully mocked.";
 
+    private static final String DEFAUL_GPS_COORDINATES = "0, 0, 0";
+
+    private static final String EXPECTED_GPS_COORDINATES = "37,767, -122,429, 1";
+
+    private static final int WAIT_FOR_EXPECTED_COORDINATES_TIMEOUT = 5_000;
+
     private static GeoLocation defaultMonitoredProviderLocation;
+
+    private static Screen screen;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -57,6 +68,8 @@ public class MockLocationTest extends BaseIntegrationTest {
         setTestDevice(testDevice);
 
         startLocationActivity();
+
+        screen = testDevice.getActiveScreen();
     }
 
     @AfterClass
@@ -67,7 +80,7 @@ public class MockLocationTest extends BaseIntegrationTest {
 
     @Before
     public void setUpTest() {
-        // set the monitored provider to its default location for the test
+        // sets the monitored provider to its default location for the test
         boolean isMockSuccessful = testDevice.mockLocation(defaultMonitoredProviderLocation);
         assertTrue("Setting the monitored provider to its default location indicated failure.", isMockSuccessful);
     }
@@ -78,7 +91,7 @@ public class MockLocationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testMockLocationNotMonitoredProvider() {
+    public void testMockLocationNotMonitoredProvider() throws Exception {
         GeoLocation nonMonitoredProviderLocation = new GeoLocation(SAN_FRANCISCO_LATITUDE,
                                                                    SAN_FRANCISCO_LONGITUDE,
                                                                    NOT_MONITORED_PROVIDER_NAME);
@@ -86,12 +99,17 @@ public class MockLocationTest extends BaseIntegrationTest {
 
         boolean isMockSuccessful = testDevice.mockLocation(nonMonitoredProviderLocation);
         assertTrue(FAILURE_INDICATED_ERROR_MESSAGE, isMockSuccessful);
+
+        UiElementSelector coordinatesSelector = new UiElementSelector();
+        coordinatesSelector.addSelectionAttribute(CssAttribute.TEXT, DEFAUL_GPS_COORDINATES);
+        screen.waitForElementExists(coordinatesSelector, WAIT_FOR_EXPECTED_COORDINATES_TIMEOUT);
+
         assertLocation("Location changed from the monitored provider, when mocking another provider.",
                        defaultMonitoredProviderLocation);
     }
 
     @Test
-    public void testMockLocationSameProviderSeveralTimes() {
+    public void testMockLocationSameProviderSeveralTimes() throws Exception {
         assertLocation(LOCATION_MOCK_UNSUCCESSFUL, defaultMonitoredProviderLocation);
 
         GeoLocation secondMockLocation = new GeoLocation(SAN_FRANCISCO_LATITUDE,
@@ -101,6 +119,11 @@ public class MockLocationTest extends BaseIntegrationTest {
 
         boolean isMockSuccessful = testDevice.mockLocation(secondMockLocation);
         assertTrue(FAILURE_INDICATED_ERROR_MESSAGE, isMockSuccessful);
+
+        UiElementSelector coordinatesSelector = new UiElementSelector();
+        coordinatesSelector.addSelectionAttribute(CssAttribute.TEXT, EXPECTED_GPS_COORDINATES);
+        screen.waitForElementExists(coordinatesSelector, WAIT_FOR_EXPECTED_COORDINATES_TIMEOUT);
+
         assertLocation(LOCATION_MOCK_UNSUCCESSFUL, secondMockLocation);
     }
 }
