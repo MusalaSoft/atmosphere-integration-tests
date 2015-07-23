@@ -22,6 +22,7 @@ import com.musala.atmosphere.client.device.DoubleTapTest;
 import com.musala.atmosphere.client.device.DragTest;
 import com.musala.atmosphere.client.device.ForceStopProcessTest;
 import com.musala.atmosphere.client.device.GestureExecutionTest;
+import com.musala.atmosphere.client.device.GetLastToastTest;
 import com.musala.atmosphere.client.device.GetRunningTaskIdsTest;
 import com.musala.atmosphere.client.device.HorizontalScrollTest;
 import com.musala.atmosphere.client.device.InputTextTest;
@@ -71,9 +72,10 @@ import com.musala.atmosphere.client.uielement.UiElementRevalidationTest;
         InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class, PasteTextTest.class, CopyTextTest.class,
         CutTextTest.class, DatePickerInteractionTest.class, TimePickerInteractionTest.class,
         GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class, ScreenOffTimeoutTest.class,
-        GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
+	GetLastToastTest.class, GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
         com.musala.atmosphere.client.device.GetAccessibilityUiElementsTest.class,
         GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class, ClearDataTest.class,
         DragTest.class})
+// @SuiteClasses({GetLastToastTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

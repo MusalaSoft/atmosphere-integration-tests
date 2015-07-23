@@ -57,6 +57,8 @@ public class OnDeviceValidatorAssert {
 
     private final static String VALIDATOR_GESTURE_ACTIVITY = ".GestureActivity";
 
+    private final static String VALIDATOR_TOAST_MESSAGE_ACTIVITY = ".ToastActivity";
+
     private final static String VALIDATOR_WAIT_TEST_ACTIVITY = ".WaitTestActivity";
 
     private final static String VALIDATOR_SCROLL_ACTIVITY = ".ScrollableViewActivity";
@@ -1407,6 +1409,20 @@ public class OnDeviceValidatorAssert {
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_GESTURE_ACTIVITY);
+    }
+
+    /**
+     * Starts OnDeviceValidator's toast message activity.
+     *
+     * @throws ActivityStartingException
+     * @throws InterruptedException
+     * @throws UiElementFetchingException
+     */
+    public static void startToastMessageActivity()
+            throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_TOAST_MESSAGE_ACTIVITY);
     }
 
     /**

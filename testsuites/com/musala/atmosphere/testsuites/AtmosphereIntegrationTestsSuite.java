@@ -16,9 +16,9 @@ import com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert
 
 /**
  * JUnit test suite with all running integration tests.
- * 
+ *
  * @author valyo.yolovski
- * 
+ *
  */
 @RunWith(Suite.class)
 public class AtmosphereIntegrationTestsSuite {
