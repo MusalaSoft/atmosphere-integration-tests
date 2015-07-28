@@ -5,6 +5,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startToastMessageActivity;
 import static org.junit.Assert.assertEquals;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -30,6 +31,8 @@ public class GetLastToastTest extends BaseIntegrationTest {
 
     private static final String SHORT_TOAST_BUTTON_DESCRIPTOR = "ShowShortToastButton";
 
+    private static final int TOAST_FADING_TIMEOUT = 3500;
+
     @BeforeClass
     public static void setUp() throws Exception {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
@@ -38,6 +41,11 @@ public class GetLastToastTest extends BaseIntegrationTest {
         setTestDevice(testDevice);
 
         startToastMessageActivity();
+    }
+
+    @After
+    public static void afterTest() throws Exception {
+        Thread.sleep(TOAST_FADING_TIMEOUT);
     }
 
     @Test

@@ -30,6 +30,8 @@ public class SetIMEAsDefaultTest extends BaseIntegrationTest {
 
     private final static String ATMOSPHERE_IME_PACKAGE = "com.musala.atmosphere.ime";
 
+    private static final int WAIT_FOR_SETTIING_IME = 2000;
+
     @BeforeClass
     public static void setUp() throws Exception {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
@@ -70,6 +72,7 @@ public class SetIMEAsDefaultTest extends BaseIntegrationTest {
         UiElement inputTextBoxAtmosphereIME = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
 
         testDevice.setAtmosphereIME();
+        Thread.sleep(WAIT_FOR_SETTIING_IME);
         inputTextBoxAtmosphereIME.inputText(INPUT_STRING);
 
         screen.updateScreen();
