@@ -44,7 +44,7 @@ public class GetLastToastTest extends BaseIntegrationTest {
     }
 
     @After
-    public static void afterTest() throws Exception {
+    public void afterTest() throws Exception {
         Thread.sleep(TOAST_FADING_TIMEOUT);
     }
 
