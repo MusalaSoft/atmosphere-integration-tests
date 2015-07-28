@@ -27,6 +27,8 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
 
     private static final String NOTIFICATION_BUTTON_TEXT = "Open";
 
+    private static final int GET_NOTIFICATION_TIMEOUT = 5_000;
+
     private static NotificationBar notificationBar = null;
 
     private static Screen deviceActiveScreen = null;
@@ -73,6 +75,9 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
 
         UiElementSelector notificationSelector = new UiElementSelector();
         notificationSelector.addSelectionAttribute(CssAttribute.RESOURCE_ID, NOTIFICATION_RESOURCE_ID);
+
+        Screen screen = testDevice.getActiveScreen();
+        screen.waitForElementExists(notificationSelector, GET_NOTIFICATION_TIMEOUT);
         notificationBar.getNotificationByText(NOTIFICATION_BUTTON_TEXT);
         UiElement notification = notificationBar.getNotificationsBySelector(notificationSelector).get(0);
 

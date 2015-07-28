@@ -26,7 +26,7 @@ public class AtmosphereIntegrationTestsSuite {
 
     private final static int AGENTMANAGER_RMI_PORT = 2000;
 
-    private final static int WAIT_FOR_CONNECTING_TIMEOUT = 45000;
+    private final static int WAIT_FOR_CONNECTING_TIMEOUT = 145000;
 
     private final static long SCREEN_OFF_TIMEOUT = 180000;
 
