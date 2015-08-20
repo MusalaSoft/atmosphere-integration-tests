@@ -85,7 +85,7 @@ public class FindWebElementTest extends BaseIntegrationTest {
 
     @Test
     public void testFindMultipleElementsByAttribute() {
-        int expectedCount = 4;
+        int expectedCount = 5;
         List<UiWebElement> elements = webView.findElements(WebElementSelectionCriterion.TAG, EXISTING_WEB_ELEMENT_TAG);
         assertEquals(ATTRIBUTE_MISSMATCH_ERROR_MESSAGE, expectedCount, elements.size());
 
