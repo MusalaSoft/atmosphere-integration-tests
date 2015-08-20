@@ -58,6 +58,7 @@ import com.musala.atmosphere.client.screen.GetAccessibilityUiElementsTest;
 import com.musala.atmosphere.client.screen.GetElementWhenPresentTest;
 import com.musala.atmosphere.client.uielement.GetAccessibilityUiElementChildrenTest;
 import com.musala.atmosphere.client.uielement.UiElementRevalidationTest;
+import com.musala.atmosphere.webview.FindWebElementTest;
 
 @SuiteClasses({ScreenOrientationTest.class, BuilderDeviceSelectionIntegrationTest.class, TapTest.class,
         StartActivityTest.class, LockUnlockTest.class, GetUiXmlTest.class, DeviceInstallApkTest.class,
@@ -72,10 +73,10 @@ import com.musala.atmosphere.client.uielement.UiElementRevalidationTest;
         InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class, PasteTextTest.class, CopyTextTest.class,
         CutTextTest.class, DatePickerInteractionTest.class, TimePickerInteractionTest.class,
         GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class, ScreenOffTimeoutTest.class,
-	GetLastToastTest.class, GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
+        GetLastToastTest.class, GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
         com.musala.atmosphere.client.device.GetAccessibilityUiElementsTest.class,
         GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class, ClearDataTest.class,
-        DragTest.class})
+        DragTest.class, FindWebElementTest.class})
 // @SuiteClasses({GetLastToastTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

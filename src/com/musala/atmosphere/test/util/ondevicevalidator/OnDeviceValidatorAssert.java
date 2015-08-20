@@ -131,6 +131,8 @@ public class OnDeviceValidatorAssert {
 
     private static final String VALIDATOR_UI_ELEMENT_CHILDREN_ACTIVITY = ".UiElementChildrenActivity";
 
+    private static final String VALIDATOR_WEB_VIEW_ACTIVITY = ".WebViewActivity";
+
     private static final int CLEAR_DATA_SIZE = 1;
 
     private static Device device;
@@ -1419,7 +1421,7 @@ public class OnDeviceValidatorAssert {
      * @throws UiElementFetchingException
      */
     public static void startToastMessageActivity()
-            throws ActivityStartingException,
+        throws ActivityStartingException,
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_TOAST_MESSAGE_ACTIVITY);
@@ -1503,7 +1505,7 @@ public class OnDeviceValidatorAssert {
     }
 
     public static void startApplicationDataTestActivity()
-            throws ActivityStartingException,
+        throws ActivityStartingException,
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_APPLICATION_DATA_TEST_ACTIVITY);
@@ -1621,7 +1623,7 @@ public class OnDeviceValidatorAssert {
      *         - if the UI element could not be found
      */
     public static void startDetectAudioTestActivity()
-            throws ActivityStartingException,
+        throws ActivityStartingException,
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_DETECT_AUDIO_ACTIVITY);
@@ -1655,7 +1657,7 @@ public class OnDeviceValidatorAssert {
      *         if the UI element could not be found
      */
     public static void startUiElementsActivity()
-            throws ActivityStartingException,
+        throws ActivityStartingException,
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_UI_ELEMENTS_ACTIVITY);
@@ -1672,9 +1674,26 @@ public class OnDeviceValidatorAssert {
      *         if the UI element could not be found
      */
     public static void startUiElementChildrenActivity()
-            throws ActivityStartingException,
+        throws ActivityStartingException,
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_UI_ELEMENT_CHILDREN_ACTIVITY);
+    }
+
+    /**
+     * Starts the Web View activity, used for testing interaction with WebViews.
+     *
+     * @throws ActivityStartingException
+     *         if the activity was not started successfully
+     * @throws InterruptedException
+     *         if the start of the activity was interrupted
+     * @throws UiElementFetchingException
+     *         if the UI element could not be found
+     */
+    public static void startWebViewActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_WEB_VIEW_ACTIVITY);
     }
 }
