@@ -19,19 +19,15 @@ import com.musala.atmosphere.commons.webelement.selection.WebElementSelectionCri
 
 /**
  * 
- * @author yavor.stankov
+ * @author konstantin.ivanov
  *
  */
-public class WebElementInputTextTest extends BaseIntegrationTest {
-    private static final String INPUT_TEXT_ELEMENT_ID = "fname";
-
-    private static final String VALUE_ATTRIBUTE_KEY = "value";
-
-    private static final String TEXT_TO_INPUT = "Atmosphere";
-
+public class ClearWebElementText extends BaseIntegrationTest {
     private static Screen screen;
 
     private static WebView webView;
+
+    private static final String WEB_ELEMENT_ID = "clearText";
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -56,9 +52,9 @@ public class WebElementInputTextTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testWebElementInputText() {
-        UiWebElement inputTextBox = webView.findElement(WebElementSelectionCriterion.ID, INPUT_TEXT_ELEMENT_ID);
-
-        assertTrue("Failed to input text in the selected web element.", inputTextBox.inputText(TEXT_TO_INPUT));
+    public void testClearText() {
+        UiWebElement textField = webView.findElement(WebElementSelectionCriterion.ID, WEB_ELEMENT_ID);
+        boolean isCleared = textField.clearText();
+        assertTrue("The text was not cleared", isCleared);
     }
 }
