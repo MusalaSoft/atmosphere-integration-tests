@@ -27,9 +27,17 @@ import com.musala.atmosphere.commons.webelement.selection.WebElementSelectionCri
  *
  */
 public class FindWebElementTest extends BaseIntegrationTest {
+    private static final String LINK_CLASS = "link";
+
+    private static final String CONTACTS_ID = "contacts";
+
+    private static final String FOOTER_ID = "footer";
+
     private static final String EXISTING_ELEMENTS_XPATH_QUERY = "//input[@type='text']";
 
     private static final String ATTRIBUTE_MISSMATCH_ERROR_MESSAGE = "Actual web element attribute value does not match the expected one.";
+
+    private static final String TEXT_MISSMATCH_ERROR_MESSAGE = "Actual web element text does not match the expected one.";
 
     private static final String NONEXISTENT_WEB_ELEMENT_TAG = "h2";
 
@@ -85,7 +93,7 @@ public class FindWebElementTest extends BaseIntegrationTest {
 
     @Test
     public void testFindMultipleElementsByAttribute() {
-        int expectedCount = 5;
+        int expectedCount = 6;
         List<UiWebElement> elements = webView.findElements(WebElementSelectionCriterion.TAG, EXISTING_WEB_ELEMENT_TAG);
         assertEquals(ATTRIBUTE_MISSMATCH_ERROR_MESSAGE, expectedCount, elements.size());
 
@@ -96,8 +104,9 @@ public class FindWebElementTest extends BaseIntegrationTest {
 
     @Test
     public void testFindMultipleElementsByXpath() {
-        int expectedCount = 2;
-        List<UiWebElement> elements = webView.findElements(WebElementSelectionCriterion.XPATH, EXISTING_ELEMENTS_XPATH_QUERY);
+        int expectedCount = 3;
+        List<UiWebElement> elements = webView.findElements(WebElementSelectionCriterion.XPATH,
+                                                           EXISTING_ELEMENTS_XPATH_QUERY);
         assertEquals(ATTRIBUTE_MISSMATCH_ERROR_MESSAGE, expectedCount, elements.size());
     }
 
@@ -106,5 +115,31 @@ public class FindWebElementTest extends BaseIntegrationTest {
         List<UiWebElement> elements = webView.findElements(WebElementSelectionCriterion.TAG,
                                                            NONEXISTENT_WEB_ELEMENT_TAG);
         assertTrue("Unexpectedly elements matching the request were found on the current screen.", elements.isEmpty());
+    }
+
+    @Test
+    public void testFindElementWhenMatchingElementsExistOnDifferentLevels() {
+        String expectedText = "Home";
+        UiWebElement firstMatch = webView.findElement(WebElementSelectionCriterion.CLASS, LINK_CLASS);
+
+        assertEquals(TEXT_MISSMATCH_ERROR_MESSAGE, expectedText, firstMatch.getText());
+    }
+
+    @Test
+    public void testFindElementInWebElementWhenNotDirectChild() {
+        String expectedText = "Contacts";
+        UiWebElement parentElement = webView.findElement(WebElementSelectionCriterion.ID, FOOTER_ID);
+        UiWebElement descendant = parentElement.findElement(WebElementSelectionCriterion.ID, CONTACTS_ID);
+
+        assertEquals(TEXT_MISSMATCH_ERROR_MESSAGE, expectedText, descendant.getText());
+    }
+
+    @Test
+    public void testFindElementInWebElementWhenDirectChild() {
+        String expectedAttributeValue = "ul-info";
+        UiWebElement parentElement = webView.findElement(WebElementSelectionCriterion.ID, FOOTER_ID);
+        UiWebElement child = parentElement.findElement(WebElementSelectionCriterion.TAG, "ul");
+
+        assertEquals(ATTRIBUTE_MISSMATCH_ERROR_MESSAGE, expectedAttributeValue, child.getAttribute("class"));
     }
 }
