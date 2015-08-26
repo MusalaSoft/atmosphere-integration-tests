@@ -2,7 +2,7 @@ package com.musala.atmosphere.webview;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startWebViewActivity;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -22,12 +22,22 @@ import com.musala.atmosphere.commons.webelement.selection.WebElementSelectionCri
  * @author konstantin.ivanov
  *
  */
-public class ClearWebElementText extends BaseIntegrationTest {
+public class SubmitWebElementFormTest extends BaseIntegrationTest {
     private static Screen screen;
 
     private static WebView webView;
 
-    private static final String WEB_ELEMENT_ID = "clearText";
+    private static final String WEB_ELEMENT_BUTTON_ID = "btn";
+
+    private static final String WEB_ELEMENT_ID = "form";
+
+    private static final String TEXT_TO_INPUT = "Text for Submission";
+
+    private static final String DYNAMIC_ATTRIBUTE_NAME = "testAttribute";
+
+    private static final String SUBMIT_BUTTON_DYNAMIC_ATTRIBUTE_VALUE = "tappedSubmit";
+
+    private static final String EXPECTED_RESULT = null;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -52,9 +62,17 @@ public class ClearWebElementText extends BaseIntegrationTest {
     }
 
     @Test
-    public void testClearText() {
+    public void testSubmitForm() throws InterruptedException {
+        UiWebElement btn = webView.findElement(WebElementSelectionCriterion.ID, WEB_ELEMENT_BUTTON_ID);
+        btn.tap();
+        assertEquals("The button wasn't tapped",
+                     SUBMIT_BUTTON_DYNAMIC_ATTRIBUTE_VALUE,
+                     (String) btn.getAttribute(DYNAMIC_ATTRIBUTE_NAME));
+
         UiWebElement textField = webView.findElement(WebElementSelectionCriterion.ID, WEB_ELEMENT_ID);
-        boolean isCleared = textField.clearText();
-        assertTrue("The text was not cleared", isCleared);
+        textField.inputText(TEXT_TO_INPUT);
+        textField.submitForm();
+
+        assertEquals("The form wasn't submitted", EXPECTED_RESULT, (String) btn.getAttribute(DYNAMIC_ATTRIBUTE_NAME));
     }
 }
