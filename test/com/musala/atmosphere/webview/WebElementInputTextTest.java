@@ -25,8 +25,6 @@ import com.musala.atmosphere.commons.webelement.selection.WebElementSelectionCri
 public class WebElementInputTextTest extends BaseIntegrationTest {
     private static final String INPUT_TEXT_ELEMENT_ID = "fname";
 
-    private static final String VALUE_ATTRIBUTE_KEY = "value";
-
     private static final String TEXT_TO_INPUT = "Atmosphere";
 
     private static Screen screen;
