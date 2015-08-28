@@ -27,7 +27,9 @@ import com.musala.atmosphere.commons.webelement.selection.WebElementSelectionCri
  *
  */
 public class FindWebElementTest extends BaseIntegrationTest {
-    private static final String LINK_CLASS = "link";
+    private static final String LINKS_PARENT_ID = "ul";
+
+	private static final String LINK_CLASS = "link";
 
     private static final String CONTACTS_ID = "contacts";
 
@@ -93,7 +95,7 @@ public class FindWebElementTest extends BaseIntegrationTest {
 
     @Test
     public void testFindMultipleElementsByAttribute() {
-        int expectedCount = 6;
+        int expectedCount = 7;
         List<UiWebElement> elements = webView.findElements(WebElementSelectionCriterion.TAG, EXISTING_WEB_ELEMENT_TAG);
         assertEquals(ATTRIBUTE_MISSMATCH_ERROR_MESSAGE, expectedCount, elements.size());
 
@@ -138,7 +140,7 @@ public class FindWebElementTest extends BaseIntegrationTest {
     public void testFindElementInWebElementWhenDirectChild() {
         String expectedAttributeValue = "ul-info";
         UiWebElement parentElement = webView.findElement(WebElementSelectionCriterion.ID, FOOTER_ID);
-        UiWebElement child = parentElement.findElement(WebElementSelectionCriterion.TAG, "ul");
+        UiWebElement child = parentElement.findElement(WebElementSelectionCriterion.TAG, LINKS_PARENT_ID);
 
         assertEquals(ATTRIBUTE_MISSMATCH_ERROR_MESSAGE, expectedAttributeValue, child.getAttribute("class"));
     }

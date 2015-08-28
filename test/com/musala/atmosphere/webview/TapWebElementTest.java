@@ -20,7 +20,7 @@ import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.webelement.selection.WebElementSelectionCriterion;
 
 /**
- * 
+ *
  * @author yavor.stankov
  *
  */
@@ -75,7 +75,7 @@ public class TapWebElementTest extends BaseIntegrationTest {
 
     @Test
     public void testTapWebElementInList() {
-        String[] expectedResult = {"submit", "cancel", "getSizeTest"};
+        String[] expectedResult = {"submit", "cancel", "getSizeTest", "create"};
         List<UiWebElement> webElements = webView.findElements(WebElementSelectionCriterion.TAG,
                                                               EXISTING_WEB_ELEMENT_TAG);
 
@@ -96,9 +96,6 @@ public class TapWebElementTest extends BaseIntegrationTest {
         String dynamicAtributeValue = (String) closeButton.getAttribute(DYNAMIC_ATTRIBUTE_NAME);
 
         assertEquals(TAP_FAILED_MESSAGE, CANCEL_BUTTON_DYNAMIC_ATTRIBUTE_VALUE, dynamicAtributeValue);
-        assertEquals(ATTRIBUTE_VALUE_MISSMATCH_ERROR_MESSAGE,
-                     expectedResult[1],
-                     closeButton.getAttribute("name"));
-
+        assertEquals(ATTRIBUTE_VALUE_MISSMATCH_ERROR_MESSAGE, expectedResult[1], closeButton.getAttribute("name"));
     }
 }
