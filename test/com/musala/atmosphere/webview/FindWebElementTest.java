@@ -18,7 +18,7 @@ import com.musala.atmosphere.client.WebView;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
-import com.musala.atmosphere.commons.webelement.selection.WebElementNotPresentException;
+import com.musala.atmosphere.commons.webelement.exception.WebElementNotPresentException;
 import com.musala.atmosphere.commons.webelement.selection.WebElementSelectionCriterion;
 
 /**
