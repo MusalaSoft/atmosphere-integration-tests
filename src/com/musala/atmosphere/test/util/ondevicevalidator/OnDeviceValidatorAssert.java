@@ -133,6 +133,8 @@ public class OnDeviceValidatorAssert {
 
     private static final String VALIDATOR_UI_ELEMENT_CHILDREN_ACTIVITY = ".UiElementChildrenActivity";
 
+    private static final String VALIDATOR_WEB_VIEW_ACTIVITY = ".WebViewActivity";
+
     private static final int CLEAR_DATA_SIZE = 1;
 
     private static Device device;
@@ -1693,5 +1695,22 @@ public class OnDeviceValidatorAssert {
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_UI_ELEMENT_CHILDREN_ACTIVITY);
+    }
+
+    /**
+     * Starts the Web View activity, used for testing interaction with WebViews.
+     *
+     * @throws ActivityStartingException
+     *         if the activity was not started successfully
+     * @throws InterruptedException
+     *         if the start of the activity was interrupted
+     * @throws UiElementFetchingException
+     *         if the UI element could not be found
+     */
+    public static void startWebViewActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_WEB_VIEW_ACTIVITY);
     }
 }
