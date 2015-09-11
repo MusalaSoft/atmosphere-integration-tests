@@ -63,6 +63,7 @@ import com.musala.atmosphere.webview.FindWebElementTest;
 import com.musala.atmosphere.webview.GetSizeOfWebElementTest;
 import com.musala.atmosphere.webview.GetWebElementRelativePositionTest;
 import com.musala.atmosphere.webview.GetWebElementTagTest;
+import com.musala.atmosphere.webview.GetWebElementTextTest;
 import com.musala.atmosphere.webview.SubmitWebElementFormTest;
 import com.musala.atmosphere.webview.TapWebElementTest;
 import com.musala.atmosphere.webview.WebElementGetCssValueTest;
@@ -88,11 +89,11 @@ import com.musala.atmosphere.webview.WebElementWaitForConditionTest;
         GetLastToastTest.class, com.musala.atmosphere.client.device.GetAccessibilityUiElementsTest.class,
         GetAccessibilityUiElementTest.class, com.musala.atmosphere.client.device.GetAccessibilityUiElementsTest.class,
         GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class, ClearDataTest.class,
-        DragTest.class, WifiConnectionQualityTest.class, FindWebElementTest.class, WebElementIsDisplayedTest.class, WebElementIsEnabledTest.class,
-        WebElementIsSelectedTest.class, GetWebElementTagTest.class, SubmitWebElementFormTest.class,
-        WebElementInputTextTest.class, WebElementGetCssValueTest.class, WebElementWaitForConditionTest.class,
-        ClearWebElementTextTest.class, GetSizeOfWebElementTest.class, TapWebElementTest.class,
-        GetWebElementRelativePositionTest.class})
+        DragTest.class, WifiConnectionQualityTest.class, FindWebElementTest.class, WebElementIsDisplayedTest.class,
+        WebElementIsEnabledTest.class, WebElementIsSelectedTest.class, GetWebElementTagTest.class,
+        SubmitWebElementFormTest.class, WebElementInputTextTest.class, WebElementGetCssValueTest.class,
+        WebElementWaitForConditionTest.class, ClearWebElementTextTest.class, GetSizeOfWebElementTest.class,
+        TapWebElementTest.class, GetWebElementRelativePositionTest.class, GetWebElementTextTest.class})
 // @SuiteClasses({FindWebElementTest.class, WebElementIsDisplayedTest.class, WebElementIsEnabledTest.class,
 // WebElementIsSelectedTest.class, GetWebElementTagTest.class, SubmitWebElementFormTest.class,
 // WebElementInputTextTest.class, WebElementGetCssValueTest.class, WebElementWaitForConditionTest.class,

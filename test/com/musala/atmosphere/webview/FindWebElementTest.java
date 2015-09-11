@@ -22,14 +22,14 @@ import com.musala.atmosphere.commons.webelement.exception.WebElementNotPresentEx
 import com.musala.atmosphere.commons.webelement.selection.WebElementSelectionCriterion;
 
 /**
- * 
+ *
  * @author filareta.yordanova
  *
  */
 public class FindWebElementTest extends BaseIntegrationTest {
     private static final String LINKS_PARENT_ID = "ul";
 
-	private static final String LINK_CLASS = "link";
+    private static final String LINK_CLASS = "link";
 
     private static final String CONTACTS_ID = "contacts";
 
@@ -121,19 +121,19 @@ public class FindWebElementTest extends BaseIntegrationTest {
 
     @Test
     public void testFindElementWhenMatchingElementsExistOnDifferentLevels() {
-        String expectedText = "Home";
+        String expectedName = "home";
         UiWebElement firstMatch = webView.findElement(WebElementSelectionCriterion.CLASS, LINK_CLASS);
 
-        assertEquals(TEXT_MISSMATCH_ERROR_MESSAGE, expectedText, firstMatch.getText());
+        assertEquals(TEXT_MISSMATCH_ERROR_MESSAGE, expectedName, firstMatch.getAttribute("name"));
     }
 
     @Test
     public void testFindElementInWebElementWhenNotDirectChild() {
-        String expectedText = "Contacts";
+        String expectedName = "contacts";
         UiWebElement parentElement = webView.findElement(WebElementSelectionCriterion.ID, FOOTER_ID);
         UiWebElement descendant = parentElement.findElement(WebElementSelectionCriterion.ID, CONTACTS_ID);
 
-        assertEquals(TEXT_MISSMATCH_ERROR_MESSAGE, expectedText, descendant.getText());
+        assertEquals(TEXT_MISSMATCH_ERROR_MESSAGE, expectedName, descendant.getAttribute("name"));
     }
 
     @Test
