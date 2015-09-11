@@ -16,10 +16,10 @@ import com.musala.atmosphere.server.Server;
 import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
 /**
- * 
- * 
+ *
+ *
  * @author valyo.yolovski
- * 
+ *
  */
 public class BaseIntegrationTest {
 
@@ -38,7 +38,7 @@ public class BaseIntegrationTest {
 
     protected final static String ONDEVICEVALIDATOR_FILE = "OnDeviceValidator-release.apk";
 
-    protected final static String PATH_TO_APK_DIR = "./ondeviceComponents/";
+    protected final static String PATH_TO_APK_DIR = "./onDeviceComponents/";
 
     final static String PATH_TO_APK = PATH_TO_APK_DIR + ONDEVICEVALIDATOR_FILE;
 

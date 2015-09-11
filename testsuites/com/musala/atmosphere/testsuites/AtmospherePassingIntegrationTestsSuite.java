@@ -18,6 +18,7 @@ import com.musala.atmosphere.client.device.DatePickerInteractionTest;
 import com.musala.atmosphere.client.device.DeviceGetScreenshotTest;
 import com.musala.atmosphere.client.device.DeviceInstallApkTest;
 import com.musala.atmosphere.client.device.DisableMockLocationTest;
+import com.musala.atmosphere.client.device.DiskSpaceTest;
 import com.musala.atmosphere.client.device.DoubleTapTest;
 import com.musala.atmosphere.client.device.DragTest;
 import com.musala.atmosphere.client.device.ForceStopProcessTest;
@@ -88,16 +89,11 @@ import com.musala.atmosphere.webview.WebElementWaitForConditionTest;
         GetLastToastTest.class, com.musala.atmosphere.client.device.GetAccessibilityUiElementsTest.class,
         GetAccessibilityUiElementTest.class, com.musala.atmosphere.client.device.GetAccessibilityUiElementsTest.class,
         GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class, ClearDataTest.class,
-        DragTest.class, WifiConnectionQualityTest.class, FindWebElementTest.class, WebElementIsDisplayedTest.class, WebElementIsEnabledTest.class,
-        WebElementIsSelectedTest.class, GetWebElementTagTest.class, SubmitWebElementFormTest.class,
-        WebElementInputTextTest.class, WebElementGetCssValueTest.class, WebElementWaitForConditionTest.class,
-        ClearWebElementTextTest.class, GetSizeOfWebElementTest.class, TapWebElementTest.class,
-        GetWebElementRelativePositionTest.class})
-// @SuiteClasses({FindWebElementTest.class, WebElementIsDisplayedTest.class, WebElementIsEnabledTest.class,
-// WebElementIsSelectedTest.class, GetWebElementTagTest.class, SubmitWebElementFormTest.class,
-// WebElementInputTextTest.class, WebElementGetCssValueTest.class, WebElementWaitForConditionTest.class,
-// ClearWebElementTextTest.class, GetSizeOfWebElementTest.class, TapWebElementTest.class,
-// GetWebElementRelativePositionTest.class})
-
+        DragTest.class, WifiConnectionQualityTest.class, FindWebElementTest.class, WebElementIsDisplayedTest.class,
+        WebElementIsEnabledTest.class, WebElementIsSelectedTest.class, GetWebElementTagTest.class,
+        SubmitWebElementFormTest.class, WebElementInputTextTest.class, WebElementGetCssValueTest.class,
+        WebElementWaitForConditionTest.class, ClearWebElementTextTest.class, GetSizeOfWebElementTest.class,
+        TapWebElementTest.class, GetWebElementRelativePositionTest.class, DiskSpaceTest.class})
+// @SuiteClasses({DiskSpaceTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

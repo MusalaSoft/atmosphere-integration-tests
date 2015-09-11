@@ -41,7 +41,7 @@ public class OnDeviceValidatorAssert {
 
     private final static String CSS_PACKAGE = "[package=%s]";
 
-    private final static String PATH_TO_APK_DIR = "./ondeviceComponents/";
+    private final static String PATH_TO_APK_DIR = "./onDeviceComponents/";
 
     private final static String NAME_OF_APK_FILE = "OnDeviceValidator-release.apk";
 
@@ -66,6 +66,8 @@ public class OnDeviceValidatorAssert {
     private final static String VALIDATOR_DRAG_ACTIVITY = ".DragActivity";
 
     private final static String VALIDATOR_WIFICONNECTIONQUALITY_ACTIVITY = ".WifiConnectionTestActivity";
+
+    private final static String VALIDATOR_DISK_SPACE_ACTIVITY = ".DiskSpaceActivity";
 
     private final static String VALIDATOR_MAGNETIC_FIELD_ACTIVITY = ".MagneticFieldActivity";
 
@@ -1491,6 +1493,20 @@ public class OnDeviceValidatorAssert {
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_WIFICONNECTIONQUALITY_ACTIVITY);
+    }
+
+    /**
+     * Starts OnDeviceValidator's disk space activity.
+     *
+     * @throws ActivityStartingException
+     * @throws InterruptedException
+     * @throws UiElementFetchingException
+     */
+    public static void startDiskSpaceActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_DISK_SPACE_ACTIVITY);
     }
 
     public static void startHorizontalScrollActivity()
