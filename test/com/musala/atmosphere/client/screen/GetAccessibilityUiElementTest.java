@@ -9,8 +9,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.client.AccessibilityUiElement;
 import com.musala.atmosphere.client.Screen;
+import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.MultipleElementsFoundException;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
@@ -64,10 +64,11 @@ public class GetAccessibilityUiElementTest extends BaseIntegrationTest {
         elementSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, BUTTON_CLASS_NAME);
         elementSelector.addSelectionAttribute(CssAttribute.TEXT, FIRST_BUTTON_TEXT);
 
-        AccessibilityUiElement foundElement = screen.getAccessibilityUiElement(elementSelector);
+        UiElement foundElement = screen.getElement(elementSelector);
 
-        assertEquals(SELECTOR_PROPERTIES_MISSMATCH_MESSAGE, BUTTON_CLASS_NAME, foundElement.getProperties()
-                                                                                           .getClassName());
+        assertEquals(SELECTOR_PROPERTIES_MISSMATCH_MESSAGE,
+                     BUTTON_CLASS_NAME,
+                     foundElement.getProperties().getClassName());
         assertEquals(SELECTOR_PROPERTIES_MISSMATCH_MESSAGE, FIRST_BUTTON_TEXT, foundElement.getText());
     }
 
@@ -76,7 +77,7 @@ public class GetAccessibilityUiElementTest extends BaseIntegrationTest {
         UiElementSelector elementSelector = new UiElementSelector();
         elementSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, BUTTON_CLASS_NAME);
 
-        screen.getAccessibilityUiElement(elementSelector);
+        screen.getElement(elementSelector);
     }
 
     @Test(expected = UiElementFetchingException.class)
@@ -84,7 +85,7 @@ public class GetAccessibilityUiElementTest extends BaseIntegrationTest {
         UiElementSelector elementSelector = new UiElementSelector();
         elementSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, NON_EXISTENT_TEXT);
 
-        screen.getAccessibilityUiElement(elementSelector);
+        screen.getElement(elementSelector);
     }
 
     @Test
@@ -92,7 +93,7 @@ public class GetAccessibilityUiElementTest extends BaseIntegrationTest {
         UiElementSelector elementSelector = new UiElementSelector();
         elementSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, VALIDATOR_BUTTON_CONTENT_DECSRIPTOR);
 
-        AccessibilityUiElement foundElement = screen.getAccessibilityUiElement(elementSelector);
+        UiElement foundElement = screen.getElement(elementSelector);
 
         assertEquals(SELECTOR_PROPERTIES_MISSMATCH_MESSAGE,
                      VALIDATOR_BUTTON_CONTENT_DECSRIPTOR,
@@ -104,7 +105,7 @@ public class GetAccessibilityUiElementTest extends BaseIntegrationTest {
         UiElementSelector elementSelector = new UiElementSelector();
         elementSelector.addSelectionAttribute(CssAttribute.TEXT, FIRST_BUTTON_TEXT);
 
-        AccessibilityUiElement foundElement = screen.getAccessibilityUiElement(elementSelector);
+        UiElement foundElement = screen.getElement(elementSelector);
 
         assertEquals(SELECTOR_PROPERTIES_MISSMATCH_MESSAGE, FIRST_BUTTON_TEXT, foundElement.getText());
     }

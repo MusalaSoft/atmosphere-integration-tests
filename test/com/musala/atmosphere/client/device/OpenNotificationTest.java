@@ -49,14 +49,11 @@ public class OpenNotificationTest extends BaseIntegrationTest {
         notificationBarSelector.addSelectionAttribute(CssAttribute.RESOURCE_ID, NOTIFICATION_BAR_RESOURCE_ID);
 
         Screen deviceActiveScreen = testDevice.getActiveScreen();
-
         try {
             deviceActiveScreen.getElement(notificationBarSelector);
             fail("The notification bar was already opened");
         } catch (UiElementFetchingException e) {
-
             testDevice.openNotificationBar();
-
             try {
                 deviceActiveScreen.updateScreen();
                 deviceActiveScreen.getElement(notificationBarSelector);

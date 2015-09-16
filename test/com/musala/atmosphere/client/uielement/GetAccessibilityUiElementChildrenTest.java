@@ -67,7 +67,7 @@ public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
     public void testGetChildrenWhenNoMatchesFound() throws Exception {
         UiElementSelector parentSelector = new UiElementSelector();
         parentSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_RELATIVE_LAYOUT);
-        UiElement parent = screen.getAccessibilityUiElement(parentSelector);
+        UiElement parent = screen.getElement(parentSelector);
 
         UiElementSelector childSelector = new UiElementSelector();
         childSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_IMAGE_BUTTON);
@@ -81,7 +81,7 @@ public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
         int expectedChildrenCount = 3;
         UiElementSelector parentSelector = new UiElementSelector();
         parentSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_RELATIVE_LAYOUT);
-        UiElement parent = screen.getAccessibilityUiElement(parentSelector);
+        UiElement parent = screen.getElement(parentSelector);
 
         UiElementSelector childSelector = new UiElementSelector();
         childSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_BUTTON);
@@ -90,8 +90,9 @@ public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
         assertEquals(MISSMATCH_CHILDREN_COUNT_ERROR_MESSAGE, expectedChildrenCount, children.size());
 
         for (UiElement child : children) {
-            assertEquals(ELEMENT_PROPERTY_MISSMATCH_MESSAGE, ANDROID_WIDGET_BUTTON, child.getProperties()
-                                                                                         .getClassName());
+            assertEquals(ELEMENT_PROPERTY_MISSMATCH_MESSAGE,
+                         ANDROID_WIDGET_BUTTON,
+                         child.getProperties().getClassName());
         }
     }
 
@@ -100,7 +101,7 @@ public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
         int expectedChildrenCount = 7;
         UiElementSelector parentSelector = new UiElementSelector();
         parentSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_LIST_VIEW);
-        UiElement parent = screen.getAccessibilityUiElement(parentSelector);
+        UiElement parent = screen.getElement(parentSelector);
 
         List<UiElement> children = parent.getDirectChildren();
 
@@ -112,7 +113,7 @@ public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
         int expectedChildrenCount = 2;
         UiElementSelector parentSelector = new UiElementSelector();
         parentSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_RELATIVE_LAYOUT);
-        UiElement parent = screen.getAccessibilityUiElement(parentSelector);
+        UiElement parent = screen.getElement(parentSelector);
 
         List<UiElement> children = parent.getDirectChildren();
 
@@ -124,7 +125,7 @@ public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
         int expectedChildrenCount = 9;
         UiElementSelector parentSelector = new UiElementSelector();
         parentSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_RELATIVE_LAYOUT);
-        UiElement parent = screen.getAccessibilityUiElement(parentSelector);
+        UiElement parent = screen.getElement(parentSelector);
 
         List<UiElement> children = parent.getChildren(new UiElementSelector());
 
@@ -136,7 +137,7 @@ public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
         int expectedChildrenCount = 1;
         UiElementSelector parentSelector = new UiElementSelector();
         parentSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_RELATIVE_LAYOUT);
-        UiElement parent = screen.getAccessibilityUiElement(parentSelector);
+        UiElement parent = screen.getElement(parentSelector);
 
         UiElementSelector childSelector = new UiElementSelector();
         childSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_BUTTON);
@@ -152,7 +153,7 @@ public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
     public void testGetDirectChildrenWhenNoChildMatchesSelectionAttributes() throws Exception {
         UiElementSelector parentSelector = new UiElementSelector();
         parentSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_RELATIVE_LAYOUT);
-        UiElement parent = screen.getAccessibilityUiElement(parentSelector);
+        UiElement parent = screen.getElement(parentSelector);
 
         UiElementSelector childSelector = new UiElementSelector();
         childSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_BUTTON);

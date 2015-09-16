@@ -11,8 +11,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.client.AccessibilityUiElement;
 import com.musala.atmosphere.client.Screen;
+import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
@@ -58,13 +58,13 @@ public class GetAccessibilityUiElementsTest extends BaseIntegrationTest {
         UiElementSelector elementSelector = new UiElementSelector();
         elementSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, BUTTON_CLASS_NAME);
 
-        List<AccessibilityUiElement> foundElements = screen.getAccessibilityUiElements(elementSelector);
+        List<UiElement> foundElements = screen.getElements(elementSelector);
 
         assertEquals("The number of found elements is different than expected.",
                      expectedFoundElements,
                      foundElements.size());
 
-        for (AccessibilityUiElement element : foundElements) {
+        for (UiElement element : foundElements) {
             assertEquals("The found element has different field values than the selector.",
                          BUTTON_CLASS_NAME,
                          element.getProperties().getClassName());
@@ -75,6 +75,6 @@ public class GetAccessibilityUiElementsTest extends BaseIntegrationTest {
     public void testFindNonExistentElements() throws Exception {
         UiElementSelector elementSelector = new UiElementSelector();
         elementSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, NON_EXISTENT_TEXT);
-        screen.getAccessibilityUiElements(elementSelector);
+        screen.getElements(elementSelector);
     }
 }
