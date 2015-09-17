@@ -8,7 +8,6 @@ import com.musala.atmosphere.agent.devicewrapper.GetScreenshotTest;
 import com.musala.atmosphere.agent.devicewrapper.GetUiXmlTest;
 import com.musala.atmosphere.agent.devicewrapper.ScreenOrientationTest;
 import com.musala.atmosphere.agent.devicewrapper.TelephonyInformationTest;
-import com.musala.atmosphere.client.builder.BuilderDeviceSelectionIntegrationTest;
 import com.musala.atmosphere.client.device.BringTaskToFrontTest;
 import com.musala.atmosphere.client.device.ClearDataTest;
 import com.musala.atmosphere.client.device.ClearTextTest;
@@ -56,27 +55,33 @@ import com.musala.atmosphere.client.device.WaitUntilGoneTest;
 import com.musala.atmosphere.client.device.WifiConnectionQualityTest;
 import com.musala.atmosphere.client.screen.GetAccessibilityUiElementTest;
 import com.musala.atmosphere.client.screen.GetAccessibilityUiElementsTest;
+import com.musala.atmosphere.client.screen.GetElementByXPathTest;
 import com.musala.atmosphere.client.screen.GetElementWhenPresentTest;
+import com.musala.atmosphere.client.screen.GetElementsByXPathTest;
 import com.musala.atmosphere.client.uielement.GetAccessibilityUiElementChildrenTest;
+import com.musala.atmosphere.client.uielement.GetElementChildrenByXPathTest;
 import com.musala.atmosphere.client.uielement.UiElementRevalidationTest;
 
-@SuiteClasses({ScreenOrientationTest.class, BuilderDeviceSelectionIntegrationTest.class, TapTest.class,
-        StartActivityTest.class, LockUnlockTest.class, GetUiXmlTest.class, DeviceInstallApkTest.class,
-        GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class, GestureExecutionTest.class,
-        TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class, PinchTest.class,
-        LongPressTest.class, WaitForExistsTest.class, ScrollTest.class, HorizontalScrollTest.class,
-        WaitForWindowUpdateTest.class, EmulatorCameraTest.class, WaitUntilGoneTest.class, ProcessRunningTest.class,
-        ForceStopProcessTest.class, StopBackgroundProcessTest.class, GetElementWhenPresentTest.class,
-        SetIMEAsDefaultTest.class, OpenNotificationTest.class, OpenQuickSettingsTest.class, NotificationBarTest.class,
-        NotificationInteractionTest.class, UninstallApplicationTest.class, DeviceProximityTest.class,
-        WaitForTaskUpdateTest.class, BringTaskToFrontTest.class, MockLocationTest.class, DisableMockLocationTest.class,
-        InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class, PasteTextTest.class, CopyTextTest.class,
-        CutTextTest.class, DatePickerInteractionTest.class, TimePickerInteractionTest.class,
-        GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class, ScreenOffTimeoutTest.class,
-        GetLastToastTest.class, GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
-        com.musala.atmosphere.client.device.GetAccessibilityUiElementsTest.class,
+@SuiteClasses({ScreenOrientationTest.class, TapTest.class, StartActivityTest.class, LockUnlockTest.class,
+        GetUiXmlTest.class, DeviceInstallApkTest.class, GetScreenshotTest.class, DeviceGetScreenshotTest.class,
+        ReceiveSmsTest.class, GestureExecutionTest.class, TelephonyInformationTest.class, StartApplicationTest.class,
+        DoubleTapTest.class, PinchTest.class, LongPressTest.class, WaitForExistsTest.class, ScrollTest.class,
+        HorizontalScrollTest.class, WaitForWindowUpdateTest.class, EmulatorCameraTest.class, WaitUntilGoneTest.class,
+        ProcessRunningTest.class, ForceStopProcessTest.class, StopBackgroundProcessTest.class,
+        GetElementWhenPresentTest.class, SetIMEAsDefaultTest.class, OpenNotificationTest.class,
+        OpenQuickSettingsTest.class, NotificationBarTest.class, NotificationInteractionTest.class,
+        UninstallApplicationTest.class, DeviceProximityTest.class, WaitForTaskUpdateTest.class,
+        BringTaskToFrontTest.class, MockLocationTest.class, DisableMockLocationTest.class, InputTextTest.class,
+        ClearTextTest.class, SelectAllTextTest.class, PasteTextTest.class, CopyTextTest.class, CutTextTest.class,
+        DatePickerInteractionTest.class, TimePickerInteractionTest.class, GetRunningTaskIdsTest.class,
+        ScreenRecordingTest.class, SetKeyguardTest.class, ScreenOffTimeoutTest.class, GetLastToastTest.class,
+        GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
         GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class, ClearDataTest.class,
-        DragTest.class, WifiConnectionQualityTest.class})
-// @SuiteClasses({GetLastToastTest.class})
+        DragTest.class, WifiConnectionQualityTest.class, GetElementChildrenByXPathTest.class,
+        GetElementsByXPathTest.class, GetElementByXPathTest.class})
+// @SuiteClasses({GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
+// GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class,
+// GetElementChildrenByXPathTest.class, GetElementsByXPathTest.class, GetElementByXPathTest.class,
+// DatePickerInteractionTest.class, TimePickerInteractionTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
