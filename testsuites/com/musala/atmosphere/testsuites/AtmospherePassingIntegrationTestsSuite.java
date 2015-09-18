@@ -55,6 +55,7 @@ import com.musala.atmosphere.client.device.WaitUntilGoneTest;
 import com.musala.atmosphere.client.device.WifiConnectionQualityTest;
 import com.musala.atmosphere.client.screen.GetAccessibilityUiElementTest;
 import com.musala.atmosphere.client.screen.GetAccessibilityUiElementsTest;
+import com.musala.atmosphere.client.screen.GetElementByCssTest;
 import com.musala.atmosphere.client.screen.GetElementByXPathTest;
 import com.musala.atmosphere.client.screen.GetElementWhenPresentTest;
 import com.musala.atmosphere.client.screen.GetElementsByXPathTest;
@@ -78,10 +79,11 @@ import com.musala.atmosphere.client.uielement.UiElementRevalidationTest;
         GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
         GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class, ClearDataTest.class,
         DragTest.class, WifiConnectionQualityTest.class, GetElementChildrenByXPathTest.class,
-        GetElementsByXPathTest.class, GetElementByXPathTest.class})
+        GetElementsByXPathTest.class, GetElementByXPathTest.class, GetElementByCssTest.class})
 // @SuiteClasses({GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
 // GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class,
 // GetElementChildrenByXPathTest.class, GetElementsByXPathTest.class, GetElementByXPathTest.class,
-// DatePickerInteractionTest.class, TimePickerInteractionTest.class})
+//
+// GetElementByCssTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
