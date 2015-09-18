@@ -17,6 +17,7 @@ import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
+import com.musala.atmosphere.commons.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.ui.selector.CssAttribute;
 import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
@@ -44,7 +45,15 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
             setTestDevice(testDevice);
 
             notificationBar = new NotificationBar(testDevice);
-            notificationBar.clearAllNotifications();
+            notificationBar.open();
+            try {
+                // If there are no notifications the Clear notifications button is not present
+                notificationBar.clearAllNotifications();
+            } catch (UiElementFetchingException e) {
+                // Nothing to do here
+            }
+
+            notificationBar.close();
 
             startNotificationTestActivity();
 

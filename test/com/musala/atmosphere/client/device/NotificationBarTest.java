@@ -47,7 +47,15 @@ public class NotificationBarTest extends BaseIntegrationTest {
             setTestDevice(testDevice);
 
             notificationBar = new NotificationBar(testDevice);
-            notificationBar.clearAllNotifications();
+            notificationBar.open();
+            try {
+                // If there are no notifications the Clear notifications button is not present
+                notificationBar.clearAllNotifications();
+            } catch (UiElementFetchingException e) {
+                // Nothing to do here
+            }
+
+            notificationBar.close();
 
             startNotificationTestActivity();
 
@@ -64,9 +72,11 @@ public class NotificationBarTest extends BaseIntegrationTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
+        notificationBar.close();
         if (testDevice != null) {
             testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         }
+
         releaseDevice();
     }
 
