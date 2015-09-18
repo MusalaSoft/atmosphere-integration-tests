@@ -19,7 +19,8 @@ import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 
 public class ReinstallApplicationTest extends BaseIntegrationTest {
 
-    private final static String PATH_TO_APK_SECOND_CERTIFICATE = "./ondeviceComponents\\OnDeviceValidator-secondCertificate.apk";
+    private final static String PATH_TO_APK_SECOND_CERTIFICATE = PATH_TO_APK_DIR
+            + "OnDeviceValidator-secondCertificate.apk";
 
     private final static String VALIDATOR_BAR_TEXT = "Atmosphere Validator";
 
