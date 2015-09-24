@@ -22,6 +22,8 @@ public class OpenQuickSettingsTest extends BaseIntegrationTest {
 
     private static final String QUICK_SETTINGS_RESOURCE_ID = "com.android.systemui:id/quick_settings_container";
 
+    private static final int NOTIFICATION_BAR_TIMEOUT = 5_000;
+
     @BeforeClass
     public static void setUp() throws Exception {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY)
@@ -57,7 +59,7 @@ public class OpenQuickSettingsTest extends BaseIntegrationTest {
             testDevice.openQuickSettings();
 
             try {
-                deviceActiveScreen.updateScreen();
+                deviceActiveScreen.waitForElementExists(quickSettingsSelector, NOTIFICATION_BAR_TIMEOUT);
                 deviceActiveScreen.getElement(quickSettingsSelector);
             } catch (UiElementFetchingException exception) {
                 fail("The quick settings were not opened.");

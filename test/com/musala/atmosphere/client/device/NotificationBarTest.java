@@ -2,6 +2,7 @@ package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startNotificationTestActivity;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assume.assumeNotNull;
 
@@ -36,6 +37,12 @@ public class NotificationBarTest extends BaseIntegrationTest {
 
     private static final String UNEXISTING_NOTIFICATION_SELECTOR_TEXT = "unexisting notification";
 
+    private static final int NOTIFICATION_BAR_TIMEOUT = 5_000;
+
+    private static final String WRONG_NOTIFICATION_MESSAGE = "The method did not return the right notification.";
+
+    private static Screen deviceActiveScreen;
+
     @BeforeClass
     public static void setUp() throws Exception {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY)
@@ -63,7 +70,7 @@ public class NotificationBarTest extends BaseIntegrationTest {
             sendNotificationButtonSelector.addSelectionAttribute(CssAttribute.TEXT,
                                                                  ContentDescriptor.SEND_NOTIFICATION_BUTTON.toString());
 
-            Screen deviceActiveScreen = testDevice.getActiveScreen();
+            deviceActiveScreen = testDevice.getActiveScreen();
             UiElement sendNotificationButton = deviceActiveScreen.getElement(sendNotificationButtonSelector);
             sendNotificationButton.tap();
         } catch (NoAvailableDeviceFoundException e) {
@@ -85,16 +92,20 @@ public class NotificationBarTest extends BaseIntegrationTest {
         selector.addSelectionAttribute(CssAttribute.TEXT, NOTIFICATION_TITLE_TEXT);
         List<UiElement> notificationElements = notification.getChildren(selector);
 
-        assertNotNull("The method did not return the right notification.", notificationElements);
+        assertNotNull(WRONG_NOTIFICATION_MESSAGE, notificationElements);
     }
 
     @Test
     public void testGetExistingNotificationByText() throws Exception {
         assumeNotNull(testDevice);
 
+        UiElementSelector notificationSelector = new UiElementSelector();
+        notificationSelector.addSelectionAttribute(CssAttribute.TEXT, NOTIFICATION_TITLE_TEXT);
+
+        deviceActiveScreen.waitForElementExists(notificationSelector, NOTIFICATION_BAR_TIMEOUT);
         UiElement notification = notificationBar.getNotificationByText(NOTIFICATION_TITLE_TEXT);
 
-        verifyNotification(notification);
+        assertEquals(WRONG_NOTIFICATION_MESSAGE, NOTIFICATION_TITLE_TEXT, notification.getText());
     }
 
     @Test
@@ -103,9 +114,11 @@ public class NotificationBarTest extends BaseIntegrationTest {
 
         UiElementSelector notificationSelector = new UiElementSelector();
         notificationSelector.addSelectionAttribute(CssAttribute.TEXT, NOTIFICATION_TITLE_TEXT);
+
+        deviceActiveScreen.waitForElementExists(notificationSelector, 5_000);
         UiElement notification = notificationBar.getNotificationBySelector(notificationSelector);
 
-        verifyNotification(notification);
+        assertEquals(WRONG_NOTIFICATION_MESSAGE, NOTIFICATION_TITLE_TEXT, notification.getText());
     }
 
     @Test

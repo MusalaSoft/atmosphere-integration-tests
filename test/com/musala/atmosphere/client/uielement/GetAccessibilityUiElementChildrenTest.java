@@ -3,7 +3,7 @@ package com.musala.atmosphere.client.uielement;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startUiElementChildrenActivity;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -17,6 +17,7 @@ import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.ui.UiElementPropertiesContainer;
 import com.musala.atmosphere.commons.ui.selector.CssAttribute;
 import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
@@ -28,8 +29,6 @@ import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
  */
 public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
     private static final String HEADER_VIEW_BUTTON_TEXT = "Header view";
-
-    private static final String UNEXPECTED_ELEMENT_FOUND_MESSAGE = "Unexpectedly children matching the given attributes were found.";
 
     private static final String ELEMENT_PROPERTY_MISSMATCH_MESSAGE = "The expected children class name is different from the received.";
 
@@ -63,7 +62,7 @@ public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
         releaseDevice();
     }
 
-    @Test
+    @Test(expected = UiElementFetchingException.class)
     public void testGetChildrenWhenNoMatchesFound() throws Exception {
         UiElementSelector parentSelector = new UiElementSelector();
         parentSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_RELATIVE_LAYOUT);
@@ -71,9 +70,7 @@ public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
 
         UiElementSelector childSelector = new UiElementSelector();
         childSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_IMAGE_BUTTON);
-        List<UiElement> children = parent.getChildren(childSelector);
-
-        assertTrue(UNEXPECTED_ELEMENT_FOUND_MESSAGE, children.isEmpty());
+        parent.getChildren(childSelector);
     }
 
     @Test
@@ -158,8 +155,11 @@ public class GetAccessibilityUiElementChildrenTest extends BaseIntegrationTest {
         UiElementSelector childSelector = new UiElementSelector();
         childSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, ANDROID_WIDGET_BUTTON);
         childSelector.addSelectionAttribute(CssAttribute.TEXT, HEADER_VIEW_BUTTON_TEXT);
-        List<UiElement> children = parent.getDirectChildren(childSelector);
-
-        assertTrue(UNEXPECTED_ELEMENT_FOUND_MESSAGE, children.isEmpty());
+        try {
+            parent.getDirectChildren(childSelector);
+            fail(MISSMATCH_CHILDREN_COUNT_ERROR_MESSAGE);
+        } catch (UiElementFetchingException e) {
+            // Nothing to do here.
+        }
     }
 }

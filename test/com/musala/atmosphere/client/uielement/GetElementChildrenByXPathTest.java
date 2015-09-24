@@ -3,7 +3,6 @@ package com.musala.atmosphere.client.uielement;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startUiElementChildrenActivity;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -17,6 +16,7 @@ import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.exceptions.UiElementFetchingException;
 
 /**
  * 
@@ -60,13 +60,11 @@ public class GetElementChildrenByXPathTest extends BaseIntegrationTest {
         releaseDevice();
     }
 
-    @Test
+    @Test(expected = UiElementFetchingException.class)
     public void testGetChildrenByXPathWhenNoMatchesFound() throws Exception {
         UiElement parent = screen.getElementByXPath(RELATIVE_LAYOUT_QUERY);
 
-        List<UiElement> children = parent.getChildrenByXPath(IMAGE_BUTTON_QUERY);
-
-        assertTrue(UNEXPECTED_ELEMENT_FOUND_MESSAGE, children.isEmpty());
+        parent.getChildrenByXPath(IMAGE_BUTTON_QUERY);
     }
 
     @Test
