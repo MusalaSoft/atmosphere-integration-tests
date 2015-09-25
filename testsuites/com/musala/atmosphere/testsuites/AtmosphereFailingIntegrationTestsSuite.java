@@ -8,6 +8,7 @@ import com.musala.atmosphere.agent.devicewrapper.BatteryRelatedMethodsTest;
 import com.musala.atmosphere.agent.devicewrapper.DeviceAcceleratoinTest;
 import com.musala.atmosphere.agent.devicewrapper.DeviceOrientationTest;
 import com.musala.atmosphere.agent.devicewrapper.EmulatorConsoleTest;
+import com.musala.atmosphere.agent.devicewrapper.GetUiXmlTest;
 import com.musala.atmosphere.agent.devicewrapper.NetworkConnectionTest;
 import com.musala.atmosphere.client.builder.BuilderIntegrationTest;
 import com.musala.atmosphere.client.device.CallTest;
@@ -26,6 +27,6 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
 @SuiteClasses({DeviceAcceleratoinTest.class, BatteryRelatedMethodsTest.class, DeviceOrientationTest.class,
         BuilderIntegrationTest.class, EmulatorConsoleTest.class, EmulatorCreationTest.class,
         NetworkConnectionTest.class, SwipeTest.class, AtmosphereServiceConnectionTest.class, CallTest.class,
-        PoolEventHandlerTest.class})
+        PoolEventHandlerTest.class, GetUiXmlTest.class})
 public class AtmosphereFailingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
