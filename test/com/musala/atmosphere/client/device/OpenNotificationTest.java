@@ -22,6 +22,8 @@ public class OpenNotificationTest extends BaseIntegrationTest {
 
     private static final String NOTIFICATION_BAR_RESOURCE_ID = "com.android.systemui:id/notification_panel";
 
+    private static final int NOTIFICATION_BAR_TIMEOUT = 3_000;
+
     @BeforeClass
     public static void setUp() throws Exception {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY)
@@ -49,16 +51,13 @@ public class OpenNotificationTest extends BaseIntegrationTest {
         notificationBarSelector.addSelectionAttribute(CssAttribute.RESOURCE_ID, NOTIFICATION_BAR_RESOURCE_ID);
 
         Screen deviceActiveScreen = testDevice.getActiveScreen();
-
         try {
             deviceActiveScreen.getElement(notificationBarSelector);
             fail("The notification bar was already opened");
         } catch (UiElementFetchingException e) {
-
             testDevice.openNotificationBar();
-
             try {
-                deviceActiveScreen.updateScreen();
+                deviceActiveScreen.waitForElementExists(notificationBarSelector, NOTIFICATION_BAR_TIMEOUT);
                 deviceActiveScreen.getElement(notificationBarSelector);
             } catch (UiElementFetchingException exception) {
                 fail("The notification bar was not opened.");

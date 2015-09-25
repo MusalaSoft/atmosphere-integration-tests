@@ -16,17 +16,15 @@ import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.exceptions.UiElementFetchingException;
-import com.musala.atmosphere.commons.ui.selector.CssAttribute;
-import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 
 /**
  * 
  * @author denis.bialev
  *
  */
-public class GetAccessibilityUiElementTest extends BaseIntegrationTest {
+public class GetElementByXPathTest extends BaseIntegrationTest {
 
-    private static final String SELECTOR_PROPERTIES_MISSMATCH_MESSAGE = "The found element has different field values than the selector.";
+    private static final String SELECTOR_PROPERTIES_MISSMATCH_MESSAGE = "The found element has different field values than the query.";
 
     // TODO Find what invisible elements represent in UiAutomator and add tests for them
 
@@ -36,7 +34,15 @@ public class GetAccessibilityUiElementTest extends BaseIntegrationTest {
 
     private static final String FIRST_BUTTON_TEXT = "Button1";
 
-    private static final String NON_EXISTENT_TEXT = "I don't exist";
+    private static final String FIRST_BUTTON_QUERY = "//*[@className='android.widget.Button' and @text='Button1']";
+
+    private static final String BUTTON_QUERY = "//*[@className='android.widget.Button']";
+
+    private static final String NON_EXISTENT_ELEMENT_QUERY = "//*[@text='nonExistent']";
+
+    private static final String UNIQUE_TEXT_QUERY = "//*[@text='Button1']";
+
+    private static final String INIQUE_CONTENT_DESC_QUERY = "//*[@contentDesc='ATMOSPHEREValidator']";
 
     private static Screen screen;
 
@@ -59,12 +65,8 @@ public class GetAccessibilityUiElementTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testGetVisibleUiElement() throws Exception {
-        UiElementSelector elementSelector = new UiElementSelector();
-        elementSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, BUTTON_CLASS_NAME);
-        elementSelector.addSelectionAttribute(CssAttribute.TEXT, FIRST_BUTTON_TEXT);
-
-        UiElement foundElement = screen.getElement(elementSelector);
+    public void testGetVisibleUiElementByXPath() throws Exception {
+        UiElement foundElement = screen.getElementByXPath(FIRST_BUTTON_QUERY);
 
         assertEquals(SELECTOR_PROPERTIES_MISSMATCH_MESSAGE,
                      BUTTON_CLASS_NAME,
@@ -73,27 +75,18 @@ public class GetAccessibilityUiElementTest extends BaseIntegrationTest {
     }
 
     @Test(expected = MultipleElementsFoundException.class)
-    public void testGetMultipleUiElements() throws Exception {
-        UiElementSelector elementSelector = new UiElementSelector();
-        elementSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, BUTTON_CLASS_NAME);
-
-        screen.getElement(elementSelector);
+    public void testGetMultipleUiElementsByXPath() throws Exception {
+        screen.getElementByXPath(BUTTON_QUERY);
     }
 
     @Test(expected = UiElementFetchingException.class)
-    public void testFindNonExistentElement() throws Exception {
-        UiElementSelector elementSelector = new UiElementSelector();
-        elementSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, NON_EXISTENT_TEXT);
-
-        screen.getElement(elementSelector);
+    public void testFindNonExistentElementByXPath() throws Exception {
+        screen.getElementByXPath(NON_EXISTENT_ELEMENT_QUERY);
     }
 
     @Test
-    public void testGetElementWhenContentDescriptionIsUninque() throws Exception {
-        UiElementSelector elementSelector = new UiElementSelector();
-        elementSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, VALIDATOR_BUTTON_CONTENT_DECSRIPTOR);
-
-        UiElement foundElement = screen.getElement(elementSelector);
+    public void testGetElementByXPathWhenContentDescriptorIsUnique() throws Exception {
+        UiElement foundElement = screen.getElementByXPath(INIQUE_CONTENT_DESC_QUERY);
 
         assertEquals(SELECTOR_PROPERTIES_MISSMATCH_MESSAGE,
                      VALIDATOR_BUTTON_CONTENT_DECSRIPTOR,
@@ -101,11 +94,8 @@ public class GetAccessibilityUiElementTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testGetElementWhenTextIsUnique() throws Exception {
-        UiElementSelector elementSelector = new UiElementSelector();
-        elementSelector.addSelectionAttribute(CssAttribute.TEXT, FIRST_BUTTON_TEXT);
-
-        UiElement foundElement = screen.getElement(elementSelector);
+    public void testGetElementByXPathWhenTextIsUnique() throws Exception {
+        UiElement foundElement = screen.getElementByXPath(UNIQUE_TEXT_QUERY);
 
         assertEquals(SELECTOR_PROPERTIES_MISSMATCH_MESSAGE, FIRST_BUTTON_TEXT, foundElement.getText());
     }

@@ -17,20 +17,20 @@ import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.exceptions.UiElementFetchingException;
-import com.musala.atmosphere.commons.ui.selector.CssAttribute;
-import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 
 /**
  * 
  * @author denis.bialev
  *
  */
-public class GetAccessibilityUiElementsTest extends BaseIntegrationTest {
+public class GetElementsByXPathTest extends BaseIntegrationTest {
     // TODO Find what invisible elements represent in UiAutomator and add tests for them
 
     private static final String BUTTON_CLASS_NAME = "android.widget.Button";
 
-    private static final String NON_EXISTENT_TEXT = "I don't exist";
+    private static final String BUTTON_QUERY = "//*[@className='android.widget.Button']";
+
+    private static final String NON_EXISTENT_ELEMENT_QUERY = "//*[@text='nonExistent']";
 
     private static Screen screen;
 
@@ -53,15 +53,13 @@ public class GetAccessibilityUiElementsTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testGetListOfVisibleUiElements() throws Exception {
-        int expectedFoundElements = 3;
-        UiElementSelector elementSelector = new UiElementSelector();
-        elementSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, BUTTON_CLASS_NAME);
+    public void testGetListOfVisibleUiElementsByXPath() throws Exception {
+        int expectedElementsCount = 3;
 
-        List<UiElement> foundElements = screen.getElements(elementSelector);
+        List<UiElement> foundElements = screen.getAllElementsByXPath(BUTTON_QUERY);
 
         assertEquals("The number of found elements is different than expected.",
-                     expectedFoundElements,
+                     expectedElementsCount,
                      foundElements.size());
 
         for (UiElement element : foundElements) {
@@ -72,9 +70,7 @@ public class GetAccessibilityUiElementsTest extends BaseIntegrationTest {
     }
 
     @Test(expected = UiElementFetchingException.class)
-    public void testFindNonExistentElements() throws Exception {
-        UiElementSelector elementSelector = new UiElementSelector();
-        elementSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, NON_EXISTENT_TEXT);
-        screen.getElements(elementSelector);
+    public void testFindNonExistentElementsByXPath() throws Exception {
+        screen.getAllElementsByXPath(NON_EXISTENT_ELEMENT_QUERY);
     }
 }

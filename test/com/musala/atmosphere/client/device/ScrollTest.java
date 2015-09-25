@@ -10,8 +10,8 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getScrollableView;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startScrollActivity;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -23,6 +23,7 @@ import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.ui.selector.CssAttribute;
 import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
@@ -153,7 +154,7 @@ public class ScrollTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testTapElementBySelectorWithoutScrolling() throws Exception {
+    public void testTapNotVisibleElementBySelectorWithoutScrolling() throws Exception {
         ScrollableView scrollableView = getScrollableView(ContentDescriptor.SCROLL_VIEW_VALIDATOR.toString());
         UiElement scrollToBeginningButton = getElementByContentDescriptor(ContentDescriptor.SCROLL_TO_BEGINNING_BUTTON.toString());
         scrollToBeginningButton.tap();
@@ -173,8 +174,11 @@ public class ScrollTest extends BaseIntegrationTest {
         innerViewSelector.addSelectionAttribute(CssAttribute.TEXT, SCROLL_TO_TEXT);
         assertUIElementNotOnScreen("Element is visible", innerViewSelector);
 
-        hasTapped = scrollableView.tapElementBySelectorWithoutScrolling(innerViewSelector);
-
-        assertFalse("Tap element by selector without scrolling returned true.", hasTapped);
+        try {
+            scrollableView.tapElementBySelectorWithoutScrolling(innerViewSelector);
+            fail("The element was tapped when no longer visible.");
+        } catch (UiElementFetchingException e) {
+            // Nothing to do here
+        }
     }
 }

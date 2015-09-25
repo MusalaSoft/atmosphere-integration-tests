@@ -5,10 +5,8 @@ import org.junit.runners.Suite.SuiteClasses;
 import com.musala.atmosphere.agent.devicewrapper.DeviceProximityTest;
 import com.musala.atmosphere.agent.devicewrapper.EmulatorCameraTest;
 import com.musala.atmosphere.agent.devicewrapper.GetScreenshotTest;
-import com.musala.atmosphere.agent.devicewrapper.GetUiXmlTest;
 import com.musala.atmosphere.agent.devicewrapper.ScreenOrientationTest;
 import com.musala.atmosphere.agent.devicewrapper.TelephonyInformationTest;
-import com.musala.atmosphere.client.builder.BuilderDeviceSelectionIntegrationTest;
 import com.musala.atmosphere.client.device.BringTaskToFrontTest;
 import com.musala.atmosphere.client.device.ClearDataTest;
 import com.musala.atmosphere.client.device.ClearTextTest;
@@ -56,8 +54,13 @@ import com.musala.atmosphere.client.device.WaitForWindowUpdateTest;
 import com.musala.atmosphere.client.device.WaitUntilGoneTest;
 import com.musala.atmosphere.client.device.WifiConnectionQualityTest;
 import com.musala.atmosphere.client.screen.GetAccessibilityUiElementTest;
+import com.musala.atmosphere.client.screen.GetAccessibilityUiElementsTest;
+import com.musala.atmosphere.client.screen.GetElementByCssTest;
+import com.musala.atmosphere.client.screen.GetElementByXPathTest;
 import com.musala.atmosphere.client.screen.GetElementWhenPresentTest;
+import com.musala.atmosphere.client.screen.GetElementsByXPathTest;
 import com.musala.atmosphere.client.uielement.GetAccessibilityUiElementChildrenTest;
+import com.musala.atmosphere.client.uielement.GetElementChildrenByXPathTest;
 import com.musala.atmosphere.client.uielement.UiElementRevalidationTest;
 import com.musala.atmosphere.webview.ClearWebElementTextTest;
 import com.musala.atmosphere.webview.FindWebElementTest;
@@ -74,11 +77,10 @@ import com.musala.atmosphere.webview.WebElementIsEnabledTest;
 import com.musala.atmosphere.webview.WebElementIsSelectedTest;
 import com.musala.atmosphere.webview.WebElementWaitForConditionTest;
 
-@SuiteClasses({ScreenOrientationTest.class, BuilderDeviceSelectionIntegrationTest.class, TapTest.class,
-        StartActivityTest.class, LockUnlockTest.class, GetUiXmlTest.class, DeviceInstallApkTest.class,
-        GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class, GestureExecutionTest.class,
-        TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class, PinchTest.class,
-        LongPressTest.class, WaitForExistsTest.class, ScrollTest.class, HorizontalScrollTest.class,
+@SuiteClasses({ScreenOrientationTest.class, TapTest.class, StartActivityTest.class, LockUnlockTest.class,
+        DeviceInstallApkTest.class, GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class,
+        GestureExecutionTest.class, TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class,
+        PinchTest.class, LongPressTest.class, WaitForExistsTest.class, ScrollTest.class, HorizontalScrollTest.class,
         WaitForWindowUpdateTest.class, EmulatorCameraTest.class, WaitUntilGoneTest.class, ProcessRunningTest.class,
         ForceStopProcessTest.class, StopBackgroundProcessTest.class, GetElementWhenPresentTest.class,
         SetIMEAsDefaultTest.class, OpenNotificationTest.class, OpenQuickSettingsTest.class, NotificationBarTest.class,
@@ -87,15 +89,14 @@ import com.musala.atmosphere.webview.WebElementWaitForConditionTest;
         InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class, PasteTextTest.class, CopyTextTest.class,
         CutTextTest.class, DatePickerInteractionTest.class, TimePickerInteractionTest.class,
         GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class, ScreenOffTimeoutTest.class,
-        GetLastToastTest.class, com.musala.atmosphere.client.device.GetAccessibilityUiElementsTest.class,
-        GetAccessibilityUiElementTest.class, com.musala.atmosphere.client.device.GetAccessibilityUiElementsTest.class,
+        GetLastToastTest.class, GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
         GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class, ClearDataTest.class,
         DragTest.class, WifiConnectionQualityTest.class, FindWebElementTest.class, WebElementIsDisplayedTest.class,
         WebElementIsEnabledTest.class, WebElementIsSelectedTest.class, GetWebElementTagTest.class,
         SubmitWebElementFormTest.class, WebElementInputTextTest.class, WebElementGetCssValueTest.class,
         WebElementWaitForConditionTest.class, ClearWebElementTextTest.class, GetSizeOfWebElementTest.class,
         TapWebElementTest.class, GetWebElementRelativePositionTest.class, GetWebElementTextTest.class,
-        DiskSpaceTest.class})
-// @SuiteClasses({DiskSpaceTest.class})
+        DiskSpaceTest.class, GetElementChildrenByXPathTest.class, GetElementsByXPathTest.class,
+        GetElementByXPathTest.class, GetElementByCssTest.class,})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
