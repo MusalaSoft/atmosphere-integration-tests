@@ -97,6 +97,6 @@ import com.musala.atmosphere.webview.WebElementWaitForConditionTest;
         WebElementWaitForConditionTest.class, ClearWebElementTextTest.class, GetSizeOfWebElementTest.class,
         TapWebElementTest.class, GetWebElementRelativePositionTest.class, GetWebElementTextTest.class,
         DiskSpaceTest.class, GetElementChildrenByXPathTest.class, GetElementsByXPathTest.class,
-        GetElementByXPathTest.class, GetElementByCssTest.class,})
+        GetElementByXPathTest.class, GetElementByCssTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
