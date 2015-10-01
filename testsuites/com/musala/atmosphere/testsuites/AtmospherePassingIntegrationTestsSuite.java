@@ -68,7 +68,6 @@ import com.musala.atmosphere.webview.GetSizeOfWebElementTest;
 import com.musala.atmosphere.webview.GetWebElementRelativePositionTest;
 import com.musala.atmosphere.webview.GetWebElementTagTest;
 import com.musala.atmosphere.webview.GetWebElementTextTest;
-import com.musala.atmosphere.webview.SubmitWebElementFormTest;
 import com.musala.atmosphere.webview.TapWebElementTest;
 import com.musala.atmosphere.webview.WebElementGetCssValueTest;
 import com.musala.atmosphere.webview.WebElementInputTextTest;
@@ -93,10 +92,10 @@ import com.musala.atmosphere.webview.WebElementWaitForConditionTest;
         GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class, ClearDataTest.class,
         DragTest.class, WifiConnectionQualityTest.class, FindWebElementTest.class, WebElementIsDisplayedTest.class,
         WebElementIsEnabledTest.class, WebElementIsSelectedTest.class, GetWebElementTagTest.class,
-        SubmitWebElementFormTest.class, WebElementInputTextTest.class, WebElementGetCssValueTest.class,
-        WebElementWaitForConditionTest.class, ClearWebElementTextTest.class, GetSizeOfWebElementTest.class,
-        TapWebElementTest.class, GetWebElementRelativePositionTest.class, GetWebElementTextTest.class,
-        DiskSpaceTest.class, GetElementChildrenByXPathTest.class, GetElementsByXPathTest.class,
-        GetElementByXPathTest.class, GetElementByCssTest.class,})
+        WebElementInputTextTest.class, WebElementGetCssValueTest.class, WebElementWaitForConditionTest.class,
+        ClearWebElementTextTest.class, GetSizeOfWebElementTest.class, TapWebElementTest.class,
+        GetWebElementRelativePositionTest.class, GetWebElementTextTest.class, DiskSpaceTest.class,
+        GetElementChildrenByXPathTest.class, GetElementsByXPathTest.class, GetElementByXPathTest.class,
+        GetElementByCssTest.class,})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
