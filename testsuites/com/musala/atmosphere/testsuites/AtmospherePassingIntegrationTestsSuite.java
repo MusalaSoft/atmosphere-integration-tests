@@ -8,6 +8,7 @@ import com.musala.atmosphere.agent.devicewrapper.GetScreenshotTest;
 import com.musala.atmosphere.agent.devicewrapper.ScreenOrientationTest;
 import com.musala.atmosphere.agent.devicewrapper.TelephonyInformationTest;
 import com.musala.atmosphere.client.device.BringTaskToFrontTest;
+import com.musala.atmosphere.client.device.ChangeGpsLocationStateTest;
 import com.musala.atmosphere.client.device.ClearDataTest;
 import com.musala.atmosphere.client.device.ClearTextTest;
 import com.musala.atmosphere.client.device.CopyTextTest;
@@ -96,6 +97,6 @@ import com.musala.atmosphere.webview.WebElementWaitForConditionTest;
         ClearWebElementTextTest.class, GetSizeOfWebElementTest.class, TapWebElementTest.class,
         GetWebElementRelativePositionTest.class, GetWebElementTextTest.class, DiskSpaceTest.class,
         GetElementChildrenByXPathTest.class, GetElementsByXPathTest.class, GetElementByXPathTest.class,
-        GetElementByCssTest.class,})
+        GetElementByCssTest.class, ChangeGpsLocationStateTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
