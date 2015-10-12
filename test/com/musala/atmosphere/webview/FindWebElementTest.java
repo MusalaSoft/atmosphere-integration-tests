@@ -95,7 +95,7 @@ public class FindWebElementTest extends BaseIntegrationTest {
 
     @Test
     public void testFindMultipleElementsByAttribute() {
-        int expectedCount = 7;
+        int expectedCount = 9;
         List<UiWebElement> elements = webView.findElements(WebElementSelectionCriterion.TAG, EXISTING_WEB_ELEMENT_TAG);
         assertEquals(ATTRIBUTE_MISSMATCH_ERROR_MESSAGE, expectedCount, elements.size());
 
@@ -106,7 +106,7 @@ public class FindWebElementTest extends BaseIntegrationTest {
 
     @Test
     public void testFindMultipleElementsByXpath() {
-        int expectedCount = 3;
+        int expectedCount = 5;
         List<UiWebElement> elements = webView.findElements(WebElementSelectionCriterion.XPATH,
                                                            EXISTING_ELEMENTS_XPATH_QUERY);
         assertEquals(ATTRIBUTE_MISSMATCH_ERROR_MESSAGE, expectedCount, elements.size());
