@@ -139,6 +139,8 @@ public class OnDeviceValidatorAssert {
 
     private static final int CLEAR_DATA_SIZE = 1;
 
+    private static final String VALIDATOR_LOG_CAT_ACTIVITY = ".LogCatActivity";
+
     private static Device device;
 
     private static Screen screen;
@@ -1728,5 +1730,22 @@ public class OnDeviceValidatorAssert {
             InterruptedException,
             UiElementFetchingException {
         startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_WEB_VIEW_ACTIVITY);
+    }
+
+    /**
+     * Starts the LogCat activity, used for generating test log messages.
+     * 
+     * @throws ActivityStartingException
+     *         if the activity was not started successfully
+     * @throws InterruptedException
+     *         if the start of the activity was interrupted
+     * @throws UiElementFetchingException
+     *         if the UI element could not be found
+     */
+    public static void startLogCatActivity()
+        throws ActivityStartingException,
+            InterruptedException,
+            UiElementFetchingException {
+        startActivity(VALIDATOR_APP_PACKAGE, VALIDATOR_LOG_CAT_ACTIVITY);
     }
 }

@@ -27,6 +27,7 @@ import com.musala.atmosphere.client.device.GetRunningTaskIdsTest;
 import com.musala.atmosphere.client.device.HorizontalScrollTest;
 import com.musala.atmosphere.client.device.InputTextTest;
 import com.musala.atmosphere.client.device.LockUnlockTest;
+import com.musala.atmosphere.client.device.LogCatFiltersTest;
 import com.musala.atmosphere.client.device.LongPressTest;
 import com.musala.atmosphere.client.device.MockLocationTest;
 import com.musala.atmosphere.client.device.NotificationBarTest;
@@ -97,6 +98,6 @@ import com.musala.atmosphere.webview.WebElementWaitForConditionTest;
         ClearWebElementTextTest.class, GetSizeOfWebElementTest.class, TapWebElementTest.class,
         GetWebElementRelativePositionTest.class, GetWebElementTextTest.class, DiskSpaceTest.class,
         GetElementChildrenByXPathTest.class, GetElementsByXPathTest.class, GetElementByXPathTest.class,
-        GetElementByCssTest.class, ChangeGpsLocationStateTest.class})
+        GetElementByCssTest.class, ChangeGpsLocationStateTest.class, LogCatFiltersTest.class})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
