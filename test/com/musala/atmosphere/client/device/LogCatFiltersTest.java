@@ -87,24 +87,40 @@ public class LogCatFiltersTest extends BaseIntegrationTest {
         testDevice.getDeviceLog(logFileAbsolutePath, LogCatLevel.ERROR);
 
         int prefixLength = 1;
-        Set<String> filterCondidtions = new HashSet<>();
-        filterCondidtions.add(LogCatLevel.ERROR.toString());
-        filterCondidtions.add(LogCatLevel.FATAL.toString());
+        Set<String> filterConditions = new HashSet<>();
+        filterConditions.add(LogCatLevel.ERROR.toString());
+        filterConditions.add(LogCatLevel.FATAL.toString());
 
-        assertLogFileValidity(logFileAbsolutePath, prefixLength, filterCondidtions);
+        assertLogFileValidity(logFileAbsolutePath, prefixLength, filterConditions);
     }
 
     @Test
     public void testGetLogByLevelTagPair() throws Exception {
         testDevice.getDeviceLog(logFileAbsolutePath, LogCatLevel.ERROR, LOG_TAG);
 
-        Set<String> filterCondidtions = new HashSet<>();
+        Set<String> filterConditions = new HashSet<>();
         String condition = String.format(LOG_CAT_LEVEL_TAG_FILTER_FORMAT, LogCatLevel.ERROR);
-        filterCondidtions.add(condition);
+        filterConditions.add(condition);
         condition = String.format(LOG_CAT_LEVEL_TAG_FILTER_FORMAT, LogCatLevel.FATAL);
-        filterCondidtions.add(condition);
+        filterConditions.add(condition);
 
-        assertLogFileValidity(logFileAbsolutePath, condition.length(), filterCondidtions);
+        assertLogFileValidity(logFileAbsolutePath, condition.length(), filterConditions);
+    }
+
+    @Test
+    public void testGetLogByTagFilterOnly() throws Exception {
+        testDevice.getDeviceLog(logFileAbsolutePath, LOG_TAG);
+
+        Set<String> filterConditions = new HashSet<>();
+        String condition = "";
+        for (LogCatLevel level : LogCatLevel.values()) {
+            if (!level.equals(LogCatLevel.SILENT)) {
+                condition = String.format(LOG_CAT_LEVEL_TAG_FILTER_FORMAT, level);
+                filterConditions.add(condition);
+            }
+        }
+
+        assertLogFileValidity(logFileAbsolutePath, condition.length(), filterConditions);
     }
 
     // The assert method is used only for conditions from the same length.
