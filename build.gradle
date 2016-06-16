@@ -1,0 +1,74 @@
+apply plugin: 'java'
+
+version = '0.0.1'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Atmosphere Integration Tests',
+                   'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        url 'http://www.terracotta.org/download/reflector/releases/'
+    }
+}
+
+configurations {
+    onDeviceComponents
+}
+
+dependencies {
+    compile 'com.musala.atmosphere:atmosphere-ad-commons:0.0.1'
+    compile 'com.musala.atmosphere:atmosphere-agent:0.0.1'
+    compile 'com.musala.atmosphere:atmosphere-client:0.0.1'
+    compile 'com.musala.atmosphere:atmosphere-commons:0.0.1'
+    compile 'com.musala.atmosphere:atmosphere-cs-commons:0.0.1'
+    compile 'com.musala.atmosphere:atmosphere-sa-commons:0.0.1'
+    compile 'com.musala.atmosphere:atmosphere-server:0.0.1'
+    compile 'com.android.tools.ddms:ddmlib:22.0'
+    compile 'org.jsoup:jsoup:1.7.2'
+    compile 'log4j:log4j:1.2.17'
+    compile 'junit:junit:4.12'
+    compile 'org.hamcrest:hamcrest-core:1.3'
+    compile 'org.seleniumhq.selenium:selenium-java:2.47.1'
+    compile fileTree(dir: 'natives/', include: '*.*')
+
+    onDeviceComponents 'com.musala.atmosphere:atmosphere-ime:0.0.1'
+    onDeviceComponents 'com.musala.atmosphere:atmosphere-service:0.0.1'
+    onDeviceComponents 'com.musala.atmosphere:atmosphere-uiautomator-bridge:0.0.1'
+
+    testCompile 'org.mockito:mockito-all:1.9.5'
+    testCompile 'com.musala.atmosphere:atmosphere-agent:0.0.1:tests'
+}
+
+task copyOnDeviceComponents(type: Copy) {
+    into 'onDeviceComponents'
+    from configurations.onDeviceComponents
+    // exclude version
+    rename { fileName -> fileName.replaceAll(/-\d+(\.\d+)+/, '') }
+}
+
+test.dependsOn copyOnDeviceComponents
+
+sourceSets {
+    main.java.srcDir 'src'
+    main.resources.srcDir 'resources'
+
+    test.java.srcDirs = ['test', 'testsuites']
+}
+
+tasks.withType(Test) {
+    systemProperty 'java.library.path', file('natives')
+
+    scanForTestClasses = false
+    include "**/*PassingIntegrationTestsSuite.class"
+}
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
