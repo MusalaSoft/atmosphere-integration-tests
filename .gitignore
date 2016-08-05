@@ -71,3 +71,6 @@ gradle-app.setting
 ## Project files
 atmosphere-*.apk
 atmosphere-*.jar
+Screenshot.png
+local_screen.png
+chromedriver/
