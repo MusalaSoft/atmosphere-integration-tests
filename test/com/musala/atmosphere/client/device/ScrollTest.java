@@ -60,7 +60,7 @@ public class ScrollTest extends BaseIntegrationTest {
 
         assertScrollToBeginning("Failure detected, could not scroll to beginning.");
 
-        Boolean hasScrolled = scrollableView.scrollToEnd(5);
+        Boolean hasScrolled = scrollableView.scrollToEnd(10);
         String failureMessage = "Failure detected, scroll to end returned false.";
 
         assertTrue(failureMessage, hasScrolled);
@@ -76,7 +76,7 @@ public class ScrollTest extends BaseIntegrationTest {
 
         assertScrollToEnd("Failure detected, could not scroll to end.");
 
-        Boolean hasScrolled = scrollableView.scrollToBeginning(5);
+        Boolean hasScrolled = scrollableView.scrollToBeginning(10);
 
         String failureMessage = "Failure detected, scroll to beginning returned false.";
 
