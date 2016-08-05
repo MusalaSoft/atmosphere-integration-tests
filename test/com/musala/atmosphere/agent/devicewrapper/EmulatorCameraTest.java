@@ -6,6 +6,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assume.assumeThat;
+import static org.junit.Assume.assumeNotNull;
 
 import org.junit.After;
 import org.junit.Test;
@@ -14,6 +15,7 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 
 public class EmulatorCameraTest extends BaseIntegrationTest {
 
@@ -22,8 +24,13 @@ public class EmulatorCameraTest extends BaseIntegrationTest {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.EMULATOR_ONLY);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
 
-        initTestDevice(testDeviceSelector);
-        setTestDevice(testDevice);
+        try {
+            initTestDevice(testDeviceSelector);
+            setTestDevice(testDevice);
+        } catch (NoAvailableDeviceFoundException e) {
+            // Nothing to do here
+        }
+        assumeNotNull(testDevice);
         startMainActivity();
 
         // Note: this should be false, because we can't change camera settings of AVD when creating it through command
@@ -41,8 +48,13 @@ public class EmulatorCameraTest extends BaseIntegrationTest {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
 
-        initTestDevice(testDeviceSelector);
-        setTestDevice(testDevice);
+        try {
+            initTestDevice(testDeviceSelector);
+            setTestDevice(testDevice);
+        } catch (NoAvailableDeviceFoundException e) {
+            // Nothing to do here
+        }
+        assumeNotNull(testDevice);
         startMainActivity();
 
         boolean expectedCamera = testDevice.getInformation().hasCamera();
@@ -54,7 +66,9 @@ public class EmulatorCameraTest extends BaseIntegrationTest {
 
     @After
     public void tearDown() throws Exception {
-        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        if (testDevice != null) {
+            testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        }
         releaseDevice();
     }
 }
