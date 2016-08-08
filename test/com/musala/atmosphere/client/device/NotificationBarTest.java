@@ -79,8 +79,8 @@ public class NotificationBarTest extends BaseIntegrationTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
-        notificationBar.close();
         if (testDevice != null) {
+            notificationBar.close();
             testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         }
 
