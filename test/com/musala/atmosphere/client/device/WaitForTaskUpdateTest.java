@@ -5,6 +5,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeNotNull;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -17,9 +18,9 @@ import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 
 /**
- * 
+ *
  * @author denis.bialev
- * 
+ *
  */
 public class WaitForTaskUpdateTest extends BaseIntegrationTest {
 
@@ -59,6 +60,7 @@ public class WaitForTaskUpdateTest extends BaseIntegrationTest {
 
     @Test
     public void testWaitForTaskUpdate() throws Exception {
+        assumeNotNull(testDevice);
         startMainActivity();
         int[] currentlyRunningTasksIds = testDevice.getRunningTaskIds(MAX_RUNNING_TASKS_COUNT);
         int monitoredTaskId = currentlyRunningTasksIds[0];
@@ -73,12 +75,14 @@ public class WaitForTaskUpdateTest extends BaseIntegrationTest {
 
     @Test
     public void testWaitForTaskUpdateInvalidId() throws Exception {
+        assumeNotNull(testDevice);
         assertFalse("Wait for task update succeeded when given invalid task ID. ",
                     testDevice.waitForTasksUpdate(NONEXISTENT_TASK_ID, TASK_POSITION, WAIT_FOR_NONEXISTENT_TASK_TIMEOUT));
     }
 
     @Test
     public void testWaitForTaskUpdateNoChanges() throws Exception {
+        assumeNotNull(testDevice);
         startMainActivity();
         int[] runningTasksIds = testDevice.getRunningTaskIds(MAX_RUNNING_TASKS_COUNT);
         int monitoredTaskId = runningTasksIds[0];
@@ -88,6 +92,7 @@ public class WaitForTaskUpdateTest extends BaseIntegrationTest {
 
     @Test
     public void testWaitForTaskUpdateWrongPosition() throws Exception {
+        assumeNotNull(testDevice);
         startMainActivity();
         int[] runningTasksIds = testDevice.getRunningTaskIds(MAX_RUNNING_TASKS_COUNT);
         int monitoredTaskId = runningTasksIds[0];

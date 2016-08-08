@@ -20,9 +20,9 @@ import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 import com.musala.atmosphere.commons.util.GeoLocation;
 
 /**
- * 
+ *
  * @author delyan.dimitrov
- * 
+ *
  */
 public class MockLocationTest extends BaseIntegrationTest {
     private static final String MONITORED_PROVIDER_NAME = "gps";
@@ -40,6 +40,9 @@ public class MockLocationTest extends BaseIntegrationTest {
     private static final double SAN_FRANCISCO_LONGITUDE = -122.429189;
 
     private static final double SAN_FRANCISCO_ALTITUDE = 1;
+
+    private static final String SET_UP_MOCK_ERROR_MESSAGE = "Setting the monitored provider to its default location failed. " +
+                                                            "Is mocking the device location enabled in Developer options?";
 
     private static final String FAILURE_INDICATED_ERROR_MESSAGE = "Mocking location provider indicated failure.";
 
@@ -82,7 +85,7 @@ public class MockLocationTest extends BaseIntegrationTest {
     public void setUpTest() {
         // sets the monitored provider to its default location for the test
         boolean isMockSuccessful = testDevice.mockLocation(defaultMonitoredProviderLocation);
-        assertTrue("Setting the monitored provider to its default location indicated failure.", isMockSuccessful);
+        assertTrue(SET_UP_MOCK_ERROR_MESSAGE, isMockSuccessful);
     }
 
     @Test
