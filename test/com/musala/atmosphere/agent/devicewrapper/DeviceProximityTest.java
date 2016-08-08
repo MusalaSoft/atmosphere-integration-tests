@@ -4,6 +4,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertGetProximityValue;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startProximityActivity;
+import static org.junit.Assume.assumeNotNull;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -14,6 +15,7 @@ import com.musala.atmosphere.commons.beans.DeviceProximity;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 
 /**
  * @author simeon.ivanov
@@ -26,21 +28,27 @@ public class DeviceProximityTest extends BaseIntegrationTest {
     public static void setUp() throws Exception {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.EMULATOR_ONLY);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
-        initTestDevice(testDeviceSelector);
+        try {
+            initTestDevice(testDeviceSelector);
+            setTestDevice(testDevice);
 
-        setTestDevice(testDevice);
-
-        startProximityActivity();
+            startProximityActivity();
+        } catch (NoAvailableDeviceFoundException e) {
+            // Nothing to do here
+        }
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
-        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        if (testDevice != null) {
+            testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        }
         releaseDevice();
     }
 
     @Test
     public void testSetProximityNear() {
+        assumeNotNull(testDevice);
         testDevice.setProximity(DeviceProximity.BINARY_NEAR_VALUE);
 
         String proximityNearValueText = String.valueOf(DeviceProximity.BINARY_NEAR_VALUE);
@@ -50,6 +58,7 @@ public class DeviceProximityTest extends BaseIntegrationTest {
 
     @Test
     public void testSetProximityFar() {
+        assumeNotNull(testDevice);
         testDevice.setProximity(DeviceProximity.BINARY_FAR_VALUE);
 
         String proximityFarValueText = String.valueOf(DeviceProximity.BINARY_FAR_VALUE);
@@ -59,6 +68,7 @@ public class DeviceProximityTest extends BaseIntegrationTest {
 
     @Test
     public void testGetProximity() throws InterruptedException {
+        assumeNotNull(testDevice);
         testDevice.setProximity(DeviceProximity.BINARY_FAR_VALUE);
 
         Thread.sleep(SETTING_PROXIMITY_TIMEOUT);
