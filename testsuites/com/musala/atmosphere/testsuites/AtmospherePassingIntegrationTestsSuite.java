@@ -8,6 +8,7 @@ import com.musala.atmosphere.agent.devicewrapper.GetScreenshotTest;
 import com.musala.atmosphere.agent.devicewrapper.ScreenOrientationTest;
 import com.musala.atmosphere.agent.devicewrapper.TelephonyInformationTest;
 import com.musala.atmosphere.client.device.BringTaskToFrontTest;
+import com.musala.atmosphere.client.device.CallTest;
 import com.musala.atmosphere.client.device.ChangeGpsLocationStateTest;
 import com.musala.atmosphere.client.device.ClearDataTest;
 import com.musala.atmosphere.client.device.ClearTextTest;
@@ -79,7 +80,7 @@ import com.musala.atmosphere.webview.WebElementIsSelectedTest;
 import com.musala.atmosphere.webview.WebElementWaitForConditionTest;
 
 @SuiteClasses({ScreenOrientationTest.class, TapTest.class, StartActivityTest.class, LockUnlockTest.class,
-        DeviceInstallApkTest.class, GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class,
+        DeviceInstallApkTest.class, GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class, CallTest.class,
         GestureExecutionTest.class, TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class,
         PinchTest.class, LongPressTest.class, WaitForExistsTest.class, ScrollTest.class, HorizontalScrollTest.class,
         WaitForWindowUpdateTest.class, EmulatorCameraTest.class, WaitUntilGoneTest.class, ProcessRunningTest.class,
