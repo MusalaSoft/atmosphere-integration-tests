@@ -95,6 +95,8 @@ public class OnDeviceValidatorAssert {
 
     private final static String PHONE_PACKAGE_NAME = "com.android.phone";
 
+    private final static String DIALER_PACKAGE_NAME = "com.android.dialer";
+
     private final static String INCOMING_CALL_TEXT = "Incoming call";
 
     private final static String ON_HOLD_TEXT = "On hold";
@@ -1148,8 +1150,9 @@ public class OnDeviceValidatorAssert {
      */
     public static UiElementSelector createSelectorByPhonePackage(String text) {
         UiElementSelector selector = new UiElementSelector();
+        int apiVersion = device.getInformation().getApiLevel();
 
-        selector.addSelectionAttribute(CssAttribute.PACKAGE_NAME, PHONE_PACKAGE_NAME);
+        selector.addSelectionAttribute(CssAttribute.PACKAGE_NAME, apiVersion >= 19 ? DIALER_PACKAGE_NAME : PHONE_PACKAGE_NAME);
         selector.addSelectionAttribute(CssAttribute.TEXT, text);
 
         return selector;
@@ -1734,7 +1737,7 @@ public class OnDeviceValidatorAssert {
 
     /**
      * Starts the LogCat activity, used for generating test log messages.
-     * 
+     *
      * @throws ActivityStartingException
      *         if the activity was not started successfully
      * @throws InterruptedException

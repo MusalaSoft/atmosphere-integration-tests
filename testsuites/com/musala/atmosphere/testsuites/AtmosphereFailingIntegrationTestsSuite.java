@@ -19,14 +19,14 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
 
 /**
  * JUnit test suite with all failing integration tests.
- * 
+ *
  * @author valyo.yolovski
- * 
+ *
  */
 @RunWith(Suite.class)
 @SuiteClasses({DeviceAcceleratoinTest.class, BatteryRelatedMethodsTest.class, DeviceOrientationTest.class,
         BuilderIntegrationTest.class, EmulatorConsoleTest.class, EmulatorCreationTest.class,
-        NetworkConnectionTest.class, SwipeTest.class, AtmosphereServiceConnectionTest.class, CallTest.class,
+        NetworkConnectionTest.class, SwipeTest.class, AtmosphereServiceConnectionTest.class,
         PoolEventHandlerTest.class, GetUiXmlTest.class})
 public class AtmosphereFailingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

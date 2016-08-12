@@ -6,10 +6,10 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.assertCallReceived;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeNotNull;
 
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -18,11 +18,16 @@ import com.musala.atmosphere.commons.beans.PhoneNumber;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 
 public class CallTest extends BaseIntegrationTest {
     private static final String SENDER_PHONE = "+012345";
 
+    private static final String DIALER_TO_FOREGROUND_SHELL_COMMAND = "am start com.android.dialer/com.android.incallui.InCallActivity";
+
     private static final int RECEIVE_CALL_TIMEOUT = 3500;
+
+    private static PhoneNumber phoneNumber;
 
     /**
      * The hold, cancel and accept phone call operations require much more time than receive to complete successfully.
@@ -31,72 +36,91 @@ public class CallTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void classSetUp() throws Exception {
-        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.EMULATOR_ONLY);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.EMULATOR_ONLY)
+                                                                           .maxApi(21);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
-        initTestDevice(testDeviceSelector);
-        setTestDevice(testDevice);
+
+        try {
+            initTestDevice(testDeviceSelector);
+            setTestDevice(testDevice);
+            phoneNumber = new PhoneNumber(SENDER_PHONE);
+        } catch (NoAvailableDeviceFoundException e) {
+            // Nothing to do here
+        }
     }
 
     @AfterClass
     public static void classTearDown() throws Exception {
-        testDevice.declineCall();
-        releaseDevice();
-    }
+        if (testDevice != null) {
+            testDevice.pressButton(HardwareButton.HOME);
+        }
 
-    @Before
-    public void setUp() throws InterruptedException {
-        testDevice.pressButton(HardwareButton.HOME);
-        Thread.sleep(1000);
+        releaseDevice();
     }
 
     @After
     public void tearDown() throws Exception {
-        testDevice.declineCall();
-        Thread.sleep(OTHER_CALL_OPERATION_TIMEOUT);
+        if (testDevice != null) {
+            testDevice.cancelCall(phoneNumber);
+            Thread.sleep(OTHER_CALL_OPERATION_TIMEOUT);
+        }
     }
 
     @Test
     public void testReceiveCall() throws Exception {
-        PhoneNumber phoneNumber = new PhoneNumber(SENDER_PHONE);
+        assumeNotNull(testDevice);
         assertTrue("Receiving call returned false.", testDevice.receiveCall(phoneNumber));
         Thread.sleep(RECEIVE_CALL_TIMEOUT);
 
+        bringDialerToForeground();
         assertCallReceived("Phone call was not received.", phoneNumber);
     }
 
     @Test
     public void testAcceptCall() throws Exception {
-        PhoneNumber phoneNumber = new PhoneNumber(SENDER_PHONE);
+        assumeNotNull(testDevice);
         assertTrue("Receiving call returned false.", testDevice.receiveCall(phoneNumber));
         Thread.sleep(RECEIVE_CALL_TIMEOUT);
 
         assertTrue("Accepting call returned false.", testDevice.acceptCall(phoneNumber));
         Thread.sleep(OTHER_CALL_OPERATION_TIMEOUT);
 
+        bringDialerToForeground();
         assertCallAccepted("Phone call was not accepted.", phoneNumber);
     }
 
     @Test
     public void testHoldCall() throws Exception {
-        PhoneNumber phoneNumber = new PhoneNumber(SENDER_PHONE);
+        assumeNotNull(testDevice);
         assertTrue("Receiving call returned false.", testDevice.receiveCall(phoneNumber));
         Thread.sleep(RECEIVE_CALL_TIMEOUT);
-
         assertTrue("Holding call returned false.", testDevice.holdCall(phoneNumber));
         Thread.sleep(OTHER_CALL_OPERATION_TIMEOUT);
+
+        bringDialerToForeground();
         assertCallOnHold("Phone call was not put on hold.", phoneNumber);
     }
 
     @Test
     public void testCancelCall() throws Exception {
-        PhoneNumber phoneNumber = new PhoneNumber(SENDER_PHONE);
+        assumeNotNull(testDevice);
         assertTrue("Receiving call returned false.", testDevice.receiveCall(phoneNumber));
         Thread.sleep(RECEIVE_CALL_TIMEOUT);
 
+        bringDialerToForeground();
         assertCallReceived("Phone call was not received.", phoneNumber);
+
         assertTrue("Canceling call returned false.", testDevice.cancelCall(phoneNumber));
         Thread.sleep(OTHER_CALL_OPERATION_TIMEOUT);
 
+        bringDialerToForeground();
         assertCallCanceled("Phone call was not canceled.");
+    }
+
+    private void bringDialerToForeground() throws Exception {
+        if (testDevice.getInformation().getApiLevel() >= 21) { // Lollipop
+            testDevice.executeShellCommand(DIALER_TO_FOREGROUND_SHELL_COMMAND);
+            Thread.sleep(OTHER_CALL_OPERATION_TIMEOUT);
+        }
     }
 }
