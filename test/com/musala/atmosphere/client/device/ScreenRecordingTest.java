@@ -4,6 +4,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.getElementByContentDescriptor;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startImeTestActivity;
+import static org.junit.Assume.assumeNotNull;
 
 import java.io.File;
 
@@ -18,21 +19,22 @@ import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.commons.ui.selector.CssAttribute;
 import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
- * 
+ *
  * @author yavor.stankov
- * 
+ *
  */
 public class ScreenRecordingTest extends BaseIntegrationTest {
     private static final String RECORDS_DIRECTORY_NAME = "ScreenRecords";
 
     private static final String RECORDS_DIRECTORY_PATH = new File(RECORDS_DIRECTORY_NAME).getAbsolutePath();
 
-    private static final long TIMEOUT_BETWEEN_INTERACTIONS = 55000;
+    private static final long TIMEOUT_BETWEEN_INTERACTIONS = 15000;
 
     private static final int EXPECTED_RECORDED_FILES_COUNT = 1;
 
@@ -49,25 +51,32 @@ public class ScreenRecordingTest extends BaseIntegrationTest {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY)
                                                                            .minApi(19);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
-        initTestDevice(testDeviceSelector);
-        setTestDevice(testDevice);
+        try {
+            initTestDevice(testDeviceSelector);
+            setTestDevice(testDevice);
 
-        recordsDirectory = new File(RECORDS_DIRECTORY_PATH);
-        deleteDirectory(recordsDirectory);
+            recordsDirectory = new File(RECORDS_DIRECTORY_PATH);
+            deleteDirectory(recordsDirectory);
 
-        startImeTestActivity();
+            startImeTestActivity();
+        } catch (NoAvailableDeviceFoundException e) {
+            // Nothing to do here
+        }
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
-        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
-        deleteDirectory(recordsDirectory);
+        if (testDevice != null) {
+            testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+            deleteDirectory(recordsDirectory);
+        }
 
         releaseDevice();
     }
 
     @Test
     public void testScreenRecordTextInput() throws Exception {
+        assumeNotNull(testDevice);
         testDevice.startScreenRecording();
 
         Thread.sleep(TIMEOUT_BETWEEN_INTERACTIONS);
