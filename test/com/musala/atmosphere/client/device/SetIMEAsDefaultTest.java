@@ -19,9 +19,9 @@ import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
- * 
+ *
  * @author denis.bialev
- * 
+ *
  */
 public class SetIMEAsDefaultTest extends BaseIntegrationTest {
     private final static String INPUT_STRING = "Letters";
@@ -30,7 +30,7 @@ public class SetIMEAsDefaultTest extends BaseIntegrationTest {
 
     private final static String ATMOSPHERE_IME_PACKAGE = "com.musala.atmosphere.ime";
 
-    private static final int WAIT_FOR_SETTIING_IME = 2000;
+    private static final int WAIT_FOR_SETTING_IME = 2000;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -43,14 +43,13 @@ public class SetIMEAsDefaultTest extends BaseIntegrationTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
+        testDevice.setAtmosphereIME();
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
         releaseDevice();
     }
 
     @Test
     public void testSettingDefaultKeyboards() throws Exception {
-        Screen screen = testDevice.getActiveScreen();
-
         UiElement inputTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
 
         testDevice.setDefaultIME(DEFAULT_KEYBOARD_ID);
@@ -60,22 +59,17 @@ public class SetIMEAsDefaultTest extends BaseIntegrationTest {
 
         inputTextBox.inputText(INPUT_STRING);
 
-        screen.updateScreen();
-
         UiElement inputTextBoxAfterInput = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
         String resultFromInput = inputTextBoxAfterInput.getText();
 
         assertFalse("There should be no text in the field.", INPUT_STRING.equals(resultFromInput));
 
-        screen.updateScreen();
-
         UiElement inputTextBoxAtmosphereIME = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
 
         testDevice.setAtmosphereIME();
-        Thread.sleep(WAIT_FOR_SETTIING_IME);
+        Thread.sleep(WAIT_FOR_SETTING_IME);
         inputTextBoxAtmosphereIME.inputText(INPUT_STRING);
 
-        screen.updateScreen();
         UiElement inputTextBoxAtmosphereIMEAfterInput = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
         String resultWithAtmosphereIME = inputTextBoxAtmosphereIMEAfterInput.getText();
 
