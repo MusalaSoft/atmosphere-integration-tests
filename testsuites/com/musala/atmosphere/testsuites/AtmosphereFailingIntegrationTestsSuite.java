@@ -7,12 +7,13 @@ import org.junit.runners.Suite.SuiteClasses;
 import com.musala.atmosphere.agent.devicewrapper.BatteryRelatedMethodsTest;
 import com.musala.atmosphere.agent.devicewrapper.DeviceAcceleratoinTest;
 import com.musala.atmosphere.agent.devicewrapper.DeviceOrientationTest;
+import com.musala.atmosphere.agent.devicewrapper.DeviceProximityTest;
 import com.musala.atmosphere.agent.devicewrapper.EmulatorConsoleTest;
 import com.musala.atmosphere.agent.devicewrapper.GetUiXmlTest;
 import com.musala.atmosphere.agent.devicewrapper.NetworkConnectionTest;
 import com.musala.atmosphere.client.builder.BuilderIntegrationTest;
-import com.musala.atmosphere.client.device.CallTest;
 import com.musala.atmosphere.client.device.SwipeTest;
+import com.musala.atmosphere.client.device.WifiConnectionQualityTest;
 import com.musala.atmosphere.server.EmulatorCreationTest;
 import com.musala.atmosphere.server.PoolEventHandlerTest;
 import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
@@ -24,7 +25,8 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({DeviceAcceleratoinTest.class, BatteryRelatedMethodsTest.class, DeviceOrientationTest.class,
+@SuiteClasses({DeviceAcceleratoinTest.class, BatteryRelatedMethodsTest.class,
+        DeviceOrientationTest.class, DeviceProximityTest.class, WifiConnectionQualityTest.class,
         BuilderIntegrationTest.class, EmulatorConsoleTest.class, EmulatorCreationTest.class,
         NetworkConnectionTest.class, SwipeTest.class, AtmosphereServiceConnectionTest.class,
         PoolEventHandlerTest.class, GetUiXmlTest.class})
