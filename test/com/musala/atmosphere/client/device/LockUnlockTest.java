@@ -6,6 +6,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeNotNull;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -16,11 +17,12 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 
 /**
- * 
+ *
  * @author georgi.gaydarov
- * 
+ *
  */
 public class LockUnlockTest extends BaseIntegrationTest {
 
@@ -30,26 +32,35 @@ public class LockUnlockTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
-        initTestDevice(testDeviceSelector);
 
-        setTestDevice(testDevice);
+        try {
+            initTestDevice(testDeviceSelector);
+            setTestDevice(testDevice);
+        } catch (NoAvailableDeviceFoundException e) {
+            // Nothing to do here
+        }
     }
 
     @Before
     public void setUpTest() throws Exception {
-        startMainActivity();
+        if (testDevice != null) {
+            startMainActivity();
+        }
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
-        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        if (testDevice != null) {
+            testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        }
         releaseDevice();
     }
 
     @Test
     public void testUnlockingDeviceWhenItIsInAsleepState() throws Exception {
+        assumeNotNull(testDevice);
         if (testDevice.isAwake()) {
             testDevice.pressButton(HardwareButton.POWER);
         }
@@ -60,6 +71,7 @@ public class LockUnlockTest extends BaseIntegrationTest {
 
     @Test
     public void testLockUnlockWithStartedApplication() throws Exception {
+        assumeNotNull(testDevice);
         assertLockDevice();
         assertValidatorIsNotStarted("The validation element should not be available when the device is locked.");
 
@@ -69,6 +81,7 @@ public class LockUnlockTest extends BaseIntegrationTest {
 
     @Test
     public void testUnlockAndLockDevice() throws Exception {
+        assumeNotNull(testDevice);
         assertLockDevice();
         assertValidatorIsNotStarted("The validation element should not be available when the device is locked.");
 
@@ -82,6 +95,7 @@ public class LockUnlockTest extends BaseIntegrationTest {
 
     @Test
     public void testLockingAlreadyLockedDevice() throws Exception {
+        assumeNotNull(testDevice);
         assertLockDevice();
         assertLockDevice();
         assertValidatorIsNotStarted("The validation element should not be available when the device is locked.");
@@ -89,6 +103,7 @@ public class LockUnlockTest extends BaseIntegrationTest {
 
     @Test
     public void testUnlockingAlreadyUnlockedDevice() throws Exception {
+        assumeNotNull(testDevice);
         assertLockDevice();
 
         assertUnlockDevice();
