@@ -2,7 +2,6 @@ package com.musala.atmosphere.testsuites;
 
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.musala.atmosphere.agent.devicewrapper.DeviceProximityTest;
 import com.musala.atmosphere.agent.devicewrapper.EmulatorCameraTest;
 import com.musala.atmosphere.agent.devicewrapper.GetScreenshotTest;
 import com.musala.atmosphere.agent.devicewrapper.ScreenOrientationTest;
@@ -55,7 +54,6 @@ import com.musala.atmosphere.client.device.WaitForExistsTest;
 import com.musala.atmosphere.client.device.WaitForTaskUpdateTest;
 import com.musala.atmosphere.client.device.WaitForWindowUpdateTest;
 import com.musala.atmosphere.client.device.WaitUntilGoneTest;
-import com.musala.atmosphere.client.device.WifiConnectionQualityTest;
 import com.musala.atmosphere.client.screen.GetAccessibilityUiElementTest;
 import com.musala.atmosphere.client.screen.GetAccessibilityUiElementsTest;
 import com.musala.atmosphere.client.screen.GetElementByCssTest;
@@ -86,14 +84,14 @@ import com.musala.atmosphere.webview.WebElementWaitForConditionTest;
         WaitForWindowUpdateTest.class, EmulatorCameraTest.class, WaitUntilGoneTest.class, ProcessRunningTest.class,
         ForceStopProcessTest.class, StopBackgroundProcessTest.class, GetElementWhenPresentTest.class,
         SetIMEAsDefaultTest.class, OpenNotificationTest.class, OpenQuickSettingsTest.class, NotificationBarTest.class,
-        NotificationInteractionTest.class, UninstallApplicationTest.class, DeviceProximityTest.class,
-        WaitForTaskUpdateTest.class, BringTaskToFrontTest.class, MockLocationTest.class, DisableMockLocationTest.class,
+        NotificationInteractionTest.class, UninstallApplicationTest.class, WaitForTaskUpdateTest.class,
+        BringTaskToFrontTest.class, MockLocationTest.class, DisableMockLocationTest.class,
         InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class, PasteTextTest.class, CopyTextTest.class,
         CutTextTest.class, DatePickerInteractionTest.class, TimePickerInteractionTest.class,
         GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class, ScreenOffTimeoutTest.class,
         GetLastToastTest.class, GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
         GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class, ClearDataTest.class,
-        DragTest.class, WifiConnectionQualityTest.class, FindWebElementTest.class, WebElementIsDisplayedTest.class,
+        DragTest.class, FindWebElementTest.class, WebElementIsDisplayedTest.class,
         WebElementIsEnabledTest.class, WebElementIsSelectedTest.class, GetWebElementTagTest.class,
         WebElementInputTextTest.class, WebElementGetCssValueTest.class, WebElementWaitForConditionTest.class,
         ClearWebElementTextTest.class, GetSizeOfWebElementTest.class, TapWebElementTest.class,
