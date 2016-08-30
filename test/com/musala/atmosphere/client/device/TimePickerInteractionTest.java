@@ -120,14 +120,11 @@ public class TimePickerInteractionTest extends BaseIntegrationTest {
 
         assertTrue("Setting time in a time picker failed", result);
 
+        hideIME();
         clickDone(screen);
-
-        screen.updateScreen();
 
         timePickerButton = getElementByContentDescriptor(ContentDescriptor.TIME_PICKER.toString());
         timePickerButton.tap();
-
-        screen.updateScreen();
 
         timePicker = screen.getTimePicker();
         Calendar pickerCalendar = timePicker.getValue();
@@ -159,14 +156,11 @@ public class TimePickerInteractionTest extends BaseIntegrationTest {
 
         assertTrue("Setting time in a time picker failed", result);
 
+        hideIME();
         clickDone(screen);
-
-        screen.updateScreen();
 
         timePickerButton = getElementByContentDescriptor(ContentDescriptor.TIME_PICKER_24_HOURS_FORMAT.toString());
         timePickerButton.tap();
-
-        screen.updateScreen();
 
         timePicker = screen.getTimePicker();
         Calendar pickerCalendar = timePicker.getValue();
@@ -181,7 +175,7 @@ public class TimePickerInteractionTest extends BaseIntegrationTest {
 
     /**
      * Press the button done of the time picker.
-     * 
+     *
      * @param screen
      * @throws Exception
      */
@@ -199,4 +193,11 @@ public class TimePickerInteractionTest extends BaseIntegrationTest {
         doneButton.tap();
     }
 
+    /**
+     * Hides the IME in case it obstructs the Done button (usually on
+     * the devices with smaller screen and older Android version).
+     */
+    private void hideIME() {
+        testDevice.pressButton(HardwareButton.BACK);
+    }
 }

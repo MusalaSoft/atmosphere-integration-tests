@@ -123,9 +123,8 @@ public class DatePickerInteractionTest extends BaseIntegrationTest {
 
         assertTrue("Setting date in a date picker failed", result);
 
+        hideIME();
         clickDone(screen);
-
-        screen.updateScreen();
 
         datePickerButton = getElementByContentDescriptor(ContentDescriptor.DATE_PICKER.toString());
         datePickerButton.tap();
@@ -151,7 +150,7 @@ public class DatePickerInteractionTest extends BaseIntegrationTest {
 
     /**
      * Press the button done of the date picker.
-     * 
+     *
      * @param screen
      * @throws Exception
      */
@@ -171,7 +170,7 @@ public class DatePickerInteractionTest extends BaseIntegrationTest {
 
     /**
      * Waits for the DatePicker widget to appear.
-     * 
+     *
      * @param screen
      */
     private void waitForDatePicker(Screen screen) {
@@ -179,6 +178,13 @@ public class DatePickerInteractionTest extends BaseIntegrationTest {
         datePickerSelector.addSelectionAttribute(CssAttribute.CLASS_NAME, DATE_PICKER_WIDGET_PACKAGE);
         assertTrue("Date picker widget should be on Screen",
                    screen.waitForElementExists(datePickerSelector, DEFAULT_WAIT_FOR_GET_PICKER));
-        screen.updateScreen();
+    }
+
+    /**
+     * Hides the IME in case it obstructs the Done button (usually on
+     * the devices with smaller screen and older Android version).
+     */
+    private void hideIME() {
+        testDevice.pressButton(HardwareButton.BACK);
     }
 }
