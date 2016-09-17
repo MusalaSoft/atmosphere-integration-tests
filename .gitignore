@@ -74,3 +74,5 @@ atmosphere-*.jar
 Screenshot.png
 local_screen.png
 chromedriver/
+*VideoRecords/
+ScreenRecords/
