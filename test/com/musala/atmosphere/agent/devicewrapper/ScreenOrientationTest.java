@@ -20,6 +20,8 @@ import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 public class ScreenOrientationTest extends BaseIntegrationTest {
     private static final long OPERATION_TIMEOUT = 4000;
 
+    private static ScreenOrientation defaultOrientation;
+
     @BeforeClass
     public static void setUp() throws Exception {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
@@ -28,12 +30,15 @@ public class ScreenOrientationTest extends BaseIntegrationTest {
 
         setTestDevice(testDevice);
 
+        defaultOrientation = testDevice.getScreenOrientation();
+
         startMainActivity();
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
         testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        testDevice.setScreenOrientation(defaultOrientation);
         releaseDevice();
     }
 
