@@ -3,6 +3,7 @@ package com.musala.atmosphere.client.device;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startLogCatActivity;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeNotNull;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,6 +24,7 @@ import com.musala.atmosphere.client.device.log.LogCatLevel;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.commons.ui.selector.CssAttribute;
 import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 
@@ -50,40 +52,53 @@ public class LogCatFiltersTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED)
+                                                                           .maxApi(22); // FIXME: The LogCat format is different on API 23 and above
         DeviceSelector testDeviceSelector = selectorBuilder.build();
-        initTestDevice(testDeviceSelector);
-        setTestDevice(testDevice);
+        try {
+            initTestDevice(testDeviceSelector);
+            setTestDevice(testDevice);
 
-        startLogCatActivity();
+            startLogCatActivity();
 
-        Screen screen = testDevice.getActiveScreen();
-        UiElementSelector logsButtonSelector = new UiElementSelector();
-        logsButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, LOG_CAT_BUTTON_CONTENT_DECRIPTOR);
+            Screen screen = testDevice.getActiveScreen();
+            UiElementSelector logsButtonSelector = new UiElementSelector();
+            logsButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, LOG_CAT_BUTTON_CONTENT_DECRIPTOR);
 
-        screen.waitForElementExists(logsButtonSelector, WAIT_FOR_ELEMENT_TIMEOUT);
-        generateLogsButton = screen.getElement(logsButtonSelector);
+            screen.waitForElementExists(logsButtonSelector, WAIT_FOR_ELEMENT_TIMEOUT);
+            generateLogsButton = screen.getElement(logsButtonSelector);
+        } catch (NoAvailableDeviceFoundException e) {
+            // Nothing to do here
+        }
+
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
-        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        if (testDevice != null) {
+            testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        }
         releaseDevice();
     }
 
     @Before
     public void setUpTest() {
-        generateLogsButton.tap();
-        logFileAbsolutePath = new File(".", LOG_FILE_NAME).getAbsolutePath();
+        if (testDevice != null) {
+            generateLogsButton.tap();
+            logFileAbsolutePath = new File(".", LOG_FILE_NAME).getAbsolutePath();
+        }
     }
 
     @After
     public void tearDownTest() {
-        assertTrue("Log file was not deleted successfully.", new File(logFileAbsolutePath).delete());
+        if (testDevice != null) {
+            assertTrue("Log file was not deleted successfully.", new File(logFileAbsolutePath).delete());
+        }
     }
 
     @Test
     public void testGetLogByLevelFilter() throws Exception {
+        assumeNotNull(testDevice);
         testDevice.getDeviceLog(logFileAbsolutePath, LogCatLevel.ERROR);
 
         int prefixLength = 1;
@@ -96,6 +111,7 @@ public class LogCatFiltersTest extends BaseIntegrationTest {
 
     @Test
     public void testGetLogByLevelTagPair() throws Exception {
+        assumeNotNull(testDevice);
         testDevice.getDeviceLog(logFileAbsolutePath, LogCatLevel.ERROR, LOG_TAG);
 
         Set<String> filterConditions = new HashSet<>();
@@ -109,6 +125,7 @@ public class LogCatFiltersTest extends BaseIntegrationTest {
 
     @Test
     public void testGetLogByTagFilterOnly() throws Exception {
+        assumeNotNull(testDevice);
         testDevice.getDeviceLog(logFileAbsolutePath, LOG_TAG);
 
         Set<String> filterConditions = new HashSet<>();
