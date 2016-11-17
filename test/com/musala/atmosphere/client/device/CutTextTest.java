@@ -16,25 +16,18 @@ import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
-import com.musala.atmosphere.commons.geometry.Point;
 import com.musala.atmosphere.commons.ui.UiElementPropertiesContainer;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
- * 
+ *
  * @author yavor.stankov
- * 
+ *
  */
 public class CutTextTest extends BaseIntegrationTest {
     private static final String CUT_TEXT_FAILED_MESSAGE = "Cut text failed! The text field is not empty.";
 
     private static final String PASTE_TEXT_FAILED_MESSAGE = "Paste text failed! The text field content does not match the expected one.";
-
-    private static final String PASTE_BUTTON_CONTENT_DESCRIPTOR = "Paste";
-
-    private static final String SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR = "Select all";
-
-    private static final int LONG_PRESS_TIMEOUT = 1500;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -66,30 +59,19 @@ public class CutTextTest extends BaseIntegrationTest {
 
         String expectedText = singleLineTextBoxProperties.getText();
 
-        singleLineTextBox.longPress();
-
-        UiElement selectAllButton = getElementByContentDescriptor(SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
-        selectAllButton.tap();
-
+        singleLineTextBox.selectAllText();
         singleLineTextBox.cutText();
 
         singleLineTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
-
         assertElementText(CUT_TEXT_FAILED_MESSAGE, singleLineTextBox, null);
 
         UiElement pasteTextBox = getElementByContentDescriptor(ContentDescriptor.PASTE_CONTAINER_TEXT_BOX.toString());
-
-        Point pasteTextBoxBeginning = new Point(0, 0);
-        pasteTextBox.longPress(pasteTextBoxBeginning, LONG_PRESS_TIMEOUT);
-
-        selectAllButton = getElementByContentDescriptor(SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
-        selectAllButton.tap();
-
-        UiElement pasteButton = getElementByContentDescriptor(PASTE_BUTTON_CONTENT_DESCRIPTOR);
-        pasteButton.tap();
+        pasteTextBox.selectAllText();
 
         pasteTextBox = getElementByContentDescriptor(ContentDescriptor.PASTE_CONTAINER_TEXT_BOX.toString());
+        pasteTextBox.pasteText();
 
+        pasteTextBox = getElementByContentDescriptor(ContentDescriptor.PASTE_CONTAINER_TEXT_BOX.toString());
         assertElementText(PASTE_TEXT_FAILED_MESSAGE, pasteTextBox, expectedText);
     }
 
@@ -100,31 +82,20 @@ public class CutTextTest extends BaseIntegrationTest {
 
         String expectedText = multilineTextBoxProperties.getText();
 
-        multilineTextBox.longPress();
+        multilineTextBox.selectAllText();
         multilineTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_FIRST_LINE_TEXT_BOX.toString());
-
-        UiElement selectAllButton = getElementByContentDescriptor(SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
-        selectAllButton.tap();
-
         multilineTextBox.cutText();
 
         multilineTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_FIRST_LINE_TEXT_BOX.toString());
-
         assertElementText(CUT_TEXT_FAILED_MESSAGE, multilineTextBox, null);
 
         UiElement pasteTextBox = getElementByContentDescriptor(ContentDescriptor.PASTE_CONTAINER_TEXT_BOX.toString());
 
-        Point pasteTextBoxBeginning = new Point(0, 0);
-        pasteTextBox.longPress(pasteTextBoxBeginning, LONG_PRESS_TIMEOUT);
-
-        selectAllButton = getElementByContentDescriptor(SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
-        selectAllButton.tap();
-
-        UiElement pasteButton = getElementByContentDescriptor(PASTE_BUTTON_CONTENT_DESCRIPTOR);
-        pasteButton.tap();
+        pasteTextBox.selectAllText();
+        pasteTextBox = getElementByContentDescriptor(ContentDescriptor.PASTE_CONTAINER_TEXT_BOX.toString());
+        pasteTextBox.pasteText();
 
         pasteTextBox = getElementByContentDescriptor(ContentDescriptor.PASTE_CONTAINER_TEXT_BOX.toString());
-
         assertElementText(PASTE_TEXT_FAILED_MESSAGE, pasteTextBox, expectedText);
     }
 }
