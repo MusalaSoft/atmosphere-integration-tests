@@ -5,6 +5,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startApplicationDataTestActivity;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
+import static org.junit.Assume.assumeNotNull;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -16,11 +17,12 @@ import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.commons.ui.selector.CssAttribute;
 import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 
 /**
- * 
+ *
  * @author yavor.stankov
  *
  */
@@ -31,11 +33,16 @@ public class ClearDataTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED)
+                                                                           .maxApi(22);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
-        initTestDevice(testDeviceSelector);
-
-        setTestDevice(testDevice);
+        try {
+            initTestDevice(testDeviceSelector);
+            setTestDevice(testDevice);
+        } catch (NoAvailableDeviceFoundException e) {
+            // Nothing to do here
+        }
+        assumeNotNull(testDevice);
         startMainActivity();
     }
 

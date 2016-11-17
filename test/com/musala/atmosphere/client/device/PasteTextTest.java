@@ -10,26 +10,19 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
-import com.musala.atmosphere.commons.ui.selector.CssAttribute;
-import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
- * 
+ *
  * @author yavor.stankov
- * 
+ *
  */
 public class PasteTextTest extends BaseIntegrationTest {
     private static final String EXPECTED_TEXT_RESULT = "Sample Text";
-
-    private static final String COPY_BUTTON_CONTENT_DESCRIPTOR = "Copy";
-
-    private static final String SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR = "Select all";
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -49,33 +42,16 @@ public class PasteTextTest extends BaseIntegrationTest {
 
     @Test
     public void testPasteText() throws Exception {
-        Screen screen = testDevice.getActiveScreen();
-
         UiElement copyTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
-        copyTextBox.longPress();
+        copyTextBox.selectAllText();
 
-        screen.updateScreen();
-
-        UiElementSelector selectAllButtonSelector = new UiElementSelector();
-        selectAllButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
-                                                      SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
-
-        UiElement selectAllButton = screen.getElement(selectAllButtonSelector);
-        selectAllButton.tap();
-
-        UiElementSelector copyButtonSelector = new UiElementSelector();
-        copyButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, COPY_BUTTON_CONTENT_DESCRIPTOR);
-
-        UiElement copyButton = screen.getElement(copyButtonSelector);
-        copyButton.tap();
+        copyTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
+        copyTextBox.copyText();
 
         UiElement pasteTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
         pasteTextBox.pasteText();
 
-        screen.updateScreen();
-
         pasteTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
-
         assertElementText("Paste text failed! The text field content does not match the expected one.",
                           pasteTextBox,
                           EXPECTED_TEXT_RESULT);

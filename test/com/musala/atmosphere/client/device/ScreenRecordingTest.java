@@ -14,14 +14,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
-import com.musala.atmosphere.commons.ui.selector.CssAttribute;
-import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 /**
@@ -36,13 +33,11 @@ public class ScreenRecordingTest extends BaseIntegrationTest {
 
     private static final long TIMEOUT_BETWEEN_INTERACTIONS = 15000;
 
+    private static final long TIMEOUT_AFTER_RECORDING = 2000;
+
     private static final int EXPECTED_RECORDED_FILES_COUNT = 1;
 
     private static final String EXPECTED_TEXT_RESULT = "Sample Text";
-
-    private static final String COPY_BUTTON_CONTENT_DESCRIPTOR = "Copy";
-
-    private static final String SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR = "Select all";
 
     private static File recordsDirectory;
 
@@ -81,27 +76,11 @@ public class ScreenRecordingTest extends BaseIntegrationTest {
 
         Thread.sleep(TIMEOUT_BETWEEN_INTERACTIONS);
 
-        Screen screen = testDevice.getActiveScreen();
-
         UiElement copyTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
-        copyTextBox.longPress();
+        copyTextBox.selectAllText();
 
-        Thread.sleep(TIMEOUT_BETWEEN_INTERACTIONS);
-
-        UiElementSelector selectAllButtonSelector = new UiElementSelector();
-        selectAllButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION,
-                                                      SELECT_ALL_BUTTON_CONTENT_DESCRIPTOR);
-
-        UiElement selectAllButton = screen.getElement(selectAllButtonSelector);
-        selectAllButton.tap();
-
-        Thread.sleep(TIMEOUT_BETWEEN_INTERACTIONS);
-
-        UiElementSelector copyButtonSelector = new UiElementSelector();
-        copyButtonSelector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, COPY_BUTTON_CONTENT_DESCRIPTOR);
-
-        UiElement copyButton = screen.getElement(copyButtonSelector);
-        copyButton.tap();
+        copyTextBox = getElementByContentDescriptor(ContentDescriptor.CONTENT_TEXT_BOX.toString());
+        copyTextBox.copyText();
 
         Thread.sleep(TIMEOUT_BETWEEN_INTERACTIONS);
 
@@ -117,6 +96,7 @@ public class ScreenRecordingTest extends BaseIntegrationTest {
                           EXPECTED_TEXT_RESULT);
 
         testDevice.stopScreenRecording();
+        Thread.sleep(TIMEOUT_AFTER_RECORDING);
 
         Assert.assertTrue("The screen records folder does not exist.", recordsDirectory.exists());
 
