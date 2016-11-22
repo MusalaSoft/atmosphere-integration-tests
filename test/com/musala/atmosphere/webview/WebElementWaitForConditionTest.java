@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,14 +19,15 @@ import com.musala.atmosphere.client.WebView;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.commons.webelement.selection.WebElementSelectionCriterion;
 
 /**
- * 
+ *
  * @author yavor.stankov
  *
  */
-public class WebElementWaitForConditionTest extends BaseIntegrationTest {
+public class WebElementWaitForConditionTest extends BaseWebViewIntegrationTest {
     private static final String CREATE_ELEMENT_BUTTON_ID = "create";
 
     private static final String TEST_ELEMENT_ID = "present";
@@ -34,19 +36,25 @@ public class WebElementWaitForConditionTest extends BaseIntegrationTest {
 
     private static Screen screen;
 
-    private WebView webView;
+    private static WebView webView;
 
     @BeforeClass
     public static void setUp() throws Exception {
-        DeviceSelectorBuilder deviceSelectorBuilder = new DeviceSelectorBuilder();
-        DeviceSelector deviceSelector = deviceSelectorBuilder.deviceType(DeviceType.DEVICE_PREFERRED).build();
-        initTestDevice(deviceSelector);
-        setTestDevice(testDevice);
-        screen = testDevice.getActiveScreen();
+        DeviceSelectorBuilder deviceSelectorBuilder = new DeviceSelectorBuilder().minApi(19);
+        try {
+            DeviceSelector deviceSelector = deviceSelectorBuilder.deviceType(DeviceType.DEVICE_PREFERRED).build();
+            initTestDevice(deviceSelector);
+            setTestDevice(testDevice);
+            screen = testDevice.getActiveScreen();
+        } catch (NoAvailableDeviceFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
+    @Override
     @Before
     public void setUpTest() throws Exception {
+        Assume.assumeNotNull(BaseIntegrationTest.testDevice);
         startWebViewActivity();
 
         webView = screen.getWebView(VALIDATOR_APP_PACKAGE);
@@ -54,12 +62,15 @@ public class WebElementWaitForConditionTest extends BaseIntegrationTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
+        Assume.assumeNotNull(BaseIntegrationTest.testDevice);
         releaseDevice();
     }
 
     @After
     public void tearDownTest() {
-        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        if (testDevice != null) {
+            testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        }
     }
 
     @Test
