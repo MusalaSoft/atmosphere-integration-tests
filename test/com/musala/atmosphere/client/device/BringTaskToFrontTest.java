@@ -5,6 +5,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeNotNull;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -14,11 +15,12 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 
 /**
- * 
+ *
  * @author denis.bialev
- * 
+ *
  */
 public class BringTaskToFrontTest extends BaseIntegrationTest {
 
@@ -36,20 +38,28 @@ public class BringTaskToFrontTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED);
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED)
+                                                                           .maxApi(19);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
-        initTestDevice(testDeviceSelector);
-        setTestDevice(testDevice);
+        try {
+            initTestDevice(testDeviceSelector);
+            setTestDevice(testDevice);
+        } catch (NoAvailableDeviceFoundException e) {
+            // Nothing to do here
+        }
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
-        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        if (testDevice != null) {
+            testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        }
         releaseDevice();
     }
 
     @Test
     public void testBringTaskToFront() throws Exception {
+        assumeNotNull(testDevice);
         startMainActivity();
         int[] runningTasksIds = testDevice.getRunningTaskIds(MAX_RUNNING_TASKS_COUNT);
         int currentTopTaskId = runningTasksIds[0];
@@ -66,12 +76,14 @@ public class BringTaskToFrontTest extends BaseIntegrationTest {
 
     @Test
     public void testBringTaskToFrontInvalidTaskId() throws Exception {
+        assumeNotNull(testDevice);
         assertFalse("Bring task to front returned true with given invalid task Id.",
                     testDevice.bringTaskToFront(INVALID_TASK_ID, INVALID_TASK_TIMEOUT));
     }
 
     @Test
     public void testBringTaskToFrontWhenOnFront() throws Exception {
+        assumeNotNull(testDevice);
         startMainActivity();
         int[] runningTasksIds = testDevice.getRunningTaskIds(MAX_RUNNING_TASKS_COUNT);
         int currentTopTaskId = runningTasksIds[0];
