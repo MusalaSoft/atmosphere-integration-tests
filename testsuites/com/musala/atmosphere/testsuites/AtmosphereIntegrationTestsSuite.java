@@ -11,6 +11,7 @@ import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.server.Server;
 import com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert;
 
@@ -26,9 +27,9 @@ public class AtmosphereIntegrationTestsSuite {
 
     private final static int AGENTMANAGER_RMI_PORT = 2000;
 
-    private final static int WAIT_FOR_CONNECTING_TIMEOUT = 145000;
+    private final static int WAIT_FOR_CONNECTING_TIMEOUT = 145_000;
 
-    private final static long SCREEN_OFF_TIMEOUT = 180000;
+    private final static long SCREEN_OFF_TIMEOUT = 180_000;
 
     private final static String SERVER_IP = "localhost";
 
@@ -66,26 +67,34 @@ public class AtmosphereIntegrationTestsSuite {
         GettingBuilderClass builderGet = new GettingBuilderClass();
         Builder deviceBuilder = builderGet.getBuilder();
 
-        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder();
-        DeviceSelector emulatorSelector = selectorBuilder.deviceType(DeviceType.EMULATOR_ONLY).build();
+        // Attempts to select an emulator
+        DeviceSelectorBuilder emulatorSelectorBuilder = new DeviceSelectorBuilder();
+        DeviceSelector emulatorSelector = emulatorSelectorBuilder.deviceType(DeviceType.EMULATOR_ONLY).build();
+        Device device = null;
+        try {
+            device = deviceBuilder.getDevice(emulatorSelector);
+            OnDeviceValidatorAssert.setTestDevice(device);
+            OnDeviceValidatorAssert.setupOndeviceValidator();
+            deviceBuilder.releaseDevice(device);
+        } catch (NoAvailableDeviceFoundException e) {
+            // Nothing to do here
+        }
 
-        Device device = deviceBuilder.getDevice(emulatorSelector);
+        // Attempts to select a real device
+        DeviceSelector realDeviceSelector = emulatorSelectorBuilder.deviceType(DeviceType.DEVICE_PREFERRED).build();
+        try {
+            device = deviceBuilder.getDevice(realDeviceSelector);
+            OnDeviceValidatorAssert.setTestDevice(device);
+            OnDeviceValidatorAssert.setupOndeviceValidator();
+            device.setScreenOffTimeout(SCREEN_OFF_TIMEOUT);
+            deviceBuilder.releaseDevice(device);
+        } catch (NoAvailableDeviceFoundException e) {
+            // Nothing to do here
+        }
 
-        OnDeviceValidatorAssert.setTestDevice(device);
-        OnDeviceValidatorAssert.setupOndeviceValidator();
-
-        deviceBuilder.releaseDevice(device);
-
-        DeviceSelector realDeviceSelector = selectorBuilder.deviceType(DeviceType.DEVICE_PREFERRED).build();
-
-        device = deviceBuilder.getDevice(realDeviceSelector);
-
-        OnDeviceValidatorAssert.setTestDevice(device);
-        OnDeviceValidatorAssert.setupOndeviceValidator();
-
-        device.setScreenOffTimeout(SCREEN_OFF_TIMEOUT);
-
-        deviceBuilder.releaseDevice(device);
+        if (device == null) {
+            throw new NoAvailableDeviceFoundException("No devices are present on the current agent.");
+        }
     }
 
     @AfterClass
