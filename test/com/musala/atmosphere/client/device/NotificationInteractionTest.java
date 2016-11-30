@@ -28,6 +28,8 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
 
     private static final String NOTIFICATION_BUTTON_TEXT = "Open";
 
+    private static final String NOTIFICATION_BUTTON_TEXT_TO_UPPER = NOTIFICATION_BUTTON_TEXT.toUpperCase();
+
     private static final int GET_NOTIFICATION_TIMEOUT = 5_000;
 
     private static NotificationBar notificationBar = null;
@@ -36,7 +38,7 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_ONLY)
+        DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED)
                                                                            .minApi(19);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
 
@@ -80,6 +82,9 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
     public void testTapOnButtonInNotification() throws Exception {
         assumeNotNull(testDevice);
 
+        int deviceApiLevel = testDevice.getInformation().getApiLevel();
+        String notificationButtonText = deviceApiLevel >= 24 ? NOTIFICATION_BUTTON_TEXT_TO_UPPER : NOTIFICATION_BUTTON_TEXT;
+
         notificationBar.open();
 
         UiElementSelector notificationSelector = new UiElementSelector();
@@ -87,14 +92,14 @@ public class NotificationInteractionTest extends BaseIntegrationTest {
 
         Screen screen = testDevice.getActiveScreen();
         screen.waitForElementExists(notificationSelector, GET_NOTIFICATION_TIMEOUT);
-        notificationBar.getNotificationByText(NOTIFICATION_BUTTON_TEXT);
+        notificationBar.getNotificationByText(notificationButtonText);
         UiElement notification = notificationBar.getNotificationsBySelector(notificationSelector).get(0);
 
         notification.pinchOut();
         notification = notificationBar.getNotificationsBySelector(notificationSelector).get(0);
 
         UiElementSelector notificationOpenButtonSelector = new UiElementSelector();
-        notificationOpenButtonSelector.addSelectionAttribute(CssAttribute.TEXT, NOTIFICATION_BUTTON_TEXT);
+        notificationOpenButtonSelector.addSelectionAttribute(CssAttribute.TEXT, notificationButtonText);
 
         notification.tapOnChildElement(notificationOpenButtonSelector);
 
