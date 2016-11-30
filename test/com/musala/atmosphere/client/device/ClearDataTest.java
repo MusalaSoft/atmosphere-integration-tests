@@ -39,22 +39,24 @@ public class ClearDataTest extends BaseIntegrationTest {
         try {
             initTestDevice(testDeviceSelector);
             setTestDevice(testDevice);
+
+            startMainActivity();
         } catch (NoAvailableDeviceFoundException e) {
             // Nothing to do here
         }
-        assumeNotNull(testDevice);
-        startMainActivity();
     }
 
     @AfterClass
     public static void tearDownTest() throws Exception {
-        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
-
+        if (testDevice != null) {
+            testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        }
         releaseDevice();
     }
 
     @Test
     public void testClearData() throws Exception {
+        assumeNotNull(testDevice);
         Screen screen = testDevice.getActiveScreen();
 
         UiElementSelector createDataButtonSelector = new UiElementSelector();
