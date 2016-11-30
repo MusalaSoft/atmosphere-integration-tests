@@ -49,7 +49,7 @@ public class InputTextTest extends BaseIntegrationTest {
 
     @Test
     public void testInputTextCyrillic() throws Exception {
-        String textToInput = "Hi! Кирилица. €%@$§№%()456*/0,.";
+        String textToInput = "Hi! РљРёСЂРёР»РёС†Р°. в‚¬%@$В§в„–%()456*/0,.";
 
         UiElement inputTextBox = getElementByContentDescriptor(ContentDescriptor.EMPTY_TEXT_BOX.toString());
         inputTextBox.inputText(textToInput);
