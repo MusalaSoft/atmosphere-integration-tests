@@ -1,13 +1,14 @@
 #!/bin/bash
 RECORD_PATH=$1/AtmosphereScreenRecords
+SCREENRECORD_PATH=$2
 STOP_FILE_NAME=log
 
-if [ -n "$(ps screenrecord | grep -Eo [0-9]+ | grep -m 1 -Eo [0-9]+)" ]
+if [ -n "$(ps ${SCREENRECORD_PATH}screenrecord | grep -Eo [0-9]+ | grep -m 1 -Eo [0-9]+)" ]
 then
     #Removes the log file created by the start script
     rm ${RECORD_PATH}/${STOP_FILE_NAME}
 
-    kill -SIGINT $(ps screenrecord | grep -Eo [0-9]+ | grep -m 1 -Eo [0-9]+)
+    kill -SIGINT $(ps ${SCREENRECORD_PATH}screenrecord | grep -Eo [0-9]+ | grep -m 1 -Eo [0-9]+)
 
     #Waits the start script to create a log file after the screen record process is done
     while [[ ! -f "$RECORD_PATH/$STOP_FILE_NAME" ]]
