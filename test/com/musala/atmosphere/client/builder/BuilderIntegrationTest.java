@@ -3,14 +3,14 @@ package com.musala.atmosphere.client.builder;
 import org.junit.Test;
 
 import com.musala.atmosphere.client.Builder;
-import com.musala.atmosphere.client.exceptions.MissingServerAnnotationException;
+import com.musala.atmosphere.client.exceptions.MissingServerConnectionProperiesException;
 import com.musala.atmosphere.client.exceptions.ServerConnectionFailedException;
 import com.musala.atmosphere.client.util.Server;
 
 public class BuilderIntegrationTest {
     private static final int SERVER_MANAGER_RMI_PORT = 2099;
 
-    @Test(expected = MissingServerAnnotationException.class)
+    @Test(expected = MissingServerConnectionProperiesException.class)
     public void missingSeverAnnotationTest() {
         class SampleTestNoAnnotation {
             public Builder getBuilderInstance() {
