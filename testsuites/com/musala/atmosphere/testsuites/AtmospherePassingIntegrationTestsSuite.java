@@ -38,6 +38,7 @@ import com.musala.atmosphere.client.device.PasteTextTest;
 import com.musala.atmosphere.client.device.PinchTest;
 import com.musala.atmosphere.client.device.ProcessRunningTest;
 import com.musala.atmosphere.client.device.ReceiveSmsTest;
+import com.musala.atmosphere.client.device.RuntimePermissionTest;
 import com.musala.atmosphere.client.device.ScreenOffTimeoutTest;
 import com.musala.atmosphere.client.device.ScreenRecordingTest;
 import com.musala.atmosphere.client.device.ScrollTest;
@@ -85,7 +86,7 @@ import com.musala.atmosphere.webview.WebElementWaitForConditionTest;
         ForceStopProcessTest.class, StopBackgroundProcessTest.class, GetElementWhenPresentTest.class,
         SetIMEAsDefaultTest.class, OpenNotificationTest.class, OpenQuickSettingsTest.class, NotificationBarTest.class,
         NotificationInteractionTest.class, UninstallApplicationTest.class, WaitForTaskUpdateTest.class,
-        BringTaskToFrontTest.class, MockLocationTest.class, DisableMockLocationTest.class,
+        RuntimePermissionTest.class, BringTaskToFrontTest.class, MockLocationTest.class, DisableMockLocationTest.class,
         InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class, PasteTextTest.class, CopyTextTest.class,
         CutTextTest.class, DatePickerInteractionTest.class, TimePickerInteractionTest.class,
         GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class, ScreenOffTimeoutTest.class,
