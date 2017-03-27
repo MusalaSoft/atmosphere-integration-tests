@@ -17,10 +17,11 @@ import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.ui.selector.CssAttribute;
+import com.musala.atmosphere.commons.ui.selector.UiElementSelectionOption;
 import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 
 /**
- * 
+ *
  * @author denis.bialev
  *
  */
@@ -35,6 +36,10 @@ public class GetAccessibilityUiElementTest extends BaseIntegrationTest {
     private static final String BUTTON_CLASS_NAME = "android.widget.Button";
 
     private static final String FIRST_BUTTON_TEXT = "Button1";
+
+    private static final String CONTAINS_BUTTON_TEXT = "Button";
+
+    private static final String WORD_MATCH_BUTTON_TEXT = "^[A-z]{2}tt[a-z]{2}1$"; // matches "Button1"
 
     private static final String NON_EXISTENT_TEXT = "I don't exist";
 
@@ -104,6 +109,26 @@ public class GetAccessibilityUiElementTest extends BaseIntegrationTest {
     public void testGetElementWhenTextIsUnique() throws Exception {
         UiElementSelector elementSelector = new UiElementSelector();
         elementSelector.addSelectionAttribute(CssAttribute.TEXT, FIRST_BUTTON_TEXT);
+
+        UiElement foundElement = screen.getElement(elementSelector);
+
+        assertEquals(SELECTOR_PROPERTIES_MISSMATCH_MESSAGE, FIRST_BUTTON_TEXT, foundElement.getText());
+    }
+
+    @Test(expected = MultipleElementsFoundException.class)
+    public void testGetElementWithContainsSelectionOption() throws Exception {
+        UiElementSelector elementSelector = new UiElementSelector();
+        elementSelector.addSelectionAttribute(CssAttribute.TEXT, UiElementSelectionOption.CONTAINS, CONTAINS_BUTTON_TEXT);
+
+        UiElement foundElement = screen.getElement(elementSelector);
+
+        assertEquals(SELECTOR_PROPERTIES_MISSMATCH_MESSAGE, FIRST_BUTTON_TEXT, foundElement.getText());
+    }
+
+    @Test
+    public void testGetElementWithWordMatchSelectionOption() throws Exception {
+        UiElementSelector elementSelector = new UiElementSelector();
+        elementSelector.addSelectionAttribute(CssAttribute.TEXT, UiElementSelectionOption.WORD_MATCH, WORD_MATCH_BUTTON_TEXT);
 
         UiElement foundElement = screen.getElement(elementSelector);
 
