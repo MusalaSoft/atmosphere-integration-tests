@@ -41,6 +41,7 @@ import com.musala.atmosphere.client.device.PasteTextTest;
 import com.musala.atmosphere.client.device.PinchTest;
 import com.musala.atmosphere.client.device.ProcessRunningTest;
 import com.musala.atmosphere.client.device.ReceiveSmsTest;
+import com.musala.atmosphere.client.device.RuntimePermissionTest;
 import com.musala.atmosphere.client.device.ScreenOffTimeoutTest;
 import com.musala.atmosphere.client.device.ScrollTest;
 import com.musala.atmosphere.client.device.SelectAllTextTest;
@@ -85,6 +86,7 @@ import com.musala.atmosphere.webview.WebElementWaitForConditionTest;
 
 @SuiteClasses({
          BuilderIntegrationTest.class,
+         RuntimePermissionTest.class,
          WaitForTaskUpdateTest.class,
          BringTaskToFrontTest.class,
          GetRunningTaskIdsTest.class,
