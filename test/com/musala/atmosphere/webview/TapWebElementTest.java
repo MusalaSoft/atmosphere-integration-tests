@@ -23,7 +23,7 @@ public class TapWebElementTest extends BaseWebViewIntegrationTest {
 
     private static final String WEB_ELEMENT_ID = "btn";
 
-    private static final String DYNAMIC_ATTRIBUTE_NAME = "testAttribute";
+    private static final String DYNAMIC_ATTRIBUTE_NAME = "testattribute";
 
     private static final String SUBMIT_BUTTON_DYNAMIC_ATTRIBUTE_VALUE = "tappedSubmit";
 
