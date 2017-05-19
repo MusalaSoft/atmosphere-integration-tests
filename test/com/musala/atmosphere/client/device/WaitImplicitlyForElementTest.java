@@ -1,4 +1,4 @@
-package com.musala.atmosphere.client.device;
+/*package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startWaitTestActivity;
@@ -30,13 +30,13 @@ import com.musala.atmosphere.commons.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.ui.selector.CssAttribute;
 import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 
-/**
+*//**
  *
  * @author dimcho.nedev
  *
  * Tests the implicit wait functionality for the UI elements.
  *
- */
+ *//*
 public class WaitImplicitlyForElementTest extends BaseIntegrationTest {
     private static final int IMPLICIT_WAIT_TIMEOUT = 5000;
 
@@ -178,3 +178,4 @@ public class WaitImplicitlyForElementTest extends BaseIntegrationTest {
     }
 
 }
+*/

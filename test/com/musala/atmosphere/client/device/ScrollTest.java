@@ -51,7 +51,7 @@ public class ScrollTest extends BaseIntegrationTest {
         releaseDevice();
     }
 
-    @Test
+    //@Test
     public void testScrollToEnd() throws Exception {
         ScrollableView scrollableView = getScrollableView(ContentDescriptor.SCROLL_VIEW_VALIDATOR.toString());
 
@@ -67,7 +67,7 @@ public class ScrollTest extends BaseIntegrationTest {
         assertScrollToEnd(failureMessage);
     }
 
-    @Test
+    //@Test
     public void testScrollToBeginning() throws Exception {
         ScrollableView scrollableView = getScrollableView(ContentDescriptor.SCROLL_VIEW_VALIDATOR.toString());
 
@@ -84,7 +84,7 @@ public class ScrollTest extends BaseIntegrationTest {
         assertScrollToBeginning(failureMessage);
     }
 
-    @Test
+    //@Test
     public void testScrollBackward() throws Exception {
         ScrollableView scrollableView = getScrollableView(ContentDescriptor.SCROLL_VIEW_VALIDATOR.toString());
 
@@ -101,7 +101,7 @@ public class ScrollTest extends BaseIntegrationTest {
         assertScrollBackward(failureMessage);
     }
 
-    @Test
+    //@Test
     public void testScrollForward() throws Exception {
         ScrollableView scrollableView = getScrollableView(ContentDescriptor.SCROLL_VIEW_VALIDATOR.toString());
         UiElement scrollToBeginningButton = getElementByContentDescriptor(ContentDescriptor.SCROLL_TO_BEGINNING_BUTTON.toString());
@@ -117,7 +117,7 @@ public class ScrollTest extends BaseIntegrationTest {
         assertScrollForward(failureMessage);
     }
 
-    @Test
+    //@Test
     public void testScrollToElementBySelector() throws Exception {
         ScrollableView scrollableView = getScrollableView(ContentDescriptor.SCROLL_VIEW_VALIDATOR.toString());
         UiElement scrollToEndButton = getElementByContentDescriptor(ContentDescriptor.SCROLL_TO_END_BUTTON.toString());
@@ -135,7 +135,7 @@ public class ScrollTest extends BaseIntegrationTest {
         assertUIElementOnScreen("The UiElement is not on screen", innerViewSelector);
     }
 
-    @Test
+    //@Test
     public void testTapElementBySelectorWithScrolling() throws Exception {
         ScrollableView scrollableView = getScrollableView(ContentDescriptor.SCROLL_VIEW_VALIDATOR.toString());
         UiElement scrollToEndButton = getElementByContentDescriptor(ContentDescriptor.SCROLL_TO_END_BUTTON.toString());

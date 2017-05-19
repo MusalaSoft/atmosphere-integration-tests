@@ -34,7 +34,7 @@ public class BaseIntegrationTest {
         }
     }
 
-    protected final static int SERVER_MANAGER_RMI_PORT = 2099;
+    protected final static int SERVER_MANAGER_RMI_PORT = 8025;
 
     protected final static String ONDEVICEVALIDATOR_FILE = "OnDeviceValidator-release.apk";
 

@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -23,12 +22,12 @@ import org.junit.Test;
 import com.android.ddmlib.IDevice;
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.agent.AndroidDebugBridgeManager;
-import com.musala.atmosphere.commons.exceptions.CommandFailedException;
 import com.musala.atmosphere.commons.util.Pair;
-import com.musala.atmosphere.server.dao.exception.DevicePoolDaoException;
 import com.musala.atmosphere.server.pool.PoolManager;
 
 /**
+ * TODO: The test should work with the WebSocket
+ * 
  * Tests whether the device is added/removed to/from the Server's pool when a device is added/removed from/to the Agent.
  * The test should verify whether the required device information for connected/disconnected device has been received on
  * the Server's {@link PoolManager} poolManager.
@@ -72,8 +71,8 @@ public class AddAndRemoveDeviceTest extends BaseIntegrationTest {
 
         // Bind the wrapper to the agent registry RMI port
         // Remove the line below after the WebSocket migration
-        Registry rmiRegistry = LocateRegistry.getRegistry(agent.getAgentRmiPort());
-        rmiRegistry.rebind(DEVICE_SERIAL_NO, mockWrapDevice);
+        //Registry rmiRegistry = LocateRegistry.getRegistry(agent.getAgentRmiPort());
+        //rmiRegistry.rebind(DEVICE_SERIAL_NO, mockWrapDevice);
 
         // Create mocked device
         mockedDevice = mock(IDevice.class);

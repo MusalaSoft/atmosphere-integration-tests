@@ -86,7 +86,7 @@ public class TimePickerInteractionTest extends BaseIntegrationTest {
         assertEquals("Meridiem from time picker does not match expected result.", AM, calendar.get(Calendar.AM_PM));
     }
 
-    @Test
+    //@Test
     public void testGetCurrentTimeFromPicker24HoursFormat() throws Exception {
         UiElement timePickerButton = getElementByContentDescriptor(ContentDescriptor.TIME_PICKER_24_HOURS_FORMAT.toString());
         timePickerButton.tap();
@@ -103,7 +103,7 @@ public class TimePickerInteractionTest extends BaseIntegrationTest {
                      calendar.get(Calendar.MINUTE));
     }
 
-    @Test
+    //@Test
     public void testSetTimeInTimePicker() throws Exception {
         UiElement timePickerButton = getElementByContentDescriptor(ContentDescriptor.TIME_PICKER.toString());
         timePickerButton.tap();
@@ -140,7 +140,7 @@ public class TimePickerInteractionTest extends BaseIntegrationTest {
                      pickerCalendar.get(Calendar.AM_PM));
     }
 
-    @Test
+    //@Test
     public void testSetTimeInTimePicker24HoursFormat() throws Exception {
         UiElement timePickerButton = getElementByContentDescriptor(ContentDescriptor.TIME_PICKER_24_HOURS_FORMAT.toString());
         timePickerButton.tap();

@@ -10,9 +10,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
-import com.musala.atmosphere.agent.DeviceManager;
+import com.musala.atmosphere.agent.AgentManager;
 import com.musala.atmosphere.commons.RoutingAction;
-import com.musala.atmosphere.commons.sa.IWrapDevice;
 
 public class GetUiXmlTest extends BaseIntegrationTest {
     private static IWrapDevice deviceWrapper;
@@ -20,10 +19,10 @@ public class GetUiXmlTest extends BaseIntegrationTest {
     @BeforeClass
     public static void setUp() throws Exception {
         Class<?> agentClass = agent.getClass();
-        Field deviceManagerField = agentClass.getDeclaredField("deviceManager");
-        deviceManagerField.setAccessible(true);
-        DeviceManager deviceManager = (DeviceManager) deviceManagerField.get(agent);
-        deviceWrapper = deviceManager.getFirstAvailableDeviceWrapper();
+        Field agentManagerField = agentClass.getDeclaredField("agentManager");
+        agentManagerField.setAccessible(true);
+        AgentManager agentManager = (AgentManager) agentManagerField.get(agent);
+        deviceWrapper = agentManager.getFirstAvailableDeviceWrapper();
     }
 
     @AfterClass

@@ -15,6 +15,7 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.cs.exception.DeviceNotFoundException;
 import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 
 /**
@@ -37,16 +38,18 @@ public class WaitForTaskUpdateTest extends BaseIntegrationTest {
     private static final String ANDROID_SETTINGS_PACKAGE = "com.android.settings";
 
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void setUp() throws DeviceNotFoundException {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.DEVICE_PREFERRED)
                                                                            .maxApi(19);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
         try {
             initTestDevice(testDeviceSelector);
-            setTestDevice(testDevice);
         } catch (NoAvailableDeviceFoundException e) {
             // Nothing to do here
         }
+
+        assumeNotNull(testDevice);
+        setTestDevice(testDevice);
     }
 
     @AfterClass
@@ -60,7 +63,6 @@ public class WaitForTaskUpdateTest extends BaseIntegrationTest {
 
     @Test
     public void testWaitForTaskUpdate() throws Exception {
-        assumeNotNull(testDevice);
         startMainActivity();
         int[] currentlyRunningTasksIds = testDevice.getRunningTaskIds(MAX_RUNNING_TASKS_COUNT);
         int monitoredTaskId = currentlyRunningTasksIds[0];
@@ -75,14 +77,12 @@ public class WaitForTaskUpdateTest extends BaseIntegrationTest {
 
     @Test
     public void testWaitForTaskUpdateInvalidId() throws Exception {
-        assumeNotNull(testDevice);
         assertFalse("Wait for task update succeeded when given invalid task ID. ",
                     testDevice.waitForTasksUpdate(NONEXISTENT_TASK_ID, TASK_POSITION, WAIT_FOR_NONEXISTENT_TASK_TIMEOUT));
     }
 
     @Test
     public void testWaitForTaskUpdateNoChanges() throws Exception {
-        assumeNotNull(testDevice);
         startMainActivity();
         int[] runningTasksIds = testDevice.getRunningTaskIds(MAX_RUNNING_TASKS_COUNT);
         int monitoredTaskId = runningTasksIds[0];
@@ -92,7 +92,6 @@ public class WaitForTaskUpdateTest extends BaseIntegrationTest {
 
     @Test
     public void testWaitForTaskUpdateWrongPosition() throws Exception {
-        assumeNotNull(testDevice);
         startMainActivity();
         int[] runningTasksIds = testDevice.getRunningTaskIds(MAX_RUNNING_TASKS_COUNT);
         int monitoredTaskId = runningTasksIds[0];

@@ -16,9 +16,9 @@ import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 
 /**
- * 
+ *
  * @author denis.bialev
- * 
+ *
  */
 public class GetRunningTaskIdsTest extends BaseIntegrationTest {
 
@@ -34,10 +34,12 @@ public class GetRunningTaskIdsTest extends BaseIntegrationTest {
 
         try {
             initTestDevice(testDeviceSelector);
-            setTestDevice(testDevice);
         } catch (NoAvailableDeviceFoundException e) {
             // Nothing to do here
         }
+
+        assumeNotNull(testDevice);
+        setTestDevice(testDevice);
     }
 
     @AfterClass
@@ -51,7 +53,6 @@ public class GetRunningTaskIdsTest extends BaseIntegrationTest {
 
     @Test
     public void testGetRunningTaskIds() throws Exception {
-        assumeNotNull(testDevice);
         startMainActivity();
         int[] currentRunningTasksIds = testDevice.getRunningTaskIds(MAX_RUNNING_TASKS_COUNT);
         int monitoredTaskId = currentRunningTasksIds[0];

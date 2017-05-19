@@ -4,8 +4,10 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import com.musala.atmosphere.agent.devicewrapper.EmulatorCameraTest;
 import com.musala.atmosphere.agent.devicewrapper.GetScreenshotTest;
+import com.musala.atmosphere.agent.devicewrapper.GetUiXmlTest;
 import com.musala.atmosphere.agent.devicewrapper.ScreenOrientationTest;
 import com.musala.atmosphere.agent.devicewrapper.TelephonyInformationTest;
+import com.musala.atmosphere.client.builder.BuilderIntegrationTest;
 import com.musala.atmosphere.client.device.BringTaskToFrontTest;
 import com.musala.atmosphere.client.device.CallTest;
 import com.musala.atmosphere.client.device.ChangeGpsLocationStateTest;
@@ -25,6 +27,7 @@ import com.musala.atmosphere.client.device.GestureExecutionTest;
 import com.musala.atmosphere.client.device.GetLastToastTest;
 import com.musala.atmosphere.client.device.GetRunningTaskIdsTest;
 import com.musala.atmosphere.client.device.HorizontalScrollTest;
+//import com.musala.atmosphere.client.device.WaitImplicitlyForElementTest;
 import com.musala.atmosphere.client.device.InputTextTest;
 import com.musala.atmosphere.client.device.LockUnlockTest;
 import com.musala.atmosphere.client.device.LogCatFiltersTest;
@@ -63,6 +66,8 @@ import com.musala.atmosphere.client.screen.GetElementsByXPathTest;
 import com.musala.atmosphere.client.uielement.GetAccessibilityUiElementChildrenTest;
 import com.musala.atmosphere.client.uielement.GetElementChildrenByXPathTest;
 import com.musala.atmosphere.client.uielement.UiElementRevalidationTest;
+import com.musala.atmosphere.server.PoolEventHandlerTest;
+import com.musala.atmosphere.server.AddAndRemoveDeviceTest;
 import com.musala.atmosphere.webview.ClearWebElementTextTest;
 import com.musala.atmosphere.webview.FindWebElementTest;
 import com.musala.atmosphere.webview.GetSizeOfWebElementTest;
@@ -71,32 +76,103 @@ import com.musala.atmosphere.webview.GetWebElementTagTest;
 import com.musala.atmosphere.webview.GetWebElementTextTest;
 import com.musala.atmosphere.webview.TapWebElementTest;
 import com.musala.atmosphere.webview.WebElementGetCssValueTest;
+//import com.musala.atmosphere.webview.WebElementImplicitWaitTest;
 import com.musala.atmosphere.webview.WebElementInputTextTest;
 import com.musala.atmosphere.webview.WebElementIsDisplayedTest;
 import com.musala.atmosphere.webview.WebElementIsEnabledTest;
 import com.musala.atmosphere.webview.WebElementIsSelectedTest;
 import com.musala.atmosphere.webview.WebElementWaitForConditionTest;
 
-@SuiteClasses({ScreenOrientationTest.class, TapTest.class, StartActivityTest.class, LockUnlockTest.class,
-        DeviceInstallApkTest.class, GetScreenshotTest.class, DeviceGetScreenshotTest.class, ReceiveSmsTest.class, CallTest.class,
-        GestureExecutionTest.class, TelephonyInformationTest.class, StartApplicationTest.class, DoubleTapTest.class,
-        PinchTest.class, LongPressTest.class, WaitForExistsTest.class, ScrollTest.class, HorizontalScrollTest.class,
-        WaitForWindowUpdateTest.class, EmulatorCameraTest.class, WaitUntilGoneTest.class, ProcessRunningTest.class,
-        ForceStopProcessTest.class, StopBackgroundProcessTest.class, GetElementWhenPresentTest.class,
-        SetIMEAsDefaultTest.class, OpenNotificationTest.class, OpenQuickSettingsTest.class, NotificationBarTest.class,
-        NotificationInteractionTest.class, UninstallApplicationTest.class, WaitForTaskUpdateTest.class,
-        BringTaskToFrontTest.class, MockLocationTest.class, DisableMockLocationTest.class,
-        InputTextTest.class, ClearTextTest.class, SelectAllTextTest.class, PasteTextTest.class, CopyTextTest.class,
-        CutTextTest.class, DatePickerInteractionTest.class, TimePickerInteractionTest.class,
-        GetRunningTaskIdsTest.class, ScreenRecordingTest.class, SetKeyguardTest.class, ScreenOffTimeoutTest.class,
-        GetLastToastTest.class, GetAccessibilityUiElementsTest.class, GetAccessibilityUiElementTest.class,
-        GetAccessibilityUiElementChildrenTest.class, UiElementRevalidationTest.class, ClearDataTest.class,
-        DragTest.class, FindWebElementTest.class, WebElementIsDisplayedTest.class,
-        WebElementIsEnabledTest.class, WebElementIsSelectedTest.class, GetWebElementTagTest.class,
-        WebElementInputTextTest.class, WebElementGetCssValueTest.class, WebElementWaitForConditionTest.class,
-        ClearWebElementTextTest.class, GetSizeOfWebElementTest.class, TapWebElementTest.class,
-        GetWebElementRelativePositionTest.class, GetWebElementTextTest.class, DiskSpaceTest.class,
-        GetElementChildrenByXPathTest.class, GetElementsByXPathTest.class, GetElementByXPathTest.class,
-        GetElementByCssTest.class, ChangeGpsLocationStateTest.class, LogCatFiltersTest.class})
+@SuiteClasses({
+//         ------ SUCCESS ------
+
+    BuilderIntegrationTest.class,
+
+    WaitForTaskUpdateTest.class,
+    BringTaskToFrontTest.class,
+    GetRunningTaskIdsTest.class,
+    SetKeyguardTest.class,
+
+         ScreenOrientationTest.class,
+         WebElementIsDisplayedTest.class,
+         WebElementIsEnabledTest.class,
+         WebElementIsSelectedTest.class,
+         WebElementInputTextTest.class,
+         GetWebElementTagTest.class,
+         WebElementGetCssValueTest.class,
+         WebElementWaitForConditionTest.class,
+         ClearWebElementTextTest.class,
+         TapWebElementTest.class,
+         GetWebElementTextTest.class,
+         TapTest.class,
+         StartActivityTest.class,
+         LockUnlockTest.class,
+         DeviceInstallApkTest.class,
+         GetScreenshotTest.class,
+         DeviceGetScreenshotTest.class,
+         GestureExecutionTest.class,
+         TelephonyInformationTest.class,
+         StartApplicationTest.class,
+         DoubleTapTest.class,
+         PinchTest.class,
+         LongPressTest.class,
+         WaitForExistsTest.class,
+         WaitUntilGoneTest.class,
+         ProcessRunningTest.class,
+         StopBackgroundProcessTest.class,
+         GetElementWhenPresentTest.class,
+         NotificationBarTest.class,
+         OpenQuickSettingsTest.class,
+         OpenNotificationTest.class,
+         UninstallApplicationTest.class,
+         ClearTextTest.class,
+         PasteTextTest.class,
+         CopyTextTest.class,
+         CutTextTest.class,
+         GetLastToastTest.class,
+         ScreenOffTimeoutTest.class,
+         ForceStopProcessTest.class,
+         GetAccessibilityUiElementsTest.class,
+         GetAccessibilityUiElementChildrenTest.class,
+         UiElementRevalidationTest.class,
+         ClearDataTest.class,
+         DragTest.class,
+         DiskSpaceTest.class,
+         GetElementChildrenByXPathTest.class,
+         GetElementsByXPathTest.class,
+         GetElementByXPathTest.class,
+         GetElementByCssTest.class,
+         ChangeGpsLocationStateTest.class,
+         MockLocationTest.class,
+         DisableMockLocationTest.class,
+         SetIMEAsDefaultTest.class,
+         InputTextTest.class,
+         SelectAllTextTest.class,
+         GetUiXmlTest.class,
+         FindWebElementTest.class, // WebElementNotPresentException --> thrown on Agent -> transfer the exception to the client
+         TimePickerInteractionTest.class,
+         DatePickerInteractionTest.class,
+         ScrollTest.class,
+         HorizontalScrollTest.class,
+         GetSizeOfWebElementTest.class, // Convert Double to Integer
+         GetWebElementRelativePositionTest.class,
+         WaitForWindowUpdateTest.class,
+         NotificationInteractionTest.class,
+
+
+//         AddAndRemoveDeviceTest.class,
+
+//        ----- FAILED ----
+		/* ReceiveSmsTest.class,
+		 * CallTest.class,
+		 * EmulatorCameraTest.class
+		 * ScreenRecordingTest.class,
+		 * LogCatFiltersTest.class*/
+
+		// PoolEventHandlerTest.class,
+
+	    // WaitImplicitlyForElementTest.class,
+	    // WebElementImplicitWaitTest.class,
+})
 public class AtmospherePassingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }

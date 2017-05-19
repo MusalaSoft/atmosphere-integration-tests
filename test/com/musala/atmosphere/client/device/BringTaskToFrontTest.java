@@ -43,10 +43,12 @@ public class BringTaskToFrontTest extends BaseIntegrationTest {
         DeviceSelector testDeviceSelector = selectorBuilder.build();
         try {
             initTestDevice(testDeviceSelector);
-            setTestDevice(testDevice);
         } catch (NoAvailableDeviceFoundException e) {
             // Nothing to do here
         }
+
+        assumeNotNull(testDevice);
+        setTestDevice(testDevice);
     }
 
     @AfterClass
@@ -59,7 +61,6 @@ public class BringTaskToFrontTest extends BaseIntegrationTest {
 
     @Test
     public void testBringTaskToFront() throws Exception {
-        assumeNotNull(testDevice);
         startMainActivity();
         int[] runningTasksIds = testDevice.getRunningTaskIds(MAX_RUNNING_TASKS_COUNT);
         int currentTopTaskId = runningTasksIds[0];
@@ -76,14 +77,12 @@ public class BringTaskToFrontTest extends BaseIntegrationTest {
 
     @Test
     public void testBringTaskToFrontInvalidTaskId() throws Exception {
-        assumeNotNull(testDevice);
         assertFalse("Bring task to front returned true with given invalid task Id.",
                     testDevice.bringTaskToFront(INVALID_TASK_ID, INVALID_TASK_TIMEOUT));
     }
 
     @Test
     public void testBringTaskToFrontWhenOnFront() throws Exception {
-        assumeNotNull(testDevice);
         startMainActivity();
         int[] runningTasksIds = testDevice.getRunningTaskIds(MAX_RUNNING_TASKS_COUNT);
         int currentTopTaskId = runningTasksIds[0];

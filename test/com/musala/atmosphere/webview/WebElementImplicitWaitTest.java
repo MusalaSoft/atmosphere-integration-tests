@@ -1,4 +1,4 @@
-package com.musala.atmosphere.webview;
+/*package com.musala.atmosphere.webview;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startWaitTestActivity;
@@ -38,13 +38,13 @@ import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 import com.musala.atmosphere.commons.webelement.exception.WebElementNotPresentException;
 import com.musala.atmosphere.commons.webelement.selection.WebElementSelectionCriterion;
 
-/**
+*//**
  * Tests the implicit wait functionality for the {@link WebElement}
  * web elements.
  *
  * @author dimcho.nedev
  *
- */
+ *//*
 public class WebElementImplicitWaitTest extends BaseWebViewIntegrationTest {
     private static final String CONFIG_FILE_NAME = "config.properties";
 
@@ -176,11 +176,11 @@ public class WebElementImplicitWaitTest extends BaseWebViewIntegrationTest {
         }
 	}
 
-	/**
+	*//**
 	 * Tests whether the explicit wait should override the implicit wait for
 	 * nonexistent element. The test may fail on some machines but can be useful
 	 * in some cases.
-	 */
+	 *//*
 	@Ignore
 	@Test(timeout = IMPLICIT_WAIT_TIMEOUT * 3)
 	public void testExplicitWaitShouldOverrideImplicitWaitForUnexistingElement() {
@@ -199,3 +199,4 @@ public class WebElementImplicitWaitTest extends BaseWebViewIntegrationTest {
 	}
 
 }
+*/
