@@ -20,7 +20,7 @@ import com.musala.atmosphere.commons.geometry.Point;
 public class ScreenOffTimeoutTest extends BaseIntegrationTest {
     private static final long SCREEN_OFF_TIMEOUT = 7000;
 
-    private static final long TIME_TO_WAIT = 2000;
+    private static final long TIME_TO_WAIT = 5000;
 
     private long defaultTimeOut;
 

@@ -29,7 +29,7 @@ public class DeviceInstallApkTest extends BaseIntegrationTest {
 
     private static final String TEST_APPLICATION_PACKAGE_NAME = "com.musala.atmosphere.testapplication";
 
-    private static final int DEFAULT_TIMEOUT = 3000;
+    private static final int DEFAULT_TIMEOUT = 5000;
 
     @BeforeClass
     public static void setUp() throws Exception {

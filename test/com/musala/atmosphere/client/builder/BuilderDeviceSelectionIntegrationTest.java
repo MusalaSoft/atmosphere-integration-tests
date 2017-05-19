@@ -1,4 +1,4 @@
-package com.musala.atmosphere.client.builder;
+/*package com.musala.atmosphere.client.builder;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -36,11 +36,11 @@ import com.musala.atmosphere.server.data.db.ormlite.AgentDao;
 import com.musala.atmosphere.server.data.provider.ormlite.DataSourceProvider;
 import com.musala.atmosphere.server.pool.PoolManager;
 
-/**
+*//**
  * 
  * @author valyo.yolovski
  * 
- */
+ *//*
 public class BuilderDeviceSelectionIntegrationTest {
     private static final int INVALID_API_LEVEL = 66;
 
@@ -522,3 +522,4 @@ public class BuilderDeviceSelectionIntegrationTest {
         selectorBuilder.build();
     }
 }
+*/

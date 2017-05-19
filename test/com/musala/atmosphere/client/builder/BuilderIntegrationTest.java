@@ -1,5 +1,6 @@
 package com.musala.atmosphere.client.builder;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.musala.atmosphere.client.Builder;
@@ -8,8 +9,10 @@ import com.musala.atmosphere.client.exceptions.ServerConnectionFailedException;
 import com.musala.atmosphere.client.util.Server;
 
 public class BuilderIntegrationTest {
-    private static final int SERVER_MANAGER_RMI_PORT = 2099;
+    private static final int SERVER_MANAGER_RMI_PORT = 8025;
 
+    // TODO: update this test
+    @Ignore
     @Test(expected = MissingServerConnectionProperiesException.class)
     public void missingSeverAnnotationTest() {
         class SampleTestNoAnnotation {

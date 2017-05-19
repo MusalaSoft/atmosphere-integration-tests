@@ -1,13 +1,10 @@
 package com.musala.atmosphere.server;
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-
 import com.musala.atmosphere.agent.devicewrapper.AbstractWrapDevice;
+import com.musala.atmosphere.agent.devicewrapper.IWrapDevice;
 import com.musala.atmosphere.commons.DeviceInformation;
 import com.musala.atmosphere.commons.RoutingAction;
 import com.musala.atmosphere.commons.exceptions.CommandFailedException;
-import com.musala.atmosphere.commons.sa.IWrapDevice;
 import com.musala.atmosphere.commons.util.Pair;
 
 /**
@@ -16,12 +13,12 @@ import com.musala.atmosphere.commons.util.Pair;
  * @author dimcho.nedev
  *
  */
-public class WrapMockDevice extends UnicastRemoteObject implements IWrapDevice {
+public class WrapMockDevice implements IWrapDevice {
 	private static final long serialVersionUID = -5012012957489621889L;
 
 	private DeviceInformation fakeDeviceInformation;
 
-	protected WrapMockDevice() throws RemoteException {
+	protected WrapMockDevice() {
 		fakeDeviceInformation = new DeviceInformation();
 		fakeDeviceInformation.setApiLevel(23);
 		fakeDeviceInformation.setCpu("cpu");
@@ -38,12 +35,12 @@ public class WrapMockDevice extends UnicastRemoteObject implements IWrapDevice {
 	}
 
 	@Override
-	public Object route(RoutingAction action, Object... args) throws RemoteException, CommandFailedException {
+	public Object route(RoutingAction action, Object... args) throws CommandFailedException {
 		return fakeDeviceInformation;
 	}
 
 	@Override
-	public void unbindWrapper() throws RemoteException {
+	public void unbindWrapper() {
 		// nothing to do here
 	}
 }

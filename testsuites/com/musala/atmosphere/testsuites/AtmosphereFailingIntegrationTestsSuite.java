@@ -25,10 +25,20 @@ import com.musala.atmosphere.service.AtmosphereServiceConnectionTest;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({DeviceAcceleratoinTest.class, BatteryRelatedMethodsTest.class,
-        DeviceOrientationTest.class, DeviceProximityTest.class, WifiConnectionQualityTest.class,
-        BuilderIntegrationTest.class, EmulatorConsoleTest.class, EmulatorCreationTest.class,
-        NetworkConnectionTest.class, SwipeTest.class, AtmosphereServiceConnectionTest.class,
-        PoolEventHandlerTest.class, GetUiXmlTest.class})
+@SuiteClasses({
+		// DeviceAcceleratoinTest.class, 
+		// BatteryRelatedMethodsTest.class,
+        // DeviceOrientationTest.class, 
+        // DeviceProximityTest.class, 
+        // WifiConnectionQualityTest.class,
+        // BuilderIntegrationTest.class, 
+        // EmulatorConsoleTest.class, 
+        // EmulatorCreationTest.class,
+        // NetworkConnectionTest.class, 
+        // SwipeTest.class, 
+        // AtmosphereServiceConnectionTest.class,
+        // PoolEventHandlerTest.class, 
+        // GetUiXmlTest.class
+        })
 public class AtmosphereFailingIntegrationTestsSuite extends AtmosphereIntegrationTestsSuite {
 }
