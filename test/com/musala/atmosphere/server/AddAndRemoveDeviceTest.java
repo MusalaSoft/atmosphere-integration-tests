@@ -4,12 +4,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import org.junit.After;
@@ -21,13 +18,16 @@ import org.junit.Test;
 
 import com.android.ddmlib.IDevice;
 import com.musala.atmosphere.BaseIntegrationTest;
+import com.musala.atmosphere.agent.AgentManager;
 import com.musala.atmosphere.agent.AndroidDebugBridgeManager;
+import com.musala.atmosphere.agent.DeviceManager;
+import com.musala.atmosphere.agent.devicewrapper.IWrapDevice;
+import com.musala.atmosphere.commons.DeviceInformation;
+import com.musala.atmosphere.commons.RoutingAction;
 import com.musala.atmosphere.commons.util.Pair;
 import com.musala.atmosphere.server.pool.PoolManager;
 
 /**
- * TODO: The test should work with the WebSocket
- * 
  * Tests whether the device is added/removed to/from the Server's pool when a device is added/removed from/to the Agent.
  * The test should verify whether the required device information for connected/disconnected device has been received on
  * the Server's {@link PoolManager} poolManager.
@@ -48,6 +48,12 @@ public class AddAndRemoveDeviceTest extends BaseIntegrationTest {
 
     private static final String POOL_MANAGER_FIELD_NAME = "poolManager";
 
+    private static final String AGENT_MANAGER_FIELD_NAME = "agentManager";
+
+    private static final String DEVICE_MANAGER_FIELD_NAME = "deviceManager";
+
+    private static final String DEVICE_SERIAL_TO_WRAPPER_MAP_NAME = "deviceSerialToDeviceWrapper";
+
     private static final String DEVICE_SERIAL_NO = "DeviceSerialNo_0";
 
     private static final int WAIT_TIMEOUT = 5000;
@@ -56,9 +62,10 @@ public class AddAndRemoveDeviceTest extends BaseIntegrationTest {
 
     private static PoolManager poolManager;
 
-    @BeforeClass
-    public static void setUp() throws RemoteException, NoSuchFieldException, IllegalAccessException {
+    private static DeviceInformation mockDeviceInformation = createMockDeviceInformation();
 
+    @BeforeClass
+    public static void setUp() throws Exception {
         // checks whether the Agent is connected to the Server
         String currentConnectedAgentId = agent.getId();
         boolean isConnected = server.isAgentWithIdConnected(currentConnectedAgentId);
@@ -66,19 +73,35 @@ public class AddAndRemoveDeviceTest extends BaseIntegrationTest {
         Assume.assumeTrue("The agent is not connected to the server", isConnected);
 
         // Create mock device wrapper
-        // Remove the line below after the WebSocket migration
-        WrapMockDevice mockWrapDevice = new WrapMockDevice();
+        IWrapDevice wrapperMock = mock(IWrapDevice.class);
+        when(wrapperMock.route(RoutingAction.GET_DEVICE_INFORMATION)).thenReturn(mockDeviceInformation);
 
-        // Bind the wrapper to the agent registry RMI port
-        // Remove the line below after the WebSocket migration
-        //Registry rmiRegistry = LocateRegistry.getRegistry(agent.getAgentRmiPort());
-        //rmiRegistry.rebind(DEVICE_SERIAL_NO, mockWrapDevice);
+        addWrapper(DEVICE_SERIAL_NO, wrapperMock);
 
         // Create mocked device
         mockedDevice = mock(IDevice.class);
         when(mockedDevice.getSerialNumber()).thenReturn(DEVICE_SERIAL_NO);
 
         poolManager = getPoolManager();
+    }
+
+    private static DeviceInformation createMockDeviceInformation() {
+        DeviceInformation fakeDeviceInformation = new DeviceInformation();
+
+        fakeDeviceInformation.setApiLevel(23);
+        fakeDeviceInformation.setCpu("cpu");
+        fakeDeviceInformation.setDpi(300);
+        fakeDeviceInformation.setManufacturer("Fake Manufacturer");
+        fakeDeviceInformation.setModel("Fake Model");
+        fakeDeviceInformation.setOs("Fake OS");
+        fakeDeviceInformation.setRam(3072);
+        fakeDeviceInformation.setResolution(new Pair<Integer, Integer>(1920, 1080));
+        fakeDeviceInformation.setSerialNumber("DeviceSerialNo_0");
+        fakeDeviceInformation.setEmulator(false);
+        fakeDeviceInformation.setTablet(false);
+        fakeDeviceInformation.setCamera(true);
+
+        return fakeDeviceInformation;
     }
 
     @Before
@@ -101,7 +124,6 @@ public class AddAndRemoveDeviceTest extends BaseIntegrationTest {
 
     @Test
     public void addDeviceTest() throws Exception {
-
         callOnDeviceListChanged(mockedDevice, true);
 
         Thread.sleep(WAIT_TIMEOUT);
@@ -113,11 +135,26 @@ public class AddAndRemoveDeviceTest extends BaseIntegrationTest {
         Assert.assertTrue(String.format("The mocked device with serial number \"%s\" is not added to the Server's PoolManager",
                                         DEVICE_SERIAL_NO),
                           containsMockedDevice);
+
+        DeviceInformation actualDeviceInformation = poolManager.getDeviceById(agent.getId() + "_" + DEVICE_SERIAL_NO)
+                                                               .getInformation();
+
+        Assert.assertEquals(mockDeviceInformation.getApiLevel(), actualDeviceInformation.getApiLevel());
+        Assert.assertEquals(mockDeviceInformation.getCpu(), actualDeviceInformation.getCpu());
+        Assert.assertEquals(mockDeviceInformation.getDpi(), actualDeviceInformation.getDpi());
+        Assert.assertEquals(mockDeviceInformation.getManufacturer(), actualDeviceInformation.getManufacturer());
+        Assert.assertEquals(mockDeviceInformation.getModel(), actualDeviceInformation.getModel());
+        Assert.assertEquals(mockDeviceInformation.getOS(), actualDeviceInformation.getOS());
+        Assert.assertEquals(mockDeviceInformation.getRam(), actualDeviceInformation.getRam());
+        // TODO: fix this assert
+        // Assert.assertEquals(mockDeviceInformation.getResolution(), actualDeviceInformation.getResolution());
+        Assert.assertFalse(actualDeviceInformation.isEmulator());
+        Assert.assertFalse(actualDeviceInformation.isTablet());
+        Assert.assertTrue(actualDeviceInformation.hasCamera());
     }
 
     @Test
     public void removeDeviceTest() throws Exception {
-
         callOnDeviceListChanged(mockedDevice, true);
 
         Thread.sleep(WAIT_TIMEOUT);
@@ -153,13 +190,7 @@ public class AddAndRemoveDeviceTest extends BaseIntegrationTest {
 
     // the method calls the "onDeviceListChanged" method from
     // DeviceChangeListener class using reflection
-    private void callOnDeviceListChanged(IDevice device, boolean connected)
-        throws NoSuchFieldException,
-            IllegalAccessException,
-            ClassNotFoundException,
-            NoSuchMethodException,
-            InvocationTargetException {
-
+    private void callOnDeviceListChanged(IDevice device, boolean connected) throws Exception {
         // Get AndroidDebugBridgeManager instance
         Class<?> agentClass = agent.getClass();
         Field androidDebugBridgeManagerField = agentClass.getDeclaredField(ADB_MANAGER_FIELD_NAME);
@@ -176,18 +207,40 @@ public class AddAndRemoveDeviceTest extends BaseIntegrationTest {
         onDeviceChanged.invoke(onDeviceChangeListener, device, connected);
     }
 
-    private static PoolManager getPoolManager() throws NoSuchFieldException, IllegalAccessException {
-        Class<?> serverClass = server.getClass();
-        Field serverManager = serverClass.getDeclaredField(SERVER_MANAGER_FIELD_NAME);
-        serverManager.setAccessible(true);
-        ServerManager sManager = (ServerManager) serverManager.get(server);
+    private static void addWrapper(String deviceSerial, IWrapDevice deviceWrapper) throws Exception {
+        AgentManager agentManager = getFieldObject(agent, AGENT_MANAGER_FIELD_NAME);
+        DeviceManager deviceManager = getFieldObject(agentManager, DEVICE_MANAGER_FIELD_NAME);
+        Map<String, IWrapDevice> deviceSerialToDeviceWrapper = getFieldObject(deviceManager,
+                                                                              DEVICE_SERIAL_TO_WRAPPER_MAP_NAME);
+        deviceSerialToDeviceWrapper.put(deviceSerial, deviceWrapper);
+        setFieldObject(deviceManager, DEVICE_SERIAL_TO_WRAPPER_MAP_NAME, deviceSerialToDeviceWrapper);
+    }
 
-        Class<?> sManagerClass = sManager.getClass();
-        Field poolManager = sManagerClass.getDeclaredField(POOL_MANAGER_FIELD_NAME);
-        poolManager.setAccessible(true);
-        PoolManager pManager = (PoolManager) poolManager.get(sManager);
+    private static PoolManager getPoolManager() throws Exception {
+        ServerManager serverManager = getFieldObject(server, SERVER_MANAGER_FIELD_NAME);
+        PoolManager poolManager = getFieldObject(serverManager, POOL_MANAGER_FIELD_NAME);
 
-        return pManager;
+        return poolManager;
+    }
+
+    private static <T, K> void setFieldObject(K parantObject, String childFieldName, T newValue) throws Exception {
+        Field field = getAccessibleField(parantObject, childFieldName);
+        field.set(parantObject, newValue);
+    }
+
+    @SuppressWarnings({"unchecked"})
+    private static <T, K> T getFieldObject(K parantObject, String childFieldName) throws Exception {
+        Field field = getAccessibleField(parantObject, childFieldName);
+
+        return (T) field.get(parantObject);
+    }
+
+    private static <K> Field getAccessibleField(K parantObject, String childFieldName) throws Exception {
+        Class<?> clazz = parantObject.getClass();
+        Field field = clazz.getDeclaredField(childFieldName);
+        field.setAccessible(true);
+
+        return field;
     }
 
 }
