@@ -13,17 +13,17 @@ import com.musala.atmosphere.client.device.HardwareButton;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.exception.DeviceNotFoundException;
 import com.musala.atmosphere.server.Server;
+import com.musala.atmosphere.test.util.Constants;
 import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
 
 /**
- *
  *
  * @author valyo.yolovski
  *
  */
 public class BaseIntegrationTest {
 
-    @com.musala.atmosphere.client.util.Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 0)
+    @com.musala.atmosphere.client.util.Server(ip = Constants.SERVER_IP, port = Constants.SERVER_PORT, connectionRetryLimit = 0)
     private static class GettingBuilderClass {
         public GettingBuilderClass() {
         }
@@ -33,8 +33,6 @@ public class BaseIntegrationTest {
             return classDeviceBuilder;
         }
     }
-
-    protected final static int SERVER_MANAGER_RMI_PORT = 8025;
 
     protected final static String ONDEVICEVALIDATOR_FILE = "OnDeviceValidator-release.apk";
 

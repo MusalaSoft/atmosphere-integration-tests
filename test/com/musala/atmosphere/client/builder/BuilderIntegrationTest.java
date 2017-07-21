@@ -1,5 +1,7 @@
 package com.musala.atmosphere.client.builder;
 
+import static com.musala.atmosphere.test.util.Constants.SERVER_PORT;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -9,9 +11,9 @@ import com.musala.atmosphere.client.exceptions.ServerConnectionFailedException;
 import com.musala.atmosphere.client.util.Server;
 
 public class BuilderIntegrationTest {
-    private static final int SERVER_MANAGER_RMI_PORT = 8025;
+    private static final int RETRY_LIMIT = 10;
 
-    // TODO: update this test
+    // TODO: update this test case
     @Ignore
     @Test(expected = MissingServerConnectionProperiesException.class)
     public void missingSeverAnnotationTest() {
@@ -26,7 +28,7 @@ public class BuilderIntegrationTest {
 
     @Test(expected = ServerConnectionFailedException.class)
     public void wrongIpTest() {
-        @Server(ip = "149.111.400.154", port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 10)
+        @Server(ip = "149.111.400.154", port = SERVER_PORT, connectionRetryLimit = RETRY_LIMIT)
         class SampleTestWrongIpOne {
             public Builder getBuilderInstance() {
                 Builder testerBuilder = Builder.getInstance();
@@ -39,7 +41,7 @@ public class BuilderIntegrationTest {
 
     @Test(expected = ServerConnectionFailedException.class)
     public void wrongIpTestTwo() {
-        @Server(ip = "random_string", port = SERVER_MANAGER_RMI_PORT, connectionRetryLimit = 10)
+        @Server(ip = "random_string", port = SERVER_PORT, connectionRetryLimit = RETRY_LIMIT)
         class SampleTestWrongIpTwo {
             public Builder getBuilderInstance() {
                 Builder testerBuilder = Builder.getInstance();
@@ -52,7 +54,7 @@ public class BuilderIntegrationTest {
 
     @Test(expected = ServerConnectionFailedException.class)
     public void wrongPortTest() {
-        @Server(ip = "localhost", port = SERVER_MANAGER_RMI_PORT + 148, connectionRetryLimit = 10)
+        @Server(ip = "localhost", port = SERVER_PORT + 148, connectionRetryLimit = RETRY_LIMIT)
         class SampleTestWrongPort {
             public Builder getBuilderInstance() {
                 Builder testerBuilder = Builder.getInstance();
