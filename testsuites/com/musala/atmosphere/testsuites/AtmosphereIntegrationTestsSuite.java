@@ -1,5 +1,8 @@
 package com.musala.atmosphere.testsuites;
 
+import static com.musala.atmosphere.test.util.Constants.SERVER_PORT;
+import static com.musala.atmosphere.test.util.Constants.SERVER_IP;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -23,19 +26,19 @@ import com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert
  */
 @RunWith(Suite.class)
 public class AtmosphereIntegrationTestsSuite {
-    private final static int SERVER_WEBSOCKET_PORT = 8025;
+    //private final static int SERVER_WEBSOCKET_PORT = 80;
 
     private final static int WAIT_FOR_CONNECTING_TIMEOUT = 25_000;// 10_000; // 145_000
 
     private final static long SCREEN_OFF_TIMEOUT = 180_000;
 
-    private final static String SERVER_IP = "localhost";
+    //private final static String SERVER_IP = "localhost";
 
     private static Agent agent;
 
     private static Server server;
 
-    @com.musala.atmosphere.client.util.Server(ip = SERVER_IP, port = SERVER_WEBSOCKET_PORT, connectionRetryLimit = 0)
+    @com.musala.atmosphere.client.util.Server(ip = SERVER_IP, port = SERVER_PORT, connectionRetryLimit = 0)
     private static class GettingBuilderClass {
         public GettingBuilderClass() {
         }
@@ -49,12 +52,12 @@ public class AtmosphereIntegrationTestsSuite {
     @BeforeClass
     public static void setUpClass() throws Exception {
         // Start and run server.
-        server = new Server(SERVER_IP, SERVER_WEBSOCKET_PORT);
+        server = new Server(SERVER_IP, SERVER_PORT);
         server.run();
 
         // Start and connect agent to the server.
         agent = new Agent();
-        agent.connectToServer(SERVER_IP, SERVER_WEBSOCKET_PORT);
+        agent.connectToServer(SERVER_IP, SERVER_PORT);
         String agentId = agent.getId();
         server.waitForGivenAgentToConnect(agentId);
         // Waits for deive's wrapping and connection
