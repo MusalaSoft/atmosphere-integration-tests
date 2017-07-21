@@ -16,7 +16,6 @@ import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
 import com.musala.atmosphere.commons.cs.exception.DeviceNotFoundException;
-import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 
 /**
  *
@@ -44,7 +43,7 @@ public class WaitForTaskUpdateTest extends BaseIntegrationTest {
         DeviceSelector testDeviceSelector = selectorBuilder.build();
         try {
             initTestDevice(testDeviceSelector);
-        } catch (NoAvailableDeviceFoundException e) {
+        } catch (Exception e) {
             // Nothing to do here
         }
 

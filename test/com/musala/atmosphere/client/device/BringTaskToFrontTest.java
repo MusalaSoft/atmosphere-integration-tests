@@ -15,7 +15,6 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
-import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 
 /**
  *
@@ -43,7 +42,7 @@ public class BringTaskToFrontTest extends BaseIntegrationTest {
         DeviceSelector testDeviceSelector = selectorBuilder.build();
         try {
             initTestDevice(testDeviceSelector);
-        } catch (NoAvailableDeviceFoundException e) {
+        } catch (Exception e) {
             // Nothing to do here
         }
 
