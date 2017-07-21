@@ -50,7 +50,10 @@ public class DeviceInstallApkTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testInstallApk() {
+    public void testInstallApk() throws InterruptedException {
+        // unlock the device screen to ensure that the application activity will be displayed
+        assertTrue("Faild to unlock the device.", testDevice.unlock());
+
         assertTrue("Failed to install the test application.", testDevice.installAPK(APK_FILE_PATH));
 
         assertTrue("Failed to start the test application after the installation.",
@@ -58,6 +61,8 @@ public class DeviceInstallApkTest extends BaseIntegrationTest {
 
         UiElementSelector testApplicationTextViewSelector = new UiElementSelector();
         testApplicationTextViewSelector.addSelectionAttribute(CssAttribute.TEXT, "SampleText");
+
+        Thread.sleep(DEFAULT_TIMEOUT);
 
         assertElementExists("The application was installed successfully, but the main activity is not the same as expected.",
                             testApplicationTextViewSelector,
