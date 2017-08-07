@@ -60,7 +60,6 @@ public class GetElementWhenPresentTest extends BaseIntegrationTest {
     @Before
     public void setUpTest() throws Exception {
         startWaitTestActivity();
-        deviceScreen.updateScreen();
     }
 
     @After
