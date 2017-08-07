@@ -1182,7 +1182,6 @@ public class OnDeviceValidatorAssert {
             InvalidCssQueryException,
             MultipleElementsFoundException {
         Screen activeScreen = device.getActiveScreen();
-        activeScreen.updateScreen();
 
         UiElementSelector selector = new UiElementSelector();
         selector.addSelectionAttribute(CssAttribute.CLASS_NAME, className);
@@ -1205,7 +1204,6 @@ public class OnDeviceValidatorAssert {
             InvalidCssQueryException,
             MultipleElementsFoundException {
         Screen activeScreen = device.getActiveScreen();
-        activeScreen.updateScreen();
 
         UiElementSelector selector = new UiElementSelector();
         selector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, contentDescriptor);
@@ -1223,7 +1221,6 @@ public class OnDeviceValidatorAssert {
      */
     public static List<UiElement> getElementsByPackage(String packageName) throws UiElementFetchingException {
         Screen activeScreen = device.getActiveScreen();
-        activeScreen.updateScreen();
 
         UiElementSelector selector = new UiElementSelector();
         selector.addSelectionAttribute(CssAttribute.PACKAGE_NAME, packageName);
@@ -1611,7 +1608,6 @@ public class OnDeviceValidatorAssert {
             InvalidCssQueryException,
             MultipleElementsFoundException {
         Screen activeScreen = device.getActiveScreen();
-        activeScreen.updateScreen();
         UiElementSelector selector = new UiElementSelector();
 
         selector.addSelectionAttribute(CssAttribute.CONTENT_DESCRIPTION, contentDescription);

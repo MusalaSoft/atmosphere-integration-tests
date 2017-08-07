@@ -72,7 +72,6 @@ public class DragTest extends BaseIntegrationTest {
         Point destinationPoint = texElement.getProperties().getBounds().getCenter();
         imageElement.drag(destinationPoint);
 
-        deviceScreen.updateScreen();
         imageElement = deviceScreen.getElement(imageElementSelector);
         Point actualPoint = imageElement.getProperties().getBounds().getCenter();
         assertEquals(MESSAGE_TEST_FAIL, destinationPoint, actualPoint);
@@ -91,8 +90,6 @@ public class DragTest extends BaseIntegrationTest {
         UiElement textElement = deviceScreen.getElement(textElementSelector);
 
         imageElement.drag(textElement);
-
-        deviceScreen.updateScreen();
 
         imageElement = deviceScreen.getElement(imageElementSelector);
         textElement = deviceScreen.getElement(textElementSelector);
@@ -140,7 +137,6 @@ public class DragTest extends BaseIntegrationTest {
 
         imageElement.drag("Drag Test");
 
-        deviceScreen.updateScreen();
         imageElement = deviceScreen.getElement(imageElementSelector);
 
         Point expectedPoint = textElement.getProperties().getBounds().getCenter();

@@ -40,7 +40,6 @@ public class AtmosphereServiceConnectionTest extends BaseIntegrationTest {
         final UiElementSelector buttonSelector = new UiElementSelector();
         buttonSelector.addSelectionAttribute(CssAttribute.TEXT, "Start Service");
         deviceScreen.waitForElementExists(buttonSelector, 10000);
-        deviceScreen.updateScreen();
         startServiceButton = deviceScreen.getElementByCSS("[text=Start Service]");
         stopServiceButton = deviceScreen.getElementByCSS("[text=Stop Service]");
     }
