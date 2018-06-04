@@ -16,7 +16,7 @@ import com.musala.atmosphere.commons.ui.selector.CssAttribute;
 import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 
 /**
- * 
+ *
  * @author yavor.stankov
  *
  */
@@ -56,8 +56,10 @@ public class DeviceInstallApkTest extends BaseIntegrationTest {
 
         assertTrue("Failed to install the test application.", testDevice.installAPK(APK_FILE_PATH));
 
-        assertTrue("Failed to start the test application after the installation.",
-                   testDevice.startApplication(TEST_APPLICATION_PACKAGE_NAME));
+        Thread.sleep(DEFAULT_TIMEOUT);
+
+        boolean isAppllicationStarted = testDevice.startApplication(TEST_APPLICATION_PACKAGE_NAME, true);
+        assertTrue("Failed to start the test application after the installation.", isAppllicationStarted);
 
         UiElementSelector testApplicationTextViewSelector = new UiElementSelector();
         testApplicationTextViewSelector.addSelectionAttribute(CssAttribute.TEXT, "SampleText");
