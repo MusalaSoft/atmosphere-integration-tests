@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.musala.atmosphere.client.UiWebElement;
@@ -55,7 +54,6 @@ public class FindWebElementTest extends BaseWebViewIntegrationTest {
         assertEquals(ATTRIBUTE_MISSMATCH_ERROR_MESSAGE, expectedAttributeValue, webElement.getAttribute("id"));
     }
 
-    @Ignore
     @Test(expected = WebElementNotPresentException.class)
     public void testFindElementWhenNotPresent() {
         webView.findElement(WebElementSelectionCriterion.CLASS, NONEXISTENT_WEB_ELEMENT_CLASS);
