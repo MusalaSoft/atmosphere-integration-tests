@@ -6,6 +6,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -26,6 +27,8 @@ public class ChangeGpsLocationStateTest extends BaseIntegrationTest {
         DeviceSelector testDeviceSelector = selectorBuilder.build();
         initTestDevice(testDeviceSelector);
         setTestDevice(testDevice);
+
+        Assume.assumeTrue("Failed to disable the gps location.", testDevice.disableGpsLocation());
     }
 
     @AfterClass
