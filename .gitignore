@@ -76,3 +76,7 @@ local_screen.png
 chromedriver/
 *VideoRecords/
 ScreenRecords/
+
+# Igonore directories
+test/com/musala/atmosphere/performence/
+java/
