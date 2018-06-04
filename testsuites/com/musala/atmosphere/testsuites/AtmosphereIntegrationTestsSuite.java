@@ -3,17 +3,20 @@ package com.musala.atmosphere.testsuites;
 import static com.musala.atmosphere.test.util.Constants.SERVER_PORT;
 import static com.musala.atmosphere.test.util.Constants.SERVER_IP;
 
+import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import com.musala.atmosphere.agent.Agent;
+import com.musala.atmosphere.agent.devicewrapper.AbstractWrapDevice;
 import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
+import com.musala.atmosphere.commons.cs.exception.NoDeviceMatchingTheGivenSelectorException;
 import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.server.Server;
 import com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert;
@@ -26,6 +29,7 @@ import com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert
  */
 @RunWith(Suite.class)
 public class AtmosphereIntegrationTestsSuite {
+    private static final Logger LOGGER = Logger.getLogger(AtmosphereIntegrationTestsSuite.class.getCanonicalName());
     //private final static int SERVER_WEBSOCKET_PORT = 80;
 
     private final static int WAIT_FOR_CONNECTING_TIMEOUT = 25_000;// 10_000; // 145_000
@@ -70,16 +74,16 @@ public class AtmosphereIntegrationTestsSuite {
 
         // Attempts to select an emulator
         DeviceSelectorBuilder emulatorSelectorBuilder = new DeviceSelectorBuilder();
-        //DeviceSelector emulatorSelector = emulatorSelectorBuilder.deviceType(DeviceType.EMULATOR_ONLY).build();
+        DeviceSelector emulatorSelector = emulatorSelectorBuilder.deviceType(DeviceType.EMULATOR_ONLY).build();
         Device device = null;
-        /*try {
+        try {
             device = deviceBuilder.getDevice(emulatorSelector);
             OnDeviceValidatorAssert.setTestDevice(device);
             OnDeviceValidatorAssert.setupOndeviceValidator();
             deviceBuilder.releaseDevice(device);
-        } catch (NoAvailableDeviceFoundException e) {
-            // Nothing to do here
-        }*/
+        } catch (NoAvailableDeviceFoundException | NoDeviceMatchingTheGivenSelectorException e) {
+            LOGGER.error("Failed to select en emulator device.", e);
+        }
 
         // Attempts to select a real device
         DeviceSelector realDeviceSelector = emulatorSelectorBuilder.deviceType(DeviceType.DEVICE_PREFERRED).build();
@@ -89,12 +93,12 @@ public class AtmosphereIntegrationTestsSuite {
             OnDeviceValidatorAssert.setupOndeviceValidator();
             device.setScreenOffTimeout(SCREEN_OFF_TIMEOUT);
             deviceBuilder.releaseDevice(device);
-        } catch (NoAvailableDeviceFoundException e) {
-            // Nothing to do here
+        } catch (NoAvailableDeviceFoundException | NoDeviceMatchingTheGivenSelectorException e) {
+            LOGGER.error("Failed to select a real device.", e);
         }
 
         if (device == null) {
-            //throw new NoAvailableDeviceFoundException("No devices are present on the current agent.");
+            throw new NoAvailableDeviceFoundException("No devices are present on the current agent.");
         }
     }
 
