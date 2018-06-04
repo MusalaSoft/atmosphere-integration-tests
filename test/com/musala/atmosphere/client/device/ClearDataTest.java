@@ -7,6 +7,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
 import static org.junit.Assume.assumeNotNull;
 
+import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -17,7 +18,6 @@ import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
-import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.commons.ui.selector.CssAttribute;
 import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 
@@ -27,6 +27,8 @@ import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
  *
  */
 public class ClearDataTest extends BaseIntegrationTest {
+    private static final Logger LOGGER = Logger.getLogger(ClearDataTest.class.getCanonicalName());
+
     private static final String CREATE_DATA_BUTTON_CONTENT_DESCRIPTOR = "CreateDataButton";
 
     private static final String APPLICATION_DATA_SIZE_VIEW_CONTENT_DESCRIPTOR = "ApplicationDataSize";
@@ -38,12 +40,13 @@ public class ClearDataTest extends BaseIntegrationTest {
         DeviceSelector testDeviceSelector = selectorBuilder.build();
         try {
             initTestDevice(testDeviceSelector);
-            setTestDevice(testDevice);
-
-            startMainActivity();
-        } catch (NoAvailableDeviceFoundException e) {
-            // Nothing to do here
+        } catch (Exception e) {
+            LOGGER.error("Failed to initialize a test device", e);
         }
+
+        assumeNotNull(testDevice);
+        setTestDevice(testDevice);
+        startMainActivity();
     }
 
     @AfterClass
