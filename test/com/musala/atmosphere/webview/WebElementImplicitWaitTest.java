@@ -1,7 +1,6 @@
-/*package com.musala.atmosphere.webview;
+package com.musala.atmosphere.webview;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
-import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startWaitTestActivity;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startWebViewActivity;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -22,7 +21,6 @@ import org.junit.Test;
 
 import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.client.Screen;
-import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.UiWebElement;
 import com.musala.atmosphere.client.WebElement;
 import com.musala.atmosphere.client.WebView;
@@ -31,20 +29,19 @@ import com.musala.atmosphere.client.exceptions.MultipleElementsFoundException;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
-import com.musala.atmosphere.commons.cs.exception.DeviceNotFoundException;
+import com.musala.atmosphere.commons.exceptions.DeviceNotFoundException;
 import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 import com.musala.atmosphere.commons.exceptions.UiElementFetchingException;
-import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 import com.musala.atmosphere.commons.webelement.exception.WebElementNotPresentException;
 import com.musala.atmosphere.commons.webelement.selection.WebElementSelectionCriterion;
 
-*//**
+/**
  * Tests the implicit wait functionality for the {@link WebElement}
  * web elements.
  *
  * @author dimcho.nedev
  *
- *//*
+ */
 public class WebElementImplicitWaitTest extends BaseWebViewIntegrationTest {
     private static final String CONFIG_FILE_NAME = "config.properties";
 
@@ -146,7 +143,7 @@ public class WebElementImplicitWaitTest extends BaseWebViewIntegrationTest {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            bw.write(String.format("%s = %s", IMPLICIT_WAIT_PROPERTY_NAME, IMPLICIT_WAIT_TIMEOUT));
+            bw.write(String.format("%s=%s", IMPLICIT_WAIT_PROPERTY_NAME, IMPLICIT_WAIT_TIMEOUT));
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -161,7 +158,8 @@ public class WebElementImplicitWaitTest extends BaseWebViewIntegrationTest {
         Assert.assertNotNull("The method returned false, but the element existed on the screen.", element);
 
         // clear the configuration file
-        configFile.deleteOnExit();
+        boolean isDeleted = configFile.delete();
+        Assume.assumeTrue(isDeleted);
     }
 
 	private static void initDevice() throws DeviceNotFoundException {
@@ -176,11 +174,11 @@ public class WebElementImplicitWaitTest extends BaseWebViewIntegrationTest {
         }
 	}
 
-	*//**
+	/**
 	 * Tests whether the explicit wait should override the implicit wait for
 	 * nonexistent element. The test may fail on some machines but can be useful
 	 * in some cases.
-	 *//*
+	 */
 	@Ignore
 	@Test(timeout = IMPLICIT_WAIT_TIMEOUT * 3)
 	public void testExplicitWaitShouldOverrideImplicitWaitForUnexistingElement() {
@@ -199,4 +197,3 @@ public class WebElementImplicitWaitTest extends BaseWebViewIntegrationTest {
 	}
 
 }
-*/

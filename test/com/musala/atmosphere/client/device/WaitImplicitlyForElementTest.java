@@ -1,4 +1,4 @@
-/*package com.musala.atmosphere.client.device;
+package com.musala.atmosphere.client.device;
 
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startWaitTestActivity;
@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assume;
@@ -22,21 +21,22 @@ import com.musala.atmosphere.client.Screen;
 import com.musala.atmosphere.client.UiElement;
 import com.musala.atmosphere.client.exceptions.ActivityStartingException;
 import com.musala.atmosphere.client.exceptions.MultipleElementsFoundException;
+import com.musala.atmosphere.client.util.ConfigurationPropertiesLoader;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
-import com.musala.atmosphere.commons.cs.exception.DeviceNotFoundException;
+import com.musala.atmosphere.commons.exceptions.DeviceNotFoundException;
 import com.musala.atmosphere.commons.exceptions.UiElementFetchingException;
 import com.musala.atmosphere.commons.ui.selector.CssAttribute;
 import com.musala.atmosphere.commons.ui.selector.UiElementSelector;
 
-*//**
+/**
  *
  * @author dimcho.nedev
  *
  * Tests the implicit wait functionality for the UI elements.
  *
- *//*
+ */
 public class WaitImplicitlyForElementTest extends BaseIntegrationTest {
     private static final int IMPLICIT_WAIT_TIMEOUT = 5000;
 
@@ -116,13 +116,16 @@ public class WaitImplicitlyForElementTest extends BaseIntegrationTest {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            bw.write(String.format("%s = %s", IMPLICIT_WAIT_PROPERTY_NAME, IMPLICIT_WAIT_TIMEOUT));
+            bw.write(String.format("%s=%s", IMPLICIT_WAIT_PROPERTY_NAME, IMPLICIT_WAIT_TIMEOUT));
         } catch (IOException e1) {
             e1.printStackTrace();
         }
 
+        //ConfigurationPropertiesLoader.setImplicitWaitTimeout(IMPLICIT_WAIT_TIMEOUT);
         initDevice();
         startWaitTestActivity();
+
+        System.out.println(ConfigurationPropertiesLoader.getImplicitWaitTimeout());
 
         tapMainActivityButton();
         UiElementSelector orientationActivityButtonSelectror = getOrintationActivityButtonSelector();
@@ -178,4 +181,3 @@ public class WaitImplicitlyForElementTest extends BaseIntegrationTest {
     }
 
 }
-*/
