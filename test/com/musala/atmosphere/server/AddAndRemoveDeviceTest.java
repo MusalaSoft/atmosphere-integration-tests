@@ -82,7 +82,7 @@ public class AddAndRemoveDeviceTest extends BaseIntegrationTest {
         mockedDevice = mock(IDevice.class);
         when(mockedDevice.getSerialNumber()).thenReturn(DEVICE_SERIAL_NO);
 
-        poolManager = getPoolManager();
+        poolManager = getPoolManager(server);
     }
 
     private static DeviceInformation createMockDeviceInformation() {
@@ -208,39 +208,21 @@ public class AddAndRemoveDeviceTest extends BaseIntegrationTest {
     }
 
     private static void addWrapper(String deviceSerial, IWrapDevice deviceWrapper) throws Exception {
-        AgentManager agentManager = getFieldObject(agent, AGENT_MANAGER_FIELD_NAME);
-        DeviceManager deviceManager = getFieldObject(agentManager, DEVICE_MANAGER_FIELD_NAME);
-        Map<String, IWrapDevice> deviceSerialToDeviceWrapper = getFieldObject(deviceManager,
-                                                                              DEVICE_SERIAL_TO_WRAPPER_MAP_NAME);
+        AgentManager agentManager = AtmosphereReflectionUtils.getFieldObject(agent, AGENT_MANAGER_FIELD_NAME);
+        DeviceManager deviceManager = AtmosphereReflectionUtils.getFieldObject(agentManager, DEVICE_MANAGER_FIELD_NAME);
+        Map<String, IWrapDevice> deviceSerialToDeviceWrapper = AtmosphereReflectionUtils.getFieldObject(deviceManager,
+                                                                                                        DEVICE_SERIAL_TO_WRAPPER_MAP_NAME);
         deviceSerialToDeviceWrapper.put(deviceSerial, deviceWrapper);
-        setFieldObject(deviceManager, DEVICE_SERIAL_TO_WRAPPER_MAP_NAME, deviceSerialToDeviceWrapper);
+        AtmosphereReflectionUtils.setFieldObject(deviceManager,
+                                                 DEVICE_SERIAL_TO_WRAPPER_MAP_NAME,
+                                                 deviceSerialToDeviceWrapper);
     }
 
-    private static PoolManager getPoolManager() throws Exception {
-        ServerManager serverManager = getFieldObject(server, SERVER_MANAGER_FIELD_NAME);
-        PoolManager poolManager = getFieldObject(serverManager, POOL_MANAGER_FIELD_NAME);
+    private static PoolManager getPoolManager(Server server) throws Exception {
+        PoolManager poolManager = AtmosphereReflectionUtils.getFieldValue(server,
+                                                                          SERVER_MANAGER_FIELD_NAME,
+                                                                          POOL_MANAGER_FIELD_NAME);
 
         return poolManager;
     }
-
-    private static <T, K> void setFieldObject(K parantObject, String childFieldName, T newValue) throws Exception {
-        Field field = getAccessibleField(parantObject, childFieldName);
-        field.set(parantObject, newValue);
-    }
-
-    @SuppressWarnings({"unchecked"})
-    private static <T, K> T getFieldObject(K parantObject, String childFieldName) throws Exception {
-        Field field = getAccessibleField(parantObject, childFieldName);
-
-        return (T) field.get(parantObject);
-    }
-
-    private static <K> Field getAccessibleField(K parantObject, String childFieldName) throws Exception {
-        Class<?> clazz = parantObject.getClass();
-        Field field = clazz.getDeclaredField(childFieldName);
-        field.setAccessible(true);
-
-        return field;
-    }
-
 }
