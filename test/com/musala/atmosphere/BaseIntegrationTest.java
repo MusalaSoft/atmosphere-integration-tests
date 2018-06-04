@@ -11,7 +11,8 @@ import com.musala.atmosphere.client.Builder;
 import com.musala.atmosphere.client.Device;
 import com.musala.atmosphere.client.device.HardwareButton;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
-import com.musala.atmosphere.commons.cs.exception.DeviceNotFoundException;
+import com.musala.atmosphere.commons.cs.exception.NoDeviceMatchingTheGivenSelectorException;
+import com.musala.atmosphere.commons.exceptions.DeviceNotFoundException;
 import com.musala.atmosphere.server.Server;
 import com.musala.atmosphere.test.util.Constants;
 import com.musala.atmosphere.testsuites.AtmosphereIntegrationTestsSuite;
@@ -61,7 +62,9 @@ public class BaseIntegrationTest {
 
     private static final long HOME_TIMEOUT = 500;
 
-    protected static void initTestDevice(DeviceSelector deviceSelector) throws DeviceNotFoundException {
+    protected static void initTestDevice(DeviceSelector deviceSelector)
+        throws DeviceNotFoundException,
+            NoDeviceMatchingTheGivenSelectorException {
         try {
             GettingBuilderClass builderGet = new GettingBuilderClass();
             Builder deviceBuilder = builderGet.getBuilder();
