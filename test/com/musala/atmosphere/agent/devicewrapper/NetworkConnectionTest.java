@@ -14,7 +14,7 @@ import com.musala.atmosphere.commons.beans.MobileDataState;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
-import com.musala.atmosphere.commons.cs.exception.DeviceNotFoundException;
+import com.musala.atmosphere.commons.exceptions.DeviceNotFoundException;
 
 public class NetworkConnectionTest {
 
