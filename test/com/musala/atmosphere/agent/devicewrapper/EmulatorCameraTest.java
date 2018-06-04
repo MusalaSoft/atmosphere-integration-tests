@@ -5,9 +5,10 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startMainActivity;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assume.assumeThat;
 import static org.junit.Assume.assumeNotNull;
+import static org.junit.Assume.assumeThat;
 
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Test;
 
@@ -15,9 +16,9 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
-import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 
 public class EmulatorCameraTest extends BaseIntegrationTest {
+    private static final Logger LOGGER = Logger.getLogger(EmulatorCameraTest.class.getCanonicalName());
 
     @Test
     public void emulatorMissingCameraTest() throws Exception {
@@ -27,8 +28,8 @@ public class EmulatorCameraTest extends BaseIntegrationTest {
         try {
             initTestDevice(testDeviceSelector);
             setTestDevice(testDevice);
-        } catch (NoAvailableDeviceFoundException e) {
-            // Nothing to do here
+        } catch (Exception e) {
+            LOGGER.error("Failed to initialize a test device", e);
         }
         assumeNotNull(testDevice);
         startMainActivity();
@@ -51,8 +52,8 @@ public class EmulatorCameraTest extends BaseIntegrationTest {
         try {
             initTestDevice(testDeviceSelector);
             setTestDevice(testDevice);
-        } catch (NoAvailableDeviceFoundException e) {
-            // Nothing to do here
+        } catch (Exception e) {
+            LOGGER.error("Failed to initialize a test device", e);
         }
         assumeNotNull(testDevice);
         startMainActivity();
