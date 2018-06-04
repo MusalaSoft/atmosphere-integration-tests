@@ -7,7 +7,9 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.setTestDevice;
 import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidatorAssert.startAccelerationActivity;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeNotNull;
 
+import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -22,13 +24,22 @@ import com.musala.atmosphere.test.util.ondevicevalidator.ContentDescriptor;
 
 public class DeviceAcceleratoinTest extends BaseIntegrationTest {
     // FIXME: Dirty fix - waits until the device screen rotation is over. It should be fixed!!!
+    private static final Logger LOGGER = Logger.getLogger(DeviceAcceleratoinTest.class.getCanonicalName());
+
     private final static int TIME_TO_WAIT_FOR_ROTATION = 10000; // in ms
 
     @BeforeClass
     public static void setUp() throws Exception {
         DeviceSelectorBuilder selectorBuilder = new DeviceSelectorBuilder().deviceType(DeviceType.EMULATOR_ONLY);
         DeviceSelector testDeviceSelector = selectorBuilder.build();
-        initTestDevice(testDeviceSelector);
+
+        try {
+            initTestDevice(testDeviceSelector);
+        } catch (Exception e) {
+            LOGGER.error("Failed to initialize a test device", e);
+        }
+
+        assumeNotNull(testDevice);
 
         setTestDevice(testDevice);
 
@@ -37,7 +48,10 @@ public class DeviceAcceleratoinTest extends BaseIntegrationTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
-        testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        if (testDevice != null) {
+            testDevice.forceStopProcess(VALIDATOR_APP_PACKAGE);
+        }
+
         releaseDevice();
     }
 

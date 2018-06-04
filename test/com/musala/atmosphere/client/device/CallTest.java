@@ -8,6 +8,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeNotNull;
 
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -18,9 +19,10 @@ import com.musala.atmosphere.commons.beans.PhoneNumber;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
-import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 
 public class CallTest extends BaseIntegrationTest {
+    private static final Logger LOGGER = Logger.getLogger(BaseIntegrationTest.class.getCanonicalName());
+
     private static final String SENDER_PHONE = "+012345";
 
     private static final String DIALER_TO_FOREGROUND_SHELL_COMMAND = "am start com.android.dialer/com.android.incallui.InCallActivity";
@@ -42,11 +44,13 @@ public class CallTest extends BaseIntegrationTest {
 
         try {
             initTestDevice(testDeviceSelector);
-            setTestDevice(testDevice);
-            phoneNumber = new PhoneNumber(SENDER_PHONE);
-        } catch (NoAvailableDeviceFoundException e) {
-            // Nothing to do here
+        } catch (Exception e) {
+            LOGGER.error("Failed to initialize a test device", e);
         }
+
+        assumeNotNull(testDevice);
+        setTestDevice(testDevice);
+        phoneNumber = new PhoneNumber(SENDER_PHONE);
     }
 
     @AfterClass
@@ -68,7 +72,6 @@ public class CallTest extends BaseIntegrationTest {
 
     @Test
     public void testReceiveCall() throws Exception {
-        assumeNotNull(testDevice);
         assertTrue("Receiving call returned false.", testDevice.receiveCall(phoneNumber));
         Thread.sleep(RECEIVE_CALL_TIMEOUT);
 
@@ -78,7 +81,6 @@ public class CallTest extends BaseIntegrationTest {
 
     @Test
     public void testAcceptCall() throws Exception {
-        assumeNotNull(testDevice);
         assertTrue("Receiving call returned false.", testDevice.receiveCall(phoneNumber));
         Thread.sleep(RECEIVE_CALL_TIMEOUT);
 
@@ -91,7 +93,6 @@ public class CallTest extends BaseIntegrationTest {
 
     @Test
     public void testHoldCall() throws Exception {
-        assumeNotNull(testDevice);
         assertTrue("Receiving call returned false.", testDevice.receiveCall(phoneNumber));
         Thread.sleep(RECEIVE_CALL_TIMEOUT);
         assertTrue("Holding call returned false.", testDevice.holdCall(phoneNumber));
@@ -103,7 +104,6 @@ public class CallTest extends BaseIntegrationTest {
 
     @Test
     public void testCancelCall() throws Exception {
-        assumeNotNull(testDevice);
         assertTrue("Receiving call returned false.", testDevice.receiveCall(phoneNumber));
         Thread.sleep(RECEIVE_CALL_TIMEOUT);
 

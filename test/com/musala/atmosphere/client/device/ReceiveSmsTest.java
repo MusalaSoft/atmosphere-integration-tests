@@ -7,6 +7,7 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeNotNull;
 
+import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -17,9 +18,10 @@ import com.musala.atmosphere.commons.beans.PhoneNumber;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
-import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 
 public class ReceiveSmsTest extends BaseIntegrationTest {
+    private static final Logger LOGGER = Logger.getLogger(ReceiveSmsTest.class.getCanonicalName());
+
     private static final String SENDER_PHONE = "+012345";
 
     private static final String SMS_TEXT = "Test Sms receiving text!";
@@ -31,13 +33,15 @@ public class ReceiveSmsTest extends BaseIntegrationTest {
 
         try {
             initTestDevice(testDeviceSelector);
-            setTestDevice(testDevice);
-
-            startMainActivity();
-            assertValidatorIsStarted();
-        } catch (NoAvailableDeviceFoundException e) {
-            // Nothing to do here
+        } catch (Exception e) {
+            LOGGER.error("Failed to initialize a test device", e);
         }
+
+        assumeNotNull(testDevice);
+
+        setTestDevice(testDevice);
+        startMainActivity();
+        assertValidatorIsStarted();
     }
 
     @AfterClass
