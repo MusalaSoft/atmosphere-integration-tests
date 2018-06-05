@@ -18,10 +18,6 @@ These are the integration tests of the ATMOSPHERE mobile testing framework.
 
 > Make sure you publish these projects to your local Maven repository (follow each project's setup instructions).
 
-### Chrome driver setup
-* Download the Chrome Web Driver from [here](https://sites.google.com/a/chromium.org/chromedriver/) and unzip it.
-* Change the `chromedriver.executable.path` property in `agent.properties`, located in the `atmosphere-integration-tests` root directory, to point to your chromedriver executable file.
-
 ### Run the tests
 Make sure you have connected at least one Android device (a physical device or an emulator) to the machine you will be running the tests on. Then run the tests using the included Gradle wrapper with the following command:
 * `./gradlew build` on Linux/macOS
