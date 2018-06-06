@@ -4,7 +4,9 @@ import static com.musala.atmosphere.test.util.ondevicevalidator.OnDeviceValidato
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeNotNull;
 
+import org.apache.log4j.Logger;
 import org.junit.AfterClass;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -12,9 +14,9 @@ import com.musala.atmosphere.BaseIntegrationTest;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelector;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceSelectorBuilder;
 import com.musala.atmosphere.commons.cs.deviceselection.DeviceType;
-import com.musala.atmosphere.commons.exceptions.NoAvailableDeviceFoundException;
 
 public class RuntimePermissionTest extends BaseIntegrationTest {
+    private static final Logger LOGGER = Logger.getLogger(RuntimePermissionTest.class.getCanonicalName());
 
     private static final String ONDEVICE_VALIDATOR_PACKAGE = "com.musala.atmosphere.ondevice.validator";
 
@@ -27,10 +29,14 @@ public class RuntimePermissionTest extends BaseIntegrationTest {
 
         try {
             initTestDevice(testDeviceSelector);
-            setTestDevice(testDevice);
-        } catch (NoAvailableDeviceFoundException e) {
-            // Nothing to do here
+            
+        } catch (Exception e) {
+            LOGGER.error("Failed to initialize a test device", e);
         }
+
+        Assume.assumeNotNull(testDevice);
+
+        setTestDevice(testDevice);
     }
 
     @AfterClass
